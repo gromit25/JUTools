@@ -80,10 +80,13 @@ public class BytesMapper<T> {
 		//
 		T obj = this.mappingClass.getConstructor().newInstance();
 		
-		long loc = 0;
+		int loc = 0;
 		for(MapInfo map: this.maps) {
+			
 			loc += map.getSkip();
-			map.getSize();
+			
+			byte[] mappedBytes = new byte[map.getSize()];
+			System.arraycopy(bytes, loc, mappedBytes, 0, map.getSize());
 		}
 		
 		//
