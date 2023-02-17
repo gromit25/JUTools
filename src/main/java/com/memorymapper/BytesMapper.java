@@ -2,6 +2,7 @@ package com.memorymapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -81,12 +82,34 @@ public class BytesMapper<T> {
 		T obj = this.mappingClass.getConstructor().newInstance();
 		
 		int loc = 0;
-		for(MapInfo map: this.maps) {
+		for(MapInfo mapInfo: this.maps) {
 			
-			loc += map.getSkip();
+			loc += mapInfo.getSkip();
 			
-			byte[] mappedBytes = new byte[map.getSize()];
-			System.arraycopy(bytes, loc, mappedBytes, 0, map.getSize());
+			byte[] mappedBytes = null;
+			if(mapInfo.getSize() > 0) {
+				
+				mappedBytes = new byte[mapInfo.getSize()];
+				System.arraycopy(bytes, loc, mappedBytes, 0, mappedBytes.length);
+				
+				if(mapInfo.getMethod() != null) {
+					Object result = mapInfo.getMethod().invoke(obj, mappedBytes);
+					mapInfo.getFieldSetter().invoke(obj, result);
+				}
+				
+			} else {
+				
+				Class<?> fieldType = mapInfo.getField().getType();
+				
+				if(fieldType == int.class || fieldType == Integer.class) {
+					mappedBytes = new byte[4];
+					System.arraycopy(bytes, loc, mappedBytes, 0, mappedBytes.length);
+					Integer value = ByteBuffer.wrap(bytes).getInt();
+					mapInfo.getFieldSetter().invoke(obj, value);
+				}
+			}
+			
+			loc += mappedBytes.length;
 		}
 		
 		//
@@ -110,6 +133,7 @@ public class BytesMapper<T> {
 class MapInfo implements Comparable<MapInfo>{
 
 	private Class<?> mappingClass;
+	private Field field;
 	private Method fieldSetter;
 	private int order;
 	private int size;
@@ -147,13 +171,14 @@ class MapInfo implements Comparable<MapInfo>{
 			throw new NullPointerException("");
 		}
 		
-		String fieldName = field.getName();
+		this.field = field;
+		String fieldName = this.field.getName();
 		
 		StringBuffer setterBuffer = new StringBuffer("set");
 		setterBuffer.append(Character.toUpperCase(fieldName.charAt(0)))
 			.append(fieldName.substring(1));
 
-		this.fieldSetter = this.mappingClass.getMethod(setterBuffer.toString(), field.getType());
+		this.fieldSetter = this.mappingClass.getMethod(setterBuffer.toString(), this.field.getType());
 	}
 
 	/**
@@ -169,7 +194,7 @@ class MapInfo implements Comparable<MapInfo>{
 			
 		} else {
 			
-		    this.method = mappingClass.getMethod(methodName);
+		    this.method = mappingClass.getMethod(methodName, byte[].class);
 		    if(this.method == null) {
 		    	throw new NullPointerException("");
 		    }
