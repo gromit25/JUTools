@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.bytemap;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

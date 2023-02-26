@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.bytemap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
