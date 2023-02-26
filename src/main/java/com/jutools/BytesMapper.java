@@ -1,4 +1,4 @@
-package com.memorymapper;
+package com.jutools;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
