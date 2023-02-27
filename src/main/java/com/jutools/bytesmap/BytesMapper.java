@@ -37,7 +37,7 @@ public class BytesMapper<T> {
 			MapInfo mapInfo = new MapInfo(mappingClass);
 			
 			//
-			Map map = field.getAnnotation(Map.class);
+			BytesMap map = field.getAnnotation(BytesMap.class);
 			if(map == null) {
 				continue;
 			}
