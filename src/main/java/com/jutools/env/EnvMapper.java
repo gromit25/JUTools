@@ -3,6 +3,9 @@ package com.jutools.env;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -22,18 +25,22 @@ public class EnvMapper {
 			throw new NullPointerException("map class is null");
 		}
 		
+		//
 		for(Field field : mapClass.getFields()) {
 			
+			//
 			Env envInfo = field.getAnnotation(Env.class);
 			if(envInfo == null) {
 				continue;
 			}
 			
+			//
 			if(Modifier.isStatic(field.getModifiers()) == false
 				|| Modifier.isPublic(field.getModifiers()) == false) {
 				throw new Exception(field.getName() + " is not static or public");
 			}
 			
+			//
 			String value = System.getenv(envInfo.name());
 			if(value == null) {
 				if(envInfo.mandatory() == true) {
@@ -45,14 +52,47 @@ public class EnvMapper {
 			
 			//
 			if(envInfo.separator().isEmpty() == true) {
-
+				
+				//
+				Object valueObject = transferValueType(mapClass, field, envInfo.method(), value);
+				field.set(null, valueObject);
+				
 			} else {
+				
+				//
+				if(isArrayType(field) == false) {
+					throw new Exception("field(" + field.getName() + ") is not array type(array, List, Map):" + field.getType());
+				}
+				
+				//
+				Object arrayObj = null;
+				if(field.getType().isArray() == true) {
+					arrayObj = new ArrayList();
+				} else {
+					arrayObj = field.getType().getConstructor().newInstance();
+				}
+				
+				//
 				String[] splitedValueList = value.split(envInfo.separator());
 				for(String splitValue: splitedValueList) {
 					
+					Object valueObject = transferValueType(mapClass, field, envInfo.method(), splitValue);
+					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
+						((List)arrayObj).add(valueObject);
+					} else if(Set.class.isAssignableFrom(arrayObj.getClass()) == true) {
+						((Set)arrayObj).add(valueObject);
+					} else {
+						throw new Exception("Unexpected array type:" + arrayObj.getClass());
+					}
+				}
+				
+				//
+				if(field.getType().isArray() == true) {
+					field.set(null, ((List)arrayObj).toArray());
+				} else {
+					field.set(null, arrayObj);
 				}
 			}
-			
 			
 		} // End of for
 	}
@@ -65,32 +105,24 @@ public class EnvMapper {
 	 * @param methodName
 	 * @param value
 	 */
-	private static void setValue(Class<?> mapClass, Field field, String methodName, String value) throws Exception {
+	private static Object transferValueType(Class<?> mapClass, Field field, String methodName, String value) throws Exception {
 		
 		Class<?> type = field.getType();
 		
 		if(methodName == null || methodName.isBlank() == true) {
 		
-			if(type.isPrimitive() == true || isPrimitiveClass(type) == true) {
-				
-				setPrimitiveValue(field, value);
-				
+			if(isPrimitiveType(type) == true) {
+				return getPrimitiveValue(field, value);
 			} else if(type == String.class) {
-				
-				field.set(null, value);
-				
+				return value;
 			} else {
-				
-				throw new Exception("can't set value");
-	
+				throw new Exception("can't transfer value:" + type);
 			}
 			
 		} else {
 			
 			Method method = mapClass.getMethod(methodName, String.class);
-			Object result = method.invoke(null, value);
-			
-			field.set(null, result);
+			return method.invoke(null, value);
 		}
 
 	}
@@ -101,7 +133,11 @@ public class EnvMapper {
 	 * @param type
 	 * @return
 	 */
-	private static boolean isPrimitiveClass(Class<?> type) {
+	private static boolean isPrimitiveType(Class<?> type) {
+		
+		if(type.isPrimitive() == true) {
+			return true;
+		}
 		
 		return type == Boolean.class || type == Character.class || type == Byte.class
 				|| type == Short.class || type == Integer.class || type == Float.class
@@ -114,26 +150,39 @@ public class EnvMapper {
 	 * @param field
 	 * @param value
 	 */
-	private static void setPrimitiveValue(Field field, String value) throws Exception {
+	private static Object getPrimitiveValue(Field field, String value) throws Exception {
 		
 		Class<?> type = field.getType();
 		
 		if(type == boolean.class || type == Boolean.class) {
-			field.set(null, Boolean.parseBoolean(value));
+			return Boolean.parseBoolean(value);
 		} else if(type == short.class || type == Short.class) {
-			field.set(null, Short.parseShort(value));
+			return Short.parseShort(value);
 		} else if(type == int.class || type == Integer.class) {
-			field.set(null, Integer.parseInt(value));
+			return Integer.parseInt(value);
 		} else if(type == float.class || type == Float.class) {
-			field.set(null, Float.parseFloat(value));
+			return Float.parseFloat(value);
 		} else if(type == long.class || type == Long.class) {
-			field.set(null, Long.parseLong(value));
+			return Long.parseLong(value);
 		} else if(type == double.class || type == Double.class) {
-			field.set(null, Double.parseDouble(value));
+			return Double.parseDouble(value);
 		} else {
 			// char과 byte는 지원하지 않음
 			throw new Exception("Unsupported type: " + type);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private static boolean isArrayType(Field field) {
+		
+		Class<?> type = field.getType();
+		
+		return type.isArray() || List.class.isAssignableFrom(type)
+				|| Set.class.isAssignableFrom(type);
 	}
 
 }
