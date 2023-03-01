@@ -25,6 +25,10 @@ public class EnvMapper {
 			throw new NullPointerException("map class is null");
 		}
 		
+		if(Modifier.isPublic(mapClass.getModifiers()) == false) {
+			throw new Exception("map class is not accessible");
+		}
+		
 		//
 		for(Field field : mapClass.getFields()) {
 			

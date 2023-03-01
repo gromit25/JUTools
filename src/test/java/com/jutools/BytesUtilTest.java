@@ -3,11 +3,11 @@
  */
 package com.jutools;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * BytesUtil 클래스에 대한 단위 테스트 클래스
