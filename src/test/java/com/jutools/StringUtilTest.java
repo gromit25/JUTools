@@ -10,10 +10,10 @@ class StringUtilTest {
 	void testEscape1() {
 		try {
 			
-			String testMsg = "hello world!\\nÀÌ¸§:\\tJohn doe";
+			String testMsg = "hello world!\\nï¿½Ì¸ï¿½:\\tJohn doe";
 			String result = StringUtil.escape(testMsg);
 			
-			assertEquals("hello world!\nÀÌ¸§:\tJohn doe", result);
+			assertEquals("hello world!\nï¿½Ì¸ï¿½:\tJohn doe", result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -40,11 +40,11 @@ class StringUtilTest {
 	void testEscape3() {
 		try {
 			
-			// "°¡³ª´Ù¶ó¸¶¹Ù»ç"
+			// "ê°€ë‚˜ë‹¤ë¼ë§ˆë°”ì‚¬"
 			String testMsg = "\\uAC00\\uB098\\uB2E4\\uB77C\\uB9C8\\uBC14\\uC0AC"; 
 			String result = StringUtil.escape(testMsg);
 			
-			assertEquals("°¡³ª´Ù¶ó¸¶¹Ù»ç", result);
+			assertEquals("ê°€ë‚˜ë‹¤ë¼ë§ˆë°”ì‚¬", result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
