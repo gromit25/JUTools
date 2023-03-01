@@ -1,9 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>MemoryMapper</groupId>
-  <artifactId>MemoryMapper</artifactId>
+  <groupId>com.jutools</groupId>
+  <artifactId>jutools</artifactId>
   <version>0.1</version>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <deploy.target.dir>C:/apps/jutools</deploy.target.dir>
+  </properties>
   
   <build>
     <plugins>
@@ -14,6 +19,69 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+      
+      <!-- 기존 배포된 파일들 모두 삭제  -->
+      <plugin>
+      	<artifactId>maven-clean-plugin</artifactId>
+      	<version>2.5</version>
+      	<executions>
+          <execution>
+            <id>clean-target</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>${deploy.target.dir}</directory>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+      	</executions>
+      </plugin>
+      
+      <!-- jar 파일 생성 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <outputDirectory>${deploy.target.dir}</outputDirectory>
+          <archive>
+            <manifest>
+              <packageName>com.jutools</packageName>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>${deploy.target.dir}/lib</classpathPrefix>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      
+      <!-- library jar 파일 복사  -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>install</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>
+                ${deploy.target.dir}/lib
+              </outputDirectory>
+              <excludeScope>provided, test</excludeScope>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       
     </plugins>
