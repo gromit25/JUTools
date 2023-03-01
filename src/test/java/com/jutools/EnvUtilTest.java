@@ -127,5 +127,24 @@ class EnvUtilTest {
 			fail("exception is ocurred");
 		}
 	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.classes", value = "java.lang.Integer, java.lang.Float")
+	void testEnvMethodArray() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			
+			assertEquals(2, Config.CLASSES_VALUE.length);
+			assertEquals(Integer.class, Config.CLASSES_VALUE[0]);
+			assertEquals(Float.class, Config.CLASSES_VALUE[1]);
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
 
 }

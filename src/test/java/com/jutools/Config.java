@@ -28,11 +28,14 @@ public class Config {
 	@Env(name = "config.int_list", separator = ",")
 	public static int[] INT_LIST = {};
 	
+	@Env(name = "config.classes", separator = ",", method = "transferClass")
+	public static Class<?>[] CLASSES_VALUE = {};
+	
 	/**
+	 * 
 	 * 
 	 * @param className
 	 * @return
-	 * @throws Exception
 	 */
 	public static Class<?> transferClass(String className) throws Exception {
 		return Class.forName(className);
