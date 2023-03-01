@@ -58,7 +58,7 @@ public class EnvMapper {
 			if(envInfo.separator().isEmpty() == true) {
 				
 				//
-				Object valueObject = transferValueType(mapClass, field, envInfo.method(), value);
+				Object valueObject = transferValueType(mapClass, field.getType(), envInfo.method(), value);
 				field.set(null, valueObject);
 				
 			} else {
@@ -70,6 +70,8 @@ public class EnvMapper {
 				
 				//
 				Object arrayObj = null;
+				Class<?> memberType = null;
+				
 				if(field.getType().isArray() == true) {
 					arrayObj = new ArrayList();
 				} else {
@@ -80,7 +82,7 @@ public class EnvMapper {
 				String[] splitedValueList = value.split(envInfo.separator());
 				for(String splitValue: splitedValueList) {
 					
-					Object valueObject = transferValueType(mapClass, field, envInfo.method(), splitValue);
+					Object valueObject = transferValueType(mapClass, memberType, envInfo.method(), splitValue);
 					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
 						((List)arrayObj).add(valueObject);
 					} else if(Set.class.isAssignableFrom(arrayObj.getClass()) == true) {
@@ -109,14 +111,12 @@ public class EnvMapper {
 	 * @param methodName
 	 * @param value
 	 */
-	private static Object transferValueType(Class<?> mapClass, Field field, String methodName, String value) throws Exception {
-		
-		Class<?> type = field.getType();
+	private static Object transferValueType(Class<?> mapClass, Class<?> type, String methodName, String value) throws Exception {
 		
 		if(methodName == null || methodName.isBlank() == true) {
 		
 			if(isPrimitiveType(type) == true) {
-				return getPrimitiveValue(field, value);
+				return getPrimitiveValue(type, value);
 			} else if(type == String.class) {
 				return value;
 			} else {
@@ -151,12 +151,10 @@ public class EnvMapper {
 	/**
 	 * 
 	 * 
-	 * @param field
+	 * @param type
 	 * @param value
 	 */
-	private static Object getPrimitiveValue(Field field, String value) throws Exception {
-		
-		Class<?> type = field.getType();
+	private static Object getPrimitiveValue(Class<?> type, String value) throws Exception {
 		
 		if(type == boolean.class || type == Boolean.class) {
 			return Boolean.parseBoolean(value);
@@ -171,7 +169,7 @@ public class EnvMapper {
 		} else if(type == double.class || type == Double.class) {
 			return Double.parseDouble(value);
 		} else {
-			// char∞˙ byte¥¬ ¡ˆø¯«œ¡ˆ æ ¿Ω
+			// charÏôÄ byteÎäî ÏßÄÏõêÌïòÏßÄ ÏïäÏùå
 			throw new Exception("Unsupported type: " + type);
 		}
 	}

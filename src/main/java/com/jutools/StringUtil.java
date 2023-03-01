@@ -1,34 +1,34 @@
 package com.jutools;
 
 /**
- * ¹®ÀÚ¿­ Ã³¸® °ü·Ã Utility Å¬·¡½º
+ * ë¬¸ìì—´ ì²˜ë¦¬ ê´€ë ¨ Utility í´ë˜ìŠ¤
  * 
  * @author jmsohn
  */
 public class StringUtil {
 	
 	/**
-	 * ÁÖ¾îÁø ¹®ÀÚ¿­¿¡ ´ëÇÑ ÀÌ½ºÄÉÀÌÇÁ Ã³¸®
+	 * ì£¼ì–´ì§„ ë¬¸ìì—´ì— ëŒ€í•œ ì´ìŠ¤ì¼€ì´í”„ ì²˜ë¦¬
 	 * 
-	 * @param str ÁÖ¾îÁø ¹®ÀÚ¿­
-	 * @return ÀÌ½ºÄÉÀÌÇÁ Ã³¸®µÈ ¹®ÀÚ¿­
+	 * @param str ì£¼ì–´ì§„ ë¬¸ìì—´
+	 * @return ì´ìŠ¤ì¼€ì´í”„ ì²˜ë¦¬ëœ ë¬¸ìì—´
 	 */
 	public static String escape(String str) throws Exception {
 		
-		// ÀÔ·Â°ª °ËÁõ
+		// ì…ë ¥ê°’ ê²€ì¦
 		if(str == null) {
 			return null;
 		}
 		
-		// ÀÌ½ºÄÉÀÌÇÁ Ã³¸®µÈ ¹®ÀÚ¿­ º¯¼ö
+		// ì´ìŠ¤ì¼€ì´í”„ ì²˜ë¦¬ëœ ë¬¸ìì—´ ë³€ìˆ˜
 		StringBuilder escapedStr = new StringBuilder("");
 		
-		// À¯´ÏÄÚµå ÀÓ½Ã ÀúÀå º¯¼ö
+		// ìœ ë‹ˆì½”ë“œ ì„ì‹œ ì €ì¥ ë³€ìˆ˜
 		StringBuilder unicodeStr = new StringBuilder(""); 
 		
-		// ÀÌ½ºÄÉÀÌÇÁ Ã³¸®¸¦ À§ÇÑ »óÅÂ º¯¼ö
-		// 0: ¹®ÀÚ¿­, 1: ÀÌ½ºÄÉÀÌÇÁ ¹®ÀÚ,
-		// 11:À¯´ÏÄÚµå 1¹øÂ° ¹®ÀÚ, 12:À¯´ÏÄÚµå 2¹øÂ° ¹®ÀÚ, 13:À¯´ÏÄÚµå 3¹øÂ° ¹®ÀÚ, 14:À¯´ÏÄÚµå 4¹øÂ° ¹®ÀÚ 
+		// ì´ìŠ¤ì¼€ì´í”„ ì²˜ë¦¬ë¥¼ ìœ„í•œ ìƒíƒœ ë³€ìˆ˜
+		// 0: ë¬¸ìì—´, 1: ì´ìŠ¤ì¼€ì´í”„ ë¬¸ì,
+		// 11:ìœ ë‹ˆì½”ë“œ 1ë²ˆì§¸ ë¬¸ì, 12:ìœ ë‹ˆì½”ë“œ 2ë²ˆì§¸ ë¬¸ì, 13:ìœ ë‹ˆì½”ë“œ 3ë²ˆì§¸ ë¬¸ì, 14:ìœ ë‹ˆì½”ë“œ 4ë²ˆì§¸ ë¬¸ì 
 		int status = 0;
 		
 		for(int index = 0; index < str.length(); index++) {
@@ -45,13 +45,13 @@ public class StringUtil {
 				
 			} else if(status == 1) {
 				
-				// »óÅÂ¸¦ ÀÏ¹İ ¹®ÀÚ¿­ »óÅÂ·Î ¼³Á¤
-				// ¸ÕÀú »óÅÂ¸¦ º¯°æÇÏ´Â ÀÌÀ¯´Â Unicode ½ÃÀÛ½Ã »óÅÂ°¡ 10À¸·Î º¯°æÇÏ±â ¶§¹®¿¡
-				// ¸¶Áö¸·¿¡ »óÅÂ¸¦ º¯°æÇÏ¸é ¾ÈµÊ
+				// ìƒíƒœë¥¼ ì¼ë°˜ ë¬¸ìì—´ ìƒíƒœë¡œ ì„¤ì •
+				// ë¨¼ì € ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” ì´ìœ ëŠ” Unicode ì‹œì‘ì‹œ ìƒíƒœê°€ 10ìœ¼ë¡œ ë³€ê²½í•˜ê¸° ë•Œë¬¸ì—
+				// ë§ˆì§€ë§‰ì— ìƒíƒœë¥¼ ë³€ê²½í•˜ë©´ ì•ˆë¨
 				status = 0;
 				
 				if(ch == '0') {
-					escapedStr.append('\0'); // ASCII 0 Ãß°¡
+					escapedStr.append('\0'); // ASCII 0 ì¶”ê°€
 				} else if(ch == 'b') {
 					escapedStr.append('\b');
 				} else if(ch == 'f') {
@@ -63,30 +63,30 @@ public class StringUtil {
 				} else if(ch == 't') {
 					escapedStr.append('\t');
 				} else if(ch == 'u') {
-					// Unicode ½ÃÀÛ
+					// Unicode ì‹œì‘
 					status = 11;
 				} else {
-					// ¾øÀ» °æ¿ì ÇØ´ç ¹®ÀÚ¸¦ ±×³É Ãß°¡ÇÔ
-					// ex) \' ÀÎ°æ¿ì '¸¦ Ãß°¡
+					// ì—†ì„ ê²½ìš° í•´ë‹¹ ë¬¸ìë¥¼ ê·¸ëƒ¥ ì¶”ê°€í•¨
+					// ex) \' ì¸ê²½ìš° 'ë¥¼ ì¶”ê°€
 					escapedStr.append(ch);
 				}
 				
 			} else if(status >= 10 && status <= 14) {
 				
-				// ch°¡ 16Áø¼ö °ª(0-9, A-F, a-f) ÀÎÁö È®ÀÎ
+				// chê°€ 16ì§„ìˆ˜ ê°’(0-9, A-F, a-f) ì¸ì§€ í™•ì¸
 				if(isHex(ch) == false) {
 					throw new Exception("unicode value is invalid:" + ch);
 				}
 				
-				// unicode ¹öÆÛ¿¡ chÃß°¡
+				// unicode ë²„í¼ì— chì¶”ê°€
 				unicodeStr.append(ch);
 
-				// »óÅÂ°ªÀ» ÇÏ³ª ¿Ã¸²
-				// ex) 10:À¯´ÏÄÚµå ½ÃÀÛ -> 11:À¯´ÏÄÚµå 1¹øÂ° ¹®ÀÚ
+				// ìƒíƒœê°’ì„ í•˜ë‚˜ ì˜¬ë¦¼
+				// ex) 10:ìœ ë‹ˆì½”ë“œ ì‹œì‘ -> 11:ìœ ë‹ˆì½”ë“œ 1ë²ˆì§¸ ë¬¸ì
 				status++;
 				
-				// Unicode escape°¡ Á¾·á(status°¡ 15 ÀÌ»ó)µÇ¸é
-				// Unicode¸¦ Ãß°¡ÇÏ°í, »óÅÂ¸¦ ÀÏ¹İ¹®ÀÚ¿­ »óÅÂ·Î º¯°æÇÔ
+				// Unicode escapeê°€ ì¢…ë£Œ(statusê°€ 15 ì´ìƒ)ë˜ë©´
+				// Unicodeë¥¼ ì¶”ê°€í•˜ê³ , ìƒíƒœë¥¼ ì¼ë°˜ë¬¸ìì—´ ìƒíƒœë¡œ ë³€ê²½í•¨
 				if(status >= 15) {
 					
 					char unicodeCh = (char)Integer.parseInt(unicodeStr.toString(), 16);
@@ -105,10 +105,10 @@ public class StringUtil {
 	}
 	
 	/**
-	 * ÁÖ¾îÁø ¹®ÀÚ(ch)°¡ 16Áø¼ö °ª(0-9, A-F, a-f) ÀÎÁö È®ÀÎ
+	 * ì£¼ì–´ì§„ ë¬¸ì(ch)ê°€ 16ì§„ìˆ˜ ê°’(0-9, A-F, a-f) ì¸ì§€ í™•ì¸
 	 * 
-	 * @param ch °Ë»çÇÒ ¹®ÀÚ
-	 * @return 16Áø¼ö °ª ¿©ºÎ(16Áø¼ö °ªÀÏ °æ¿ì true, ¾Æ´Ò °æ¿ì false)
+	 * @param ch ê²€ì‚¬í•  ë¬¸ì
+	 * @return 16ì§„ìˆ˜ ê°’ ì—¬ë¶€(16ì§„ìˆ˜ ê°’ì¼ ê²½ìš° true, ì•„ë‹ ê²½ìš° false)
 	 */
 	public static boolean isHex(char ch) {
 		return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');

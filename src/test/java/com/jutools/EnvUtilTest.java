@@ -23,5 +23,21 @@ class EnvUtilTest {
 			fail("exception is ocurred");
 		}
 	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.name_list", value = "john doe, hong gil-dong, jang gil-san")
+	void testEnv2() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			assertEquals(3, Config.NAME.length());
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
 
 }

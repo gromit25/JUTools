@@ -3,23 +3,23 @@ package com.jutools;
 import java.util.ArrayList;
 
 /**
- * byte array Ã³¸® °ü·Ã utility Å¬·¡½º
+ * byte array ì²˜ë¦¬ ê´€ë ¨ utility í´ë˜ìŠ¤
  * 
  * @author jmsohn
  */
 public class BytesUtil {
 	
 	/**
-	 * target ByteÀÇ ³¡ ºÎºĞ°ú ÁöÁ¤ÇÑ Á¢¹Ì»ç ÀÏÄ¡ ¿©ºÎ ¹İÈ¯
-	 * ÀÏÄ¡ÇÒ °æ¿ì : true, ÀÏÄ¡ÇÏÁö ¾ÊÀ» °æ¿ì : false
+	 * target Byteì˜ ë ë¶€ë¶„ê³¼ ì§€ì •í•œ ì ‘ë¯¸ì‚¬ ì¼ì¹˜ ì—¬ë¶€ ë°˜í™˜
+	 * ì¼ì¹˜í•  ê²½ìš° : true, ì¼ì¹˜í•˜ì§€ ì•Šì„ ê²½ìš° : false
 	 *
-	 * @param target È®ÀÎ ´ë»ó byte array
-	 * @param suffix Á¢¹Ì»ç byte array
-	 * @return target ByteÀÇ ³¡ ºÎºĞ°ú ÁöÁ¤ÇÑ Á¢¹Ì»ç ÀÏÄ¡ ¿©ºÎ
+	 * @param target í™•ì¸ ëŒ€ìƒ byte array
+	 * @param suffix ì ‘ë¯¸ì‚¬ byte array
+	 * @return target Byteì˜ ë ë¶€ë¶„ê³¼ ì§€ì •í•œ ì ‘ë¯¸ì‚¬ ì¼ì¹˜ ì—¬ë¶€
 	 */
 	public static boolean endsWith(byte[] target, byte[] suffix) throws Exception {
 
-		// parameter null Ã¼Å©
+		// parameter null ì²´í¬
 		if(target == null) {
 			throw new NullPointerException("target array is null.");
 		}
@@ -28,15 +28,15 @@ public class BytesUtil {
 			throw new NullPointerException("suffix array is null.");
 		}
 
-		// targetÀÌ Á¢¹Ì»çº¸´Ù ÀÛÀ» °æ¿ì¿¡´Â Ç×»ó false 
+		// targetì´ ì ‘ë¯¸ì‚¬ë³´ë‹¤ ì‘ì„ ê²½ìš°ì—ëŠ” í•­ìƒ false 
 		if(suffix.length > target.length) {
 			return false;
 		}
 
-		// ºñ±³¸¦ ½ÃÀÛÇÒ targetÀÇ ³¡ ºÎºĞ À§Ä¡
+		// ë¹„êµë¥¼ ì‹œì‘í•  targetì˜ ë ë¶€ë¶„ ìœ„ì¹˜
 		int start = target.length - suffix.length;
 
-		// °¢ Byte arrayÀÇ index¹øÂ°¿¡ ÀÖ´Â byte°¡ °°ÀºÁö È®ÀÎ
+		// ê° Byte arrayì˜ indexë²ˆì§¸ì— ìˆëŠ” byteê°€ ê°™ì€ì§€ í™•ì¸
 		for(int index = 0; index < suffix.length; index++) {
 			if(target[start + index] != suffix[index]) {
 				return false;
@@ -48,17 +48,17 @@ public class BytesUtil {
 	}
     
 	/**
-	 * ÁÖ¾îÁø target byte array¸¦ split ÇÏ´Â ¸Ş¼Òµå
-	 * target byte¿Í ±¸ºĞÀÚÀÇ byte¸¦ ºñ±³ÇÏ¿©
-	 * ±¸ºĞÀÚ°¡ Æ÷ÇÔ µÆÀ» °æ¿ì ºĞ¸® ÇÔ
+	 * ì£¼ì–´ì§„ target byte arrayë¥¼ split í•˜ëŠ” ë©”ì†Œë“œ
+	 * target byteì™€ êµ¬ë¶„ìì˜ byteë¥¼ ë¹„êµí•˜ì—¬
+	 * êµ¬ë¶„ìê°€ í¬í•¨ ëì„ ê²½ìš° ë¶„ë¦¬ í•¨
 	 *
 	 * @param target target byte array
-	 * @param split ±¸ºĞÀÚ byte array
-	 * @return ±¸ºĞÀÚ¿¡ ÀÇÇØ ºĞ¸®µÈ °á°ú ¸ñ·Ï
+	 * @param split êµ¬ë¶„ì byte array
+	 * @return êµ¬ë¶„ìì— ì˜í•´ ë¶„ë¦¬ëœ ê²°ê³¼ ëª©ë¡
 	 */
 	public static ArrayList<byte[]> split(byte[] target, byte[] split) throws Exception {
 
-		// parameter null Ã¼Å©
+		// parameter null ì²´í¬
 		if(target == null) {
 			throw new NullPointerException("target array is null.");
 		}
@@ -67,48 +67,48 @@ public class BytesUtil {
 			throw new NullPointerException("split array is null.");
 		}
 
-		// ±¸ºĞÀÚ¿¡ ÀÇÇØ ºĞ¸®µÈ °á°ú
+		// êµ¬ë¶„ìì— ì˜í•´ ë¶„ë¦¬ëœ ê²°ê³¼
 		ArrayList<byte[]> splitedTarget = new ArrayList<>();
 
-		// ±¸ºĞÀÚ¿Í µ¿ÀÏÇÏÁö ¾Ê¾Æ ºĞ¸®µÈ byte
+		// êµ¬ë¶„ìì™€ ë™ì¼í•˜ì§€ ì•Šì•„ ë¶„ë¦¬ëœ byte
 		byte[] pieceBuffer = new byte[target.length];
 		int pieceBufferPos = 0;
 
-		// ±¸ºĞÀÚ¿Í µ¿ÀÏÇÑ byte¸¦ ÀúÀåÇØµÒ
-		// -> ±¸ºĞÀÚÀÇ ¹®ÀÚ°¡ ÀÏºÎ Æ÷ÇÔµÇ¾î ÀÖÀ» °æ¿ì¸¦ À§ÇÔ
+		// êµ¬ë¶„ìì™€ ë™ì¼í•œ byteë¥¼ ì €ì¥í•´ë‘ 
+		// -> êµ¬ë¶„ìì˜ ë¬¸ìê°€ ì¼ë¶€ í¬í•¨ë˜ì–´ ìˆì„ ê²½ìš°ë¥¼ ìœ„í•¨
 		byte[] splitBuffer = new byte[split.length];
 		int splitBufferPos = 0;
 
-		// µ¿ÀÏÇÑÁö »óÅÂ¸¦ Ã¼Å©ÇÒ º¯¼ö.
-		// ±¸ºĞÀÚ¿Í µ¿ÀÏÇÒ °æ¿ì 1, ¾Æ´Ò °æ¿ì 0
+		// ë™ì¼í•œì§€ ìƒíƒœë¥¼ ì²´í¬í•  ë³€ìˆ˜
+		// êµ¬ë¶„ìì™€ ë™ì¼í•  ê²½ìš° 1, ì•„ë‹ ê²½ìš° 0
 		int status = 0;
-		// ±¸ºĞÀÚ À§Ä¡
+		// êµ¬ë¶„ì ìœ„ì¹˜
 		int splitPos = 0;
 
 		for(int index = 0; index < target.length; index++) {
 
 			byte cur = target[index];
 
-			// target°ú ±¸ºĞÀÚÀÇ byte°¡ µ¿ÀÏÇÒ °æ¿ì
-			// - splitBuffer¿¡ ÀúÀå
-			// - ´ÙÀ½ ºñ±³¸¦ À§ÇØ target°ú ±¸ºĞÀÚÀÇ À§Ä¡¸¦ ÇÑÄ­ ÀÌµ¿
-			// - ¸¸¾à ±¸ºĞÀÚ°¡ ¸ğµÎ Æ÷ÇÔµÇ¾î ÀÖÀ» °æ¿ì splitTarget¿¡ Ãß°¡
+			// targetê³¼ êµ¬ë¶„ìì˜ byteê°€ ë™ì¼í•  ê²½ìš°
+			// - splitBufferì— ì €ì¥
+			// - ë‹¤ìŒ ë¹„êµë¥¼ ìœ„í•´ targetê³¼ êµ¬ë¶„ìì˜ ìœ„ì¹˜ë¥¼ í•œì¹¸ ì´ë™
+			// - ë§Œì•½ êµ¬ë¶„ìê°€ ëª¨ë‘ í¬í•¨ë˜ì–´ ìˆì„ ê²½ìš° splitTargetì— ì¶”ê°€
 
 			if(cur == split[splitPos]) {
 
-				status = 1; // »óÅÂ¸¦ 1·Î ¹Ù²Ş
+				status = 1; // ìƒíƒœë¥¼ 1ë¡œ ë°”ê¿ˆ
 
-				// splitBuffer¿¡ ÇöÀç byte ÀúÀå ÈÄ ÇÑÄ­ ÀÌµ¿
+				// splitBufferì— í˜„ì¬ byte ì €ì¥ í›„ í•œì¹¸ ì´ë™
 				splitBuffer[splitBufferPos++] = cur;
 
-				// ±¸ºĞÀÚ ÇÑÄ­ ÀÌµ¿
+				// êµ¬ë¶„ì í•œì¹¸ ì´ë™
 				splitPos++;
 
-				// ±¸ºĞÀÚ°¡ ¸ğµÎ Æ÷ÇÔµÇ¾î ÀÖÀ» °æ¿ì
-				// -> Áö±İ±îÁö ºĞ¸®µÈ byte(pieceBuffer)¸¦ splitTarget¿¡ Ãß°¡
+				// êµ¬ë¶„ìê°€ ëª¨ë‘ í¬í•¨ë˜ì–´ ìˆì„ ê²½ìš°
+				// -> ì§€ê¸ˆê¹Œì§€ ë¶„ë¦¬ëœ byte(pieceBuffer)ë¥¼ splitTargetì— ì¶”ê°€
 				if(splitPos >= split.length) {
 
-					// pieceBuffer º¹»ç ÈÄ Ãß°¡
+					// pieceBuffer ë³µì‚¬ í›„ ì¶”ê°€
 					byte[] piece = new byte[pieceBufferPos];
 					System.arraycopy(pieceBuffer, 0, piece, 0, pieceBufferPos);
 
@@ -116,7 +116,7 @@ public class BytesUtil {
 						splitedTarget.add(piece);
 					}
 
-					// ºĞ¸®¿¡ ÇÊ¿äÇÑ º¯¼ö ÃÊ±âÈ­
+					// ë¶„ë¦¬ì— í•„ìš”í•œ ë³€ìˆ˜ ì´ˆê¸°í™”
 					splitBufferPos = 0;
 					pieceBufferPos = 0;
 					splitPos = 0;
@@ -125,35 +125,35 @@ public class BytesUtil {
 	
 			} else {
 
-				// target°ú ±¸ºĞÀÚÀÇ byte°¡ µ¿ÀÏÇÏÁö ¾ÊÀ» °æ¿ì
-				// - pieceBuffer¿¡ byte¸¦ Ãß°¡
-				// - »óÅÂ°¡ 1ÀÏ °æ¿ì ±¸ºĞÀÚ¿¡ ÀÏºÎ Æ÷ÇÔµÈ byte°¡ ÀÖ¾ú´ø °ÍÀÌ¹Ç·Î
-				//   splitBuffer¸¦ pieceBuffer¿¡ Ãß°¡
+				// targetê³¼ êµ¬ë¶„ìì˜ byteê°€ ë™ì¼í•˜ì§€ ì•Šì„ ê²½ìš°
+				// - pieceBufferì— byteë¥¼ ì¶”ê°€
+				// - ìƒíƒœê°€ 1ì¼ ê²½ìš° êµ¬ë¶„ìì— ì¼ë¶€ í¬í•¨ëœ byteê°€ ìˆì—ˆë˜ ê²ƒì´ë¯€ë¡œ
+				//   splitBufferë¥¼ pieceBufferì— ì¶”ê°€
 
 				if(status == 1) {
-					// splitBuffer¸¦ º¹»çÇØ pieceBuffer¿¡ Ãß°¡ÇÔ
+					// splitBufferë¥¼ ë³µì‚¬í•´ pieceBufferì— ì¶”ê°€í•¨
 					System.arraycopy(splitBuffer, 0, pieceBuffer, pieceBufferPos, splitBufferPos);
 
-					// pieceBufferÀÇ À§Ä¡¸¦ splitBuffer ¸¸Å­ ÀÌµ¿
+					// pieceBufferì˜ ìœ„ì¹˜ë¥¼ splitBuffer ë§Œí¼ ì´ë™
 					pieceBufferPos += splitBufferPos;
 					splitBufferPos = 0;
 				}
 
-				// »óÅÂ´Â ±×´ë·Î 0
+				// ìƒíƒœëŠ” ê·¸ëŒ€ë¡œ 0
 				status = 0;
 				splitPos = 0;
 
-				// pieceBuffer¿¡ ÇöÀç byte¸¦ Ãß°¡ÇÏ°í
-				// pieceBufferPos À§Ä¡ ÇÑÄ­ ÀÌµ¿
+				// pieceBufferì— í˜„ì¬ byteë¥¼ ì¶”ê°€í•˜ê³ 
+				// pieceBufferPos ìœ„ì¹˜ í•œì¹¸ ì´ë™
 				pieceBuffer[pieceBufferPos++] = cur;
 			}
 
 		}
     	
-		// Á¾·á Ã³¸®
+		// ì¢…ë£Œ ì²˜ë¦¬
 		if(pieceBufferPos != 0 || splitBufferPos != 0) {
 
-			// ÇöÀç±îÁö ºĞ¸®µÈ Byte¸¦ º¹»ç
+			// í˜„ì¬ê¹Œì§€ ë¶„ë¦¬ëœ Byteë¥¼ ë³µì‚¬
 			byte[] piece = new byte[pieceBufferPos + splitBufferPos];
 			System.arraycopy(pieceBuffer, 0, piece, 0, pieceBufferPos);
 
@@ -161,11 +161,11 @@ public class BytesUtil {
 				System.arraycopy(splitBuffer, 0, piece, pieceBufferPos, splitBufferPos);
 			}
 
-			//splitedTarget¿¡ Ãß°¡
+			//splitedTargetì— ì¶”ê°€
 			splitedTarget.add(piece);
 		}
     	
-		// ÃÖÁ¾ °á°ú ¹İÈ¯
+		// ìµœì¢… ê²°ê³¼ ë°˜í™˜
 		return splitedTarget;
 
 	}

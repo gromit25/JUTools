@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 /**
- * BytesUtil Å¬·¡½º¿¡ ´ëÇÑ ´ÜÀ§ Å×½ºÆ® Å¬·¡½º
+ * BytesUtil í´ë˜ìŠ¤ì˜ í…ŒìŠ¤íŠ¸ ì¼€ì´ìŠ¤
  * 
  * @author jmsohn
  */
