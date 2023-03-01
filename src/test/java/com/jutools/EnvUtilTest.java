@@ -10,7 +10,7 @@ class EnvUtilTest {
 
 	@Test
 	@SetEnvironmentVariable(key = "config.name", value = "john doe")
-	void testEnv1() {
+	void testEnvPrimitiveString() {
 		
 		try {
 			
@@ -25,17 +25,85 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.name_list", value = "john doe, hong gil-dong, jang gil-san")
-	void testEnv2() {
+	@SetEnvironmentVariable(key = "config.boolean", value = "true")
+	void testEnvPrimitiveBoolean() {
 		
 		try {
 			
 			EnvUtil.set(Config.class);
-			assertEquals(3, Config.NAME_LIST.length);
+			assertEquals(true, Config.BOOLEAN_VALUE);
 			
-			for(String name: Config.NAME_LIST) {
-				System.out.println(name);
-			}
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.int", value = "123")
+	void testEnvPrimitiveInt() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			assertEquals(123, Config.INT_VALUE);
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.float", value = "123")
+	void testEnvPrimitiveFloat() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			assertEquals((float)123, Config.FLOAT_VALUE);
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.str_list", value = "john doe, hong gil-dong, jang gil-san")
+	void testEnvStrArray() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			
+			assertEquals(3, Config.STR_LIST.length);
+			assertEquals("john doe", Config.STR_LIST[0]);
+			assertEquals("hong gil-dong", Config.STR_LIST[1]);
+			assertEquals("jang gil-san", Config.STR_LIST[2]);
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
+	
+	@Test
+	@SetEnvironmentVariable(key = "config.int_list", value = "1, 2, 3")
+	void testEnvIntArray() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			
+			assertEquals(3, Config.INT_LIST.length);
+			assertEquals(1, Config.INT_LIST[0]);
+			assertEquals(2, Config.INT_LIST[1]);
+			assertEquals(3, Config.INT_LIST[2]);
 			
 		} catch(Exception ex) {
 			

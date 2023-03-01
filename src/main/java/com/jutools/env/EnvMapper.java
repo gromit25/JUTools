@@ -102,10 +102,10 @@ public class EnvMapper {
 				//
 				if(field.getType().isArray() == true) {
 					
-					Object[] array = (Object[])Array.newInstance(memberType, ((List)arrayObj).size());
+					Object array = Array.newInstance(memberType, ((List)arrayObj).size());
 					
-					for(int index = 0; index < array.length; index++) {
-						array[index] = ((List)arrayObj).get(index);
+					for(int index = 0; index < ((List)arrayObj).size(); index++) {
+						setArrayElement(array, memberType, index, ((List)arrayObj).get(index));
 					}
 					
 					field.set(null, array);
@@ -173,6 +173,8 @@ public class EnvMapper {
 		
 		if(type == boolean.class || type == Boolean.class) {
 			return Boolean.parseBoolean(value);
+		} else if(type == byte.class || type == Byte.class) {
+			return Byte.parseByte(value);
 		} else if(type == short.class || type == Short.class) {
 			return Short.parseShort(value);
 		} else if(type == int.class || type == Integer.class) {
@@ -184,7 +186,7 @@ public class EnvMapper {
 		} else if(type == double.class || type == Double.class) {
 			return Double.parseDouble(value);
 		} else {
-			// char와 byte는 지원하지 않음
+			// char는 지원하지 않음
 			throw new Exception("Unsupported type: " + type);
 		}
 	}
@@ -200,6 +202,42 @@ public class EnvMapper {
 		
 		return type.isArray() || List.class.isAssignableFrom(type)
 				|| Set.class.isAssignableFrom(type);
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param array
+	 * @param type
+	 * @param index
+	 * @param value
+	 */
+	private static void setArrayElement(Object array, Class<?> type, int index, Object value) throws Exception {
+		
+		if(type.isPrimitive() == true) {
+			
+			if(type == boolean.class) {
+				Array.setBoolean(array, index, (Boolean)value);
+			} else if(type == byte.class) {
+				Array.setByte(array, index, (Byte)value);
+			} else if(type == short.class) {
+				Array.setShort(array, index, (Short)value);
+			} else if(type == int.class) {
+				Array.setInt(array, index, (Integer)value);
+			} else if(type == float.class) {
+				Array.setFloat(array, index, (Float)value);
+			} else if(type == long.class) {
+				Array.setFloat(array, index, (Long)value);
+			} else if(type == double.class) {
+				Array.setDouble(array, index, (Double)value);
+			} else {
+				// char와 byte는 지원하지 않음
+				throw new Exception("Unsupported type: " + type);
+			}
+			
+		} else {
+			Array.set(array, index, value);
+		}
 	}
 
 }
