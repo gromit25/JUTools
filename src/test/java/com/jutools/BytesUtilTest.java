@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
  * 
  * @author jmsohn
  */
-public class BytesUtilTest {
+class BytesUtilTest {
 
 	@Test
-	public void testSplit1() throws Exception {
+	void testSplit1() throws Exception {
 		
 		String test1 = "123|||6789";
 	       
@@ -29,7 +29,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testSplit2() throws Exception {
+	void testSplit2() throws Exception {
 		
 		String test1 = "123||45|||6789";
 	       
@@ -41,7 +41,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testSplit3() throws Exception {
+	void testSplit3() throws Exception {
 		
 		String test1 = "123||||||6789";
 	       
@@ -53,7 +53,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testSplit4() throws Exception {
+	void testSplit4() throws Exception {
 		
 		String test1 = "123|||||||6789";
 	       
@@ -65,7 +65,7 @@ public class BytesUtilTest {
 	}
 
 	@Test
-	public void testSplit5() throws Exception {
+	void testSplit5() throws Exception {
 		
 		String test1 = "123|||6789|";
 	       
@@ -77,7 +77,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testSplit6() throws Exception {
+	void testSplit6() throws Exception {
 		
 		String test1 = "123|||6789|||";
 	       

@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.SetEnvironmentVariable;
 
-public class EnvUtilTest {
+class EnvUtilTest {
 
 	@Test
 	@SetEnvironmentVariable(key = "config.name", value = "john doe")
-	public void testEnv1() {
+	void testEnv1() {
 		
 		try {
 			
