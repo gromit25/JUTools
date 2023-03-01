@@ -73,6 +73,22 @@ class EnvUtilTest {
 	}
 	
 	@Test
+	@SetEnvironmentVariable(key = "config.class", value = "java.lang.Integer")
+	void testEnvMethod() {
+		
+		try {
+			
+			EnvUtil.set(Config.class);
+			assertEquals(Integer.class, Config.CLASS_VALUE);
+			
+		} catch(Exception ex) {
+			
+			ex.printStackTrace();
+			fail("exception is ocurred");
+		}
+	}
+	
+	@Test
 	@SetEnvironmentVariable(key = "config.str_list", value = "john doe, hong gil-dong, jang gil-san")
 	void testEnvStrArray() {
 		
