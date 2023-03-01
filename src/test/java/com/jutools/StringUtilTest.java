@@ -10,10 +10,10 @@ class StringUtilTest {
 	void testEscape1() {
 		try {
 			
-			String testMsg = "hello world!\\n�̸�:\\tJohn doe";
+			String testMsg = "hello world!\\n이름:\\tJohn doe";
 			String result = StringUtil.escape(testMsg);
 			
-			assertEquals("hello world!\n�̸�:\tJohn doe", result);
+			assertEquals("hello world!\n이름\tJohn doe", result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
