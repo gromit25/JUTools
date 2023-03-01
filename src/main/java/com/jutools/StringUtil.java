@@ -28,7 +28,7 @@ public class StringUtil {
 		
 		// 이스케이프 처리를 위한 상태 변수
 		// 0: 문자열, 1: 이스케이프 문자,
-		// 10:유니코드 시작, 11:유니코드 1번째 문자, 12:유니코드 2번째 문자, 13:유니코드 3번째 문자, 14:유니코드 4번째 문자 
+		// 11:유니코드 1번째 문자, 12:유니코드 2번째 문자, 13:유니코드 3번째 문자, 14:유니코드 4번째 문자 
 		int status = 0;
 		
 		for(int index = 0; index < str.length(); index++) {
@@ -64,7 +64,7 @@ public class StringUtil {
 					escapedStr.append('\t');
 				} else if(ch == 'u') {
 					// Unicode 시작
-					status = 10;
+					status = 11;
 				} else {
 					// 없을 경우 해당 문자를 그냥 추가함
 					// ex) \' 인경우 '를 추가
@@ -85,7 +85,7 @@ public class StringUtil {
 				// ex) 10:유니코드 시작 -> 11:유니코드 1번째 문자
 				status++;
 				
-				// Unicode escape가 종료(status가 14 이상)되면
+				// Unicode escape가 종료(status가 15 이상)되면
 				// Unicode를 추가하고, 상태를 일반문자열 상태로 변경함
 				if(status >= 15) {
 					
