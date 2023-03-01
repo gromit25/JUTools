@@ -1,5 +1,6 @@
 package com.jutools.env;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -74,13 +75,19 @@ public class EnvMapper {
 				
 				if(field.getType().isArray() == true) {
 					arrayObj = new ArrayList();
+					memberType = field.getType().componentType();
 				} else {
 					arrayObj = field.getType().getConstructor().newInstance();
+					memberType = Object.class;
 				}
 				
 				//
 				String[] splitedValueList = value.split(envInfo.separator());
 				for(String splitValue: splitedValueList) {
+					
+					if(envInfo.trim() == true) {
+						splitValue = splitValue.trim();
+					}
 					
 					Object valueObject = transferValueType(mapClass, memberType, envInfo.method(), splitValue);
 					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
@@ -94,7 +101,15 @@ public class EnvMapper {
 				
 				//
 				if(field.getType().isArray() == true) {
-					field.set(null, ((List)arrayObj).toArray());
+					
+					Object[] array = (Object[])Array.newInstance(memberType, ((List)arrayObj).size());
+					
+					for(int index = 0; index < array.length; index++) {
+						array[index] = ((List)arrayObj).get(index);
+					}
+					
+					field.set(null, array);
+					
 				} else {
 					field.set(null, arrayObj);
 				}

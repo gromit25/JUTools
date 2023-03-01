@@ -31,7 +31,11 @@ class EnvUtilTest {
 		try {
 			
 			EnvUtil.set(Config.class);
-			assertEquals(3, Config.NAME.length());
+			assertEquals(3, Config.NAME_LIST.length);
+			
+			for(String name: Config.NAME_LIST) {
+				System.out.println(name);
+			}
 			
 		} catch(Exception ex) {
 			

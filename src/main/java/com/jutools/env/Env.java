@@ -11,6 +11,7 @@ public @interface Env {
 	
 	String name();
 	String separator() default "";
+	boolean trim() default true;
 	String method() default "";
 	boolean mandatory() default false;
 }
