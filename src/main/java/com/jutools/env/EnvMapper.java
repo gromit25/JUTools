@@ -15,12 +15,13 @@ import java.util.Set;
  */
 public class EnvMapper {
 	
+	private Class<?> mapClass;
+
 	/**
-	 * 
 	 * 
 	 * @param mapClass
 	 */
-	public static void set(Class<?> mapClass) throws Exception {
+	public EnvMapper(Class<?> mapClass) throws Exception {
 		
 		if(mapClass == null) {
 			throw new NullPointerException("map class is null");
@@ -30,8 +31,19 @@ public class EnvMapper {
 			throw new Exception("map class is not accessible");
 		}
 		
+		this.mapClass = mapClass;
+		
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param mapClass
+	 */
+	public void set() throws Exception {
+		
 		//
-		for(Field field : mapClass.getFields()) {
+		for(Field field : this.mapClass.getFields()) {
 			
 			//
 			Env envInfo = field.getAnnotation(Env.class);
@@ -59,7 +71,7 @@ public class EnvMapper {
 			if(envInfo.separator().isEmpty() == true) {
 				
 				//
-				Object valueObject = transferValueType(mapClass, field.getType(), envInfo.method(), value);
+				Object valueObject = transferValue(field.getType(), value, envInfo.method());
 				field.set(null, valueObject);
 				
 			} else {
@@ -89,7 +101,7 @@ public class EnvMapper {
 						splitValue = splitValue.trim();
 					}
 					
-					Object valueObject = transferValueType(mapClass, memberType, envInfo.method(), splitValue);
+					Object valueObject = transferValue(memberType, splitValue, envInfo.method());
 					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
 						((List)arrayObj).add(valueObject);
 					} else if(Set.class.isAssignableFrom(arrayObj.getClass()) == true) {
@@ -120,13 +132,12 @@ public class EnvMapper {
 
 	/**
 	 * 
-	 * 
-	 * @param mapClass
+	 *
 	 * @param field
-	 * @param methodName
 	 * @param value
+	 * @param methodName
 	 */
-	private static Object transferValueType(Class<?> mapClass, Class<?> type, String methodName, String value) throws Exception {
+	private Object transferValue(Class<?> type, String value, String methodName) throws Exception {
 		
 		if(methodName == null || methodName.isBlank() == true) {
 		
@@ -140,17 +151,17 @@ public class EnvMapper {
 			
 		} else {
 			
-			Method method = mapClass.getMethod(methodName, String.class);
+			Method method = this.mapClass.getMethod(methodName, String.class);
 			return method.invoke(null, value);
 		}
 
 	}
 	
 	/**
+	 * primitive type 여부 확인
 	 * 
-	 * 
-	 * @param type
-	 * @return
+	 * @param type 검사할 type
+	 * @return primitive type 여부
 	 */
 	private static boolean isPrimitiveType(Class<?> type) {
 		
@@ -164,10 +175,10 @@ public class EnvMapper {
 	}
 	
 	/**
+	 * 문자열(value)을 primitive type으로 변환하여 반환하는 메소드 
 	 * 
-	 * 
-	 * @param type
-	 * @param value
+	 * @param type 변환할 primitive type 타입
+	 * @param value 변환할 문자열
 	 */
 	private static Object getPrimitiveValue(Class<?> type, String value) throws Exception {
 		
@@ -192,9 +203,11 @@ public class EnvMapper {
 	}
 	
 	/**
+	 * 배열 type 여부 확인
+	 * -> List, Set도 배열로 간주함
 	 * 
-	 * @param type
-	 * @return
+	 * @param type 검사할 type
+	 * @return 배열 여부
 	 */
 	private static boolean isArrayType(Field field) {
 		
@@ -205,15 +218,30 @@ public class EnvMapper {
 	}
 
 	/**
+	 * 배열(array)의 인덱스(index)에 값(value)을 설정하는 메소드
 	 * 
-	 * 
-	 * @param array
-	 * @param type
-	 * @param index
-	 * @param value
+	 * @param array 설정할 배열 객체
+	 * @param type 배열의 type
+	 * @param index 설정할 인덱스
+	 * @param value 설정할 값
 	 */
 	private static void setArrayElement(Object array, Class<?> type, int index, Object value) throws Exception {
+
+		// 입력값 검사
+		if(array == null) {
+			throw new NullPointerException("array object is null");
+		}
 		
+		if(type == null) {
+			throw new NullPointerException("type is null");
+		}
+		
+		if(value == null) {
+			throw new NullPointerException("value is null");
+		}
+		
+		// primitive type일 경우 각 타입 별로 메소드를 호출함
+		// 아닐 경우, 변환 없이 value를 설정함
 		if(type.isPrimitive() == true) {
 			
 			if(type == boolean.class) {

@@ -15,7 +15,7 @@ public class EnvUtil {
 	 * @param type
 	 */
 	public static void set(Class<?> type) throws Exception {
-		EnvMapper.set(type);
+		new EnvMapper(type).set();
 	}
 
 }
