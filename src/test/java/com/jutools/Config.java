@@ -4,31 +4,31 @@ import com.jutools.env.Env;
 
 public class Config {
 	
-	@Env(name = "config.name")
+	@Env(name = "CONFIG_NAME")
 	public static String NAME = "SOHN JM";
 	
-	@Env(name = "config.boolean")
+	@Env(name = "CONFIG_BOOLEAN")
 	public static boolean BOOLEAN_VALUE = false;
 	
-	@Env(name = "config.int")
+	@Env(name = "CONFIG_INT")
 	public static int INT_VALUE = 0;
 	
-	@Env(name = "config.float")
+	@Env(name = "CONFIG_FLOAT")
 	public static float FLOAT_VALUE = (float)0.0;
 	
-	@Env(name = "config.long")
+	@Env(name = "CONFIG_LONG")
 	public static long LONG_VALUE = 0;
 
-	@Env(name = "config.class", method = "transferClass")
+	@Env(name = "CONFIG_CLASS", method = "transferClass")
 	public static Class<?> CLASS_VALUE;
 	
-	@Env(name = "config.str_list", separator = ",")
+	@Env(name = "CONFIG_STR_LIST", separator = ",")
 	public static String[] STR_LIST = {};
 	
-	@Env(name = "config.int_list", separator = ",")
+	@Env(name = "CONFIG_INT_LIST", separator = ",")
 	public static int[] INT_LIST = {};
 	
-	@Env(name = "config.classes", separator = ",", method = "transferClass")
+	@Env(name = "CONFIG_CLASSES", separator = ",", method = "transferClass")
 	public static Class<?>[] CLASSES_VALUE = {};
 	
 	/**

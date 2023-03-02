@@ -9,7 +9,7 @@ import org.junitpioneer.jupiter.SetEnvironmentVariable;
 class EnvUtilTest {
 
 	@Test
-	@SetEnvironmentVariable(key = "config.name", value = "john doe")
+	@SetEnvironmentVariable(key = "CONFIG_NAME", value = "john doe")
 	void testEnvPrimitiveString() {
 		
 		try {
@@ -25,7 +25,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.boolean", value = "true")
+	@SetEnvironmentVariable(key = "CONFIG_BOOLEAN", value = "true")
 	void testEnvPrimitiveBoolean() {
 		
 		try {
@@ -41,7 +41,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.int", value = "123")
+	@SetEnvironmentVariable(key = "CONFIG_INT", value = "123")
 	void testEnvPrimitiveInt() {
 		
 		try {
@@ -57,7 +57,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.float", value = "123")
+	@SetEnvironmentVariable(key = "CONFIG_FLOAT", value = "123")
 	void testEnvPrimitiveFloat() {
 		
 		try {
@@ -73,7 +73,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.class", value = "java.lang.Integer")
+	@SetEnvironmentVariable(key = "CONFIG_CLASS", value = "java.lang.Integer")
 	void testEnvMethod() {
 		
 		try {
@@ -89,7 +89,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.str_list", value = "john doe, hong gil-dong, jang gil-san")
+	@SetEnvironmentVariable(key = "CONFIG_STR_LIST", value = "john doe, hong gil-dong, jang gil-san")
 	void testEnvStrArray() {
 		
 		try {
@@ -109,7 +109,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.int_list", value = "1, 2, 3")
+	@SetEnvironmentVariable(key = "CONFIG_INT_LIST", value = "1, 2, 3")
 	void testEnvIntArray() {
 		
 		try {
@@ -129,7 +129,7 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "config.classes", value = "java.lang.Integer, java.lang.Float")
+	@SetEnvironmentVariable(key = "CONFIG_CLASSES", value = "java.lang.Integer, java.lang.Float")
 	void testEnvMethodArray() {
 		
 		try {
