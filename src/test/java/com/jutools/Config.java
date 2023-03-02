@@ -2,6 +2,11 @@ package com.jutools;
 
 import com.jutools.env.Env;
 
+/**
+ * 환경변수 설정 테스트용 설정 클래스
+ * 
+ * @author jmsohn
+ */
 public class Config {
 	
 	@Env(name = "CONFIG_NAME")
@@ -32,10 +37,10 @@ public class Config {
 	public static Class<?>[] CLASSES_VALUE = {};
 	
 	/**
+	 * 환경변수 변환 테스트용 메소드
 	 * 
-	 * 
-	 * @param className
-	 * @return
+	 * @param className 환경변수에 설정된 클래스의 명
+	 * @return 클래스 정보
 	 */
 	public static Class<?> transferClass(String className) throws Exception {
 		return Class.forName(className);
