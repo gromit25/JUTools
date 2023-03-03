@@ -3,7 +3,10 @@
  */
 package com.jutools;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
@@ -86,5 +89,60 @@ class BytesUtilTest {
 		assertTrue(splitedList.size() == 2);
 		assertTrue(new String(splitedList.get(0)).equals("123"));
 		assertTrue(new String(splitedList.get(1)).equals("6789"));
+	}
+	
+	@Test
+	void testConcat1() throws Exception {
+
+		String src1 = "abcd";
+		String src2 = "efgh";
+
+		byte[] concatenated = BytesUtil.concat(src1.getBytes(), src2.getBytes());
+		String concatenatedStr = new String(concatenated);
+
+		assertEquals("abcdefgh", concatenatedStr);
+	}
+	
+	@Test
+	void testConcat2() throws Exception {
+
+		String src1 = "abcd";
+		String src2 = "efgh";
+		String src3 = "ijklmn";
+
+		byte[] concatenated = BytesUtil.concat(src1.getBytes(), src2.getBytes(), src3.getBytes());
+		String concatenatedStr = new String(concatenated);
+
+		assertEquals("abcdefghijklmn", concatenatedStr);
+	}
+	
+	@Test
+	void testConcat3() throws Exception {
+		
+		try {
+			BytesUtil.concat(null);
+			fail("exception is expected");
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	void testConcat4() throws Exception {
+		
+		byte[] concatenated = BytesUtil.concat();
+		assertEquals(0, concatenated.length);
+	}
+	
+	@Test
+	void testConcat5() throws Exception {
+
+		String src1 = "abcd";
+		String src2 = "efgh";
+
+		byte[] concatenated = BytesUtil.concat(src1.getBytes(), null, src2.getBytes());
+		String concatenatedStr = new String(concatenated);
+
+		assertEquals("abcdefgh", concatenatedStr);
 	}
 }

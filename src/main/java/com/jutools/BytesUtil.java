@@ -169,5 +169,55 @@ public class BytesUtil {
 		return splitedTarget;
 
 	}
+	
+	/**
+	 * 두 Byte array를 합침
+	 *
+	 * @param targets: 합칠 Byte array
+	 * @return 합쳐진 Byte array
+	 */
+	public static byte[] concat(byte[]... srcs) throws Exception {
+		
+		// parameter null 체크
+		if(srcs == null) {
+			throw new NullPointerException("source array is null");
+		}
+		
+		if(srcs.length == 0) {
+			return new byte[0];
+		}
+		
+		// 전체 목록의 크기 계산
+		int totalSize = 0;
+		for(byte[] src: srcs) {
+			
+			// 합칠 배열이 null일 경우, skip함
+			if(src == null) {
+				continue;
+			}
+			
+			totalSize += src.length;
+		}
+
+		// 합쳐진 Byte 배열 변수
+		// 두 Byte array 크기의 합 만큼의 사이즈 할당
+		byte[] concatenatedArray = new byte[totalSize];
+
+		// 배열을 합침
+		int dstStart = 0;
+		for(byte[] src: srcs) {
+			
+			// 합칠 배열이 null일 경우, skip함
+			if(src == null) {
+				continue;
+			}
+
+			// concatenatedArray에 src 배열 복사
+			System.arraycopy(src, 0, concatenatedArray, dstStart, src.length);
+			dstStart += src.length;
+		}
+		
+		return concatenatedArray;
+	} 
 
 }
