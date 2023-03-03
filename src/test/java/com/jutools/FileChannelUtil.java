@@ -12,16 +12,27 @@ public class FileChannelUtil {
 	
 	/** */
 	private FileChannel chnl;
+	/** */
 	private ByteBuffer buffer;
 	
 	/**
 	 * 
 	 * 
 	 * @param chnl
+	 * @param buffer
 	 */
 	public FileChannelUtil(FileChannel chnl, ByteBuffer buffer) throws Exception {
 		this.chnl = chnl;
 		this.buffer = buffer;
+	}
+	
+	/**
+	 * 
+	 * @param chnl
+	 * @param capacity
+	 */
+	public FileChannelUtil(FileChannel chnl, int capacity) throws Exception {
+		this(chnl, ByteBuffer.allocateDirect(capacity));
 	}
 
 	/**
