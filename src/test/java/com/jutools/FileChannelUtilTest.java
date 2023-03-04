@@ -15,15 +15,17 @@ class FileChannelUtilTest {
 		
 		File file = new File("resources/read_test.txt");
 		
-		try(FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-			
+		try(
+			FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ);
 			FileChannelUtil util = new FileChannelUtil(chnl);
-			String read = null;
-			while( (read = util.readLine()) != null) {
-				System.out.println(read);
+		) {
+			
+			int readCnt = 0;
+			while(util.readLine() != null) {
+				readCnt++;
 			}
 			
-			assertTrue(true);
+			assertEquals(46, readCnt);
 			
 		} catch(Exception ex) {
 			fail("exception is occured");
@@ -35,15 +37,59 @@ class FileChannelUtilTest {
 		
 		File file = new File("resources/read_test.txt");
 		
-		try(FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-			
+		try(
+			FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ);
 			FileChannelUtil util = new FileChannelUtil(chnl, 10);
-			String read = null;
-			while( (read = util.readLine()) != null) {
-				System.out.println(read);
+		) {
+			
+			int readCnt = 0;
+			while(util.readLine() != null) {
+				readCnt++;
 			}
 			
-			assertTrue(true);
+			assertEquals(46, readCnt);
+			
+		} catch(Exception ex) {
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testRead3() throws Exception {
+		
+		File file = new File("resources/read_test.txt");
+		
+		try(
+			FileChannelUtil util = new FileChannelUtil(file, StandardOpenOption.READ);
+		) {
+			
+			int readCnt = 0;
+			while(util.readLine() != null) {
+				readCnt++;
+			}
+			
+			assertEquals(46, readCnt);
+			
+		} catch(Exception ex) {
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testRead4() throws Exception {
+		
+		File file = new File("resources/read_test.txt");
+		
+		try(
+			FileChannelUtil util = new FileChannelUtil(file, 10, StandardOpenOption.READ);
+		) {
+			
+			int readCnt = 0;
+			while(util.readLine() != null) {
+				readCnt++;
+			}
+			
+			assertEquals(46, readCnt);
 			
 		} catch(Exception ex) {
 			fail("exception is occured");

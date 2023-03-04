@@ -311,7 +311,9 @@ public class FileChannelUtil implements Closeable {
 	 */
 	@Override
 	public void close() throws IOException {
-		this.chnl.close();
+		if(this.chnl.isOpen() == true) {
+			this.chnl.close();
+		}
 	}
 
 }
