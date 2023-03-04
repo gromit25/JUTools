@@ -29,5 +29,25 @@ class FileChannelUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testRead2() throws Exception {
+		
+		File file = new File("C:\\data\\test.txt");
+		
+		try(FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+			
+			FileChannelUtil util = new FileChannelUtil(chnl, 10);
+			String read = null;
+			while( (read = util.readLine()) != null) {
+				System.out.println(read);
+			}
+			
+			assertTrue(true);
+			
+		} catch(Exception ex) {
+			fail("exception is occured");
+		}
+	}
 
 }
