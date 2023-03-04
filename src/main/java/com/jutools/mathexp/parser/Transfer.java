@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * 전이 함수 클래스
+ * 
  * @author jmsohn
  */
 public class Transfer {
@@ -17,6 +18,7 @@ public class Transfer {
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param patternStr 다음 전이 상태로 이동시킬 문자 패턴
 	 * @param nextStatus 다음 전이 상태
 	 */
@@ -27,6 +29,7 @@ public class Transfer {
 	
 	/**
 	 * 주어진 문자가 문자 패턴에 일치하는지 검사하여 반환
+	 * 
 	 * @param ch 문자
 	 * @return 일치 여부
 	 */
@@ -35,8 +38,9 @@ public class Transfer {
 	}
 
 	/**
-	 * 다음 전이 상태 
-	 * @return
+	 * 다음 전이 상태 반환 
+	 * 
+	 * @return 다음 전이 상태
 	 */
 	public String getNextStatus() {
 		return this.nextStatus;
@@ -44,6 +48,7 @@ public class Transfer {
 	
 	/**
 	 * 문자 패턴 클래스
+	 * 
 	 * @author jmsohn
 	 */
 	private static class CharPattern {
@@ -55,6 +60,7 @@ public class Transfer {
 		
 		/**
 		 * 생성자
+		 * 
 		 * @param checkers 문자 패턴 목록
 		 * @param not not 조건
 		 */
@@ -65,6 +71,7 @@ public class Transfer {
 		
 		/**
 		 * 문자가 문자 패턴에 일치하는지 여부 검사
+		 * 
 		 * @param ch 검사할 문자
 		 * @return 일치 여부
 		 */
@@ -93,6 +100,7 @@ public class Transfer {
 		
 		/**
 		 * CharPattern의 객체의 정보를 문자열로 반환
+		 * 
 		 * @return 객체 정보 문자열
 		 */
 		public String toString() {
@@ -111,6 +119,7 @@ public class Transfer {
 	
 	/**
 	 * 문자 패턴 검사 클래스
+	 * 
 	 * @author jmsohn
 	 */
 	private static interface PatternChecker {
@@ -119,6 +128,7 @@ public class Transfer {
 	
 	/**
 	 * 한문자와 일치하는지 검사하는 클래스
+	 * 
 	 * @author jmsohn
 	 */
 	private static class CharPatternChecker implements PatternChecker {
@@ -139,6 +149,7 @@ public class Transfer {
 	
 	/**
 	 * 모든 문자 일치(.) 클래스
+	 * 
 	 * @author jmsohn
 	 */
 	private static class DotPatternChecker implements PatternChecker {
@@ -154,6 +165,7 @@ public class Transfer {
 	
 	/**
 	 * 문자가 범위내에 있는지 검사하는 클래스
+	 * 
 	 * @author jmsohn
 	 */
 	private static class RangePatternChecker implements PatternChecker{
@@ -188,6 +200,7 @@ public class Transfer {
 	}
 	
 	/**
+	 * 
 	 * 
 	 * @author jmsohn
 	 */

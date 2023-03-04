@@ -2,7 +2,16 @@ package com.jutools;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
 import org.junit.jupiter.api.Test;
+
+import com.jutools.mathexp.instructions.Instruction;
+import com.jutools.mathexp.instructions.Instructions;
+import com.jutools.mathexp.parser.TreeNode;
+import com.jutools.mathexp.parser.script.NumberParser;
 
 class StringUtilTest {
 
@@ -52,4 +61,19 @@ class StringUtilTest {
 		}
 	}
 
+	@Test
+	void test() {
+		try {
+			
+			NumberParser parser = new NumberParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("123.45")).getResult(); 
+			
+			assertEquals(123.45, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
