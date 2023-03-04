@@ -142,7 +142,7 @@ public class BytesUtil {
 	public static boolean contains(byte[] target, byte[] lookup) throws Exception {
 		return contains(target, 0, lookup);
 	}
-    
+	
 	/**
 	 * 주어진 target byte array를 split 하는 메소드
 	 * target byte와 구분자의 byte를 비교하여
@@ -150,9 +150,13 @@ public class BytesUtil {
 	 *
 	 * @param target target byte array
 	 * @param split 구분자 byte array
+	 * @param isLastInclude 배열의 마지막이 구분자(split)로 끝날 경우, 추가할 것인지 여부<br>
+	 *                      ex) true로 설정되고 target : "123\n", split : "\n" 일 경우,<br>
+	 *                          "123", "" 으로 분리됨<br>
+	 *                          false일 경우, "123"으로만 분리됨
 	 * @return 구분자에 의해 분리된 결과 목록
 	 */
-	public static ArrayList<byte[]> split(byte[] target, byte[] split) throws Exception {
+	public static ArrayList<byte[]> split(byte[] target, byte[] split, boolean isLastInclude) throws Exception {
 
 		// parameter null 체크
 		if(target == null) {
@@ -173,7 +177,7 @@ public class BytesUtil {
 		while(index >= 0) {
 			
 			//
-			if(start >= target.length) {
+			if(isLastInclude == false && start >= target.length) {
 				break;
 			}
 			
@@ -198,6 +202,19 @@ public class BytesUtil {
 		// 최종 결과 반환
 		return splitedTarget;
 
+	}
+	
+	/**
+	 * 주어진 target byte array를 split 하는 메소드
+	 * target byte와 구분자의 byte를 비교하여
+	 * 구분자가 포함 됐을 경우 분리 함
+	 *
+	 * @param target target byte array
+	 * @param split 구분자 byte array
+	 * @return 구분자에 의해 분리된 결과 목록
+	 */
+	public static ArrayList<byte[]> split(byte[] target, byte[] split) throws Exception {
+		return split(target, split, false);
 	}
 	
 	/**

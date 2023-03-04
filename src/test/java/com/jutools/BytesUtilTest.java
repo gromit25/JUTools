@@ -93,6 +93,19 @@ class BytesUtilTest {
 	}
 	
 	@Test
+	void testSplit7() throws Exception {
+		
+		String test1 = "123|||6789|||";
+	       
+		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes(), true);
+	       
+		assertEquals(3, splitedList.size());
+		assertEquals("123", new String(splitedList.get(0)));
+		assertEquals("6789", new String(splitedList.get(1)));
+		assertEquals("", new String(splitedList.get(2)));
+	}
+	
+	@Test
 	void testConcat1() throws Exception {
 
 		String src1 = "abcd";
