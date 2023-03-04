@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class BytesUtil {
 	
 	/**
-	 * target Byte의 끝 부분과 지정한 접미사 일치 여부 반환
+	 * target Byte의 끝 부분과 지정한 접미사 일치 여부 반환<br>
 	 * 일치할 경우 : true, 일치하지 않을 경우 : false
 	 *
 	 * @param target 확인 대상 byte array
@@ -48,42 +48,50 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * 목표 배열(target) 내에 찾을 배열(lookup)의 첫번째 일치하는 위치를 반환<br>
+	 * 만일 찾지 못하면 -1을 반환함
 	 * 
-	 * @param target
-	 * @param start
-	 * @param lookup
-	 * @return
+	 * @param target 목표 배열
+	 * @param start target의 검색 시작 지점
+	 * @param lookup 찾을 배열
+	 * @return 목표 배열 내에 첫번째 일치하는 위치
 	 */
 	public static int indexOf(byte[] target, int start, byte[] lookup) throws Exception {
 		
+		// 목표 배열의 크기(target.length - start)가 찾을 배열의 크기(lookup.length)
+		// 보다 작은 경우에는 -1을 반환
 		if(target == null || lookup == null || target.length - start < lookup.length) {
 			return -1;
 		}
 		
-		//
+		// 상태 변수 - 0:배열내 불일치 상태, 1:찾을 배열과 일치 중인 상태
 		int status = 0;
-		//
+		// 목표 배열내 검색 중인 위치 변수
 		int pos = start;
-		//
+		// 목표 배열내 찾을 배열과 최초로 일치하는 위치 저장용 변수
 		int savePos = -1;
-		//
+		// 찾을 배열내 위치 변수
 		int lookupPos = 0;
 		
+		// 검색 위치가 목표 배열의 크기 보다 작을 경우 수행
 		while(pos < target.length) {
 			
 			if(target[pos] == lookup[lookupPos]) {
 				
-				//
+				// 최초로 일치하는 경우
+				// 현재 위치를 savePos에 저장
 				if(status == 0) {
 					savePos = pos;
 					status = 1;
 				}
 				
-				//
+				// 목표 배열내 검색 위치와 찾을 배열내 검색 위치를
+				// 다음 byte로 이동
 				pos++;
 				lookupPos++;
 				
-				//
+				// 만일 찾을 배열의 모든 문자를 검색 완료하였으면
+				// 일치 시작 위치(savePos)를 반환
 				if(lookupPos >= lookup.length) {
 					return savePos;
 				}
@@ -101,7 +109,10 @@ public class BytesUtil {
 					status = 0;
 					
 				} else if(status == 0) {
+					
+					// 검색 위치를 하나 증가하여 다음 byte를 비교
 					pos++;
+					
 				} else {
 					throw new Exception("Unexpected status:" + status);
 				}
@@ -109,43 +120,49 @@ public class BytesUtil {
 			}
 		}
 		
+		// 목표 배열을 모두 확인하였으나
+		// 찾지 못함
 		return -1;
 	}
 	
 	/**
+	 * 목표 배열(target) 내에 찾을 배열(lookup)의 첫번째 일치하는 위치를 반환<br>
+	 * 만일 찾지 못하면 -1을 반환함
 	 * 
-	 * @param target
-	 * @param lookup
-	 * @return
+	 * @param target 목표 배열
+	 * @param lookup 찾을 배열
+	 * @return 목표 배열 내에 첫번째 일치하는 위치
 	 */
 	public static int indexOf(byte[] target, byte[] lookup) throws Exception {
 		return indexOf(target, 0, lookup);
 	}
 	
 	/**
+	 * 목표 배열(target) 내에 찾을 배열(lookup)이 있는지 여부 반환
 	 * 
-	 * @param target
-	 * @param start
-	 * @param lookup
-	 * @return
+	 * @param target 목표 배열
+	 * @param start target의 검색 시작 지점
+	 * @param lookup 찾을 배열
+	 * @return 목표 배열 내에 찾을 배열이 있는지 여부
 	 */
 	public static boolean contains(byte[] target, int start, byte[] lookup) throws Exception {
 		return indexOf(target, start, lookup) >= 0;
 	}
 	
 	/**
+	 * 목표 배열(target) 내에 찾을 배열(lookup)이 있는지 여부 반환
 	 * 
-	 * @param target
-	 * @param lookup
-	 * @return
+	 * @param target 목표 배열
+	 * @param lookup 찾을 배열
+	 * @return 목표 배열 내에 찾을 배열이 있는지 여부
 	 */
 	public static boolean contains(byte[] target, byte[] lookup) throws Exception {
 		return contains(target, 0, lookup);
 	}
 	
 	/**
-	 * 주어진 target byte array를 split 하는 메소드
-	 * target byte와 구분자의 byte를 비교하여
+	 * 주어진 target byte array를 split 하는 메소드<br>
+	 * target byte와 구분자의 byte를 비교하여<br>
 	 * 구분자가 포함 됐을 경우 분리 함
 	 *
 	 * @param target target byte array
@@ -170,21 +187,24 @@ public class BytesUtil {
 		// 구분자에 의해 분리된 결과
 		ArrayList<byte[]> splitedTarget = new ArrayList<>();
 		
-		//
-		int index = 0;
+		// split이 발견된 곳의 위치 변수
+		int index = -1;
+		// 검사를 시작할 위치 변수
 		int start = 0;
 		
-		while(index >= 0) {
+		do {
 			
-			//
+			// isLastInclude가 true이면,
+			// 배열의 마지막이 구분자(split)로 끝날 경우 공백 배열을 추가함
 			if(isLastInclude == false && start >= target.length) {
 				break;
 			}
 			
-			//
+			// 목표 배열 내 split이 발견된 곳의 위치 확인 
 			index = indexOf(target, start, split);
 			
-			//
+			// 시작지점(start)부터 발견된 곳(index)의 배열을 splitedTarget에 추가 
+			// index가 -1일 경우 시작지점 부터 끝까지의 배열을 추가
 			byte[] splitedBytes = null;
 			if(index >= 0) {
 				splitedBytes = new byte[index - start];
@@ -195,9 +215,10 @@ public class BytesUtil {
 			System.arraycopy(target, start, splitedBytes, 0, splitedBytes.length);
 			splitedTarget.add(splitedBytes);
 			
-			//
+			// 다음 시작위치 계산(현재발견된 위치 + split의 크기)
 			start = index + split.length;
-		}
+			
+		} while(index >= 0);
     	
 		// 최종 결과 반환
 		return splitedTarget;
