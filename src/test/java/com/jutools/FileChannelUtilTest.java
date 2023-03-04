@@ -13,7 +13,7 @@ class FileChannelUtilTest {
 	@Test
 	void testRead1() throws Exception {
 		
-		File file = new File("C:\\data\\test.txt");
+		File file = new File("resources/read_test.txt");
 		
 		try(FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ)) {
 			
@@ -33,7 +33,7 @@ class FileChannelUtilTest {
 	@Test
 	void testRead2() throws Exception {
 		
-		File file = new File("C:\\data\\test.txt");
+		File file = new File("resources/read_test.txt");
 		
 		try(FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ)) {
 			
