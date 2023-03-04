@@ -1,8 +1,12 @@
 package com.jutools;
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.OpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,7 +16,7 @@ import java.util.Queue;
  * 
  * @author jmsohn
  */
-public class FileChannelUtil {
+public class FileChannelUtil implements Closeable {
 	
 	/** 입출력을 위한 file channel */
 	private FileChannel chnl;
@@ -95,6 +99,63 @@ public class FileChannelUtil {
 	public FileChannelUtil(FileChannel chnl) throws Exception {
 		this(chnl, 1024 * 1024);
 	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param file 입출력 file
+	 * @param buffer 입출력에 사용할 byte buffer
+	 * @param charset 입출력에 사용할 character set
+	 * @param options channel open options
+	 */
+	public FileChannelUtil(File file, ByteBuffer buffer, Charset charset, OpenOption... options) throws Exception {
+		this(FileChannel.open(file.toPath(), options), buffer, charset);
+	}
+
+	/**
+	 * 생성자
+	 * 
+	 * @param file 입출력 file
+	 * @param capacity 입출력에 사용할 byte buffer의 크기
+	 * @param charset 입출력에 사용할 character set
+	 * @param options channel open options
+	 */
+	public FileChannelUtil(File file, int capacity, Charset charset, OpenOption... options) throws Exception {
+		this(FileChannel.open(file.toPath(), options), capacity, charset);
+	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param file 입출력 file
+	 * @param buffer 입출력에 사용할 byte buffer
+	 * @param options channel open options
+	 */
+	public FileChannelUtil(File file, ByteBuffer buffer, OpenOption... options) throws Exception {
+		this(FileChannel.open(file.toPath(), options), buffer);
+	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param file 입출력 file
+	 * @param capacity 입출력에 사용할 byte buffer의 크기
+	 * @param options channel open options
+	 */
+	public FileChannelUtil(File file, int capacity, OpenOption... options) throws Exception {
+		this(FileChannel.open(file.toPath(), options), capacity);
+	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param file 입출력 file
+	 * @param options channel open options
+	 */
+	public FileChannelUtil(File file, OpenOption... options) throws Exception {
+		this(FileChannel.open(file.toPath(), options));
+	}
+
 
 	/**
 	 * 설정된 file channel에 문자열을 쓰는 메소드
@@ -243,6 +304,14 @@ public class FileChannelUtil {
 	 */
 	public String readLine() throws Exception {
 		return this.readLine("\r\n");
+	}
+
+	/**
+	 * close file channel 
+	 */
+	@Override
+	public void close() throws IOException {
+		this.chnl.close();
 	}
 
 }
