@@ -42,9 +42,105 @@ public class BytesUtil {
 				return false;
 			}
 		}
-
+		
 		return true;
 
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param start
+	 * @param lookup
+	 * @return
+	 */
+	public static int indexOf(byte[] target, int start, byte[] lookup) throws Exception {
+		
+		if(target == null || lookup == null || target.length - start < lookup.length) {
+			return -1;
+		}
+		
+		//
+		int status = 0;
+		//
+		int pos = start;
+		//
+		int savePos = -1;
+		//
+		int lookupPos = 0;
+		
+		while(pos < target.length) {
+			
+			if(target[pos] == lookup[lookupPos]) {
+				
+				//
+				if(status == 0) {
+					savePos = pos;
+					status = 1;
+				}
+				
+				//
+				pos++;
+				lookupPos++;
+				
+				//
+				if(lookupPos >= lookup.length) {
+					return savePos;
+				}
+				
+			} else {
+				
+				if(status == 1) {
+					
+					// 기존 savePos로 이동하게 되면 다시 매치되기 때문에 +1 문자부터 검사하도록함
+					pos = savePos + 1;
+					
+					// 초기화
+					savePos = -1;
+					lookupPos = 0;
+					status = 0;
+					
+				} else if(status == 0) {
+					pos++;
+				} else {
+					throw new Exception("Unexpected status:" + status);
+				}
+				
+			}
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param lookup
+	 * @return
+	 */
+	public static int indexOf(byte[] target, byte[] lookup) throws Exception {
+		return indexOf(target, 0, lookup);
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param start
+	 * @param lookup
+	 * @return
+	 */
+	public static boolean contains(byte[] target, int start, byte[] lookup) throws Exception {
+		return indexOf(target, start, lookup) >= 0;
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param lookup
+	 * @return
+	 */
+	public static boolean contains(byte[] target, byte[] lookup) throws Exception {
+		return contains(target, 0, lookup);
 	}
     
 	/**
@@ -171,7 +267,7 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * 두 Byte array를 합침
+	 * 여러 Byte array를 합침
 	 *
 	 * @param targets: 합칠 Byte array
 	 * @return 합쳐진 Byte array
@@ -218,6 +314,6 @@ public class BytesUtil {
 		}
 		
 		return concatenatedArray;
-	} 
+	}
 
 }

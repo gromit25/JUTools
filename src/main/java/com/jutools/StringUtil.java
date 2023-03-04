@@ -110,7 +110,7 @@ public class StringUtil {
 	 * @param ch 검사할 문자
 	 * @return 16진수 값 여부(16진수 값일 경우 true, 아닐 경우 false)
 	 */
-	public static boolean isHex(char ch) {
+	private static boolean isHex(char ch) {
 		return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
 	}
 }

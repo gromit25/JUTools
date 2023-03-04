@@ -145,4 +145,38 @@ class BytesUtilTest {
 
 		assertEquals("abcdefgh", concatenatedStr);
 	}
+	
+	@Test
+	void testIndexOf1() throws Exception {
+
+		String src1 = "abcd||efghi";
+		String src2 = "||";
+
+		int index = BytesUtil.indexOf(src1.getBytes(), src2.getBytes());
+
+		assertEquals(4, index);
+	}
+	
+	@Test
+	void testIndexOf2() throws Exception {
+
+		String src1 = "abcd||efghi";
+		String src2 = "||a";
+
+		int index = BytesUtil.indexOf(src1.getBytes(), src2.getBytes());
+
+		assertEquals(-1, index);
+	}
+	
+	@Test
+	void testIndexOf3() throws Exception {
+
+		String src1 = "aaaabaccc";
+		String src2 = "ab";
+
+		int index = BytesUtil.indexOf(src1.getBytes(), src2.getBytes());
+
+		assertEquals(3, index);
+	}
+
 }
