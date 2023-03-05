@@ -22,12 +22,24 @@ public abstract class AbstractParser<T> {
 
 	/** 파싱 상태 변수 */
 	private String status;
-	/** 현재 파싱 트리의 루트 노드 */
+	
+	/** 파싱 트리의 루트 노드 */
 	@Setter(value = AccessLevel.PROTECTED)
-	private TreeNode<T> node;
+	private TreeNode<T> node = new TreeNode<T>();
+	
+	/**
+	 * 상태 변환 정보 목록<br>
+	 * -> ex) "A" 상태에서 문자 "B"가 들어오면 "C" 상태로 변한다는 정보
+	 */
+	private HashMap<String, ArrayList<Transfer>> transferMap = new HashMap<String, ArrayList<Transfer>>();
+	
 	/** 상태 변환시, 수행되는 전이함수(transfer function) 목록 */
-	private HashMap<String, HashMap<String, ArrayList<Method>>> transferHandlers;
-	/** 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류 (0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료)*/
+	private HashMap<String, HashMap<String, ArrayList<Method>>> transferHandlers = new HashMap<String, HashMap<String, ArrayList<Method>>>();
+	
+	/**
+	 * 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류<br>
+	 * 종료 상태 종류 : 0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료
+	 */
 	private HashMap<String, Integer> endStatus = new HashMap<String, Integer>();
 
 	/**
@@ -35,14 +47,7 @@ public abstract class AbstractParser<T> {
 	 */
 	public AbstractParser() throws Exception {
 		
-		// 파싱 트리 노드 생성
-		this.node = new TreeNode<T>();
-		
-		// transfer event handler 목록 생성
-		this.transferHandlers = new HashMap<String, HashMap<String, ArrayList<Method>>>();
-		
 		// 하위 클래스에서 구현된 transfer event handler 메소드를 목록에 등록함
-		
 		// 현재 클래스의 메소드 목록을 가져옴
 		Method[] methods = this.getClass().getMethods();
 		
@@ -109,21 +114,10 @@ public abstract class AbstractParser<T> {
 	protected abstract String getStartStatus();
 	
 	/**
-	 * 상태 변환 정보 반환
-	 * -> ex) "A" 상태에서 문자 "B"가 들어오면 "C" 상태로 변한다는 정보
-	 * 
-	 * @return 상태 변환 정보
-	 */
-	protected abstract HashMap<String, ArrayList<Transfer>> getTransferMap() throws Exception;
-	
-	/**
 	 * 파싱 시작시 콜백
 	 * -> 파싱 시작과 동시에 다른 파서를 호출할 때 주로 사용됨
 	 */
-	protected void init() throws Exception {
-		// Do Nothing
-		// 하위 클래스에서 필요시 구현
-	}
+	protected abstract void init() throws Exception;
 	
 	/**
 	 * 파싱 종료시 콜백
@@ -134,12 +128,21 @@ public abstract class AbstractParser<T> {
 	}
 	
 	/**
-	 * 종료 문자 발생시 콜백
-	 * -> 후처리 및 적절한 상태에서 종료되었는지 확인
+	 * 
+	 * @param startStatus
+	 * @param toStatusMap
 	 */
-	protected void processEod() throws Exception {
-		// Do Nothing
-		// 하위 클래스에서 필요시 구현
+	protected void putTransferMap(String startStatus, ArrayList<Transfer> toStatusMap) {
+		
+		if(startStatus == null) {
+			throw new NullPointerException("start status is null");
+		}
+		
+		if(toStatusMap == null) {
+			throw new NullPointerException("to status map is null");
+		}
+		
+		this.transferMap.put(startStatus, toStatusMap);
 	}
 	
 	/**
@@ -213,7 +216,7 @@ public abstract class AbstractParser<T> {
 		this.status = this.getStartStatus();
 		
 		// 시작 상태가 전이함수 목록에 없는 경우 예외 발생 
-		if(this.getTransferMap().containsKey(this.status) == false) {
+		if(this.transferMap.containsKey(this.status) == false) {
 			throw new Exception("invalid status: " + this.status);
 		}
 		
@@ -231,7 +234,7 @@ public abstract class AbstractParser<T> {
 			
 			// 전이 함수 목록에서 유효한 전이 함수가 있는지 확인함
 			// 유효한 전이 함수에 따라 상태 변화 후 상태 변화에 따른 TransferEventHandler 메소드를 수행함
-			ArrayList<Transfer> transferFunctions = this.getTransferMap().get(this.status);
+			ArrayList<Transfer> transferFunctions = this.transferMap.get(this.status);
 			if(transferFunctions == null) {
 				throw new Exception("Transfer Function is not found: " + this.status + "-> ???");
 			}
@@ -254,15 +257,11 @@ public abstract class AbstractParser<T> {
 					String nextStatus = transferFunction.getNextStatus();
 					ArrayList<Method> handlers = this.getHandlers(this.status, nextStatus);
 					for(Method handler: handlers) {
-						System.out.println("DEBUG 100:" + handler.getName() + ", " + this.status + ", " + ch);
 						handler.invoke(this, event);
-						System.out.println("DEBUG 200:" + this.status);
 					}
 					
-					System.out.println("DEBUG 300:" + this.status);
 					// 다음 상태로 상태를 변경
 					this.status = nextStatus;
-					System.out.println("DEBUG 400:" + this.status);
 					
 					// for문 종료 -> 다른 전이함수는 검사하지 않음
 					break;
