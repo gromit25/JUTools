@@ -48,8 +48,8 @@ public class NumberParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("NUMBER", new TransferBuilder()
 				.add("0-9", "NUMBER")
-				.add(".", "DOT")
-				.add("^0-9.", "END", true)
+				.add("\\.", "DOT")
+				.add("^0-9\\.", "END", true)
 				.build());
 		
 		this.putTransferMap("DOT", new TransferBuilder()

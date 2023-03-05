@@ -310,10 +310,29 @@ public abstract class AbstractParser<T> {
 	/**
 	 * 현재 노드에 자식 노드를 추가함
 	 * 
-	 * @param data
+	 * @param childNode 추가할 자식 노드
 	 */
-	protected void addChild(T data) {
-		this.node.addChild(new TreeNode<T>(data));
+	protected void addChild(TreeNode<T> childNode) {
+		this.node.addChild(childNode);
+	}
+	
+	/**
+	 * 현재 노드에 자식 노드를 추가함
+	 * 
+	 * @param index 추가할 자식 노드의 인덱스
+	 * @param childNode 추가할 자식 노드
+	 */
+	protected void addChild(int index, TreeNode<T> childNode) {
+		this.node.addChild(index, childNode);
+	}
+	
+	/**
+	 * 현재 노드에 자식 노드를 추가함
+	 * 
+	 * @param childData
+	 */
+	protected void addChildData(T childData) {
+		this.node.addChild(new TreeNode<T>(childData));
 	}
 	
 	/**

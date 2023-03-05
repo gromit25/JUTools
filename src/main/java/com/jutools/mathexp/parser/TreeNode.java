@@ -29,6 +29,7 @@ public class TreeNode<T> {
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param data 현재 노드의 데이터
 	 */
 	public TreeNode(T data) {
@@ -38,6 +39,7 @@ public class TreeNode<T> {
 	
 	/**
 	 * 자식 노드 추가
+	 * 
 	 * @param node
 	 */
 	public void addChild(TreeNode<T> node) {
@@ -45,7 +47,28 @@ public class TreeNode<T> {
 	}
 	
 	/**
+	 * 자식 노드 추가
+	 * 
+	 * @param index
+	 * @param node
+	 */
+	public void addChild(int index, TreeNode<T> node) {
+		this.childs.add(index, node);
+	}
+	
+	/**
+	 * 자식 노드 추가
+	 * 
+	 * @param index
+	 * @param node
+	 */
+	public void setChild(int index, TreeNode<T> node) {
+		this.childs.set(index, node);
+	}
+	
+	/**
 	 * post order로 방문
+	 * 
 	 * @return post order로 방문한 목록
 	 */
 	public ArrayList<T> travelPostOrder() {

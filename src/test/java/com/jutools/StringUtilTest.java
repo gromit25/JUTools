@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
 import com.jutools.mathexp.instructions.Instructions;
+import com.jutools.mathexp.parser.script.ArithmaticParser;
 import com.jutools.mathexp.parser.script.FactorParser;
+import com.jutools.mathexp.parser.script.TermParser;
 
 class StringUtilTest {
 
@@ -60,7 +62,7 @@ class StringUtilTest {
 	void testCalculate1() {
 		try {
 			
-			FactorParser parser = new FactorParser();
+			TermParser parser = new TermParser();
 			double result = (double)Instructions.create()
 					.execute(parser.parse("-123.45")).getResult(); 
 			
@@ -76,7 +78,7 @@ class StringUtilTest {
 	void testCalculate2() {
 		try {
 			
-			FactorParser parser = new FactorParser();
+			TermParser parser = new TermParser();
 			double result = (double)Instructions.create()
 					.execute(parser.parse("(-123.45)")).getResult(); 
 			
@@ -88,4 +90,83 @@ class StringUtilTest {
 		}
 	}
 
+	@Test
+	void testCalculate3() {
+		try {
+			
+			TermParser parser = new TermParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3 * 4" )).getResult(); 
+			
+			assertEquals(12, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate4() {
+		try {
+			
+			ArithmaticParser parser = new ArithmaticParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3 * 4 / 2" )).getResult(); 
+			
+			assertEquals(6, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate5() {
+		try {
+			
+			ArithmaticParser parser = new ArithmaticParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3*4 + 2" )).getResult(); 
+			
+			assertEquals(14, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate6() {
+		try {
+			
+			ArithmaticParser parser = new ArithmaticParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3 +4 - 2" )).getResult(); 
+			
+			assertEquals(5, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate7() {
+		try {
+			
+			ArithmaticParser parser = new ArithmaticParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3*4 + (-2 * 2) -1" )).getResult(); 
+			
+			assertEquals(7, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }

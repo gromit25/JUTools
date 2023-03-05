@@ -1,18 +1,14 @@
 package com.jutools.mathexp.parser.script;
 
-import com.jutools.mathexp.instructions.DIV;
+import com.jutools.mathexp.instructions.ADD;
 import com.jutools.mathexp.instructions.Instruction;
-import com.jutools.mathexp.instructions.MUL;
+import com.jutools.mathexp.instructions.MINUS;
 import com.jutools.mathexp.parser.AbstractParser;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
 
-/**
- * 
- * @author jmsohn
- */
-public class TermParser extends AbstractParser<Instruction> {
+public class ArithmaticParser extends AbstractParser<Instruction> {
 	
 	/** */
 	private TreeNode<Instruction> p1;
@@ -21,27 +17,18 @@ public class TermParser extends AbstractParser<Instruction> {
 	/** */
 	private Instruction operation;
 
-	/**
-	 * 
-	 */
-	public TermParser() throws Exception {
+	public ArithmaticParser() throws Exception {
 		super();
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	protected String getStartStatus() {
 		return "START";
 	}
-	
-	/**
-	 * 
-	 */
+
 	@Override
 	protected void init() throws Exception {
-
+		
 		// 속성 변수 초기화
 		this.p1 = null;
 		this.p2 = null;
@@ -50,14 +37,13 @@ public class TermParser extends AbstractParser<Instruction> {
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "FACTOR_1", true)
+				.add("^ \t", "TERM_1", true)
 				.build());
 		
-		this.putTransferMap("FACTOR_1", new TransferBuilder()
-				.add(" \t", "FACTOR_1")
-				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "TERM_END", true)
+		this.putTransferMap("TERM_1", new TransferBuilder()
+				.add(" \t", "TERM_1")
+				.add("\\+\\-", "OPERATION")
+				.add("^ \t\\+\\-", "TERM_1", true)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -67,26 +53,37 @@ public class TermParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
 				.add(" \t", "FACTOR_2")
-				.add("^ \t", "TERM_END", true)
+				.add("^ \t", "ARITHMATIC_END", true)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("FACTOR_1");
+		this.putEndStatus("TERM_1");
 		this.putEndStatus("FACTOR_2");
-		this.putEndStatus("TERM_END", 1); // TERM_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ARITHMATIC_END", 1); // ARITHMATIC_END 상태로 들어오면 Parsing을 중지
 	}
-	
+
 	/**
 	 * 
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"START"},
-			target={"FACTOR_1"}
+			source={"START", "TERM_1"},
+			target={"TERM_1"}
 	)
 	public void handleP1(Event event) throws Exception {
-		FactorParser parser = new FactorParser();
-		this.p1 = parser.parse(event.getReader());
+		
+		if(event.getChar() == ' ' || event.getChar() == '\t') {
+			return;
+		}
+		
+		TermParser parser = new TermParser();
+		if(this.p1 == null) {
+			this.p1 = parser.parse(event.getReader());
+		} else {
+			TreeNode<Instruction> newP1 = parser.parse(event.getReader());
+			newP1.setChild(0, this.p1);
+			this.p1 = newP1;
+		}
 	}
 	
 	/**
@@ -94,15 +91,15 @@ public class TermParser extends AbstractParser<Instruction> {
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"START", "FACTOR_1"},
+			source={"TERM_1"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
 		
-		if(event.getChar() == '*') {
-			this.operation = new MUL();
-		} else if(event.getChar() == '/') {
-			this.operation = new DIV();
+		if(event.getChar() == '+') {
+			this.operation = new ADD();
+		} else if(event.getChar() == '-') {
+			this.operation = new MINUS();
 		} else {
 			throw new Exception("Unexpected operation:" + event.getChar());
 		}
