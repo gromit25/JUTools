@@ -231,7 +231,12 @@ public abstract class AbstractParser<T> {
 			
 			// 전이 함수 목록에서 유효한 전이 함수가 있는지 확인함
 			// 유효한 전이 함수에 따라 상태 변화 후 상태 변화에 따른 TransferEventHandler 메소드를 수행함
-			for(Transfer transferFunction: this.getTransferMap().get(this.status)) {
+			ArrayList<Transfer> transferFunctions = this.getTransferMap().get(this.status);
+			if(transferFunctions == null) {
+				throw new Exception("Transfer Function is not found: " + this.status + "-> ???");
+			}
+			
+			for(Transfer transferFunction: transferFunctions) {
 				if(transferFunction.isValid(ch) == true) {
 					
 					// 유효한 전이함수(transfer function)이 매치되었을 경우 true로 설정함
@@ -249,11 +254,15 @@ public abstract class AbstractParser<T> {
 					String nextStatus = transferFunction.getNextStatus();
 					ArrayList<Method> handlers = this.getHandlers(this.status, nextStatus);
 					for(Method handler: handlers) {
+						System.out.println("DEBUG 100:" + handler.getName() + ", " + this.status + ", " + ch);
 						handler.invoke(this, event);
+						System.out.println("DEBUG 200:" + this.status);
 					}
 					
+					System.out.println("DEBUG 300:" + this.status);
 					// 다음 상태로 상태를 변경
 					this.status = nextStatus;
+					System.out.println("DEBUG 400:" + this.status);
 					
 					// for문 종료 -> 다른 전이함수는 검사하지 않음
 					break;

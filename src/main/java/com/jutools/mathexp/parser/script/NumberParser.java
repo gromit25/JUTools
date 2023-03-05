@@ -82,7 +82,6 @@ public class NumberParser extends AbstractParser<Instruction> {
 	)
 	public void handleNumber(Event event) {
 		this.buffer.append(event.getChar());
-		System.out.println(this.buffer.toString());
 	}
 	
 	/**
