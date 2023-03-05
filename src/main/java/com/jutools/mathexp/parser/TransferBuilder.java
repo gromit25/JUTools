@@ -10,13 +10,13 @@ import java.util.ArrayList;
 public class TransferBuilder {
 	
 	/** */
-	private ArrayList<String[]> specs;
+	private ArrayList<Object[]> specs;
 	
 	/**
 	 * 생성자
 	 */
 	public TransferBuilder() {
-		this.specs = new ArrayList<String[]>();
+		this.specs = new ArrayList<Object[]>();
 	}
 	
 	/**
@@ -25,16 +25,29 @@ public class TransferBuilder {
 	 * @param nextStatus
 	 * @return
 	 */
-	public TransferBuilder add(String pattern, String nextStatus) throws Exception {
+	public TransferBuilder add(String pattern, String nextStatus, boolean pushback) throws Exception {
 		
-		String[] spec = new String[2];
+		Object[] spec = new Object[3];
 		spec[0] = pattern;
 		spec[1] = nextStatus;
+		spec[2] = pushback;
 		
 		specs.add(spec);
 		
 		return this;
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param pattern
+	 * @param nextStatus
+	 * @return
+	 */
+	public TransferBuilder add(String pattern, String nextStatus) throws Exception {
+		return this.add(pattern, nextStatus, false);
+	}
+
 	
 	/**
 	 * 
@@ -44,8 +57,9 @@ public class TransferBuilder {
 		
 		ArrayList<Transfer> transferFunctions = new ArrayList<Transfer>();
 		
-		for(String[] spec: this.specs) {
-			transferFunctions.add(new Transfer(spec[0], spec[1]));
+		for(Object[] spec: this.specs) {
+			Transfer transfer = new Transfer(spec[0].toString(), spec[1].toString(), (boolean)spec[2]);
+			transferFunctions.add(transfer);
 		}
 		
 		return transferFunctions;

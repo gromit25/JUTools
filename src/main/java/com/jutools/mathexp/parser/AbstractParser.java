@@ -7,6 +7,9 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import lombok.AccessLevel;
+import lombok.Setter;
+
 /**
  * 문자열 파싱하는 추상 클래스
  * -> 상태 변환 내용 및 변환 이벤트 처리는 하위 클래스에서 처리함
@@ -20,9 +23,12 @@ public abstract class AbstractParser<T> {
 	/** 파싱 상태 변수 */
 	private String status;
 	/** 현재 파싱 트리의 루트 노드 */
+	@Setter(value = AccessLevel.PROTECTED)
 	private TreeNode<T> node;
 	/** 상태 변환시, 수행되는 전이함수(transfer function) 목록 */
 	private HashMap<String, HashMap<String, ArrayList<Method>>> transferHandlers;
+	/** 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류 (0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료)*/
+	private HashMap<String, Integer> endStatus = new HashMap<String, Integer>();
 
 	/**
 	 * 생성자
@@ -103,13 +109,6 @@ public abstract class AbstractParser<T> {
 	protected abstract String getStartStatus();
 	
 	/**
-	 * 종료 상태 목록 반환
-	 * 
-	 * @return 종료 상태 목록
-	 */
-	protected abstract String[] getEndStatus();
-	
-	/**
 	 * 상태 변환 정보 반환
 	 * -> ex) "A" 상태에서 문자 "B"가 들어오면 "C" 상태로 변한다는 정보
 	 * 
@@ -141,6 +140,25 @@ public abstract class AbstractParser<T> {
 	protected void processEod() throws Exception {
 		// Do Nothing
 		// 하위 클래스에서 필요시 구현
+	}
+	
+	/**
+	 * 종료 상태 추가
+	 * 
+	 * @param endStatus 종료 상태 명
+	 * @param type 종료 상태 종류
+	 */
+	protected void putEndStatus(String endStatus, int type) {
+		this.endStatus.put(endStatus, type);
+	}
+
+	/**
+	 * 종료 상태 추가
+	 * 
+	 * @param endStatus 종료 상태 명
+	 */
+	protected void putEndStatus(String endStatus) {
+		this.putEndStatus(endStatus, 0);
 	}
 	
 	/**
@@ -194,6 +212,11 @@ public abstract class AbstractParser<T> {
 		// 시작 상태로 상태 초기화
 		this.status = this.getStartStatus();
 		
+		// 시작 상태가 전이함수 목록에 없는 경우 예외 발생 
+		if(this.getTransferMap().containsKey(this.status) == false) {
+			throw new Exception("invalid status: " + this.status);
+		}
+		
 		// Reader에서 한문자씩 읽어들여 상태를 전환하고,
 		// 각 상태 전환에 따른 전이함수(transfer function)을 실행시킴 
 		int read = in.read();
@@ -202,11 +225,6 @@ public abstract class AbstractParser<T> {
 			
 			// 입력 문자 변수
 			char ch = (char)read;
-			
-			// 시작 상태가 전이함수 목록에 없는 경우 예외 발생 
-			if(this.getTransferMap().containsKey(this.status) == false) {
-				throw new Exception("invalid status: " + this.status);
-			}
 			
 			// 유효한 전이함수(현재 상태에서 입력 문자가 있는 경우)가 있는지 여부 변수
 			boolean isMatched = false;
@@ -221,6 +239,11 @@ public abstract class AbstractParser<T> {
 					
 					// 이벤트 생성
 					Event event = new Event(ch, in);
+					
+					// pushback 수행
+					if(transferFunction.isPushback() == true) {
+						in.unread(ch);
+					}
 					
 					// 이벤트 처리함수 호출
 					String nextStatus = transferFunction.getNextStatus();
@@ -242,23 +265,21 @@ public abstract class AbstractParser<T> {
 				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
 			}
 			
+			// 종료 상태의 종류가 1이면 parsing 종료 처리함
+			if(this.endStatus.containsKey(this.status) == true
+				&& this.endStatus.get(this.status) == 1) {
+				
+				break;
+			}
+			
 			// 다음 글자를 읽어옴
 			read = in.read();
 			
 		} // End of while
 		
-		// 종료 상태 여부 확인
-		// 종료 상태가 아닌 경우, 예외 발생
-		boolean isEndStatus = false;
-		for(String endStatus: this.getEndStatus()) {
-			if(status.equals(endStatus) == true) {
-				isEndStatus = true;
-				break;
-			}
-		}
-		
-		if(isEndStatus == false) {
-			throw new Exception("Unexpected end status:" + status);
+		// parsing 종료가 되었으나 종료 상태가 아닌 경우 예외 발생
+		if(this.endStatus.containsKey(this.status) == false) {
+			throw new Exception("Unexpected end status: " + this.status);
 		}
 		
 		// 파싱 종료 시 호출

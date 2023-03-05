@@ -33,12 +33,12 @@ public class NumberParser extends AbstractParser<Instruction> {
 	}
 
 	@Override
-	protected String[] getEndStatus() {
-		return new String[] {
-				"NUMBER",
-				"FLOATING_NUMBER",
-				"END"
-		};
+	protected void init() throws Exception {
+		
+		// 종료 상태 추가
+		this.putEndStatus("NUMBER");
+		this.putEndStatus("FLOATING_NUMBER");
+		this.putEndStatus("END", 1); // END 상태로 들어오면 Parsing을 중지
 	}
 
 	@Override
@@ -48,32 +48,41 @@ public class NumberParser extends AbstractParser<Instruction> {
 		
 		transferMap.put("START", new TransferBuilder()
 				.add("0-9", "NUMBER")
+				.add("\\-", "SIGN")
+				.add("^0-9\\-", "ERROR")
+				.build());
+		
+		transferMap.put("SIGN", new TransferBuilder()
+				.add("0-9", "NUMBER")
+				.add("^0-9", "ERROR", true)
 				.build());
 		
 		transferMap.put("NUMBER", new TransferBuilder()
 				.add("0-9", "NUMBER")
 				.add(".", "DOT")
-				.add("^0-9.", "END")
+				.add("^0-9.", "END", true)
 				.build());
 		
 		transferMap.put("DOT", new TransferBuilder()
 				.add("0-9", "FLOATING_NUMBER")
+				.add("^0-9", "END", true)
 				.build());
 		
 		transferMap.put("FLOATING_NUMBER", new TransferBuilder()
 				.add("0-9", "FLOATING_NUMBER")
-				.add("^0-9", "END")
+				.add("^0-9", "END", true)
 				.build());
 		
 		return transferMap;
 	}
 	
 	@TransferEventHandler(
-			source={"START", "NUMBER", "DOT", "FLOATING_NUMBER"},
-			target={"NUMBER", "DOT", "FLOATING_NUMBER"}
+			source={"START", "SIGN", "NUMBER", "DOT", "FLOATING_NUMBER"},
+			target={"SIGN", "NUMBER", "DOT", "FLOATING_NUMBER"}
 	)
 	public void handleNumber(Event event) {
 		this.buffer.append(event.getChar());
+		System.out.println(this.buffer.toString());
 	}
 	
 	/**

@@ -1,17 +1,12 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.instructions.Instructions;
-import com.jutools.mathexp.parser.TreeNode;
-import com.jutools.mathexp.parser.script.NumberParser;
+import com.jutools.mathexp.parser.script.FactorParser;
 
 class StringUtilTest {
 
@@ -62,18 +57,35 @@ class StringUtilTest {
 	}
 
 	@Test
-	void test() {
+	void testCalculate1() {
 		try {
 			
-			NumberParser parser = new NumberParser();
+			FactorParser parser = new FactorParser();
 			double result = (double)Instructions.create()
-					.execute(parser.parse("123.45")).getResult(); 
+					.execute(parser.parse("-123.45")).getResult(); 
 			
-			assertEquals(123.45, result);
+			assertEquals(-123.45, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testCalculate2() {
+		try {
+			
+			FactorParser parser = new FactorParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("(-123.45)")).getResult(); 
+			
+			assertEquals(-123.45, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
 }

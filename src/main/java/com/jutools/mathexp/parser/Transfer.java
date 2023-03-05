@@ -4,6 +4,8 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 
+import lombok.Getter;
+
 /**
  * 전이 함수 클래스
  * 
@@ -13,18 +15,26 @@ public class Transfer {
 	
 	/** 문자 패턴 변수 */
 	private CharPattern pattern;
+	
 	/** 전이할 다음 상태 변수 */
+	@Getter
 	private String nextStatus;
+	
+	/** 상태 전이시 pushback 수행 여부 */
+	@Getter
+	private boolean pushback;
 	
 	/**
 	 * 생성자
 	 * 
 	 * @param patternStr 다음 전이 상태로 이동시킬 문자 패턴
 	 * @param nextStatus 다음 전이 상태
+	 * @param pushback
 	 */
-	public Transfer(String patternStr, String nextStatus) throws Exception {
+	public Transfer(String patternStr, String nextStatus, boolean pushback) throws Exception {
 		this.pattern = CharPatternParser.parse(patternStr);
 		this.nextStatus = nextStatus;
+		this.pushback = pushback;
 	}
 	
 	/**
@@ -37,15 +47,6 @@ public class Transfer {
 		return this.pattern.isValid(ch);
 	}
 
-	/**
-	 * 다음 전이 상태 반환 
-	 * 
-	 * @return 다음 전이 상태
-	 */
-	public String getNextStatus() {
-		return this.nextStatus;
-	}
-	
 	/**
 	 * 문자 패턴 클래스
 	 * 
