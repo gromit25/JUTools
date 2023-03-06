@@ -5,11 +5,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import com.jutools.mathexp.instructions.Instructions;
-import com.jutools.mathexp.parser.script.ArithmaticParser;
-import com.jutools.mathexp.parser.script.FactorParser;
-import com.jutools.mathexp.parser.script.TermParser;
-
 class StringUtilTest {
 
 	@Test
@@ -62,10 +57,7 @@ class StringUtilTest {
 	void testCalculate1() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("-123.45")).getResult(); 
-			
+			double result = StringUtil.calculate("-123.45");
 			assertEquals(-123.45, result);
 			
 		} catch(Exception ex) {
@@ -78,10 +70,7 @@ class StringUtilTest {
 	void testCalculate2() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("(-123.45)")).getResult(); 
-			
+			double result = StringUtil.calculate("(-123.45)");
 			assertEquals(-123.45, result);
 			
 		} catch(Exception ex) {
@@ -94,10 +83,7 @@ class StringUtilTest {
 	void testCalculate3() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3 * 4" )).getResult(); 
-			
+			double result = StringUtil.calculate("3 * 4");
 			assertEquals(12, result);
 			
 		} catch(Exception ex) {
@@ -110,10 +96,7 @@ class StringUtilTest {
 	void testCalculate4() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3 * 4 / 2" )).getResult(); 
-			
+			double result = StringUtil.calculate("3 * 4 / 2");
 			assertEquals(6, result);
 			
 		} catch(Exception ex) {
@@ -126,10 +109,7 @@ class StringUtilTest {
 	void testCalculate5() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3*4 + 2" )).getResult(); 
-			
+			double result = StringUtil.calculate("3*4 + 2");
 			assertEquals(14, result);
 			
 		} catch(Exception ex) {
@@ -142,10 +122,7 @@ class StringUtilTest {
 	void testCalculate6() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3*(4 + 2)" )).getResult(); 
-			
+			double result = StringUtil.calculate("3*(4 + 2)");
 			assertEquals(18, result);
 			
 		} catch(Exception ex) {
@@ -158,10 +135,7 @@ class StringUtilTest {
 	void testCalculate7() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3 +4 - 2" )).getResult(); 
-			
+			double result = StringUtil.calculate("3 +4 - 2");
 			assertEquals(5, result);
 			
 		} catch(Exception ex) {
@@ -174,10 +148,7 @@ class StringUtilTest {
 	void testCalculate8() {
 		try {
 			
-			ArithmaticParser parser = new ArithmaticParser();
-			double result = (double)Instructions.create()
-					.execute(parser.parse("3*4/ 2 + -2 * 2 - 1")).getResult(); 
-			
+			double result = StringUtil.calculate("3*4/ 2 + -2 * 2 - 1");
 			assertEquals(1, result);
 			
 		} catch(Exception ex) {

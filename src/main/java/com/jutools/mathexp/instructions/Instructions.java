@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import com.jutools.mathexp.parser.TreeNode;
+import com.jutools.mathexp.parser.script.ArithmaticParser;
 
 import lombok.Getter;
 
@@ -45,6 +46,20 @@ public class Instructions {
 	 */
 	private Instructions() throws Exception {
 		this(new Stack<Object>(), new HashMap<String, Object>());
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param exp
+	 * @return
+	 */
+	public static double calculate(String exp) throws Exception {
+		
+		ArithmaticParser parser = new ArithmaticParser();
+		TreeNode<Instruction> insts = parser.parse(exp);
+		
+		return (double)Instructions.create().execute(insts).getResult(); 
 	}
 	
 	/**

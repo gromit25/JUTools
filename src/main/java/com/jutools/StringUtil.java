@@ -1,5 +1,9 @@
 package com.jutools;
 
+import java.text.DecimalFormat;
+
+import com.jutools.mathexp.instructions.Instructions;
+
 /**
  * 문자열 처리 관련 Utility 클래스
  * 
@@ -113,4 +117,54 @@ public class StringUtil {
 	private static boolean isHex(char ch) {
 		return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
 	}
+	
+	/**
+	 * 
+	 * @param exp
+	 * @return
+	 */
+	public static double calculate(String exp) throws Exception {
+		return Instructions.calculate(exp);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String toThousandCommaStr(int value) {
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(value);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String toThousandCommaStr(long value) {
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(value);
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String toThousandCommaStr(float value) {
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(value);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String toThousandCommaStr(double value) {
+		DecimalFormat df = new DecimalFormat("###,###");
+		return df.format(value);
+	}
+
 }
