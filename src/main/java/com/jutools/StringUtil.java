@@ -130,8 +130,8 @@ public class StringUtil {
 	/**
 	 * 천자리 콤마 추가
 	 * 
-	 * @param value
-	 * @return
+	 * @param value 콤마 추가할 대상
+	 * @return 천자리 콤마 추가된 문자열
 	 */
 	public static String toThousandCommaStr(int value) {
 		DecimalFormat df = new DecimalFormat("###,###");
@@ -141,8 +141,8 @@ public class StringUtil {
 	/**
 	 * 천자리 콤마 추가
 	 * 
-	 * @param value
-	 * @return
+	 * @param value 콤마 추가할 대상
+	 * @return 천자리 콤마 추가된 문자열
 	 */
 	public static String toThousandCommaStr(long value) {
 		DecimalFormat df = new DecimalFormat("###,###");
@@ -153,8 +153,8 @@ public class StringUtil {
 	 * 천자리 콤마 추가
 	 * 소수점 3자리까지 표시
 	 * 
-	 * @param value
-	 * @return
+	 * @param value 콤마 추가할 대상
+	 * @return 천자리 콤마 추가된 문자열
 	 */
 	public static String toThousandCommaStr(float value) {
 		DecimalFormat df = new DecimalFormat("###,###.###");
@@ -165,8 +165,8 @@ public class StringUtil {
 	 * 천자리 콤마 추가
 	 * 소수점 3자리까지 표시
 	 * 
-	 * @param value 
-	 * @return
+	 * @param value 콤마 추가할 대상
+	 * @return 천자리 콤마 추가된 문자열
 	 */
 	public static String toThousandCommaStr(double value) {
 		DecimalFormat df = new DecimalFormat("###,###.###");
