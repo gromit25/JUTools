@@ -144,9 +144,9 @@ class StringUtilTest {
 			
 			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
-					.execute(parser.parse("3 +4 - 2" )).getResult(); 
+					.execute(parser.parse("3*(4 + 2)" )).getResult(); 
 			
-			assertEquals(5, result);
+			assertEquals(18, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -160,9 +160,25 @@ class StringUtilTest {
 			
 			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
-					.execute(parser.parse("3*4/ 2 + (-2 * 2)" )).getResult(); 
+					.execute(parser.parse("3 +4 - 2" )).getResult(); 
 			
-			assertEquals(2, result);
+			assertEquals(5, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate8() {
+		try {
+			
+			ArithmaticParser parser = new ArithmaticParser();
+			double result = (double)Instructions.create()
+					.execute(parser.parse("3*4/ 2 + -2 * 2 - 1")).getResult(); 
+			
+			assertEquals(1, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
