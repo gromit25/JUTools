@@ -229,8 +229,6 @@ public abstract class AbstractParser<T> {
 			// 입력 문자 변수
 			char ch = (char)read;
 			
-			System.out.println("DEBUG 100:" + ch + ":" + this.status + ":" + this.getClass() + "@" + this.hashCode());
-			
 			// 유효한 전이함수(현재 상태에서 입력 문자가 있는 경우)가 있는지 여부 변수
 			boolean isMatched = false;
 			
@@ -278,8 +276,6 @@ public abstract class AbstractParser<T> {
 			// 종료 상태의 종류가 1이면 parsing 종료 처리함
 			if(this.endStatus.containsKey(this.status) == true
 				&& this.endStatus.get(this.status) == 1) {
-				
-				System.out.println("DEBUG 200:" + ch + ":" + this.status + ":" + this.getClass() + "@" + this.hashCode());
 				
 				break;
 			}
