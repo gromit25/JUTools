@@ -43,7 +43,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		this.putTransferMap("TERM_1", new TransferBuilder()
 				.add(" \t", "TERM_1")
 				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "TERM_1", true)
+				.add("^ \t\\+\\-", "ARITHMATIC_END", true)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -72,18 +72,9 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	)
 	public void handleP1(Event event) throws Exception {
 		
-		if(event.getChar() == ' ' || event.getChar() == '\t') {
-			return;
-		}
-		
 		TermParser parser = new TermParser();
-		if(this.p1 == null) {
-			this.p1 = parser.parse(event.getReader());
-		} else {
-			TreeNode<Instruction> newP1 = parser.parse(event.getReader());
-			newP1.setChild(0, this.p1);
-			this.p1 = newP1;
-		}
+		this.p1 = parser.parse(event.getReader());
+
 	}
 	
 	/**

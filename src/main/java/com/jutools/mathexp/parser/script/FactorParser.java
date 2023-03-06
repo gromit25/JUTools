@@ -39,7 +39,7 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
-				.add("^ \t)", "ARITHMATIC", true)  //TODO 계속 변경해야 함
+				.add("^)", "ARITHMATIC", true)  //TODO 계속 변경해야 함
 				.add(")", "ERROR")
 				.build());
 		

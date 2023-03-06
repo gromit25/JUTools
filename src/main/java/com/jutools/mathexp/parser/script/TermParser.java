@@ -67,7 +67,8 @@ public class TermParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
 				.add(" \t", "FACTOR_2")
-				.add("^ \t", "TERM_END", true)
+				.add("\\*\\/", "OPERATION")
+				.add("^ \t\\*\\/", "TERM_END", true)
 				.build());
 		
 		// 종료 상태 추가
@@ -121,6 +122,42 @@ public class TermParser extends AbstractParser<Instruction> {
 		//
 		FactorParser parser = new FactorParser();
 		this.p2 = parser.parse(event.getReader());
+	}
+	
+	/**
+	 * 삼항 이상 연산 처리<br>
+	 * <pre>
+	 * ex) 2 *    3           *       4
+	 *        (FACTOR_2 -> OPERATION)
+	 * </pre>
+	 *   
+	 * @param event
+	 */
+	@TransferEventHandler(
+			source={"FACTOR_2"},
+			target={"OPERATION"}
+	)
+	public void handleAdditionOp(Event event) throws Exception {
+		
+		if(this.operation == null) {
+			throw new Exception("operation is null");
+		}
+		
+		if(this.p1 == null) {
+			throw new Exception("p1 is null");
+		}
+		
+		if(this.p2 == null) {
+			throw new Exception("p2 is null");
+		}
+		
+		TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.operation);
+		newP1.addChild(this.p1);
+		newP1.addChild(this.p2);
+
+		this.handleOp(event); // this.operation 설정
+		this.p1 = newP1;
+		this.p2 = null;
 	}
 
 	/**

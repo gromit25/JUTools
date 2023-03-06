@@ -62,7 +62,7 @@ class StringUtilTest {
 	void testCalculate1() {
 		try {
 			
-			TermParser parser = new TermParser();
+			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
 					.execute(parser.parse("-123.45")).getResult(); 
 			
@@ -78,7 +78,7 @@ class StringUtilTest {
 	void testCalculate2() {
 		try {
 			
-			TermParser parser = new TermParser();
+			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
 					.execute(parser.parse("(-123.45)")).getResult(); 
 			
@@ -94,7 +94,7 @@ class StringUtilTest {
 	void testCalculate3() {
 		try {
 			
-			TermParser parser = new TermParser();
+			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
 					.execute(parser.parse("3 * 4" )).getResult(); 
 			
@@ -160,9 +160,9 @@ class StringUtilTest {
 			
 			ArithmaticParser parser = new ArithmaticParser();
 			double result = (double)Instructions.create()
-					.execute(parser.parse("3*4 + (-2 * 2) -1" )).getResult(); 
+					.execute(parser.parse("3*4/ 2 + (-2 * 2)" )).getResult(); 
 			
-			assertEquals(7, result);
+			assertEquals(2, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
