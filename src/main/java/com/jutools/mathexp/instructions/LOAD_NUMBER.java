@@ -8,7 +8,7 @@ import java.util.Stack;
  * 
  * @author jmsohn
  */
-public class LOAD extends Instruction {
+public class LOAD_NUMBER extends Instruction {
 
 	@Override
 	public void execute(Stack<Object> stack, HashMap<String, Object> values) throws Exception {
