@@ -148,12 +148,122 @@ class StringUtilTest {
 	void testCalculate8() {
 		try {
 			
-			double result = StringUtil.calculate("3*4/ 2 + -2 * 2 - 1");
-			assertEquals(1, result);
+			double result = StringUtil.calculate("3*4/ 2 + -2 * 2.5 - 1");
+			assertEquals(0, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testCalculate9() {
+		try {
+			
+			double result = StringUtil.calculate("3*4/(2 + -1)* 2.5 - 1");
+			assertEquals(29, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testToThousandCommaStr1_1() {
+		String value = StringUtil.toThousandCommaStr((int)10000);
+		assertEquals("10,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr1_2() {
+		String value = StringUtil.toThousandCommaStr(Integer.MAX_VALUE);
+		assertEquals("2,147,483,647", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr1_3() {
+		String value = StringUtil.toThousandCommaStr(Integer.MIN_VALUE);
+		assertEquals("-2,147,483,648", value);
+	}
+
+	@Test
+	void testToThousandCommaStr2_1() {
+		String value = StringUtil.toThousandCommaStr((long)10000);
+		assertEquals("10,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr2_2() {
+		String value = StringUtil.toThousandCommaStr(Long.MAX_VALUE);
+		assertEquals("9,223,372,036,854,775,807", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr2_3() {
+		String value = StringUtil.toThousandCommaStr(Long.MIN_VALUE);
+		assertEquals("-9,223,372,036,854,775,808", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr3_1() {
+		String value = StringUtil.toThousandCommaStr((float)10000.123);
+		assertEquals("10,000.123", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr3_2() {
+		String value = StringUtil.toThousandCommaStr((float)10000);
+		assertEquals("10,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr3_3() {
+		String value = StringUtil.toThousandCommaStr(Float.MAX_VALUE);
+		assertEquals("340,282,346,638,528,860,000,000,000,000,000,000,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr3_4() {
+		String value = StringUtil.toThousandCommaStr(Float.MIN_VALUE);
+		assertEquals("0", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr3_5() {
+		String value = StringUtil.toThousandCommaStr(Float.MAX_VALUE * -1);
+		assertEquals("-340,282,346,638,528,860,000,000,000,000,000,000,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr4_1() {
+		String value = StringUtil.toThousandCommaStr((double)10000.123);
+		assertEquals("10,000.123", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr4_2() {
+		String value = StringUtil.toThousandCommaStr((float)10000);
+		assertEquals("10,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr4_3() {
+		String value = StringUtil.toThousandCommaStr(Double.MAX_VALUE);
+		assertEquals("179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr4_4() {
+		String value = StringUtil.toThousandCommaStr(Double.MIN_VALUE);
+		assertEquals("0", value);
+	}
+	
+	@Test
+	void testToThousandCommaStr4_5() {
+		String value = StringUtil.toThousandCommaStr(Double.MAX_VALUE * -1);
+		assertEquals("-179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000", value);
+	}
+
 }

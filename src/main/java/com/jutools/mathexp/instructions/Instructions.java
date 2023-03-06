@@ -54,12 +54,22 @@ public class Instructions {
 	 * @param exp
 	 * @return
 	 */
-	public static double calculate(String exp) throws Exception {
+	public static double calculate(String exp, HashMap<String, Object> values) throws Exception {
 		
 		ArithmaticParser parser = new ArithmaticParser();
 		TreeNode<Instruction> insts = parser.parse(exp);
 		
-		return (double)Instructions.create().execute(insts).getResult(); 
+		return (double)Instructions.create(new Stack<Object>(), values).execute(insts).getResult(); 
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param exp
+	 * @return
+	 */
+	public static double calculate(String exp) throws Exception {
+		return calculate(exp, new HashMap<String, Object>()); 
 	}
 	
 	/**
