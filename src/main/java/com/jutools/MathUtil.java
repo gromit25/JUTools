@@ -3,6 +3,8 @@ package com.jutools;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
+import com.jutools.mathexp.MathExp;
+
 public class MathUtil {
 	
 	private static HashMap<String, Double> unitPrefixMap;
@@ -100,7 +102,7 @@ public class MathUtil {
 	 * @return
 	 */
 	public static double calculate(String exp) throws Exception {
-		return MathUtil.calculate(exp);
+		return MathExp.calculate(exp);
 	}
 	
 	/**
@@ -148,7 +150,5 @@ public class MathUtil {
 		DecimalFormat df = new DecimalFormat("###,###.###");
 		return df.format(value);
 	}
-
-
 
 }
