@@ -10,6 +10,11 @@ import com.jutools.mathexp.parser.script.ArithmaticParser;
 
 import lombok.Getter;
 
+/**
+ * 
+ * 
+ * @author jmsohn
+ */
 public class MathExp {
 	
 	@Getter
@@ -110,6 +115,19 @@ public class MathExp {
 		
 		ArrayList<Instruction> insts = nodes.travelPostOrder();
 		this.execute(insts);
+		
+		return this;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	public MathExp putValue(String name, Object value) throws Exception {
+		
+		this.values.put(name, value);
 		
 		return this;
 	}
