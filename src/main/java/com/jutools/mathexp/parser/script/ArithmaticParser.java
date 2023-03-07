@@ -8,6 +8,11 @@ import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
 
+/**
+ * 
+ * 
+ * @author jmsohn
+ */
 public class ArithmaticParser extends AbstractParser<Instruction> {
 	
 	/** */

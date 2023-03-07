@@ -44,10 +44,13 @@ public abstract class Instruction {
 	/**
 	 * 연산자 파라미터 추가
 	 * 
-	 * @param param 추가할 파라미터 
+	 * @param param 추가할 파라미터
+	 * @return  
 	 */
-	public void addParam(String param) {
+	public Instruction addParam(String param) {
+		
 		this.params.add(param);
+		return this;
 	}
 
 }
