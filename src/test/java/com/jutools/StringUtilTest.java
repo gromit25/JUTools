@@ -3,6 +3,8 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.FileWriter;
+
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
@@ -54,7 +56,7 @@ class StringUtilTest {
 	}
 
 	@Test
-	void testCalculate1() {
+	void testCalculate1_1() {
 		try {
 			
 			double result = StringUtil.calculate("-123.45");
@@ -67,7 +69,21 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate2() {
+	void testCalculate1_2() {
+		try {
+			
+			double result = StringUtil.calculate("-12,345.67");
+			assertEquals(-12345.67, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
+	
+	@Test
+	void testCalculate2_1() {
 		try {
 			
 			double result = StringUtil.calculate("(-123.45)");
@@ -80,7 +96,7 @@ class StringUtilTest {
 	}
 
 	@Test
-	void testCalculate3() {
+	void testCalculate3_1() {
 		try {
 			
 			double result = StringUtil.calculate("3 * 4");
@@ -93,7 +109,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate4() {
+	void testCalculate3_2() {
 		try {
 			
 			double result = StringUtil.calculate("3 * 4 / 2");
@@ -106,7 +122,21 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate5() {
+	void testCalculate3_3() {
+		try {
+			
+			double result = StringUtil.calculate("3,000 * 4 / 2");
+			assertEquals(6000, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
+	
+	@Test
+	void testCalculate4_1() {
 		try {
 			
 			double result = StringUtil.calculate("3*4 + 2");
@@ -119,11 +149,11 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate6() {
+	void testCalculate4_2() {
 		try {
 			
-			double result = StringUtil.calculate("3*(4 + 2)");
-			assertEquals(18, result);
+			double result = StringUtil.calculate("3*(4 + 2,000)");
+			assertEquals(6012, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -132,7 +162,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate7() {
+	void testCalculate4_3() {
 		try {
 			
 			double result = StringUtil.calculate("3 +4 - 2");
@@ -145,7 +175,21 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate8() {
+	void testCalculate4_4() {
+		try {
+			
+			double result = StringUtil.calculate("3.14 +4,000 - 2");
+			assertEquals(4001.14, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
+	
+	@Test
+	void testCalculate4_5() {
 		try {
 			
 			double result = StringUtil.calculate("3*4/ 2 + -2 * 2.5 - 1");
@@ -158,10 +202,10 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testCalculate9() {
+	void testCalculate4_6() {
 		try {
 			
-			double result = StringUtil.calculate("3*4/(2 + -1)* 2.5 - 1");
+			double result = StringUtil.calculate("3,000*4/(2,000 + -1,000.0)* 2.5 - 1");
 			assertEquals(29, result);
 			
 		} catch(Exception ex) {
