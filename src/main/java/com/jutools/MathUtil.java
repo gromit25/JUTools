@@ -146,6 +146,17 @@ public class MathUtil {
 	
 	/**
 	 * 수학 수식 문자열을 계산하여 반환하는 메소드
+	 * 
+	 * @param exp 계산할 수학 수식 문자열
+	 * @param values
+	 * @return 계산 결과
+	 */
+	public static double calculate(String exp, HashMap<String, Object> values) throws Exception {
+		return MathExp.calculate(exp, values);
+	}
+	
+	/**
+	 * 수학 수식 문자열을 계산하여 반환하는 메소드
 	 * -> 단위가 있는 경우 단위까지 반환
 	 * 
 	 * @param exp 계산할 수학 수식 문자열
@@ -154,6 +165,19 @@ public class MathUtil {
 	public static MathResult calculateWithUnit(String exp) throws Exception {
 		return MathExp.calculateWithUnit(exp);
 	}
+	
+	/**
+	 * 수학 수식 문자열을 계산하여 반환하는 메소드
+	 * -> 단위가 있는 경우 단위까지 반환
+	 * 
+	 * @param exp 계산할 수학 수식 문자열
+	 * @param values
+	 * @return 계산 결과
+	 */
+	public static MathResult calculateWithUnit(String exp, HashMap<String, Object> values) throws Exception {
+		return MathExp.calculateWithUnit(exp);
+	}
+
 	
 	/**
 	 * 천자리 콤마 추가

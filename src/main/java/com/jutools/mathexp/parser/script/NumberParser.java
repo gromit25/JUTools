@@ -86,7 +86,7 @@ public class NumberParser extends AbstractParser<Instruction> {
 	 */
 	protected void exit() throws Exception {
 		
-		// LOAD "숫자"
+		// LOAD_NUMBER "숫자"
 		LOAD_NUMBER inst = new LOAD_NUMBER();
 		inst.addParam(this.buffer.toString());
 		this.setNodeData(inst);

@@ -2,6 +2,8 @@ package com.jutools;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Test;
 
 import com.jutools.mathexp.MathResult;
@@ -239,6 +241,38 @@ class MathUtilTest {
 			
 			double result = MathUtil.calculate("3*4/ 2 + -2 * 2.5 daM");
 			assertEquals(10, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate6_1() {
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			values.put("val", (float)12);
+			
+			double result = MathUtil.calculate("3 + val", values);
+			assertEquals(15, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate6_2() {
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			values.put("val", -1000);
+			
+			double result = MathUtil.calculate("3,000*4/(2,000 + val )* 2.5 - 1", values);
+			assertEquals(29, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
