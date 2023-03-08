@@ -5,12 +5,19 @@ import java.util.HashMap;
 
 import com.jutools.mathexp.MathExp;
 
+/**
+ * 산술 처리 관련 Utility 클래스
+ * 
+ * @author jmsohn
+ */
 public class MathUtil {
 	
+	/** 단위 접두사(unit prefix) 목록 */
 	private static HashMap<String, Double> unitPrefixMap;
 	
 	static {
 		
+		// 단위 접두사(unit prefix) 목록 초기화
 		unitPrefixMap = new HashMap<String, Double>();
 		
 		// https://en.wikipedia.org/wiki/Metric_prefix
@@ -53,13 +60,67 @@ public class MathUtil {
 	}
 	
 	/**
+	 * 단위(unit)을 접두사(prefix)와 기본 단위(base)로 분리하는 메소드
 	 * 
+	 * @param unit 분리할 단위
+	 * @return 나누어진 접두사(prefix)와 기본 단위(base)<br>
+	 *         배열의 0은 접두사(prefix), prefix가 없을 경우 ""<br>
+	 *         배열의 1은 기본 단위(base)<br>
+	 */
+	public static String[] devideUnitToPrefixAndBase(String unit) throws Exception {
+		
+		if(unit == null) {
+			throw new NullPointerException("unit is null");
+		}
+		
+		unit = unit.trim();	// 공백 제거
+		if(unit.isEmpty() == true) {
+			return new String[] {"", ""};
+		}
+		
+		// 단위 접두사
+		String unitPrefix = "";
+		// 기본 단위
+		String baseUnit = "";
+		
+		if(unit.length() > 2 && unit.startsWith("da")) {
+			
+			// SI 단위계에서 유일한 2자 접두어
+			unitPrefix = "da";
+			baseUnit = unit.substring(2, unit.length());
+			
+		} else if(unit.length() > 2 && unit.charAt(1) == 'i') {
+			
+			// 바이트 단위에서 사용하는 Ki(Kibi), Mi(Mibi) ...
+			unitPrefix = unit.substring(0, 2);
+			baseUnit = unit.substring(2, unit.length());
+			
+		} else if(unit.length() > 1) {
+			
+			// 앞의 1자리만 접두어
+			unitPrefix = unit.substring(0, 1);
+			baseUnit = unit.substring(1, unit.length());
+			
+		}
+		
+		// 접두사가 등록되어 있는 것이 없는 경우
+		// 단위(unit) 문자열에 접두사가 없는 것으로 간주함
+		if(unitPrefix.isEmpty() == false && unitPrefixMap.containsKey(unitPrefix) == false) {
+			unitPrefix = "";
+			baseUnit = unit;
+		}
+		
+		return new String[] {unitPrefix, baseUnit};
+	}
+	
+	/**
+	 * 단위 접두사(unitPrefix)에 해당하는 factor 값을 반환하는 메소드<br>
 	 * 참조)<br>
 	 * https://en.wikipedia.org/wiki/Metric_prefix<br>
 	 * https://en.wikipedia.org/wiki/Binary_prefix
 	 * 
-	 * @param unitPrefix
-	 * @return
+	 * @param unitPrefix 단위 접두사
+	 * @return 단위 접두사의 factor 값
 	 */
 	public static double unitPrefixToFactor(String unitPrefix) throws Exception {
 		
@@ -73,33 +134,10 @@ public class MathUtil {
 	}
 	
 	/**
+	 * 수학 수식 문자열을 계산하여 반환하는 메소드
 	 * 
-	 * 
-	 * @param value
-	 * @param unitPrefix
-	 * @return
-	 */
-	public static double toFullValue(double value, String unitPrefix) throws Exception {
-		return value * unitPrefixToFactor(unitPrefix); 
-	}
-	
-	
-	/**
-	 * 
-	 * 
-	 * @param value
-	 * @param unitPrefix
-	 * @return
-	 */
-	public static double toUnitValue(double value, String unitPrefix) throws Exception {
-		return value / unitPrefixToFactor(unitPrefix); 
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param exp
-	 * @return
+	 * @param exp 계산할 수학 수식 문자열
+	 * @return 계산 결과
 	 */
 	public static double calculate(String exp) throws Exception {
 		return MathExp.calculate(exp);

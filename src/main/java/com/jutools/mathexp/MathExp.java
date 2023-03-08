@@ -6,7 +6,6 @@ import java.util.Stack;
 
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.parser.TreeNode;
-import com.jutools.mathexp.parser.script.ArithmaticParser;
 import com.jutools.mathexp.parser.script.UnitParser;
 
 import lombok.Getter;
@@ -19,26 +18,20 @@ import lombok.Getter;
 public class MathExp {
 	
 	@Getter
-	private Stack<Object> stack;
+	private Stack<Object> stack = new Stack<Object>();
 	@Getter
 	private HashMap<String, Object> values;
 	
 	/**
 	 * 
-	 * @param stack
 	 * @param values
 	 */
-	private MathExp(Stack<Object> stack, HashMap<String, Object> values) throws Exception {
-		
-		if(stack == null) {
-			throw new NullPointerException("stack is null");
-		}
+	private MathExp(HashMap<String, Object> values) throws Exception {
 		
 		if(values == null) {
 			throw new NullPointerException("values is null");
 		}
 		
-		this.stack = stack;
 		this.values = values;
 	}
 	
@@ -47,8 +40,33 @@ public class MathExp {
 	 * 
 	 */
 	private MathExp() throws Exception {
-		this(new Stack<Object>(), new HashMap<String, Object>());
+		this(new HashMap<String, Object>());
 	}
+
+	/**
+	 * 
+	 * @param exp
+	 * @param values
+	 * @return
+	 */
+	public static MathResult calculateWithUnit(String exp, HashMap<String, Object> values) throws Exception {
+		
+		UnitParser parser = new UnitParser();
+		TreeNode<Instruction> insts = parser.parse(exp);
+		
+		return MathExp.create(values).execute(insts).getResult();
+	}
+	
+	/**
+	 * 
+	 * @param exp
+	 * @param values
+	 * @return
+	 */
+	public static MathResult calculateWithUnit(String exp) throws Exception {
+		return calculateWithUnit(exp, new HashMap<String, Object>());
+	}
+
 	
 	/**
 	 * 
@@ -57,11 +75,7 @@ public class MathExp {
 	 * @return
 	 */
 	public static double calculate(String exp, HashMap<String, Object> values) throws Exception {
-		
-		UnitParser parser = new UnitParser();
-		TreeNode<Instruction> insts = parser.parse(exp);
-		
-		return (double)MathExp.create(new Stack<Object>(), values).execute(insts).getResult(); 
+		return calculateWithUnit(exp, values).getValue(); 
 	}
 
 	/**
@@ -85,12 +99,11 @@ public class MathExp {
 	
 	/**
 	 * 
-	 * @param stack
 	 * @param values
 	 * @return
 	 */
-	public static MathExp create(Stack<Object> stack, HashMap<String, Object> values) throws Exception {
-		return new MathExp(stack, values);
+	public static MathExp create(HashMap<String, Object> values) throws Exception {
+		return new MathExp(values);
 	}
 	
 	/**
@@ -138,7 +151,13 @@ public class MathExp {
 	 * 
 	 * @return
 	 */
-	public Object getResult() throws Exception {
-		return this.stack.pop();
+	public MathResult getResult() throws Exception {
+		
+		MathResult result = new MathResult();
+		
+		result.setValue((double)this.stack.pop());
+		result.setBaseUnit(this.stack.pop().toString());
+		
+		return result;
 	}
 }

@@ -231,6 +231,19 @@ class MathUtilTest {
 	}
 	
 	@Test
+	void testCalculate5_5() {
+		try {
+			
+			double result = MathUtil.calculate("3*4/ 2 + -2 * 2.5 daM");
+			assertEquals(10, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	void testToThousandCommaStr1_1() {
 		String value = MathUtil.toThousandCommaStr((int)10000);
 		assertEquals("10,000", value);

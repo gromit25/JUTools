@@ -3,7 +3,9 @@ package com.jutools.mathexp.parser.script;
 import com.jutools.MathUtil;
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.instructions.LOAD_NUMBER;
+import com.jutools.mathexp.instructions.LOAD_STRING;
 import com.jutools.mathexp.instructions.MUL;
+import com.jutools.mathexp.instructions.NOP;
 import com.jutools.mathexp.parser.AbstractParser;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
@@ -96,38 +98,31 @@ public class UnitParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		//
-		this.setNodeData(new MUL());
-		
-		//
-		this.addChild(this.value);
-		
-		//
+		// 단위(unit)을 접두사(unit prefix)와 기본단위(base unit)로 분리함
 		String unit = this.unitBuffer.toString();
-		String unitPrefix = "";
+		String[] unitPrefixAndBase = MathUtil.devideUnitToPrefixAndBase(unit);
+		String unitPrefix = unitPrefixAndBase[0];
+		String baseUnit = unitPrefixAndBase[0];
+
+		//
+		this.setNodeData(new NOP());
+		this.addChildData(new LOAD_STRING().addParam(baseUnit));
 		
-		if(unit.length() > 2 && unit.startsWith("da")) {
-			
-			// SI 단위계 유일한 2자 접두어
-			unitPrefix = "da";
-			
-		} else if(unit.length() > 2 && unit.charAt(1) == 'i') {
-			
-			// 바이트 단위에서 사용하는 Ki(Kibi), Mi(Mibi) ...
-			unitPrefix = unit.substring(0, 2);
-			
-		} else if(unit.length() > 1) {
-			
-			unitPrefix = unit.substring(0, 1);
-			
-		}
+		//
+		TreeNode<Instruction> valueNode = new TreeNode<Instruction>(new MUL());
+		
+		//
+		valueNode.addChild(this.value);
 		
 		//
 		double factor = MathUtil.unitPrefixToFactor(unitPrefix);
-		this.addChildData(
+		TreeNode<Instruction> factorNode = new TreeNode<Instruction>(
 			new LOAD_NUMBER().addParam(Double.toString(factor))
 		);
 		
+		valueNode.addChild(factorNode);
+		
+		this.addChild(valueNode);
 	}
 
 }
