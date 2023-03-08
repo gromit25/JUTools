@@ -7,6 +7,7 @@ import java.util.Stack;
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.parser.TreeNode;
 import com.jutools.mathexp.parser.script.ArithmaticParser;
+import com.jutools.mathexp.parser.script.UnitParser;
 
 import lombok.Getter;
 
@@ -57,7 +58,7 @@ public class MathExp {
 	 */
 	public static double calculate(String exp, HashMap<String, Object> values) throws Exception {
 		
-		ArithmaticParser parser = new ArithmaticParser();
+		UnitParser parser = new UnitParser();
 		TreeNode<Instruction> insts = parser.parse(exp);
 		
 		return (double)MathExp.create(new Stack<Object>(), values).execute(insts).getResult(); 

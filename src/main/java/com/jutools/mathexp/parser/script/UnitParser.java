@@ -59,6 +59,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 		
 		// 종료 상태 추가
 		this.putEndStatus("ARITHMATIC");
+		this.putEndStatus("UNIT");
 		this.putEndStatus("UNIT_END", 1); // UNIT_END 상태로 들어오면 Parsing을 중지
 
 	}
@@ -105,12 +106,12 @@ public class UnitParser extends AbstractParser<Instruction> {
 		String unit = this.unitBuffer.toString();
 		String unitPrefix = "";
 		
-		if(unit.startsWith("da") && unit.length() > 2) {
+		if(unit.length() > 2 && unit.startsWith("da")) {
 			
 			// SI 단위계 유일한 2자 접두어
 			unitPrefix = "da";
 			
-		} else if(unit.charAt(1) == 'i' && unit.length() > 2) {
+		} else if(unit.length() > 2 && unit.charAt(1) == 'i') {
 			
 			// 바이트 단위에서 사용하는 Ki(Kibi), Mi(Mibi) ...
 			unitPrefix = unit.substring(0, 2);

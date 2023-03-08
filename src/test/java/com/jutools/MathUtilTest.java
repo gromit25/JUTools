@@ -166,6 +166,71 @@ class MathUtilTest {
 	}
 	
 	@Test
+	void testCalculate4_7() {
+		try {
+			
+			double result = MathUtil.calculate("3,000 / 0");
+			assertTrue(Double.isInfinite(result));
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate5_1() {
+		try {
+			
+			double result = MathUtil.calculate("300 KB");
+			assertEquals(300000, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate5_2() {
+		try {
+			
+			double result = MathUtil.calculate("300 / 30 kB");
+			assertEquals(10000, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate5_3() {
+		try {
+			
+			double result = MathUtil.calculate("3*4/ 2 + -2 * 2.5 MB");
+			assertEquals(1000000, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate5_4() {
+		try {
+			
+			double result = MathUtil.calculate("3*4/ 2 + -2 * 2.5 MiB");
+			assertEquals(1048576, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	void testToThousandCommaStr1_1() {
 		String value = MathUtil.toThousandCommaStr((int)10000);
 		assertEquals("10,000", value);
