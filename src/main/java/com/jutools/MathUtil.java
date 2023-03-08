@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import com.jutools.mathexp.MathExp;
+import com.jutools.mathexp.MathResult;
 
 /**
  * 산술 처리 관련 Utility 클래스
@@ -141,6 +142,17 @@ public class MathUtil {
 	 */
 	public static double calculate(String exp) throws Exception {
 		return MathExp.calculate(exp);
+	}
+	
+	/**
+	 * 수학 수식 문자열을 계산하여 반환하는 메소드
+	 * -> 단위가 있는 경우 단위까지 반환
+	 * 
+	 * @param exp 계산할 수학 수식 문자열
+	 * @return 계산 결과
+	 */
+	public static MathResult calculateWithUnit(String exp) throws Exception {
+		return MathExp.calculateWithUnit(exp);
 	}
 	
 	/**

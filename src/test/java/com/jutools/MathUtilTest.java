@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.jutools.mathexp.MathResult;
+
 class MathUtilTest {
 
 	@Test
@@ -221,8 +223,9 @@ class MathUtilTest {
 	void testCalculate5_4() {
 		try {
 			
-			double result = MathUtil.calculate("3*4/ 2 + -2 * 2.5 MiB");
-			assertEquals(1048576, result);
+			MathResult result = MathUtil.calculateWithUnit("3*4/ 2 + -2 * 2.5 MiB");
+			assertEquals(1048576, result.getValue());
+			assertEquals("B", result.getBaseUnit());
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

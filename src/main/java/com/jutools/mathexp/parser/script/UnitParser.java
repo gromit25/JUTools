@@ -102,7 +102,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 		String unit = this.unitBuffer.toString();
 		String[] unitPrefixAndBase = MathUtil.devideUnitToPrefixAndBase(unit);
 		String unitPrefix = unitPrefixAndBase[0];
-		String baseUnit = unitPrefixAndBase[0];
+		String baseUnit = unitPrefixAndBase[1];
 
 		//
 		this.setNodeData(new NOP());
