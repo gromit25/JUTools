@@ -27,7 +27,7 @@ class MathUtilTest {
 	void testCalculate1_2() {
 		try {
 			
-			double result = MathUtil.calculate("-12,345.67");
+			double result = MathUtil.calculate("-12345.67");
 			assertEquals(-12345.67, result);
 			
 		} catch(Exception ex) {
@@ -80,7 +80,7 @@ class MathUtilTest {
 	void testCalculate3_3() {
 		try {
 			
-			double result = MathUtil.calculate("3,000 * 4 / 2");
+			double result = MathUtil.calculate("3000 * 4 / 2");
 			assertEquals(6000, result);
 			
 		} catch(Exception ex) {
@@ -107,7 +107,7 @@ class MathUtilTest {
 	void testCalculate4_2() {
 		try {
 			
-			double result = MathUtil.calculate("3*(4 + 2,000)");
+			double result = MathUtil.calculate("3*(4 + 2000)");
 			assertEquals(6012, result);
 			
 		} catch(Exception ex) {
@@ -133,7 +133,7 @@ class MathUtilTest {
 	void testCalculate4_4() {
 		try {
 			
-			double result = MathUtil.calculate("3.14 +4,000 - 2");
+			double result = MathUtil.calculate("3.14 +4000 - 2");
 			assertEquals(4001.14, result);
 			
 		} catch(Exception ex) {
@@ -160,7 +160,7 @@ class MathUtilTest {
 	void testCalculate4_6() {
 		try {
 			
-			double result = MathUtil.calculate("3,000*4/(2,000 + -1,000.0)* 2.5 - 1");
+			double result = MathUtil.calculate("3000*4/(2000 + -1000.0)* 2.5 - 1");
 			assertEquals(29, result);
 			
 		} catch(Exception ex) {
@@ -173,7 +173,7 @@ class MathUtilTest {
 	void testCalculate4_7() {
 		try {
 			
-			double result = MathUtil.calculate("3,000 / 0");
+			double result = MathUtil.calculate("3000 / 0");
 			assertTrue(Double.isInfinite(result));
 			
 		} catch(Exception ex) {
@@ -271,7 +271,7 @@ class MathUtilTest {
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			values.put("val", -1000);
 			
-			double result = MathUtil.calculate("3,000*4/(2,000 + val )* 2.5 - 1", values);
+			double result = MathUtil.calculate("3000*4/(2000 + val )* 2.5 - 1", values);
 			assertEquals(29, result);
 			
 		} catch(Exception ex) {

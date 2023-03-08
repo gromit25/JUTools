@@ -43,13 +43,13 @@ public class NumberParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("SIGN", new TransferBuilder()
 				.add("0-9", "NUMBER")
-				.add("^0-9\\,", "ERROR", true)
+				.add("^0-9", "ERROR", true)
 				.build());
 		
 		this.putTransferMap("NUMBER", new TransferBuilder()
-				.add("0-9\\,", "NUMBER")
+				.add("0-9", "NUMBER")
 				.add("\\.", "DOT")
-				.add("^0-9\\,\\.", "END", true)
+				.add("^0-9\\.", "END", true)
 				.build());
 		
 		this.putTransferMap("DOT", new TransferBuilder()
@@ -73,11 +73,6 @@ public class NumberParser extends AbstractParser<Instruction> {
 			target={"SIGN", "NUMBER", "DOT", "FLOATING_NUMBER"}
 	)
 	public void handleNumber(Event event) {
-		
-		if(event.getChar() == ',') {	// 숫자에 천자리 구분자 삭제
-			return;
-		}
-		
 		this.buffer.append(event.getChar());
 	}
 	
