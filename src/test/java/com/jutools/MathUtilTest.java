@@ -331,6 +331,19 @@ class MathUtilTest {
 	}
 	
 	@Test
+	void testCalculate7_5() {
+		try {
+			
+			double result = MathUtil.calculate("16 * (1/pow(2, 3)) + 2");
+			assertEquals(4, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	void testToThousandCommaStr1_1() {
 		String value = MathUtil.toThousandCommaStr((int)10000);
 		assertEquals("10,000", value);
