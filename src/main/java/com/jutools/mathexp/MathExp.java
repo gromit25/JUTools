@@ -148,7 +148,7 @@ public class MathExp {
 			invokeInst.setMethod(method);
 		}
 		
-		return null;
+		return this;
 	}
 	
 	/**

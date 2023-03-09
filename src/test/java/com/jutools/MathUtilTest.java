@@ -296,8 +296,8 @@ class MathUtilTest {
 	void testCalculate7_2() {
 		try {
 			
-			double result = MathUtil.calculate("test(1 + 2) + 3");
-			assertEquals(29, result);
+			double result = MathUtil.calculate("round(1 + 2.2) + 3");
+			assertEquals(6, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -309,12 +309,11 @@ class MathUtilTest {
 	void testCalculate7_3() {
 		try {
 			
-			double result = MathUtil.calculate("test (1 + 2) + 3");
-			assertEquals(29, result);
+			MathUtil.calculate("round (1 + 2) + 3");
+			fail("exception is expected!");
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
-			fail("exception is occured");
+			assertTrue(true);
 		}
 	}
 	
