@@ -8,7 +8,6 @@ import java.util.Stack;
 
 import com.jutools.mathexp.instructions.INVOKE;
 import com.jutools.mathexp.instructions.Instruction;
-import com.jutools.mathexp.parser.TreeNode;
 import com.jutools.mathexp.parser.script.UnitParser;
 
 import lombok.Getter;
