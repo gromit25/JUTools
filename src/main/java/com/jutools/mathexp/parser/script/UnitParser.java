@@ -7,6 +7,7 @@ import com.jutools.mathexp.instructions.LOAD_STRING;
 import com.jutools.mathexp.instructions.MUL;
 import com.jutools.mathexp.instructions.NOP;
 import com.jutools.mathexp.parser.AbstractParser;
+import com.jutools.mathexp.parser.EndStatusType;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
@@ -62,7 +63,8 @@ public class UnitParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("ARITHMATIC");
 		this.putEndStatus("UNIT");
-		this.putEndStatus("UNIT_END", 1); // UNIT_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("UNIT_END", EndStatusType.IMMEDIATELY_END); // UNIT_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ERROR", EndStatusType.ERROR);
 
 	}
 	

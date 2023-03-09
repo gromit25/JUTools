@@ -2,6 +2,7 @@ package com.jutools.mathexp.parser.script;
 
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.parser.AbstractParser;
+import com.jutools.mathexp.parser.EndStatusType;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 
@@ -50,9 +51,10 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("NUMBER", 1);
-		this.putEndStatus("VAR", 1);
-		this.putEndStatus("EXPRESSION_END", 1); // EXPRESSION_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("NUMBER", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("VAR", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("EXPRESSION_END", EndStatusType.IMMEDIATELY_END); // EXPRESSION_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 
 	@TransferEventHandler(

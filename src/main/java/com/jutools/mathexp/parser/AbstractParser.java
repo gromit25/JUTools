@@ -40,7 +40,7 @@ public abstract class AbstractParser<T> {
 	 * 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류<br>
 	 * 종료 상태 종류 : 0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료
 	 */
-	private HashMap<String, Integer> endStatus = new HashMap<String, Integer>();
+	private HashMap<String, EndStatusType> endStatus = new HashMap<String, EndStatusType>();
 
 	/**
 	 * 생성자
@@ -151,7 +151,7 @@ public abstract class AbstractParser<T> {
 	 * @param endStatus 종료 상태 명
 	 * @param type 종료 상태 종류
 	 */
-	protected void putEndStatus(String endStatus, int type) {
+	protected void putEndStatus(String endStatus, EndStatusType type) {
 		this.endStatus.put(endStatus, type);
 	}
 
@@ -161,7 +161,7 @@ public abstract class AbstractParser<T> {
 	 * @param endStatus 종료 상태 명
 	 */
 	protected void putEndStatus(String endStatus) {
-		this.putEndStatus(endStatus, 0);
+		this.putEndStatus(endStatus, EndStatusType.NORMAL_END);
 	}
 	
 	/**
@@ -273,9 +273,9 @@ public abstract class AbstractParser<T> {
 				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
 			}
 			
-			// 종료 상태의 종류가 1이면 parsing 종료 처리함
+			// 종료 상태의 종류가 IMMEDIATELY_END이면 parsing 종료 처리함
 			if(this.endStatus.containsKey(this.status) == true
-				&& this.endStatus.get(this.status) == 1) {
+				&& this.endStatus.get(this.status) == EndStatusType.IMMEDIATELY_END) {
 				
 				break;
 			}

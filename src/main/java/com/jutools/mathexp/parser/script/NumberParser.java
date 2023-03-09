@@ -3,6 +3,7 @@ package com.jutools.mathexp.parser.script;
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.instructions.LOAD_NUMBER;
 import com.jutools.mathexp.parser.AbstractParser;
+import com.jutools.mathexp.parser.EndStatusType;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 
@@ -65,7 +66,8 @@ public class NumberParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("NUMBER");
 		this.putEndStatus("FLOATING_NUMBER");
-		this.putEndStatus("END", 1); // END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 	
 	@TransferEventHandler(

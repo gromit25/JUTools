@@ -35,7 +35,6 @@ class MathUtilTest {
 			fail("exception is occured");
 		}
 	}
-
 	
 	@Test
 	void testCalculate2_1() {
@@ -272,6 +271,45 @@ class MathUtilTest {
 			values.put("val", -1000);
 			
 			double result = MathUtil.calculate("3000*4/(2000 + val )* 2.5 - 1", values);
+			assertEquals(29, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate7_1() {
+		try {
+			
+			double result = MathUtil.calculate("test()");
+			assertEquals(29, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate7_2() {
+		try {
+			
+			double result = MathUtil.calculate("test(1 + 2) + 3");
+			assertEquals(29, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate7_3() {
+		try {
+			
+			double result = MathUtil.calculate("test (1 + 2) + 3");
 			assertEquals(29, result);
 			
 		} catch(Exception ex) {

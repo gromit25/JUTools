@@ -4,6 +4,7 @@ import com.jutools.mathexp.instructions.DIV;
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.instructions.MUL;
 import com.jutools.mathexp.parser.AbstractParser;
+import com.jutools.mathexp.parser.EndStatusType;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
@@ -74,7 +75,7 @@ public class TermParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("FACTOR_1");
 		this.putEndStatus("FACTOR_2");
-		this.putEndStatus("TERM_END", 1); // TERM_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("TERM_END", EndStatusType.IMMEDIATELY_END); // TERM_END 상태로 들어오면 Parsing을 중지
 	}
 	
 	/**

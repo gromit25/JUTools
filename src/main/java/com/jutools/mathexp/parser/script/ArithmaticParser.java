@@ -4,6 +4,7 @@ import com.jutools.mathexp.instructions.ADD;
 import com.jutools.mathexp.instructions.Instruction;
 import com.jutools.mathexp.instructions.MINUS;
 import com.jutools.mathexp.parser.AbstractParser;
+import com.jutools.mathexp.parser.EndStatusType;
 import com.jutools.mathexp.parser.TransferBuilder;
 import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
@@ -65,7 +66,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("TERM_1");
 		this.putEndStatus("TERM_2");
-		this.putEndStatus("ARITHMATIC_END", 1); // ARITHMATIC_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ARITHMATIC_END", EndStatusType.IMMEDIATELY_END); // ARITHMATIC_END 상태로 들어오면 Parsing을 중지
 	}
 
 	/**
