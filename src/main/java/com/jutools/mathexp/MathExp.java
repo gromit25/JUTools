@@ -82,7 +82,7 @@ public class MathExp {
 		for(Method method: methodClass.getMethods()) {
 			
 			//
-			MethodMap methodMap = method.getAnnotation(MethodMap.class);
+			MethodAlias methodMap = method.getAnnotation(MethodAlias.class);
 			if(methodMap == null) {
 				continue;
 			}

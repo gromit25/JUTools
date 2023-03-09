@@ -7,12 +7,12 @@ package com.jutools.mathexp;
  */
 public class BuiltInMethods {
 	
-	@MethodMap(alias = "round")
+	@MethodAlias(alias = "round")
 	public static double round(double value) {
 		return Math.round(value);
 	}
 	
-	@MethodMap(alias = "pow")
+	@MethodAlias(alias = "pow")
 	public static double pow(double base, double exponent) {
 		return Math.pow(base, exponent);
 	}
