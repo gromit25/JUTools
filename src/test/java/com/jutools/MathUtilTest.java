@@ -318,6 +318,19 @@ class MathUtilTest {
 	}
 	
 	@Test
+	void testCalculate7_4() {
+		try {
+			
+			double result = MathUtil.calculate("pow(2, 3)");
+			assertEquals(8, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	void testToThousandCommaStr1_1() {
 		String value = MathUtil.toThousandCommaStr((int)10000);
 		assertEquals("10,000", value);
