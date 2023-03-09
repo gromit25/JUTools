@@ -3,6 +3,11 @@ package com.jutools.mathexp.instructions;
 import java.util.HashMap;
 import java.util.Stack;
 
+/**
+ * 덧셈 명령어 클래스
+ * 
+ * @author jmsohn
+ */
 public class ADD extends Instruction {
 
 	@Override

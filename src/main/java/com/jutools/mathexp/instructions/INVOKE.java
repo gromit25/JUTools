@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
+ * 메소드 호출 명령어 클래스
  * 
  * @author jmsohn
  */

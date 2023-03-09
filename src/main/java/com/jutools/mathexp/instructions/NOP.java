@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * 
+ * No Operation 명령어 클래스
  * 
  * @author jmsohn
  */
