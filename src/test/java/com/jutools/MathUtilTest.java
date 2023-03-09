@@ -283,8 +283,8 @@ class MathUtilTest {
 	void testCalculate7_1() {
 		try {
 			
-			double result = MathUtil.calculate("test()");
-			assertEquals(29, result);
+			double result = MathUtil.calculate("round(12.34)");
+			assertEquals(12, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

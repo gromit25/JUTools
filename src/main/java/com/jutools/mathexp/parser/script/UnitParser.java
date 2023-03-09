@@ -91,7 +91,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 			target={"UNIT"}
 	)
 	public void handleUnit(Event event) throws Exception {
-		this.unitBuffer.append(event.getChar());
+		this.unitBuffer.append(event.getCh());
 	}
 
 	/**

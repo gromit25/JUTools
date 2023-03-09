@@ -94,12 +94,12 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	)
 	public void handleOp(Event event) throws Exception {
 		
-		if(event.getChar() == '+') {
+		if(event.getCh() == '+') {
 			this.operation = new ADD();
-		} else if(event.getChar() == '-') {
+		} else if(event.getCh() == '-') {
 			this.operation = new MINUS();
 		} else {
-			throw new Exception("Unexpected operation:" + event.getChar());
+			throw new Exception("Unexpected operation:" + event.getCh());
 		}
 		
 	}

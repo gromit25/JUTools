@@ -75,7 +75,7 @@ public class NumberParser extends AbstractParser<Instruction> {
 			target={"SIGN", "NUMBER", "DOT", "FLOATING_NUMBER"}
 	)
 	public void handleNumber(Event event) {
-		this.buffer.append(event.getChar());
+		this.buffer.append(event.getCh());
 	}
 	
 	/**

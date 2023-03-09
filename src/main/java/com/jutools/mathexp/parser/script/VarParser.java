@@ -85,7 +85,7 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"VAR"}
 	)
 	public void handleNumber(Event event) throws Exception {
-		this.buffer.append(event.getChar());
+		this.buffer.append(event.getCh());
 	}
 	
 	@TransferEventHandler(

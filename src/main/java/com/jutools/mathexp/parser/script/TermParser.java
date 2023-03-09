@@ -101,12 +101,12 @@ public class TermParser extends AbstractParser<Instruction> {
 	)
 	public void handleOp(Event event) throws Exception {
 		
-		if(event.getChar() == '*') {
+		if(event.getCh() == '*') {
 			this.operation = new MUL();
-		} else if(event.getChar() == '/') {
+		} else if(event.getCh() == '/') {
 			this.operation = new DIV();
 		} else {
-			throw new Exception("Unexpected operation:" + event.getChar());
+			throw new Exception("Unexpected operation:" + event.getCh());
 		}
 		
 	}

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -273,6 +274,12 @@ public abstract class AbstractParser<T> {
 				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
 			}
 			
+			// 상태가 ERROR 상태일 경우 예외 발생 시킴
+			if(this.endStatus.containsKey(this.status) == true
+				&& this.endStatus.get(this.status) == EndStatusType.ERROR) {
+				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
+			}
+			
 			// 종료 상태의 종류가 IMMEDIATELY_END이면 parsing 종료 처리함
 			if(this.endStatus.containsKey(this.status) == true
 				&& this.endStatus.get(this.status) == EndStatusType.IMMEDIATELY_END) {
@@ -342,20 +349,14 @@ public abstract class AbstractParser<T> {
 	 */
 	protected static class Event {
 		
+		@Getter
 		private char ch;
-		private PushbackReader in;
+		@Getter
+		private PushbackReader reader;
 		
-		public Event(char ch, PushbackReader in) {
+		public Event(char ch, PushbackReader reader) {
 			this.ch = ch;
-			this.in = in;
-		}
-		
-		public char getChar() {
-			return this.ch;
-		}
-		
-		public PushbackReader getReader() {
-			return this.in;
+			this.reader = reader;
 		}
 	}
 }
