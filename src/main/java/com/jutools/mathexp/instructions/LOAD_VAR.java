@@ -1,6 +1,6 @@
 package com.jutools.mathexp.instructions;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Stack;
 public class LOAD_VAR extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, HashMap<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
 		
 		Object value = values.get(this.getParam(0));
 		Class<?> valueClass = value.getClass();

@@ -1,7 +1,7 @@
 package com.jutools.mathexp.instructions;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class INVOKE extends Instruction {
 	private Method method;
 
 	@Override
-	public void execute(Stack<Object> stack, HashMap<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
 		
 		if(this.method == null) {
 			throw new NullPointerException("method is null(check link process)");

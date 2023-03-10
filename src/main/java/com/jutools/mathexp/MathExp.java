@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import com.jutools.mathexp.instructions.INVOKE;
@@ -24,16 +25,16 @@ public class MathExp {
 	private Stack<Object> stack = new Stack<Object>();
 	/** 산술식 처리시 변수 목록(일종의 메모리 역활) */
 	@Getter
-	private HashMap<String, Object> values;
+	private Map<String, Object> values;
 	/** 산술 내의 실행할 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
-	private HashMap<String, Method> methods = new HashMap<String, Method>();
+	private Map<String, Method> methods = new HashMap<String, Method>();
 	
 	/**
 	 * 생성자(외부 생성 불가)
 	 * 
 	 * @param values 산술식 처리시 변수 목록
 	 */
-	private MathExp(HashMap<String, Object> values) throws Exception {
+	private MathExp(Map<String, Object> values) throws Exception {
 		
 		if(values == null) {
 			throw new NullPointerException("values is null");
@@ -65,7 +66,7 @@ public class MathExp {
 	 * @param values
 	 * @return
 	 */
-	public static MathExp create(HashMap<String, Object> values) throws Exception {
+	public static MathExp create(Map<String, Object> values) throws Exception {
 		return new MathExp(values);
 	}
 	
@@ -223,7 +224,7 @@ public class MathExp {
 	 * @param values 산술식 처리시 변수 목록
 	 * @return 수식 수행 결과(단위 포함)
 	 */
-	public static MathResult calculateWithUnit(String exp, HashMap<String, Object> values) throws Exception {
+	public static MathResult calculateWithUnit(String exp, Map<String, Object> values) throws Exception {
 		return MathExp.create(values).execute(exp).getResult();
 	}
 	
@@ -244,7 +245,7 @@ public class MathExp {
 	 * @param exp 수식
 	 * @return 수식 수행 결과
 	 */
-	public static double calculate(String exp, HashMap<String, Object> values) throws Exception {
+	public static double calculate(String exp, Map<String, Object> values) throws Exception {
 		return calculateWithUnit(exp, values).getValue(); 
 	}
 
