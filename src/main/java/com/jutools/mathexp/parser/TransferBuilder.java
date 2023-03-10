@@ -3,13 +3,13 @@ package com.jutools.mathexp.parser;
 import java.util.ArrayList;
 
 /**
- * 전이함수 생성 클래스
+ * 전이함수 생성(Builder) 클래스
  * 
  * @author jmsohn
  */
 public class TransferBuilder {
 	
-	/** */
+	/** 전이함수의 명세(specification) 목록 */
 	private ArrayList<Object[]> specs;
 	
 	/**
@@ -20,10 +20,12 @@ public class TransferBuilder {
 	}
 	
 	/**
+	 * 전이함수 명세 추가
 	 * 
-	 * @param pattern
-	 * @param nextStatus
-	 * @return
+	 * @param pattern 전이가 발생하는 character 종류
+	 * @param nextStatus 전이 상태
+	 * @param bushback 전이가 발생할 시 pushback을 할 것인지 여부
+	 * @return 현재 객체(fluent 코딩용)
 	 */
 	public TransferBuilder add(String pattern, String nextStatus, boolean pushback) throws Exception {
 		
@@ -38,11 +40,11 @@ public class TransferBuilder {
 	}
 	
 	/**
+	 * 전이함수 명세 추가
 	 * 
-	 * 
-	 * @param pattern
-	 * @param nextStatus
-	 * @return
+	 * @param pattern 전이가 발생하는 character 종류
+	 * @param nextStatus 전이 상태
+	 * @return 현재 객체(fluent 코딩용)
 	 */
 	public TransferBuilder add(String pattern, String nextStatus) throws Exception {
 		return this.add(pattern, nextStatus, false);
@@ -50,8 +52,9 @@ public class TransferBuilder {
 
 	
 	/**
+	 * 설정된 전이함수 명세를 이용하여 전이함수 객체(Transfer) 생성
 	 * 
-	 * @return
+	 * @return 생성된 전이함수 객체 목록
 	 */
 	public ArrayList<Transfer> build() throws Exception {
 		
