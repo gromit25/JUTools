@@ -10,27 +10,28 @@ import com.jutools.mathexp.parser.TransferEventHandler;
 import com.jutools.mathexp.parser.TreeNode;
 
 /**
+ * *,/ 연산 파싱 수행
  * 
  * @author jmsohn
  */
 public class TermParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** *,/ 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
-	/** */
+	/** *,/ 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
-	/** */
+	/** *,/ 연산 */
 	private Instruction operation;
 
 	/**
-	 * 
+	 * 생성자
 	 */
 	public TermParser() throws Exception {
 		super();
 	}
 
 	/**
-	 * 
+	 * 시작상태 반환
 	 */
 	@Override
 	protected String getStartStatus() {
@@ -38,7 +39,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * 
+	 * 초기화 수행
 	 */
 	@Override
 	protected void init() throws Exception {
@@ -48,7 +49,7 @@ public class TermParser extends AbstractParser<Instruction> {
 		this.p2 = null;
 		this.operation = null;
 		
-		// 상태 변환 맵 추가
+		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
 				.add("\\*\\/", "OPERATION")
@@ -79,6 +80,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * *,/의 첫번째 파라미터 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
@@ -92,6 +94,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * *,/의 연산자 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
@@ -112,6 +115,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * *,/의 첫번째 파라미터 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
@@ -138,7 +142,7 @@ public class TermParser extends AbstractParser<Instruction> {
 			source={"FACTOR_2"},
 			target={"OPERATION"}
 	)
-	public void handleAdditionOp(Event event) throws Exception {
+	public void handleNewOp(Event event) throws Exception {
 		
 		if(this.operation == null) {
 			throw new Exception("operation is null");
@@ -152,6 +156,11 @@ public class TermParser extends AbstractParser<Instruction> {
 			throw new Exception("p2 is null");
 		}
 		
+		// 삼항 이상 연산시 현재까지 설정된 설정된 연산은 p1 으로 할당
+		// ex) 1 * 2 / 3 일 경우
+		//     1 * 2는 새로운 p1 으로 설정되고
+		//     3은 p2가 됨
+		//     operation은 '/'가 됨
 		TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.operation);
 		newP1.addChild(this.p1);
 		newP1.addChild(this.p2);
@@ -162,18 +171,20 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 
 	/**
-	 * 
+	 * 파싱 종료 처리
 	 */
 	public void exit() {
 		
-		//
 		if(this.operation != null && this.p2 != null) {
 			
+			// *,/ 연산이 존재하는 경우
 			this.setNodeData(this.operation);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			
 		} else {
+			
+			// *,/ 연산이 존재하지 않는 경우
 			this.setNode(this.p1);
 		}
 	}
