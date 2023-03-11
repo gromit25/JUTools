@@ -66,12 +66,22 @@ public class EnvMapper {
 					continue;
 				}
 			}
+
+			//
+			ConvertMethod methodInfo = field.getAnnotation(ConvertMethod.class);
+			
+			String methodName = "";
+			if(methodInfo != null) {
+				methodName = methodInfo.method();
+			}
 			
 			//
-			if(envInfo.separator().isEmpty() == true) {
+			ArrayType arrayInfo = field.getAnnotation(ArrayType.class);
+			
+			if(arrayInfo == null) {
 				
 				//
-				Object valueObject = transferValue(field.getType(), value, envInfo.method());
+				Object valueObject = transferValue(field.getType(), value, methodName);
 				field.set(null, valueObject);
 				
 			} else {
@@ -94,14 +104,14 @@ public class EnvMapper {
 				}
 				
 				//
-				String[] splitedValueList = value.split(envInfo.separator());
+				String[] splitedValueList = value.split(arrayInfo.separator());
 				for(String splitValue: splitedValueList) {
 					
-					if(envInfo.trim() == true) {
+					if(arrayInfo.trim() == true) {
 						splitValue = splitValue.trim();
 					}
 					
-					Object valueObject = transferValue(memberType, splitValue, envInfo.method());
+					Object valueObject = transferValue(memberType, splitValue, methodName);
 					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
 						((List)arrayObj).add(valueObject);
 					} else if(Set.class.isAssignableFrom(arrayObj.getClass()) == true) {

@@ -5,18 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 필드에 환경변수 설정을 위한 어노테이션 
- * 
- * @author jmsohn
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Env {
-	
-	/** 환경변수 명 */
-	String name();
-	/** 필수 여부 */
-	boolean mandatory() default false;
+public @interface ArrayType {
+
+	/** 목록의 분리되는 문자열 */
+	String separator();
+	/** 목록의 분리된 문자열에 trim 적용 여부 */
+	boolean trim() default true;
 	
 }

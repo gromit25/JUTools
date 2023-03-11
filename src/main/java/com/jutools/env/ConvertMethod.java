@@ -5,18 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 필드에 환경변수 설정을 위한 어노테이션 
- * 
- * @author jmsohn
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Env {
+public @interface ConvertMethod {
 	
-	/** 환경변수 명 */
-	String name();
-	/** 필수 여부 */
-	boolean mandatory() default false;
-	
+	/** 기본형이 아닌 경우 환경변수 값을 변환할 메소드 명*/
+	String method();
 }

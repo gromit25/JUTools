@@ -1,5 +1,7 @@
 package com.jutools;
 
+import com.jutools.env.ArrayType;
+import com.jutools.env.ConvertMethod;
 import com.jutools.env.Env;
 
 /**
@@ -24,16 +26,21 @@ public class Config {
 	@Env(name = "CONFIG_LONG")
 	public static long LONG_VALUE = 0;
 
-	@Env(name = "CONFIG_CLASS", method = "transferClass")
+	@Env(name = "CONFIG_CLASS")
+	@ConvertMethod(method = "transferClass")
 	public static Class<?> CLASS_VALUE;
 	
-	@Env(name = "CONFIG_STR_LIST", separator = ",")
+	@Env(name = "CONFIG_STR_LIST")
+	@ArrayType(separator = ",")
 	public static String[] STR_LIST = {};
 	
-	@Env(name = "CONFIG_INT_LIST", separator = ",")
+	@Env(name = "CONFIG_INT_LIST")
+	@ArrayType(separator = ",")
 	public static int[] INT_LIST = {};
 	
-	@Env(name = "CONFIG_CLASSES", separator = ",", method = "transferClass")
+	@Env(name = "CONFIG_CLASSES")
+	@ArrayType(separator = ",")
+	@ConvertMethod(method = "transferClass")
 	public static Class<?>[] CLASSES_VALUE = {};
 	
 	/**
