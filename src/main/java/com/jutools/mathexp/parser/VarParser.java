@@ -1,4 +1,4 @@
-package com.jutools.mathexp.parser.script;
+package com.jutools.mathexp.parser;
 
 import java.util.ArrayList;
 

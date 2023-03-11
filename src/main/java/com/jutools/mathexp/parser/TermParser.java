@@ -1,4 +1,4 @@
-package com.jutools.mathexp.parser.script;
+package com.jutools.mathexp.parser;
 
 import com.jutools.mathexp.instructions.DIV;
 import com.jutools.mathexp.instructions.Instruction;
