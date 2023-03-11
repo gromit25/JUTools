@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import com.jutools.mathexp.instructions.INVOKE;
-import com.jutools.mathexp.instructions.Instruction;
+import com.jutools.instructions.INVOKE;
+import com.jutools.instructions.Instruction;
 import com.jutools.mathexp.parser.UnitParser;
 
 import lombok.Getter;

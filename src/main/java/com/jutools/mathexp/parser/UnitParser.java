@@ -1,11 +1,11 @@
 package com.jutools.mathexp.parser;
 
 import com.jutools.MathUtil;
-import com.jutools.mathexp.instructions.Instruction;
-import com.jutools.mathexp.instructions.LOAD_NUMBER;
-import com.jutools.mathexp.instructions.LOAD_STRING;
-import com.jutools.mathexp.instructions.MUL;
-import com.jutools.mathexp.instructions.NOP;
+import com.jutools.instructions.Instruction;
+import com.jutools.instructions.LOAD_NUMBER;
+import com.jutools.instructions.LOAD_STRING;
+import com.jutools.instructions.MUL;
+import com.jutools.instructions.NOP;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;

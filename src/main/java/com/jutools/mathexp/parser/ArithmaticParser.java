@@ -1,8 +1,8 @@
 package com.jutools.mathexp.parser;
 
-import com.jutools.mathexp.instructions.ADD;
-import com.jutools.mathexp.instructions.Instruction;
-import com.jutools.mathexp.instructions.MINUS;
+import com.jutools.instructions.ADD;
+import com.jutools.instructions.Instruction;
+import com.jutools.instructions.MINUS;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;

@@ -2,9 +2,9 @@ package com.jutools.mathexp.parser;
 
 import java.util.ArrayList;
 
-import com.jutools.mathexp.instructions.INVOKE;
-import com.jutools.mathexp.instructions.Instruction;
-import com.jutools.mathexp.instructions.LOAD_VAR;
+import com.jutools.instructions.INVOKE;
+import com.jutools.instructions.Instruction;
+import com.jutools.instructions.LOAD_VAR;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;

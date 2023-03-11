@@ -1,4 +1,4 @@
-package com.jutools.mathexp.instructions;
+package com.jutools.instructions;
 
 import java.lang.reflect.Method;
 import java.util.Map;
