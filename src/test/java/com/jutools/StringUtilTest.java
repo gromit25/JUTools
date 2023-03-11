@@ -6,6 +6,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
+	
+	@Test
+	void test() {
+		Double a = 1.0;
+		Double b = 1.0;
+		System.out.println(a.equals(b));
+	}
 
 	@Test
 	void testEscape1() {

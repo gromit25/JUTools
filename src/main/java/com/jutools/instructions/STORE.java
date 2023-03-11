@@ -5,14 +5,12 @@ import java.util.Stack;
 
 public class STORE extends Instruction {
 
-	public STORE() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
-		// TODO Auto-generated method stub
-
+		Object p1 = stack.pop();
+		if(p1 == null) {
+			throw new NullPointerException("stack is empty");
+		}
 	}
 
 }

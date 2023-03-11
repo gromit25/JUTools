@@ -1,9 +1,10 @@
 package com.jutools.instructions;
 
-public class GREAT_THAN {
+public class GREAT_THAN extends BiNumInstruction {
 
-	public GREAT_THAN() {
-		// TODO Auto-generated constructor stub
+	@Override
+	public Object process(Double p1, Double p2) throws Exception {
+		return p1 > p2;
 	}
 
 }
