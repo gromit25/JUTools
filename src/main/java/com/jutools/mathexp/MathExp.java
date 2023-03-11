@@ -14,60 +14,54 @@ import com.jutools.mathexp.parser.script.UnitParser;
 import lombok.Getter;
 
 /**
- * 산술식 처리 클래스
+ * 수식 처리 클래스
  * 
  * @author jmsohn
  */
 public class MathExp {
 	
-	/** 산술식 처리시 사용할 Stack */
+	/** 수식 문자열 */
+	@Getter
+	private String exp;
+	/** 수식 명령어 목록 */
+	private ArrayList<Instruction> insts;
+	/** 수식 처리시 사용할 Stack */
 	@Getter
 	private Stack<Object> stack = new Stack<Object>();
-	/** 산술식 처리시 변수 목록(일종의 메모리 역활) */
-	@Getter
-	private Map<String, Object> values;
-	/** 산술 내의 실행할 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
+	/** 수식 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
 	private Map<String, Method> methods = new HashMap<String, Method>();
 	
 	/**
 	 * 생성자(외부 생성 불가)
 	 * 
-	 * @param values 산술식 처리시 변수 목록
+	 * @parma exp 수식 
 	 */
-	private MathExp(Map<String, Object> values) throws Exception {
+	private MathExp(String exp) throws Exception {
 		
-		if(values == null) {
-			throw new NullPointerException("values is null");
+		if(exp == null) {
+			throw new NullPointerException("math expression(exp) is null");
 		}
 		
-		this.values = values;
+		this.exp = exp;
 		this.setMethod(BuiltInMethods.class);
-	}
-	
-	/**
-	 * 생성자(외부 생성 불가)
-	 */
-	private MathExp() throws Exception {
-		this(new HashMap<String, Object>());
-	}
-	
-	/**
-	 * 생성 메소드
-	 * 
-	 * @return
-	 */
-	public static MathExp create() throws Exception {
-		return new MathExp();
+		
+		// 수식 파싱
+		UnitParser parser = new UnitParser();
+		this.insts = parser.parse(exp).travelPostOrder();
+		
+		// 메소드 링킹
+		this.linkMethod();
+		
 	}
 	
 	/**
 	 * 생성 메소드
 	 * 
-	 * @param values
-	 * @return
+	 * @param exp 산술식 문자열
+	 * @return 생성된 산술식 처리 클래스
 	 */
-	public static MathExp create(Map<String, Object> values) throws Exception {
-		return new MathExp(values);
+	public static MathExp compile(String exp) throws Exception {
+		return new MathExp(exp);
 	}
 	
 	/**
@@ -134,12 +128,15 @@ public class MathExp {
 	/**
 	 * 메소드 호출(INVOKE) 명령어의 alias에 실제 메소드를 연결(linking)
 	 * 
-	 * @param insts 명령어 목록
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	private MathExp linkMethod(ArrayList<Instruction> insts) throws Exception {
+	private MathExp linkMethod() throws Exception {
 		
-		for(Instruction inst: insts) {
+		if(this.insts == null) {
+			throw new NullPointerException("instruction list is null");
+		}
+		
+		for(Instruction inst: this.insts) {
 			
 			if(inst instanceof INVOKE == false) {
 				continue;
@@ -158,48 +155,27 @@ public class MathExp {
 	}
 	
 	/**
-	 * 주어진 명령어 목록을 수행함
+	 * 수식 수행
 	 * 
-	 * @param insts 명령어 목록
+	 * @param values 
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	private MathExp execute(ArrayList<Instruction> insts) throws Exception {
+	public MathExp execute(Map<String, Object> values) throws Exception {
 		
 		for(Instruction inst: insts) {
-			inst.execute(this.stack, this.values);
+			inst.execute(this.stack, values);
 		}
 		
 		return this;
 	}
 
 	/**
-	 * 수식 파싱 및 수행
+	 * 수식 수행
 	 * 
-	 * @param exp 수식
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public MathExp execute(String exp) throws Exception {
-		
-		UnitParser parser = new UnitParser();
-		ArrayList<Instruction> insts = parser.parse(exp).travelPostOrder();
-		
-		this.linkMethod(insts).execute(insts);
-		
-		return this;
-	}
-	
-	/**
-	 * 산술식 처리시 변수 목록에 변수 추가
-	 * 
-	 * @param name 변수명
-	 * @param value 변수값
-	 * @return 현재 객체(fluent 코딩용)
-	 */
-	public MathExp putValue(String name, Object value) throws Exception {
-		
-		this.values.put(name, value);
-		
-		return this;
+	public MathExp execute() throws Exception {
+		return this.execute(new HashMap<String, Object>());
 	}
 	
 	/**
@@ -225,7 +201,7 @@ public class MathExp {
 	 * @return 수식 수행 결과(단위 포함)
 	 */
 	public static MathResult calculateWithUnit(String exp, Map<String, Object> values) throws Exception {
-		return MathExp.create(values).execute(exp).getResult();
+		return MathExp.compile(exp).execute(values).getResult();
 	}
 	
 	/**
