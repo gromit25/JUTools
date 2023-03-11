@@ -222,7 +222,7 @@ public class MathExp {
 	 * @return 수식 수행 결과
 	 */
 	public static double calculate(String exp, Map<String, Object> values) throws Exception {
-		return calculateWithUnit(exp, values).getValue(); 
+		return calculateWithUnit(exp, values).getValue(Double.class); 
 	}
 
 	/**
