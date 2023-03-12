@@ -3,15 +3,24 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.nio.CharBuffer;
+
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
 	
 	@Test
 	void test() {
-		Double a = 1.0;
-		Double b = 1.0;
-		System.out.println(a.equals(b));
+		CharBuffer buffer = CharBuffer.allocate(1024);
+		buffer.append('t').append('e').append('s').append('t');
+		buffer.flip();
+		char[] result = new char[1];
+		buffer.get(3, result, 0, 1);
+		System.out.println(result.length);
+		
+		for(char ch: result) {
+			System.out.println(ch);
+		}
 	}
 
 	@Test

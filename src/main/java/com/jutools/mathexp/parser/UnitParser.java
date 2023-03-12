@@ -46,7 +46,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("^ \t", "ARITHMATIC", true)
+				.add("^ \t", "ARITHMATIC", -1)
 				.build());
 		
 		this.putTransferMap("ARITHMATIC", new TransferBuilder()

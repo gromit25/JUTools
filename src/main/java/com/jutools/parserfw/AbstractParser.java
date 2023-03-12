@@ -4,6 +4,7 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -197,7 +198,7 @@ public abstract class AbstractParser<T> {
 	 */
 	public TreeNode<T> parse(String script) throws Exception {
 		
-		PushbackReader in = new PushbackReader(new StringReader(script));
+		PushbackReader in = new PushbackReader(new StringReader(script), 1024);
 		return this.parse(in);
 		
 	}
@@ -221,6 +222,9 @@ public abstract class AbstractParser<T> {
 			throw new Exception("invalid status: " + this.status);
 		}
 		
+		// pushback을 수행할 문자열 저장 버퍼 변수
+		CharBuffer pushbackBuffer = CharBuffer.allocate(1024);
+		
 		// Reader에서 한문자씩 읽어들여 상태를 전환하고,
 		// 각 상태 전환에 따른 전이함수(transfer function)을 실행시킴 
 		int read = in.read();
@@ -229,6 +233,7 @@ public abstract class AbstractParser<T> {
 			
 			// 입력 문자 변수
 			char ch = (char)read;
+			pushbackBuffer.append(ch);
 			
 			// 유효한 전이함수(현재 상태에서 입력 문자가 있는 경우)가 있는지 여부 변수
 			boolean isMatched = false;
@@ -250,8 +255,22 @@ public abstract class AbstractParser<T> {
 					Event event = new Event(ch, in);
 					
 					// pushback 수행
-					if(transferFunction.isPushback() == true) {
- 						in.unread(ch);
+					if(transferFunction.getPushback() < 0) {
+						
+						int pushbackSize = transferFunction.getPushback() * -1;
+						
+						pushbackBuffer.flip();
+						char[] unread = new char[pushbackSize];
+						pushbackBuffer.get(
+							pushbackBuffer.remaining() - pushbackSize
+							, unread
+							, 0
+							, pushbackSize 
+						);
+						
+						pushbackBuffer.clear();
+						
+ 						in.unread(unread);
 					}
 					
 					// 이벤트 처리함수 호출

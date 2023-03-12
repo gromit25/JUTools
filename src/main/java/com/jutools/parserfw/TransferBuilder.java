@@ -24,15 +24,18 @@ public class TransferBuilder {
 	 * 
 	 * @param pattern 전이가 발생하는 character 종류
 	 * @param nextStatus 전이 상태
-	 * @param bushback 전이가 발생할 시 pushback을 할 것인지 여부
+	 * @param bushback 전이가 발생할 시 pushback될 숫자
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public TransferBuilder add(String pattern, String nextStatus, boolean pushback) throws Exception {
+	public TransferBuilder add(String pattern, String nextStatus, int pushback) throws Exception {
 		
 		Object[] spec = new Object[3];
 		spec[0] = pattern;
 		spec[1] = nextStatus;
 		spec[2] = pushback;
+		if(pushback > 0) {
+			throw new Exception("pushback value must be greater than 0");
+		}
 		
 		specs.add(spec);
 		
@@ -47,7 +50,7 @@ public class TransferBuilder {
 	 * @return 현재 객체(fluent 코딩용)
 	 */
 	public TransferBuilder add(String pattern, String nextStatus) throws Exception {
-		return this.add(pattern, nextStatus, false);
+		return this.add(pattern, nextStatus, 0);
 	}
 
 	
@@ -61,7 +64,7 @@ public class TransferBuilder {
 		ArrayList<Transfer> transferFunctions = new ArrayList<Transfer>();
 		
 		for(Object[] spec: this.specs) {
-			Transfer transfer = new Transfer(spec[0].toString(), spec[1].toString(), (boolean)spec[2]);
+			Transfer transfer = new Transfer(spec[0].toString(), spec[1].toString(), (int)spec[2]);
 			transferFunctions.add(transfer);
 		}
 		

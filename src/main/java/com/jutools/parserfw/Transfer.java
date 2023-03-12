@@ -22,7 +22,7 @@ public class Transfer {
 	
 	/** 상태 전이시 pushback 수행 여부 */
 	@Getter
-	private boolean pushback;
+	private int pushback;
 	
 	/**
 	 * 생성자
@@ -31,7 +31,7 @@ public class Transfer {
 	 * @param nextStatus 다음 전이 상태
 	 * @param pushback
 	 */
-	public Transfer(String patternStr, String nextStatus, boolean pushback) throws Exception {
+	public Transfer(String patternStr, String nextStatus, int pushback) throws Exception {
 		this.pattern = CharPatternParser.parse(patternStr);
 		this.nextStatus = nextStatus;
 		this.pushback = pushback;

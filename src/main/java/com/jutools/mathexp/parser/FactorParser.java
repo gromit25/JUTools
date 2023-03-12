@@ -34,15 +34,10 @@ public class FactorParser extends AbstractParser<Instruction> {
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("0-9\\-", "NUMBER", true)
-				.add("a-zA-Z\\_", "VAR", true)
-				.add("(", "EXPRESSION")
+				.add("0-9\\-", "NUMBER", -1)
+				.add("a-zA-Z\\_", "VAR", -1)
+				.add("(", "ARITHMATIC")					//TODO
 				.add("^ \t0-9\\-a-zA-Z\\_(", "ERROR")
-				.build());
-		
-		this.putTransferMap("EXPRESSION", new TransferBuilder()
-				.add("^)", "ARITHMATIC", true)  //TODO 계속 변경해야 함
-				.add(")", "ERROR")
 				.build());
 		
 		this.putTransferMap("ARITHMATIC", new TransferBuilder()  //TODO
@@ -76,7 +71,7 @@ public class FactorParser extends AbstractParser<Instruction> {
 	}
 	
 	@TransferEventHandler(
-			source={"EXPRESSION"},
+			source={"START"},
 			target={"ARITHMATIC"}
 	)
 	public void handleExp(Event event) throws Exception {

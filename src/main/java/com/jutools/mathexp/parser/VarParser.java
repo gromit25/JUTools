@@ -52,13 +52,13 @@ public class VarParser extends AbstractParser<Instruction> {
 		this.putTransferMap("VAR", new TransferBuilder()
 				.add("a-zA-Z0-9\\_", "VAR")
 				.add("\\(", "PARAM_START")
-				.add("^a-zA-Z0-9\\_\\(", "VAR_END", true)
+				.add("^a-zA-Z0-9\\_\\(", "VAR_END", -1)
 				.build());
 		
 		this.putTransferMap("PARAM_START", new TransferBuilder()
 				.add(" \t", "PARAM_START")
 				.add("\\)", "PARAM_END")
-				.add("^ \t\\)", "PARAM", true)
+				.add("^ \t\\)", "PARAM", -1)
 				.build());
 		
 		this.putTransferMap("PARAM", new TransferBuilder()
@@ -70,7 +70,7 @@ public class VarParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("COMMA", new TransferBuilder()
 				.add(" \t", "COMMA")
-				.add("^ \t)", "PARAM", true)
+				.add("^ \t)", "PARAM", -1)
 				.build());
 		
 		// 종료 상태 추가

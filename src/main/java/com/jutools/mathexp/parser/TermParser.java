@@ -53,24 +53,24 @@ public class TermParser extends AbstractParser<Instruction> {
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
 				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "FACTOR_1", true)
+				.add("^ \t\\*\\/", "FACTOR_1", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR_1", new TransferBuilder()
 				.add(" \t", "FACTOR_1")
 				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "TERM_END", true)
+				.add("^ \t\\*\\/", "TERM_END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
 				.add(" \t", "OPERATION")
-				.add("^ \t", "FACTOR_2", true)
+				.add("^ \t", "FACTOR_2", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
 				.add(" \t", "FACTOR_2")
 				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "TERM_END", true)
+				.add("^ \t\\*\\/", "TERM_END", -1)
 				.build());
 		
 		// 종료 상태 추가
