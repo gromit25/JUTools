@@ -257,9 +257,18 @@ public abstract class AbstractParser<T> {
 					// pushback 수행
 					if(transferFunction.getPushback() < 0) {
 						
-						int pushbackSize = transferFunction.getPushback() * -1;
-						
+						// 읽기 모드 전환
 						pushbackBuffer.flip();
+						
+						// pushback할 크기를 가져옴
+						// pushback 크기가 버퍼의 크기보다 크면,
+						// pushback 크기를 버퍼의 크기로 맞춤
+						int pushbackSize = transferFunction.getPushback() * -1;
+						if(pushbackBuffer.remaining() - pushbackSize < 0) {
+							pushbackSize = pushbackBuffer.remaining();
+						}
+						
+						// pushback할 배열 생성
 						char[] unread = new char[pushbackSize];
 						pushbackBuffer.get(
 							pushbackBuffer.remaining() - pushbackSize
@@ -268,9 +277,10 @@ public abstract class AbstractParser<T> {
 							, pushbackSize 
 						);
 						
-						pushbackBuffer.clear();
-						
+						// pushback 수행
  						in.unread(unread);
+ 						
+						pushbackBuffer.clear();
 					}
 					
 					// 이벤트 처리함수 호출
