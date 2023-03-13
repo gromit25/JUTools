@@ -44,23 +44,23 @@ public class NumberParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("SIGN", new TransferBuilder()
 				.add("0-9", "NUMBER")
-				.add("^0-9", "ERROR", true)
+				.add("^0-9", "ERROR", -1)
 				.build());
 		
 		this.putTransferMap("NUMBER", new TransferBuilder()
 				.add("0-9", "NUMBER")
 				.add("\\.", "DOT")
-				.add("^0-9\\.", "END", true)
+				.add("^0-9\\.", "END", -1)
 				.build());
 		
 		this.putTransferMap("DOT", new TransferBuilder()
 				.add("0-9", "FLOATING_NUMBER")
-				.add("^0-9", "END", true)
+				.add("^0-9", "END", -1)
 				.build());
 		
 		this.putTransferMap("FLOATING_NUMBER", new TransferBuilder()
 				.add("0-9", "FLOATING_NUMBER")
-				.add("^0-9", "END", true)
+				.add("^0-9", "END", -1)
 				.build());
 		
 		// 종료 상태 추가

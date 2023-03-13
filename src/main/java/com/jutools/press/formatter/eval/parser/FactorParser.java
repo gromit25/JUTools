@@ -34,14 +34,14 @@ public class FactorParser extends AbstractParser<Instruction> {
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("0-9\\-", "NUMBER", true)
-				.add("a-zA-Z\\_", "VAR", true)
+				.add("0-9\\-", "NUMBER", -1)
+				.add("a-zA-Z\\_", "VAR", -1)
 				.add("(", "EXPRESSION")
 				.add("^ \t0-9\\-a-zA-Z\\_(", "ERROR")
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
-				.add("^)", "ARITHMATIC", true)  //TODO 계속 변경해야 함
+				.add("^)", "ARITHMATIC", -1)  //TODO 계속 변경해야 함
 				.add(")", "ERROR")
 				.build());
 		
