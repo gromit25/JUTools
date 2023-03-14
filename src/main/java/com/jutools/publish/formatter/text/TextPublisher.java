@@ -1,11 +1,11 @@
-package com.jutools.press.formatter.text;
+package com.jutools.publish.formatter.text;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.press.Publisher;
 import com.jutools.press.formatter.FormatterXmlHandler;
+import com.jutools.publish.Publisher;
 
 /**
  * 텍스트 publisher 클래스

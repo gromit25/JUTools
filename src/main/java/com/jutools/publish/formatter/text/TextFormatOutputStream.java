@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.text;
+package com.jutools.publish.formatter.text;
 
 import java.io.IOException;
 import java.io.OutputStream;

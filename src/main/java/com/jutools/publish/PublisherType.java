@@ -1,8 +1,8 @@
-package com.jutools.press;
+package com.jutools.publish;
 
-import com.jutools.press.formatter.console.ConsolePublisher;
-import com.jutools.press.formatter.excel.ExcelPublisher;
-import com.jutools.press.formatter.text.TextPublisher;
+import com.jutools.publish.formatter.console.ConsolePublisher;
+import com.jutools.publish.formatter.excel.ExcelPublisher;
+import com.jutools.publish.formatter.text.TextPublisher;
 
 import lombok.AccessLevel;
 import lombok.Getter;

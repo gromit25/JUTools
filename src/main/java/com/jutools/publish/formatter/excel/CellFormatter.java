@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel;
+package com.jutools.publish.formatter.excel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -29,8 +29,8 @@ import com.jutools.press.formatter.Formatter;
 import com.jutools.press.formatter.FormatterAttr;
 import com.jutools.press.formatter.FormatterException;
 import com.jutools.press.formatter.FormatterSpec;
-import com.jutools.press.formatter.text.TextFlowFormatter;
-import com.jutools.press.formatter.text.TextFormatOutputStream;
+import com.jutools.publish.formatter.text.TextFlowFormatter;
+import com.jutools.publish.formatter.text.TextFormatOutputStream;
 
 import lombok.AccessLevel;
 import lombok.Getter;

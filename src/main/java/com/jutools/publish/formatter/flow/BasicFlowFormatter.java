@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.flow;
+package com.jutools.publish.formatter.flow;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;

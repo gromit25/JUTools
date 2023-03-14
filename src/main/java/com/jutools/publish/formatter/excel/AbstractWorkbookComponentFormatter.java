@@ -1,11 +1,11 @@
-package com.jutools.press.formatter.excel;
+package com.jutools.publish.formatter.excel;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
 import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.flow.BasicFlowFormatter;
+import com.jutools.publish.formatter.flow.BasicFlowFormatter;
 
 /**
  * Workbook의 하위 컴포넌트 Formatter의 추상 클래스

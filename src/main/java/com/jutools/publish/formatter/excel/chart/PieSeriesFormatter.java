@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
 import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartData;

@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;

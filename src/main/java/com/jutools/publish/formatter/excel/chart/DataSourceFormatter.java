@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -11,7 +11,7 @@ import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
 import com.jutools.press.formatter.FormatterAttr;
 import com.jutools.press.formatter.FormatterException;
 import com.jutools.press.formatter.FormatterSpec;
-import com.jutools.press.formatter.excel.RangeEval;
+import com.jutools.publish.formatter.excel.RangeEval;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel;
+package com.jutools.publish.formatter.excel;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -8,7 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import com.jutools.press.formatter.Formatter;
 import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.flow.BasicFlowFormatter;
+import com.jutools.publish.formatter.flow.BasicFlowFormatter;
 
 /**
  * celltype 이하의 설정용 Formatter의 추상 클래스

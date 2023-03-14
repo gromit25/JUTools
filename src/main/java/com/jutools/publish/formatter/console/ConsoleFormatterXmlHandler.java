@@ -1,11 +1,11 @@
-package com.jutools.press.formatter.console;
+package com.jutools.publish.formatter.console;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import com.jutools.press.formatter.FormatterXmlHandler;
-import com.jutools.press.formatter.flow.AbstractFlowComponentFormatter;
-import com.jutools.press.formatter.text.TextFlowFormatter;
+import com.jutools.publish.formatter.flow.AbstractFlowComponentFormatter;
+import com.jutools.publish.formatter.text.TextFlowFormatter;
 
 /**
  * console 출력을 위한 format 파일 파서

@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.console;
+package com.jutools.publish.formatter.console;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -6,9 +6,9 @@ import java.util.Map;
 
 import com.jutools.press.formatter.Formatter;
 import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.flow.AbstractFlowFormatter;
-import com.jutools.press.formatter.flow.BasicFlowFormatter;
-import com.jutools.press.formatter.text.AbstractTextFormatter;
+import com.jutools.publish.formatter.flow.AbstractFlowFormatter;
+import com.jutools.publish.formatter.flow.BasicFlowFormatter;
+import com.jutools.publish.formatter.text.AbstractTextFormatter;
 
 /**
  * console 출력용 Formatter의 추상화된 클래스

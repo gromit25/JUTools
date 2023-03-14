@@ -12,7 +12,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.jutools.press.formatter.flow.AbstractFlowComponentFormatter;
+import com.jutools.publish.formatter.flow.AbstractFlowComponentFormatter;
 
 import lombok.AccessLevel;
 import lombok.Getter;

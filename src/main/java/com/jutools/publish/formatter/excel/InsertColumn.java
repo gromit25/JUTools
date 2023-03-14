@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel;
+package com.jutools.publish.formatter.excel;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;

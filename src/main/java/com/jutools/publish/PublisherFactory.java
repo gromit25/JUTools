@@ -1,4 +1,4 @@
-package com.jutools.press;
+package com.jutools.publish;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

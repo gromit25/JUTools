@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;

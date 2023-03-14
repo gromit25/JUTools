@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -15,9 +15,9 @@ import com.jutools.press.formatter.Formatter;
 import com.jutools.press.formatter.FormatterAttr;
 import com.jutools.press.formatter.FormatterException;
 import com.jutools.press.formatter.FormatterSpec;
-import com.jutools.press.formatter.excel.AbstractExcelFormatter;
-import com.jutools.press.formatter.excel.RangeEval;
-import com.jutools.press.formatter.excel.WorksheetFormatter;
+import com.jutools.publish.formatter.excel.AbstractExcelFormatter;
+import com.jutools.publish.formatter.excel.RangeEval;
+import com.jutools.publish.formatter.excel.WorksheetFormatter;
 
 import lombok.AccessLevel;
 import lombok.Getter;

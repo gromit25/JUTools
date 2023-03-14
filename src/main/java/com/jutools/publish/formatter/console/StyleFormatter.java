@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.console;
+package com.jutools.publish.formatter.console;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -9,7 +9,7 @@ import org.xml.sax.Attributes;
 
 import com.jutools.press.formatter.FormatterException;
 import com.jutools.press.formatter.FormatterSpec;
-import com.jutools.press.formatter.text.TextFormatter;
+import com.jutools.publish.formatter.text.TextFormatter;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.flow;
+package com.jutools.publish.formatter.flow;
 
 import com.jutools.press.formatter.FormatterAttr;
 import com.jutools.press.formatter.FormatterSpec;

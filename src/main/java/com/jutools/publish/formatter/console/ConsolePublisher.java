@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.console;
+package com.jutools.publish.formatter.console;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 import org.fusesource.jansi.AnsiConsole;
 
 import com.jutools.press.formatter.FormatterXmlHandler;
-import com.jutools.press.formatter.text.TextPublisher;
+import com.jutools.publish.formatter.text.TextPublisher;
 
 /**
  * console 출력을 위한 publisher 클래스

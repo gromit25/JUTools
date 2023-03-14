@@ -1,6 +1,6 @@
-package com.jutools.press.formatter.excel.chart;
+package com.jutools.publish.formatter.excel.chart;
 
-import com.jutools.press.formatter.flow.BasicFlowFormatter;
+import com.jutools.publish.formatter.flow.BasicFlowFormatter;
 
 /**
  * 

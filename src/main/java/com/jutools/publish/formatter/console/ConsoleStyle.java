@@ -1,4 +1,4 @@
-package com.jutools.press.formatter.console;
+package com.jutools.publish.formatter.console;
 
 import lombok.Getter;
 import lombok.Setter;
