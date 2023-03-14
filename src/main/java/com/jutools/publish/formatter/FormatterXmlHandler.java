@@ -1,4 +1,4 @@
-package com.jutools.press.formatter;
+package com.jutools.publish.formatter;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
