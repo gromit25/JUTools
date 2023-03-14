@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.press.formatter.FormatterXmlHandler;
+import com.jutools.publish.formatter.FormatterXmlHandler;
 import com.jutools.publish.Publisher;
 
 /**

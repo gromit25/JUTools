@@ -7,8 +7,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jutools.press.formatter.Formatter;
-import com.jutools.press.formatter.FormatterXmlHandler;
+import com.jutools.publish.formatter.Formatter;
+import com.jutools.publish.formatter.FormatterXmlHandler;
 
 import lombok.AccessLevel;
 import lombok.Getter;

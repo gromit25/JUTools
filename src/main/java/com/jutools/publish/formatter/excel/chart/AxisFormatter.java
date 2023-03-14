@@ -8,9 +8,9 @@ import org.apache.poi.xddf.usermodel.chart.AxisPosition;
 import org.apache.poi.xddf.usermodel.chart.XDDFChartAxis;
 import org.apache.poi.xddf.usermodel.chart.XDDFValueAxis;
 
-import com.jutools.press.formatter.FormatterAttr;
-import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterAttr;
+import com.jutools.publish.formatter.FormatterException;
+import com.jutools.publish.formatter.FormatterSpec;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,8 +2,8 @@ package com.jutools.publish.formatter.flow;
 
 import org.xml.sax.Attributes;
 
-import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterException;
+import com.jutools.publish.formatter.FormatterSpec;
 
 /**
  * 대체(alt) flow formatter

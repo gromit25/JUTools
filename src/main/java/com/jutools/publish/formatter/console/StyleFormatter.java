@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.xml.sax.Attributes;
 
-import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterException;
+import com.jutools.publish.formatter.FormatterSpec;
 import com.jutools.publish.formatter.text.TextFormatter;
 
 import lombok.AccessLevel;

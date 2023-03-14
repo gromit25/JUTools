@@ -1,6 +1,6 @@
 package com.jutools.publish.formatter.flow;
 
-import com.jutools.press.formatter.Formatter;
+import com.jutools.publish.formatter.Formatter;
 
 /**
  * Flow 처리용 Formatter의 추상 클래스

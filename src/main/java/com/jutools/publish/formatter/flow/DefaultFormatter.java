@@ -1,6 +1,6 @@
 package com.jutools.publish.formatter.flow;
 
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterSpec;
 
 /**
  * default formatter

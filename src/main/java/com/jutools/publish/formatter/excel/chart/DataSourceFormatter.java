@@ -8,9 +8,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSource;
 import org.apache.poi.xddf.usermodel.chart.XDDFNumericalDataSource;
 
-import com.jutools.press.formatter.FormatterAttr;
-import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterAttr;
+import com.jutools.publish.formatter.FormatterException;
+import com.jutools.publish.formatter.FormatterSpec;
 import com.jutools.publish.formatter.excel.RangeEval;
 
 import lombok.Getter;

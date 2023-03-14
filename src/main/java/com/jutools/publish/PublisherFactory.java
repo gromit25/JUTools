@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.jutools.press.formatter.FormatterXmlHandler;
-import com.jutools.press.formatter.XmlLocInputStream;
+import com.jutools.publish.formatter.FormatterXmlHandler;
+import com.jutools.publish.formatter.XmlLocInputStream;
 
 /**
  * 구체화 Publisher(concrete publisher) 생성 Factory 클래스

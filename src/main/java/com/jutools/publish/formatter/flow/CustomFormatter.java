@@ -4,10 +4,10 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.press.formatter.Formatter;
-import com.jutools.press.formatter.FormatterAttr;
-import com.jutools.press.formatter.FormatterException;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.Formatter;
+import com.jutools.publish.formatter.FormatterAttr;
+import com.jutools.publish.formatter.FormatterException;
+import com.jutools.publish.formatter.FormatterSpec;
 
 import lombok.Getter;
 import lombok.Setter;

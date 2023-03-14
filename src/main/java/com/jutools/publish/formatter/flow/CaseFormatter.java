@@ -1,7 +1,7 @@
 package com.jutools.publish.formatter.flow;
 
-import com.jutools.press.formatter.FormatterAttr;
-import com.jutools.press.formatter.FormatterSpec;
+import com.jutools.publish.formatter.FormatterAttr;
+import com.jutools.publish.formatter.FormatterSpec;
 
 import lombok.Getter;
 import lombok.Setter;

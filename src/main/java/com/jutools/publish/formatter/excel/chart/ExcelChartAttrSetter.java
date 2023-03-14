@@ -8,9 +8,9 @@ import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.LegendPosition;
 import org.apache.poi.xddf.usermodel.chart.MarkerStyle;
 
-import com.jutools.press.formatter.Formatter;
-import com.jutools.press.formatter.FormatterAttrSetter;
-import com.jutools.press.formatter.FormatterAttrSetterClass;
+import com.jutools.publish.formatter.Formatter;
+import com.jutools.publish.formatter.FormatterAttrSetter;
+import com.jutools.publish.formatter.FormatterAttrSetterClass;
 
 @FormatterAttrSetterClass
 public class ExcelChartAttrSetter {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import com.jutools.press.formatter.FormatterXmlHandler;
+import com.jutools.publish.formatter.FormatterXmlHandler;
 import com.jutools.publish.formatter.text.TextPublisher;
 
 /**

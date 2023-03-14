@@ -3,7 +3,7 @@ package com.jutools.publish.formatter.console;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.jutools.press.formatter.FormatterXmlHandler;
+import com.jutools.publish.formatter.FormatterXmlHandler;
 import com.jutools.publish.formatter.flow.AbstractFlowComponentFormatter;
 import com.jutools.publish.formatter.text.TextFlowFormatter;
 

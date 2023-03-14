@@ -4,8 +4,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.press.formatter.Formatter;
-import com.jutools.press.formatter.FormatterException;
+import com.jutools.publish.formatter.Formatter;
+import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.flow.AbstractFlowFormatter;
 import com.jutools.publish.formatter.flow.BasicFlowFormatter;
 import com.jutools.publish.formatter.text.AbstractTextFormatter;

@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
-import com.jutools.press.formatter.Formatter;
-import com.jutools.press.formatter.FormatterException;
+import com.jutools.publish.formatter.Formatter;
+import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.flow.BasicFlowFormatter;
 
 /**
