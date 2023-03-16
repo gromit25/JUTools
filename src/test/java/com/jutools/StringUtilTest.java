@@ -11,16 +11,9 @@ class StringUtilTest {
 	
 	@Test
 	void test() {
-		CharBuffer buffer = CharBuffer.allocate(1024);
-		buffer.append('t').append('e').append('s').append('t');
-		buffer.flip();
-		char[] result = new char[1];
-		buffer.get(3, result, 0, 1);
-		System.out.println(result.length);
 		
-		for(char ch: result) {
-			System.out.println(ch);
-		}
+		System.out.println(Math.pow(0.0, 0.0));
+
 	}
 
 	@Test
