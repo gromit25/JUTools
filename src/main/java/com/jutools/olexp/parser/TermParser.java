@@ -1,4 +1,4 @@
-package com.jutools.publish.olexp.parser;
+package com.jutools.olexp.parser;
 
 import com.jutools.instructions.DIV;
 import com.jutools.instructions.Instruction;
