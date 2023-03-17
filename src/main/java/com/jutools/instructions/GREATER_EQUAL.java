@@ -1,6 +1,6 @@
 package com.jutools.instructions;
 
-public class GREATE_EQUAL extends BiNumInstruction {
+public class GREATER_EQUAL extends BiNumInstruction {
 
 	@Override
 	public Object process(Double p1, Double p2) throws Exception {

@@ -1,11 +1,22 @@
 package com.jutools.olexp.parser;
 
+import com.jutools.instructions.GREATER_EQUAL;
+import com.jutools.instructions.GREATER_THAN;
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.LESS_EQUAL;
+import com.jutools.instructions.LESS_THAN;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
+import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
 
+/**
+ * 비교(<, >, <=, >=) 연산 파싱 수행<br>
+ * 비교 연산은 삼항 연산이 없음
+ * 
+ * @author jmsohn
+ */
 public class ComparisonParser extends AbstractParser<Instruction> {
 	
 	/** 비교 연산의 첫번째 파라미터의 tree node */
@@ -14,7 +25,12 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	private TreeNode<Instruction> p2;
 	/** 비교 연산 */
 	private Instruction operation;
+	/** 비교 연산 버퍼 */
+	private StringBuffer opBuffer;
 
+	/**
+	 * 생성자
+	 */
 	public ComparisonParser() throws Exception {
 		super();
 	}
@@ -32,6 +48,8 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		this.p2 = null;
 		this.operation = null;
 		
+		this.opBuffer = new StringBuffer("");
+		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
@@ -40,11 +58,11 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("ARITHMATIC_1", new TransferBuilder()
 				.add(" \t", "ARITHMATIC_1")
-				.add("\\<\\>", "OPERATION")
+				.add("\\<\\>", "OPERATION_1")
 				.add("^ \t\\<\\>", "END", -1)
 				.build());
 		
-		this.putTransferMap("OPERATION", new TransferBuilder()
+		this.putTransferMap("OPERATION_1", new TransferBuilder()
 				.add("\\=", "OPERATION_2")
 				.add("^\\=", "ARITHMATIC_2", -1)
 				.build());
@@ -56,8 +74,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("ARITHMATIC_2", new TransferBuilder()
 				.add(" \t", "ARITHMATIC_2")
-				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "END", -1)
+				.add("^ \t", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
@@ -65,6 +82,82 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		this.putEndStatus("ARITHMATIC_2");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		
+	}
+	
+	/**
+	 * 비교 연산의 첫번째 파라미터 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"START"},
+			target={"ARITHMATIC_1"}
+	)
+	public void handleP1(Event event) throws Exception {
+		
+		ArithmaticParser parser = new ArithmaticParser();
+		this.p1 = parser.parse(event.getReader());
+
+	}
+	
+	/**
+	 * 비교 연산자 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"ARITHMATIC_1"},
+			target={"OPERATION_1"}
+	)
+	public void handleOp1(Event event) throws Exception {
+		this.opBuffer.append(event.getCh());
+	}
+	
+	/**
+	 * 비교 연산자 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"OPERATION_1"},
+			target={"OPERATION_2"}
+	)
+	public void handleOp2(Event event) throws Exception {
+		this.opBuffer.append(event.getCh());
+	}
+	
+	/**
+	 * 비교 연산자 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"OPERATION_1", "OPERATION_2"},
+			target={"ARITHMATIC_2"}
+	)
+	public void handleP2(Event event) throws Exception {
+		
+		//
+		String compareOp = this.opBuffer.toString();
+		switch(compareOp) {
+		case ">":
+			this.operation = new GREATER_THAN();
+			break;
+		case ">=":
+			this.operation = new GREATER_EQUAL();
+			break;
+		case "<":
+			this.operation = new LESS_THAN();
+			break;
+		case "<=":
+			this.operation = new LESS_EQUAL();
+			break;
+		default:
+			throw new Exception("Unexpected operation: " + compareOp);	
+		}
+		
+		//
+		this.opBuffer.append(event.getCh());
 	}
 
 }
