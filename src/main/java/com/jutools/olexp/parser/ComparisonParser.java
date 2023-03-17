@@ -59,18 +59,13 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("ARITHMATIC_1", new TransferBuilder()
 				.add(" \t", "ARITHMATIC_1")
-				.add("\\<\\>", "OPERATION_1")
+				.add("\\<\\>", "OPERATION")
 				.add("^ \t\\<\\>", "END", -1)
 				.build());
 		
-		this.putTransferMap("OPERATION_1", new TransferBuilder()
-				.add("\\=", "OPERATION_2")
+		this.putTransferMap("OPERATION", new TransferBuilder()
+				.add("\\=", "OPERATION")
 				.add("^\\=", "ARITHMATIC_2", -1)
-				.build());
-		
-		this.putTransferMap("OPERATION_2", new TransferBuilder()
-				.add(" \t", "OPERATION_2")
-				.add("^ \t", "ARITHMATIC_2", -1)
 				.build());
 		
 		this.putTransferMap("ARITHMATIC_2", new TransferBuilder()
@@ -107,10 +102,10 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"ARITHMATIC_1"},
-			target={"OPERATION_1"}
+			source={"ARITHMATIC_1", "OPERATION"},
+			target={"OPERATION"}
 	)
-	public void handleOp1(Event event) throws Exception {
+	public void handleOp(Event event) throws Exception {
 		this.opBuffer.append(event.getCh());
 	}
 	
@@ -120,20 +115,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"OPERATION_1"},
-			target={"OPERATION_2"}
-	)
-	public void handleOp2(Event event) throws Exception {
-		this.opBuffer.append(event.getCh());
-	}
-	
-	/**
-	 * 비교 연산자 상태로 전이시 핸들러 메소드
-	 * 
-	 * @param event 상태 전이 이벤트 정보
-	 */
-	@TransferEventHandler(
-			source={"OPERATION_1", "OPERATION_2"},
+			source={"OPERATION"},
 			target={"ARITHMATIC_2"}
 	)
 	public void handleP2(Event event) throws Exception {
