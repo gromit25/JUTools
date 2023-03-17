@@ -13,7 +13,8 @@ import com.jutools.parserfw.TreeNode;
 
 /**
  * 비교(<, >, <=, >=) 연산 파싱 수행<br>
- * 비교 연산은 삼항 연산이 없음
+ * 비교 연산은 삼항 연산이 없음<br>
+ * ex) 1>2>3 -> true>3(?!)
  * 
  * @author jmsohn
  */
@@ -137,7 +138,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	)
 	public void handleP2(Event event) throws Exception {
 		
-		//
+		// 
 		String compareOp = this.opBuffer.toString();
 		switch(compareOp) {
 		case ">":
@@ -157,7 +158,27 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		}
 		
 		//
-		this.opBuffer.append(event.getCh());
+		ArithmaticParser parser = new ArithmaticParser();
+		this.p2 = parser.parse(event.getReader());
+	}
+	
+	/**
+	 * 파싱 종료 처리
+	 */
+	public void exit() {
+		
+		if(this.operation != null && this.p2 != null) {
+		
+			// 비교 연산이 존재하는 경우
+			this.setNodeData(this.operation);
+			this.addChild(this.p1);
+			this.addChild(this.p2);
+			
+		} else {
+			
+			// 비교 연산이 존재하지 않는 경우
+			this.setNode(this.p1);
+		}
 	}
 
 }

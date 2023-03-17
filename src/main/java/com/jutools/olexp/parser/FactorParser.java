@@ -41,19 +41,19 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
-				.add("^)", "ARITHMATIC", -1)  //TODO 계속 변경해야 함
+				.add("^)", "COMPARISON", -1)  //TODO 계속 변경해야 함
 				.add(")", "ERROR")
 				.build());
 		
-		this.putTransferMap("ARITHMATIC", new TransferBuilder()  //TODO
-				.add(" \t", "ARITHMATIC")
-				.add(")", "EXPRESSION_END")
+		this.putTransferMap("COMPARISON", new TransferBuilder()  //TODO
+				.add(" \t", "COMPARISON")
+				.add(")", "END")
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("NUMBER", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR", EndStatusType.IMMEDIATELY_END);
-		this.putEndStatus("EXPRESSION_END", EndStatusType.IMMEDIATELY_END); // EXPRESSION_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 
@@ -77,10 +77,10 @@ public class FactorParser extends AbstractParser<Instruction> {
 	
 	@TransferEventHandler(
 			source={"EXPRESSION"},
-			target={"ARITHMATIC"}
+			target={"COMPARISON"}
 	)
 	public void handleExp(Event event) throws Exception {
-		ArithmaticParser parser = new ArithmaticParser();
+		ComparisonParser parser = new ComparisonParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
 
