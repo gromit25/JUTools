@@ -75,7 +75,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("TERM_1");
 		this.putEndStatus("TERM_2");
-		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // ARITHMATIC_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 	}
 
 	/**

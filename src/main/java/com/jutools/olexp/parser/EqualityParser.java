@@ -1,6 +1,8 @@
 package com.jutools.olexp.parser;
 
+import com.jutools.instructions.EQUAL;
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.NOT_EQUAL;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
@@ -76,6 +78,22 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * 첫번째 파라미터 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"START"},
+			target={"COMPARISON_1"}
+	)
+	public void handleP1(Event event) throws Exception {
+		
+		ComparisonParser parser = new ComparisonParser();
+		this.p1 = parser.parse(event.getReader());
+
+	}
+	
+	/**
 	 * 동일 여부 연산자 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
@@ -89,7 +107,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * 동일 여부 연산자 상태로 전이시 핸들러 메소드
+	 * 두번째 파라미터 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
@@ -98,7 +116,25 @@ public class EqualityParser extends AbstractParser<Instruction> {
 			target={"COMPARISON_2"}
 	)
 	public void handleOp2(Event event) throws Exception {
+		
+		//
 		this.opBuffer.append(event.getCh());
+		
+		String op = this.opBuffer.toString();
+		switch(op) {
+		case "==":
+			this.operation = new EQUAL();
+			break;
+		case "!=":
+			this.operation = new NOT_EQUAL();
+			break;
+		default:
+			throw new Exception("Unexpected operation:" + op);
+		}
+		
+		//
+		ComparisonParser parser = new ComparisonParser();
+		this.p2 = parser.parse(event.getReader());
+		
 	}
-
 }

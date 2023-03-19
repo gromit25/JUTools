@@ -64,7 +64,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
-				.add("\\=", "OPERATION")
+				.add("\\=", "ARITHMATIC_2")
 				.add("^\\=", "ARITHMATIC_2", -1)
 				.build());
 		
@@ -102,7 +102,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"ARITHMATIC_1", "OPERATION"},
+			source={"ARITHMATIC_1"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
@@ -119,6 +119,11 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 			target={"ARITHMATIC_2"}
 	)
 	public void handleP2(Event event) throws Exception {
+		
+		//
+		if(event.getCh() == '=') {
+			this.opBuffer.append(event.getCh());
+		}
 		
 		// 
 		String compareOp = this.opBuffer.toString();
