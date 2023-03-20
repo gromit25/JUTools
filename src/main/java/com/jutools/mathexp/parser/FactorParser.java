@@ -42,13 +42,13 @@ public class FactorParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("ARITHMATIC", new TransferBuilder()  //TODO
 				.add(" \t", "ARITHMATIC")
-				.add(")", "EXPRESSION_END")
+				.add(")", "END")
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("NUMBER", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR", EndStatusType.IMMEDIATELY_END);
-		this.putEndStatus("EXPRESSION_END", EndStatusType.IMMEDIATELY_END); // EXPRESSION_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 

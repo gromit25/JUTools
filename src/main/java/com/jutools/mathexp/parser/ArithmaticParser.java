@@ -58,7 +58,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		this.putTransferMap("TERM_1", new TransferBuilder()
 				.add(" \t", "TERM_1")
 				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "ARITHMATIC_END", -1)
+				.add("^ \t\\+\\-", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -69,13 +69,13 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		this.putTransferMap("TERM_2", new TransferBuilder()
 				.add(" \t", "TERM_2")
 				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "ARITHMATIC_END", -1)
+				.add("^ \t\\+\\-", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("TERM_1");
 		this.putEndStatus("TERM_2");
-		this.putEndStatus("ARITHMATIC_END", EndStatusType.IMMEDIATELY_END); // ARITHMATIC_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 	}
 
 	/**

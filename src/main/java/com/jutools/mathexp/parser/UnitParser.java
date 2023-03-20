@@ -57,13 +57,13 @@ public class UnitParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("UNIT", new TransferBuilder()
 				.add("a-zA-Z", "UNIT")
-				.add("^a-zA-Z", "UNIT_END")
+				.add("^a-zA-Z", "END")
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("ARITHMATIC");
 		this.putEndStatus("UNIT");
-		this.putEndStatus("UNIT_END", EndStatusType.IMMEDIATELY_END); // UNIT_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 
 	}

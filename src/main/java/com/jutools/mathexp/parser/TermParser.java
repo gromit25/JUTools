@@ -59,7 +59,7 @@ public class TermParser extends AbstractParser<Instruction> {
 		this.putTransferMap("FACTOR_1", new TransferBuilder()
 				.add(" \t", "FACTOR_1")
 				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "TERM_END", -1)
+				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -70,13 +70,13 @@ public class TermParser extends AbstractParser<Instruction> {
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
 				.add(" \t", "FACTOR_2")
 				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "TERM_END", -1)
+				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("FACTOR_1");
 		this.putEndStatus("FACTOR_2");
-		this.putEndStatus("TERM_END", EndStatusType.IMMEDIATELY_END); // TERM_END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 	}
 	
 	/**

@@ -161,4 +161,21 @@ public abstract class AbstractExp {
 		return this;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
+	public <T> T pop(Class<T> type) throws Exception {
+		
+		if(this.stack.isEmpty() == true) {
+			
+			return null;
+			
+		} else {
+			
+			Object obj = this.stack.pop();
+			return type.cast(obj);
+		}
+	}
+	
 }
