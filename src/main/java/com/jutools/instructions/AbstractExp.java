@@ -12,32 +12,35 @@ import com.jutools.parserfw.AbstractParser;
 import lombok.Getter;
 
 /**
- * 
+ * Expression의 추상 클래스
  * 
  * @author jmsohn
  */
 public abstract class AbstractExp {
 	
-	/** 수식 문자열 */
+	/** Expression 문자열 */
 	@Getter
 	protected String exp;
-	/** 수식 명령어 목록 */
+	/** Expression 명령어 목록 */
 	protected ArrayList<Instruction> insts;
-	/** 수식 처리시 사용할 Stack */
+	/** Expression 처리시 사용할 Stack */
 	@Getter
 	protected Stack<Object> stack = new Stack<Object>();
-	/** 수식 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
+	/** Expression 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
 	protected Map<String, Method> methods = new HashMap<String, Method>();
 
 	/**
+	 * root parser 반환
+	 * -> root parser : 가장 처음 호출되는 parser
 	 * 
-	 * @return
+	 * @return root parser
 	 */
 	protected abstract AbstractParser<Instruction> getRootParser() throws Exception;
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param exp
+	 * @param exp expression
 	 */
 	protected AbstractExp(String exp) throws Exception {
 		
@@ -48,7 +51,7 @@ public abstract class AbstractExp {
 		this.exp = exp;
 		this.setMethod(BuiltInMethods.class);
 		
-		// 수식 파싱
+		// Expression 파싱
 		AbstractParser<Instruction> parser = this.getRootParser();
 		this.insts = parser.parse(exp).travelPostOrder();
 		
@@ -147,7 +150,7 @@ public abstract class AbstractExp {
 	}
 	
 	/**
-	 * 수식 수행
+	 * Expression 수행
 	 * 
 	 * @param values 
 	 * @return 현재 객체(fluent 코딩용)
@@ -162,8 +165,10 @@ public abstract class AbstractExp {
 	}
 	
 	/**
-	 *
-	 * @return
+	 * stack의 최상단 값을 뽑아서 반환 
+	 * 
+	 * @param type stack의 값을 casting할 타입
+	 * @return stack의 최상단 값
 	 */
 	public <T> T pop(Class<T> type) throws Exception {
 		

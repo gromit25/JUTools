@@ -8,14 +8,14 @@ import com.jutools.olexp.parser.EqualityParser;
 import com.jutools.parserfw.AbstractParser;
 
 /**
- * 
+ * One Line Expression 클래스
  * 
  * @author jmsohn
  */
 public class OLExp extends AbstractExp {
 	
 	/**
-	 * 
+	 * 생성자
 	 */
 	protected OLExp(String exp) throws Exception {
 		super(exp);
