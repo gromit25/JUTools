@@ -99,7 +99,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"COMPARISON_1"},
+			source={"COMPARISON_1", "COMPARISON_2"},
 			target={"OPERATION"}
 	)
 	public void handleOp1(Event event) throws Exception {
@@ -118,6 +118,16 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	public void handleOp2(Event event) throws Exception {
 		
 		//
+		if(this.operation != null && this.p2 != null) {
+			
+			TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.operation);
+			newP1.addChild(this.p1);
+			newP1.addChild(this.p2);
+			
+			this.p1 = newP1;
+		}
+		
+		//
 		this.opBuffer.append(event.getCh());
 		
 		String op = this.opBuffer.toString();
@@ -133,8 +143,30 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		}
 		
 		//
+		this.opBuffer.delete(0, this.opBuffer.length());
+		
+		//
 		ComparisonParser parser = new ComparisonParser();
 		this.p2 = parser.parse(event.getReader());
 		
+	}
+	
+	/**
+	 * 파싱 종료 처리
+	 */
+	public void exit() {
+		
+		if(this.operation != null && this.p2 != null) {
+		
+			// 동일 여부 연산이 존재하는 경우
+			this.setNodeData(this.operation);
+			this.addChild(this.p1);
+			this.addChild(this.p2);
+			
+		} else {
+			
+			// 동일 여부 연산이 존재하지 않는 경우
+			this.setNode(this.p1);
+		}
 	}
 }
