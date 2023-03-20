@@ -119,5 +119,69 @@ class OLExpTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testComparison2_4() {
+		try {
+
+			Boolean result = OLExp.compile("6 + 2 > 2*(3 - 1)")
+								.execute()
+								.pop(Boolean.class);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testEquality1_1() {
+		try {
+
+			Boolean result = OLExp.compile("1 == 3")
+								.execute()
+								.pop(Boolean.class);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testEquality1_2() {
+		try {
+
+			Boolean result = OLExp.compile("1 != 3")
+								.execute()
+								.pop(Boolean.class);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testEquality2_1() {
+		try {
+
+			Boolean result = OLExp.compile("1 + 2 != 3")
+								.execute()
+								.pop(Boolean.class);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 
 }

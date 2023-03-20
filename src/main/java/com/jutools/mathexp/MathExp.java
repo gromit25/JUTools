@@ -58,7 +58,7 @@ public class MathExp extends AbstractExp {
 		
 		MathResult result = new MathResult();
 		
-		result.setValue(this.pop(double.class));
+		result.setValue(this.pop(Double.class));
 		result.setBaseUnit(this.pop(String.class));
 		
 		return result;
