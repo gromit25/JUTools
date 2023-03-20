@@ -130,9 +130,10 @@ public abstract class AbstractParser<T> {
 	}
 	
 	/**
+	 * 상태 전이 맵 추가
 	 * 
-	 * @param startStatus
-	 * @param toStatusMap
+	 * @param startStatus 변경전 상태명
+	 * @param toStatusMap 상태 전이 맵 목록 
 	 */
 	protected void putTransferMap(String startStatus, ArrayList<Transfer> toStatusMap) {
 		
@@ -378,11 +379,20 @@ public abstract class AbstractParser<T> {
 	 */
 	protected static class Event {
 		
+		/** Event 발생시 입력된 문자 */
 		@Getter
 		private char ch;
+		
+		/** 입력 스트림 */
 		@Getter
 		private PushbackReader reader;
 		
+		/**
+		 * 생성자
+		 * 
+		 * @param ch Event 발생시 입력된 문자
+		 * @param reader 입력 스트림
+		 */
 		public Event(char ch, PushbackReader reader) {
 			this.ch = ch;
 			this.reader = reader;
