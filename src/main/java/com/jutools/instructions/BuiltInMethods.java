@@ -1,10 +1,5 @@
-package com.jutools.mathexp;
+package com.jutools.instructions;
 
-/**
- * 수식에서 사용될 기본 지원 메소드 클래스
- * 
- * @author jmsohn
- */
 public class BuiltInMethods {
 	
 	/**
@@ -29,5 +24,4 @@ public class BuiltInMethods {
 	public static double pow(double base, double exponent) {
 		return Math.pow(base, exponent);
 	}
-
 }
