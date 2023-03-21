@@ -1,11 +1,30 @@
 package com.jutools;
 
+import java.util.HashMap;
+
 /**
  * 문자열 처리 관련 Utility 클래스
  * 
  * @author jmsohn
  */
 public class StringUtil {
+	
+	private static HashMap<Character, String> htmlEntityMap;
+	
+	static {
+		
+		htmlEntityMap = new HashMap<Character, String>();
+		
+		htmlEntityMap.put('&', "&amp;");
+		htmlEntityMap.put('<', "&lt;");
+		htmlEntityMap.put('>', "&gt;");
+		htmlEntityMap.put('"', "&quot;");
+		htmlEntityMap.put('\'', "&#x27;");
+		htmlEntityMap.put('/', "&#x2F;");
+		htmlEntityMap.put('(', "&#x28;");
+		htmlEntityMap.put(')', "&#x29;");
+		
+	}
 	
 	/**
 	 * 주어진 문자열에 대한 이스케이프 처리
@@ -114,4 +133,53 @@ public class StringUtil {
 		return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
 	}
 	
+	/**
+	 * 문자열의 html 엔터티(<>& 등)를 변경(&lt;&gt;&amp; 등) 
+	 * 
+	 * @param contents 문자열
+	 * @return 변경된 문자열
+	 */
+	public String replaceHtmlEntity(String contents) throws Exception {
+		
+		if(contents == null || contents.isEmpty() == true) {
+			return contents;
+		}
+		
+		StringBuilder replacedContents = new StringBuilder("");
+		for(int index = 0; index < contents.length(); index++) {
+			
+			char ch = contents.charAt(index);
+			
+			if(htmlEntityMap.containsKey(ch) == true) {
+				replacedContents.append(htmlEntityMap.get(ch));
+			} else {
+				replacedContents.append(ch);
+			}
+		}
+		
+		return replacedContents.toString();
+	}
+	
+	/**
+	 * 문자열 내에 Null(\0)가 포함 여부 반환
+	 * 포함되어 있을 경우 true
+	 * 
+	 * @param contents 문자열
+	 * @return Null(\0) 포함 여부
+	 */
+	public boolean hasNull(String contents) throws Exception {
+		
+		if(contents == null) {
+			throw new Exception("contents is null");
+		}
+		
+		for(int index = 0; index < contents.length(); index++) {
+			char ch = contents.charAt(index);
+			if(ch == '\0') {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }
