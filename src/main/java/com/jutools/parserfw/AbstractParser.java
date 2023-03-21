@@ -7,6 +7,7 @@ import java.lang.reflect.Parameter;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,16 +34,16 @@ public abstract class AbstractParser<T> {
 	 * 상태 변환 정보 목록<br>
 	 * -> ex) "A" 상태에서 문자 "B"가 들어오면 "C" 상태로 변한다는 정보
 	 */
-	private HashMap<String, ArrayList<Transfer>> transferMap = new HashMap<String, ArrayList<Transfer>>();
+	private Hashtable<String, ArrayList<Transfer>> transferMap = new Hashtable<String, ArrayList<Transfer>>();
 	
 	/** 상태 변환시, 수행되는 전이함수(transfer function) 목록 */
-	private HashMap<String, HashMap<String, ArrayList<Method>>> transferHandlers = new HashMap<String, HashMap<String, ArrayList<Method>>>();
+	private Hashtable<String, Hashtable<String, ArrayList<Method>>> transferHandlers = new Hashtable<String, Hashtable<String, ArrayList<Method>>>();
 	
 	/**
 	 * 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류<br>
 	 * 종료 상태 종류 : 0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료
 	 */
-	private HashMap<String, EndStatusType> endStatus = new HashMap<String, EndStatusType>();
+	private Hashtable<String, EndStatusType> endStatus = new Hashtable<String, EndStatusType>();
 
 	/**
 	 * 생성자
@@ -75,10 +76,10 @@ public abstract class AbstractParser<T> {
 			
 				// 시작 상태가 등록되어 있지 않으면, 등록 수행
 				if(this.transferHandlers.containsKey(source) == false) {
-					this.transferHandlers.put(source, new HashMap<String, ArrayList<Method>>());
+					this.transferHandlers.put(source, new Hashtable<String, ArrayList<Method>>());
 				}
 				
-				HashMap<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
+				Hashtable<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
 				
 				// 종료 상태와 TransferEventHandler 메소드를 등록함
 				for(String target: targets) {
@@ -181,7 +182,7 @@ public abstract class AbstractParser<T> {
 			return new ArrayList<Method>();
 		}
 		
-		HashMap<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
+		Hashtable<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
 		
 		// 소스 핸들러 목록에 타깃이 없는 경우, 빈 array 반환
 		if(sourceMap.containsKey(target) == false) {
