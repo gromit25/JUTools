@@ -168,7 +168,7 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열 내에 Null(\0)가 포함 여부 반환
+	 * 문자열 내에 Null(\0)가 포함 여부 반환<br>
 	 * 포함되어 있을 경우 true
 	 * 
 	 * @param contents 문자열
@@ -191,7 +191,7 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열 내 여러 문자열을 검색하는 메소드
+	 * 문자열 내 여러 문자열을 검색하는 메소드<br>
 	 * -> 문자열을 한번만 읽어 수행 속도 향상 목적
 	 * 
 	 * @param contents 문자열 
@@ -248,7 +248,7 @@ public class StringUtil {
 	@Data
 	private static class FindStr {
 		
-		/** 검색해야할 문자 */
+		/** 검색해야할 문자열 */
 		private String findStr;
 		/** 최초 일치 위치 */
 		private int findLoc;
@@ -332,6 +332,45 @@ public class StringUtil {
 			}
 		}
 		
+	}
+	
+	/**
+	 * 여러 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드
+	 * 
+	 * @param delimiter 구분자
+	 * @param strs 문자열들
+	 * @return 이어 붙힌 문자열
+	 */
+	public static String join(String delimiter, String... strs) throws Exception {
+		
+		// 입력값 검증
+		if(delimiter == null) {
+			throw new NullPointerException("delimiter is null");
+		}
+		
+		if(strs == null) {
+			throw new NullPointerException("strs is null");
+		}
+		
+		// 문자열을 이어 붙히기 위한 StringBuilder 변수
+		StringBuilder joinStr = new StringBuilder("");
+		
+		// 각 문자열들을 이어 붙힘
+		for(int index = 0; index < strs.length; index++) {
+			
+			if(strs[index] == null) {
+				throw new NullPointerException("strs array has null element");
+			}
+			
+			// 문자열을 이어 붙힘
+			// 단 마지막 문자열의 뒤에는 구분자(delimiter)를 붙히지 않음
+			joinStr.append(strs[index]);
+			if(index + 1 != strs.length) {
+				joinStr.append(delimiter);
+			}
+		}
+		
+		return joinStr.toString();
 	}
 
 }

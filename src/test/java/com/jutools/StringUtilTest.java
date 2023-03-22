@@ -3,8 +3,6 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.nio.CharBuffer;
-
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
@@ -103,6 +101,48 @@ class StringUtilTest {
 			
 			assertEquals(-1, result[0]);
 			assertEquals(3, result[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testJoin1() {
+		try {
+			 
+			String result = StringUtil.join("|", "abc", "def");
+			
+			assertEquals("abc|def", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testJoin2() {
+		try {
+			 
+			String result = StringUtil.join("|", "abc", "def", "ghi");
+			
+			assertEquals("abc|def|ghi", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testJoin3() {
+		try {
+			 
+			String result = StringUtil.join("|", new String[]{"abc", "def", "ghi"});
+			
+			assertEquals("abc|def|ghi", result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
