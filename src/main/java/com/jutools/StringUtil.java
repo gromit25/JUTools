@@ -443,4 +443,19 @@ public class StringUtil {
 		return str.isEmpty();
 	}
 
+	/**
+	 * 문자열을 역전 시켜 반환하는 메소드
+	 * ex) abc -> cba 
+	 * 
+	 * @param str 역전시킬 문자열
+	 * @return 역전된 문자열
+	 */
+	public static String reverse(String str) throws Exception {
+		
+		if(str == null) {
+			throw new NullPointerException("");
+		}
+		
+		return new StringBuilder(str).reverse().toString();
+	}
 }
