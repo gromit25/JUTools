@@ -9,10 +9,12 @@ import java.util.HashMap;
  */
 public class StringUtil {
 	
+	/** html entity 변환 맵(replaceHtmlEntity) */ 
 	private static HashMap<Character, String> htmlEntityMap;
 	
 	static {
 		
+		// html entity 변환 맵 초기화 
 		htmlEntityMap = new HashMap<Character, String>();
 		
 		htmlEntityMap.put('&', "&amp;");
