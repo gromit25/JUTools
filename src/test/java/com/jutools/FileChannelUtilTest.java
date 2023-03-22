@@ -9,6 +9,19 @@ import java.nio.file.StandardOpenOption;
 import org.junit.jupiter.api.Test;
 
 class FileChannelUtilTest {
+	
+	/**
+	 * 람다 함수 테스트용 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	class ReadCnt {
+		int count;
+		
+		ReadCnt() {
+			this.count = 0;
+		}
+	}
 
 	@Test
 	void testRead1() throws Exception {
@@ -95,5 +108,26 @@ class FileChannelUtilTest {
 			fail("exception is occured");
 		}
 	}
-
+	
+	@Test
+	void testRead5() throws Exception {
+		
+		File file = new File("resources/read_test.txt");
+		
+		try(
+			FileChannelUtil util = new FileChannelUtil(file, StandardOpenOption.READ);
+		) {
+			
+			ReadCnt readCnt = new ReadCnt();
+			util.readLine(read -> {
+				readCnt.count++;
+			});
+			
+			assertEquals(46, readCnt.count);
+			
+		} catch(Exception ex) {
+			fail("exception is occured");
+		}
+	}
+	
 }

@@ -10,6 +10,7 @@ import java.nio.file.OpenOption;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 /**
  * file channel 처리 관련 utility 클래스
@@ -43,15 +44,15 @@ public class FileChannelUtil implements Closeable {
 	public FileChannelUtil(FileChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
 		
 		if(chnl == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("file channel is null");
 		}
 		
 		if(buffer == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("buffer is null");
 		}
 		
 		if(charset == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("charset is null");
 		}
 		
 		this.chnl = chnl;
@@ -297,6 +298,25 @@ public class FileChannelUtil implements Closeable {
 	}
 	
 	/**
+	 * readLine(String lineEnd)의 람다 함수 지원용 메소드
+	 * 
+	 * @param lineEnd lineEnd 읽을 줄에 대한 구분자
+	 * @param action 읽은 한줄을 처리하는 람다 함수
+	 */
+	public void readLine(String lineEnd, Consumer<String> action) throws Exception {
+		
+		if(action == null) {
+			throw new NullPointerException("consumer is null");
+		}
+		
+		String line = null;
+		while((line = this.readLine(lineEnd)) != null) {
+			action.accept(line);
+		}
+		
+	}
+	
+	/**
 	 * 설정된 file channel에서 한줄씩 읽어서 반환, 다 읽었을 경우 null 반환
 	 * 한줄의 끝은 "\r\n"
 	 * 
@@ -305,9 +325,27 @@ public class FileChannelUtil implements Closeable {
 	public String readLine() throws Exception {
 		return this.readLine("\r\n");
 	}
+	
+	/**
+	 * readLine()의 람다 함수 지원용 메소드
+	 * 
+	 * @param action 읽은 한줄을 처리하는 람다 함수
+	 */
+	public void readLine(Consumer<String> action) throws Exception {
+		
+		if(action == null) {
+			throw new NullPointerException("consumer is null");
+		}
+		
+		String line = null;
+		while((line = this.readLine()) != null) {
+			action.accept(line);
+		}
+		
+	}
 
 	/**
-	 * close file channel 
+	 * close file channel
 	 */
 	@Override
 	public void close() throws IOException {
