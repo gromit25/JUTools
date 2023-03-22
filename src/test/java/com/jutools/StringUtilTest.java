@@ -93,4 +93,20 @@ class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testFind3() {
+		try {
+			
+			String testMsg = "aaabbbbbb"; 
+			int[] result = StringUtil.find(testMsg, "ccc", "bb");
+			
+			assertEquals(-1, result[0]);
+			assertEquals(3, result[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
