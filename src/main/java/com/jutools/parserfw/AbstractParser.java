@@ -116,8 +116,7 @@ public abstract class AbstractParser<T> {
 	protected abstract String getStartStatus();
 	
 	/**
-	 * 파싱 시작시 콜백
-	 * -> 파싱 시작과 동시에 다른 파서를 호출할 때 주로 사용됨
+	 * 파싱 처리 시작 전 콜백
 	 */
 	protected abstract void init() throws Exception;
 	
