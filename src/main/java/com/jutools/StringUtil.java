@@ -350,6 +350,29 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 문자열 내에 검색할 문자열이 하나라도 있는지 확인하는 메소드
+	 * 
+	 * @param contents 문자열 
+	 * @param findStrs 검색할 문자열들
+	 * @return 문자열 내에 검색할 문자열이 하나라도 있는지 여부
+	 */
+	public static boolean containsAny(String contents, String... findStrs) throws Exception {
+		
+		int[] indexes = find(contents, findStrs);
+		
+		for(int index: indexes) {
+			
+			// 문자열이 있는 경우 true를 반환
+			if(index >= 0) {
+				return true;
+			}
+		}
+		
+		// 검색된 문자열이 없는 경우 false를 반환
+		return false;
+	}
+	
+	/**
 	 * 여러 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드
 	 * 
 	 * @param delimiter 구분자
@@ -386,6 +409,22 @@ public class StringUtil {
 		}
 		
 		return joinStr.toString();
+	}
+	
+	/**
+	 * 문자열의 길이를 반환
+	 * -> 주어진 문자열이 null 일 경우 0을 반환함
+	 * 
+	 * @param str 문자열
+	 * @return 문자열의 길이
+	 */
+	public static int length(String str) {
+		
+		if(str == null) {
+			return 0;
+		}
+		
+		return str.length();
 	}
 
 }
