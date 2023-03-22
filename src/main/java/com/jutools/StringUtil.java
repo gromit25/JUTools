@@ -1,6 +1,10 @@
 package com.jutools;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import lombok.Data;
+import lombok.Getter;
 
 /**
  * 문자열 처리 관련 Utility 클래스
@@ -184,4 +188,137 @@ public class StringUtil {
 		
 		return false;
 	}
+	
+	/**
+	 * 문자열 내 여러 문자열을 검색하는 메소드
+	 * -> 문자열을 한번만 읽어 수행 속도 향상 목적
+	 * 
+	 * @param contents 문자열 
+	 * @param findStrs 검색할 문자열들
+	 * @return 최초로 발견된 위치 목록(못찾은 경우 -1)
+	 */
+	public int[] find(String contents, String... findStrs) throws Exception {
+		
+		// 입력값 검증
+		if(contents == null) {
+			throw new NullPointerException("contents is null");
+		}
+		
+		if(findStrs == null) {
+			throw new NullPointerException("findStrs is null");
+		}
+		
+		if(findStrs.length == 0) {
+			return new int[]{};
+		}
+		
+		// 검색 문자열들에 대한 정보 객체 변수 선언 및 초기화 수행
+		ArrayList<FindStr> findStrObjs = new ArrayList<FindStr>(findStrs.length);
+		for(int index = 0; index < findStrs.length; index++) {
+			findStrObjs.add(new FindStr(findStrs[index]));
+		}
+		
+		// 대상 문자열을 한문자씩 읽어서 검색 수행
+		for(int index = 0; index < contents.length(); index++) {
+			
+			char ch = contents.charAt(index);
+			
+			// 검색 문자열 별로 검색
+			for(FindStr findStrObj: findStrObjs) {
+				findStrObj.process(index, ch);
+			}
+		}
+		
+		// 검색 결과를 반환하기 위해 int 배열 형태로 변경
+		int[] findLocs = new int[findStrObjs.size()];
+		for(int index = 0; index < findLocs.length; index++) {
+			findLocs[index] = findStrObjs.get(index).getFindLoc();
+		}
+		
+		// 검색 결과 반환
+		return findLocs;
+	}
+	
+	/**
+	 * find 메소드에서 사용할 검색 정보 클래스 
+	 * 
+	 * @author jmsohn
+	 */
+	@Data
+	private class FindStr {
+		
+		/** 검색해야할 문자 */
+		private String findStr;
+		/** 최초 일치 위치 */
+		private int findLoc;
+		/**
+		 * 검색 중인 문자열 위치 정보
+		 * key - 일치 시작 위치, value - 문자열 내에 현재까지 일치하는 위치
+		 */
+		private HashMap<Integer, Integer> pins;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param findStr
+		 */
+		FindStr(String findStr) throws Exception {
+			
+			if(findStr == null) {
+				throw new NullPointerException("findStr is null");
+			}
+			
+			this.setFindStr(findStr);
+			this.setFindLoc(-1);	// 못찾은 경우 -1
+			this.setPins(new HashMap<Integer, Integer>());
+		}
+		
+		/**
+		 * 입력된 문자에 대해 검색 수행
+		 * -> 한문자씩 확인 작업 수행
+		 * 
+		 * @param index 검색 대상 문자열내에 현재 위치
+		 * @param ch 입력된 문자
+		 */
+		void process(int index, char ch) {
+			
+			// 이미 찾은 경우 더이상 검색을 수행하지 않음
+			if(this.getFindLoc() != -1) {
+				return;
+			}
+			
+			// 각 pin 들에 대해 주어진 문자(ch)와 검색 중인 문자(findCh) 일치 여부를 확인
+			for(int startIndex: this.getPins().keySet()) {
+				
+				int findIndex = this.getPins().get(startIndex);
+				char findCh = this.getFindStr().charAt(findIndex);
+				
+				if(ch == findCh) {
+					
+					findIndex++;
+					
+					// 문자열 일치하는 경우
+					// -> findLoc 설정 후 종료
+					// 문자열 일치하지 않는 경우
+					// -> 하나 증가된 findIndex를 startIndex에 설정
+					if(findIndex >= this.getFindStr().length()) {
+						this.setFindLoc(startIndex);
+						return;
+					} else {
+						this.getPins().put(startIndex, findIndex);
+					}
+					
+				} else {
+					this.getPins().remove(findIndex);
+				}
+			}
+			
+			// 최초 문자와 일치하는 경우 새로운 pin 생성
+			if(ch == this.getFindStr().charAt(0)) {
+				this.getPins().put(index, 1);
+			}
+		}
+		
+	}
+
 }
