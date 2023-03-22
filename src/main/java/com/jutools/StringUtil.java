@@ -168,6 +168,21 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 문자열(contents) 내에 "(\r)\n" -> "&lt;br&gt;\r\n"로 변경하는 메소드  
+	 * 
+	 * @param contents 문자열
+	 * @return 대체된 문자열
+	 */
+	public static String replaceEnterToBr(String contents) throws Exception {
+		
+		if(contents == null) {
+			throw new NullPointerException("contents is null");
+		}
+		
+		return contents.replaceAll("(\\r)?\\n", "<br>\r\n");
+	}
+	
+	/**
 	 * 문자열 내에 Null(\0)가 포함 여부 반환<br>
 	 * 포함되어 있을 경우 true
 	 * 

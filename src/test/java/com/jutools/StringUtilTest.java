@@ -149,4 +149,34 @@ class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testReplaceEnterToBR1() {
+		try {
+			
+			String contents = "Hello World!\r\nThis is Test.";
+			String result = StringUtil.replaceEnterToBr(contents);
+			
+			assertEquals("Hello World!<br>\r\nThis is Test.", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testReplaceEnterToBR2() {
+		try {
+			
+			String contents = "Hello World!\nThis is Test.";
+			String result = StringUtil.replaceEnterToBr(contents);
+			
+			assertEquals("Hello World!<br>\r\nThis is Test.", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
