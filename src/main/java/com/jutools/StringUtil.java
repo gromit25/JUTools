@@ -2,9 +2,10 @@ package com.jutools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Data;
-import lombok.Getter;
 
 /**
  * 문자열 처리 관련 Utility 클래스
@@ -145,7 +146,7 @@ public class StringUtil {
 	 * @param contents 문자열
 	 * @return 변경된 문자열
 	 */
-	public String replaceHtmlEntity(String contents) throws Exception {
+	public static String replaceHtmlEntity(String contents) throws Exception {
 		
 		if(contents == null || contents.isEmpty() == true) {
 			return contents;
@@ -173,7 +174,7 @@ public class StringUtil {
 	 * @param contents 문자열
 	 * @return Null(\0) 포함 여부
 	 */
-	public boolean hasNull(String contents) throws Exception {
+	public static boolean hasNull(String contents) throws Exception {
 		
 		if(contents == null) {
 			throw new Exception("contents is null");
@@ -197,7 +198,7 @@ public class StringUtil {
 	 * @param findStrs 검색할 문자열들
 	 * @return 최초로 발견된 위치 목록(못찾은 경우 -1)
 	 */
-	public int[] find(String contents, String... findStrs) throws Exception {
+	public static int[] find(String contents, String... findStrs) throws Exception {
 		
 		// 입력값 검증
 		if(contents == null) {
@@ -245,7 +246,7 @@ public class StringUtil {
 	 * @author jmsohn
 	 */
 	@Data
-	private class FindStr {
+	private static class FindStr {
 		
 		/** 검색해야할 문자 */
 		private String findStr;
@@ -286,6 +287,10 @@ public class StringUtil {
 			if(this.getFindLoc() != -1) {
 				return;
 			}
+
+			// 문자가 일치하지 않는 경우
+			// pin에서 삭제할 대상 목록
+			Set<Integer> toRemove = new HashSet<Integer>();
 			
 			// 각 pin 들에 대해 주어진 문자(ch)와 검색 중인 문자(findCh) 일치 여부를 확인
 			for(int startIndex: this.getPins().keySet()) {
@@ -309,8 +314,16 @@ public class StringUtil {
 					}
 					
 				} else {
-					this.getPins().remove(findIndex);
+					
+					// 문자가 일치하지 않을 경우 삭제 대상에 추가
+					// 여기에서 삭제하면 for 문이 돌고 있는 중에 대상에 변화가 생겨 오류가 발생
+					toRemove.add(startIndex);
 				}
+			}
+			
+			// pin 목록에서 pin 삭제
+			for(Integer key: toRemove) {
+				this.getPins().remove(key);
 			}
 			
 			// 최초 문자와 일치하는 경우 새로운 pin 생성

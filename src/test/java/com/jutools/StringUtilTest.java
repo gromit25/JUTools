@@ -61,4 +61,36 @@ class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testFind1() {
+		try {
+			
+			String testMsg = "hello world!"; 
+			int[] result = StringUtil.find(testMsg, "hello", "world");
+			
+			assertEquals(0, result[0]);
+			assertEquals(6, result[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testFind2() {
+		try {
+			
+			String testMsg = "aaabbbbbb"; 
+			int[] result = StringUtil.find(testMsg, "aabb", "bb");
+			
+			assertEquals(1, result[0]);
+			assertEquals(3, result[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
