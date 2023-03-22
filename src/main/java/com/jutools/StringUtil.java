@@ -374,7 +374,7 @@ public class StringUtil {
 		for(int index = 0; index < strs.length; index++) {
 			
 			if(strs[index] == null) {
-				throw new NullPointerException("strs array has null element");
+				throw new NullPointerException("strs array has null element at " + index);
 			}
 			
 			// 문자열을 이어 붙힘
