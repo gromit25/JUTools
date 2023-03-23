@@ -453,7 +453,7 @@ public class StringUtil {
 	public static String reverse(String str) throws Exception {
 		
 		if(str == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("str is null");
 		}
 		
 		return new StringBuilder(str).reverse().toString();
