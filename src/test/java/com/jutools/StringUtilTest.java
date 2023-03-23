@@ -181,4 +181,64 @@ class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testIsValidFileName1() {
+		try {
+			
+			String fileName = "test.xls";
+			boolean result = StringUtil.isValidFileName(fileName, -1, ".doc", ".xls");
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testIsValidFileName2() {
+		try {
+			
+			String fileName = "테스트.ppt";
+			boolean result = StringUtil.isValidFileName(fileName, -1, ".doc", ".xls");
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testIsValidFileName3() {
+		try {
+			
+			String fileName = "테스트.jsp\0.doc";
+			boolean result = StringUtil.isValidFileName(fileName, -1, ".doc", ".xls");
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testIsValidFileName4() {
+		try {
+			
+			String fileName = "테스트.doc";
+			boolean result = StringUtil.isValidFileName(fileName, 5, ".doc", ".xls");
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }

@@ -240,6 +240,18 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 파일명이 유효한지 검증하는 메소드<br>
+	 * 유효할 경우 true
+	 * 
+	 * @param fileName 검사할 파일명
+	 * @param validExts 유효한 확장자 목록
+	 * @return 파일명의 유효성 여부
+	 */
+	public static boolean isValidFileName(String fileName, String... validExts) throws Exception {
+		return isValidFileName(fileName, -1, validExts);
+	}
+	
+	/**
 	 * 문자열 내에 null(\0)가 포함 여부 반환<br>
 	 * 포함되어 있을 경우 true
 	 * 
