@@ -3,6 +3,8 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {

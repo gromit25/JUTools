@@ -3,6 +3,7 @@ package com.jutools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import lombok.Data;
@@ -141,7 +142,7 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열의 html 엔터티(<>& 등)를 변경(&lt;&gt;&amp; 등) 
+	 * 문자열의 html 엔터티(<>& 등 -> &amp;lt;&amp;gt;&amp;amp; 등)를 변경 
 	 * 
 	 * @param contents 문자열
 	 * @return 변경된 문자열
@@ -183,11 +184,67 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열 내에 Null(\0)가 포함 여부 반환<br>
+	 * 파일명이 유효한지 검증하는 메소드<br>
+	 * 유효할 경우 true
+	 * 
+	 * @param fileName 검사할 파일명
+	 * @param length 파일명의 최대 길이
+	 * @param validExts 유효한 확장자 목록
+	 * @return 파일명의 유효성 여부
+	 */
+	public static boolean isValidFileName(String fileName, int length, String... validExts) throws Exception {
+		
+		// 입력값 검증
+		if(validExts == null) {
+			throw new Exception("valid extension list is null");
+		}
+
+		// 파일명이 null 일경우 false 반환
+		if(fileName == null) {
+			return false;
+		}
+		
+		// 파일명에 null(\0)가 있는 경우 false 반환
+		// null을 중간에 삽입하여 확장자 체크를 우회하는 방법을 차단함
+		// 정상 사용자가 파일명에 null을 넣을 이유가 없음
+		if(hasNull(fileName) == true) {
+			return false;
+		}
+		
+		// 파일명이 주어진 길이보다 길 경우 false 반환
+		// Overflow 방법등을 사전 차단
+		// 단, length가 음수일 경우 체크하지 않음
+		if(length >= 0 && fileName.length() > length) {
+			return false;
+		}
+		
+		// 확장자 체크
+		// 유효한 확장자가 있는지 확인
+		// 파일명과 확장자명을 뒤집어서 체크
+		// 만일 유효한 확장자가 있다면, 위치는 0이 될 것임
+		String rFileName = reverse(fileName);
+		
+		String[] rValidExts = new String[validExts.length];
+		for(int index = 0; index < validExts.length; index++) {
+			rValidExts[index] = reverse(validExts[index]);
+		}
+		
+		for(int loc: find(rFileName, rValidExts)) {
+			if(loc == 0) {
+				return true;
+			}
+		}
+		
+		// 유효한 확장자 목록에 없으면 false를 반환
+		return false;
+	}
+	
+	/**
+	 * 문자열 내에 null(\0)가 포함 여부 반환<br>
 	 * 포함되어 있을 경우 true
 	 * 
 	 * @param contents 문자열
-	 * @return Null(\0) 포함 여부
+	 * @return null(\0) 포함 여부
 	 */
 	public static boolean hasNull(String contents) throws Exception {
 		
@@ -271,7 +328,7 @@ public class StringUtil {
 		 * 검색 중인 문자열 위치 정보
 		 * key - 일치 시작 위치, value - 문자열 내에 현재까지 일치하는 위치
 		 */
-		private HashMap<Integer, Integer> pins;
+		private Map<Integer, Integer> pins;
 		
 		/**
 		 * 생성자
@@ -444,7 +501,7 @@ public class StringUtil {
 	}
 
 	/**
-	 * 문자열을 역전 시켜 반환하는 메소드
+	 * 문자열을 역전 시켜 반환하는 메소드<br>
 	 * ex) abc -> cba 
 	 * 
 	 * @param str 역전시킬 문자열
