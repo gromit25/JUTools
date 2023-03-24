@@ -90,6 +90,10 @@ public class DateUtil {
 		return getLunarStr("/", date);
 	}
 	
+	public static Calendar lunarToGregorian(int year, int month, int day) throws Exception {
+		return null;
+	}
+	
 	/**
 	 * 
 	 * 
@@ -136,6 +140,47 @@ public class DateUtil {
 
 	public static String getTimeStr(long time) throws Exception {
 		return getTimeStr(":", time);
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param day
+	 */
+	public static void addDay(Calendar date, int day) throws Exception {
+		
+		if(date == null) {
+			throw new Exception("date is null");
+		}
+		
+		date.add(Calendar.DATE, day);
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param day
+	 * @return
+	 */
+	public static long addDay(long date, int day) {
+		long milsInDay = day * 1000 * 60 * 60 * 24;
+		return date + milsInDay;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param day
+	 */
+	public static void addDay(Date date, int day) throws Exception {
+		
+		if(date == null) {
+			throw new Exception("date is null");
+		}
+		
+		long newDate = addDay(date.getTime(), day);
+		date.setTime(newDate);
+		
 	}
 
 }
