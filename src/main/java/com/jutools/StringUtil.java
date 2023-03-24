@@ -609,7 +609,7 @@ public class StringUtil {
 	 * 단, 문자열에 구분자가 escape 되어 있으면 구분하지 않음<br>
 	 * ex) delimiter: ',' 이고<br>
 	 *     str: "Test\, 입니다., 두번째 문장" 이면,<br>
-	 *     "Test\, 입니다.", " 두번째 문장" 로 분리함
+	 *     "Test\, 입니다.", "두번째 문장" 로 분리함
 	 * 
 	 * @param str 문자열
 	 * @param delimiter 구분자
