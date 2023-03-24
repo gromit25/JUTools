@@ -193,17 +193,17 @@ public class StringUtil {
 	 * @return 파일명의 유효성 여부
 	 */
 	public static boolean isValidFileName(String fileName, int length, String... validExts) throws Exception {
-		
-		// 입력값 검증
-		if(validExts == null) {
-			throw new Exception("valid extension list is null");
-		}
 
 		// 파일명이 null 일경우 false 반환
 		if(fileName == null) {
 			return false;
 		}
-		
+
+		// 유효한 확장자가 없으면 false 반환
+		if(validExts == null || validExts.length == 0) {
+			return false;
+		}
+
 		// 파일명에 null(\0)가 있는 경우 false 반환
 		// null을 중간에 삽입하여 확장자 체크를 우회하는 방법을 차단함
 		// 정상 사용자가 파일명에 null을 넣을 이유가 없음
