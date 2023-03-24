@@ -527,4 +527,95 @@ public class StringUtil {
 		
 		return new StringBuilder(str).reverse().toString();
 	}
+	
+	/**
+	 * 문자열을 구분자 문자에 의해 나눔, 설정에 따라 나누어진 문자열에 trim, escape 처리함<br>
+	 * 단, 문자열에 구분자가 escape 되어 있으면 구분하지 않음<br>
+	 * ex) delimiter: ',' 이고<br>
+	 *     str: "Test\, 입니다., 두번째 문장" 이면,<br>
+	 *     "Test\, 입니다.", " 두번째 문장" 로 분리함
+	 * 
+	 * @param str 문자열
+	 * @param delimiter 구분자
+	 * @param isTrim 나누어진 문자열을 trim할 것인지 여부
+	 * @param isEscape 나누어진 문자열을 escape할 것인지 여부
+	 * @return 나누어진 문자열 목록
+	 */
+	public static String[] split(String str, char delimiter, boolean isTrim, boolean isEscape) throws Exception {
+		
+		// 입력값 검증
+		if(str == null) {
+			throw new NullPointerException("str is null");
+		}
+		
+		// 나누어진 문자열들을 보관하는 변수 
+		ArrayList<String> splitedStrs = new ArrayList<String>();
+		// 문자열을 나누기 위한 임시 변수
+		StringBuilder splitedStrBuffer = new StringBuilder("");
+		// 이전 문자가 escape 문자였는지 여부
+		boolean isEscapeChar = false;
+		
+		// 문자열을 끝까지 순회함
+		for(int index = 0; index < str.length(); index++) {
+			
+			char ch = str.charAt(index);
+			
+			// escape 되지 않은 구분자일 경우, splitedStr을 splitedStrs에 추가함
+			// 아닐 경우, splitedStr에 현재 문자를 추가
+			if(ch == delimiter && isEscapeChar == false) {
+				
+				String splitedStr = splitedStrBuffer.toString();
+				
+				// trim 처리
+				if(isTrim == true) {
+					splitedStr = splitedStr.trim();
+				}
+				
+				// escape 처리
+				if(isEscape == true) {
+					splitedStr = escape(splitedStr);
+				}
+				
+				splitedStrs.add(splitedStr);
+				splitedStrBuffer.setLength(0); // splitedStr의 내용을 모두 지움
+				
+			} else {
+				splitedStrBuffer.append(ch);
+			}
+			
+			// escape 문자이면 true, 아니면 false
+			isEscapeChar = (ch == '\\')?true:false;
+		}
+		
+		// 문자열의 모든 문자에 대해 종료되었을때,
+		// splitedStr의 내용을 splitedStrs에 추가함
+		String splitedStr = splitedStrBuffer.toString();
+		// trim 처리
+		if(isTrim == true) {
+			splitedStr = splitedStr.trim();
+		}
+		// escape 처리
+		if(isEscape == true) {
+			splitedStr = escape(splitedStr);
+		}
+			
+		splitedStrs.add(splitedStr);
+		
+		return splitedStrs.toArray(String[]::new);
+	}
+
+	/**
+	 * 문자열을 구분자 문자에 의해 나눔, 나누어진 문자열에 trim, escape 처리함<br>
+	 * 단, 문자열에 구분자가 escape 되어 있으면 구분하지 않음<br>
+	 * ex) delimiter: ',' 이고<br>
+	 *     str: "Test\, 입니다., 두번째 문장" 이면,<br>
+	 *     "Test\, 입니다.", " 두번째 문장" 로 분리함
+	 * 
+	 * @param str 문자열
+	 * @param delimiter 구분자
+	 * @return 나누어진 문자열 목록
+	 */
+	public static String[] split(String str, char delimiter) throws Exception {
+		return split(str, delimiter, true, true);
+	}
 }
