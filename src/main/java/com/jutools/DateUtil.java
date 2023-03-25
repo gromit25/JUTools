@@ -4,12 +4,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import lombok.Data;
+
 /**
  * 날짜 처리 관련 Utility 클래스
  * 
  * @author jmsohn
  */
 public class DateUtil {
+	
+	/** 기본 날짜 구분자 */
+	private static String DEFAULT_DATE_DELIMITER = "-";
+	/** 기본 시간 구분자 */
+	private static String DEFAULT_TIME_DELIMITER = ":";
 	
 	/**
 	 * 날짜 문자열 반환
@@ -23,7 +30,11 @@ public class DateUtil {
 	public static String getDateStr(String delimiter, Calendar date) throws Exception {
 		
 		if(date == null) {
-			throw new Exception("date is null");
+			throw new NullPointerException("date is null");
+		}
+		
+		if(delimiter == null) {
+			throw new NullPointerException("delimiter is null");
 		}
 		
 		String year = Integer.toString(date.get(Calendar.YEAR));
@@ -75,7 +86,7 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(Calendar date) throws Exception {
-		return getDateStr("/", date);
+		return getDateStr(DEFAULT_DATE_DELIMITER, date);
 	}
 	
 	/**
@@ -86,7 +97,7 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(Date date) throws Exception {
-		return getDateStr("/", date);
+		return getDateStr(DEFAULT_DATE_DELIMITER, date);
 	}
 
 	/**
@@ -97,57 +108,9 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(long date) throws Exception {
-		return getDateStr("/", date);
+		return getDateStr(DEFAULT_DATE_DELIMITER, date);
 	}
 
-	public static Calendar lunarToGregorian(int year, int month, int day) throws Exception {
-		return null;
-	}
-	
-	public static Calendar lunarToGregorian(Calendar date) throws Exception {
-		return null;
-	}
-	
-	public static Calendar lunarToGregorian(Date date) throws Exception {
-		return null;
-	}
-	
-	public static Calendar lunarToGregorian(long date) throws Exception {
-		return null;
-	}
-	
-	public static String getLunarStr(String delimiter, Calendar date) throws Exception {
-		return null;
-	}
-	
-	public static String getLunarStr(String delimiter, Date date) throws Exception {
-		
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(date);
-		
-		return getLunarStr(delimiter, cal);
-	}
-	
-	public static String getLunarStr(String delimiter, long date) throws Exception {
-		
-		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(date);
-		
-		return getLunarStr(delimiter, cal);
-	}
-	
-	public static String getLunarStr(Calendar date) throws Exception {
-		return getLunarStr("/", date);
-	}
-	
-	public static String getLunarStr(Date date) throws Exception {
-		return getLunarStr("/", date);
-	}
-	
-	public static String getLunarStr(long date) throws Exception {
-		return getLunarStr("/", date);
-	}
-	
 	/**
 	 * 날짜 문자열 반환
 	 * ex) delimiter : ":"
@@ -160,7 +123,11 @@ public class DateUtil {
 	public static String getTimeStr(String delimiter, Calendar time) throws Exception {
 		
 		if(time == null) {
-			throw new Exception("time is null");
+			throw new NullPointerException("time is null");
+		}
+		
+		if(delimiter == null) {
+			throw new NullPointerException("delimiter is null");
 		}
 		
 		String hour = String.format("%02d", time.get(Calendar.HOUR_OF_DAY));
@@ -212,7 +179,7 @@ public class DateUtil {
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(Calendar time) throws Exception {
-		return getTimeStr(":", time);
+		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
 	}
 
 	/**
@@ -223,7 +190,7 @@ public class DateUtil {
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(Date time) throws Exception {
-		return getTimeStr(":", time);
+		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
 	}
 
 	/**
@@ -234,7 +201,7 @@ public class DateUtil {
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(long time) throws Exception {
-		return getTimeStr(":", time);
+		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
 	}
 	
 	/**
@@ -278,6 +245,137 @@ public class DateUtil {
 		
 		long newDate = addDay(date.getTime(), day);
 		date.setTime(newDate);
+	}
+	
+	// ----------------- 음력 관련 --------------------
+	
+	/**
+	 * 음력 날짜 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	@Data
+	public static class LunarDate {
+		
+		/** 음력 년도 */
+		private int year;
+		/** 음력 달(1-12) */
+		private int month;
+		/** 음력 날짜 */
+		private int day;
+		
+	}
+	
+	/**
+	 * 양력 날짜를 음력 날짜로 변환
+	 * -> 
+	 * 
+	 * @param year 양력 년도
+	 * @param month 양력 달(1-12)
+	 * @param day 양력 날짜
+	 * @return 음력 날짜
+	 */
+	public static LunarDate toLunar(int year, int month, int day) throws Exception {
+		return null;
+	}
+
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
+	 * 
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(String delimiter, Calendar date) throws Exception {
+		
+		if(date == null) {
+			throw new NullPointerException("date is null");
+		}
+		
+		if(delimiter == null) {
+			throw new NullPointerException("delimiter is null");
+		}
+		
+		int year = date.get(Calendar.YEAR);
+		int month = date.get(Calendar.MONTH) + 1;
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		
+		LunarDate lunar = toLunar(year, month, day);
+		
+		String lunarYear = Integer.toString(lunar.getYear());
+		String lunarMonth = String.format("%02d", lunar.getMonth());
+		String lunarDay = String.format("%02d", lunar.getDay()); 
+		
+		return StringUtil.join(delimiter, lunarYear, lunarMonth, lunarDay);
+	}
+
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
+	 * 
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(String delimiter, Date date) throws Exception {
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		
+		return getLunarStr(delimiter, cal);
+	}
+	
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
+	 * 
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(String delimiter, long date) throws Exception {
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(date);
+		
+		return getLunarStr(delimiter, cal);
+	}
+	
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(Calendar date) throws Exception {
+		return getLunarStr(DEFAULT_DATE_DELIMITER, date);
+	}
+
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(Date date) throws Exception {
+		return getLunarStr(DEFAULT_DATE_DELIMITER, date);
+	}
+
+	/**
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 음력 날짜 문자열
+	 */
+	public static String getLunarStr(long date) throws Exception {
+		return getLunarStr(DEFAULT_DATE_DELIMITER, date);
 	}
 
 }
