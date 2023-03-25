@@ -239,4 +239,49 @@ class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	void testIsValidFileName5() {
+		try {
+			
+			String fileName = "테스트.doc";
+			boolean result = StringUtil.isValidFileName(fileName);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testIsValidFileName6() {
+		try {
+			
+			String fileName = "테스트.dOc";
+			boolean result = StringUtil.isValidFileName(fileName);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testIsValidFileName7() {
+		try {
+			
+			String fileName = "테스트.dOcabc";
+			boolean result = StringUtil.isValidFileName(fileName);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
