@@ -36,7 +36,7 @@ public class PublisherFactory {
 		}
 		
 		// 2. publisher 종류에 따른 publisher 생성
-		Publisher publisher = type.getConcreteType().newInstance();
+		Publisher publisher = type.getConcreteType().getConstructor().newInstance();
 		
 		// 3. xml을 파싱하여, 생성된 publisher 구성함
 		SAXParserFactory factory = SAXParserFactory.newInstance();
