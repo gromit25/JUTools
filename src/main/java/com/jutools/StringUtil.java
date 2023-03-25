@@ -18,11 +18,11 @@ public class StringUtil {
 	/** html entity 변환 맵(replaceHtmlEntity) */ 
 	private static Map<Character, String> htmlEntityMap;
 	/** 유효한 확장자 모음 */
-	private static Set<String> defaultValidExts;
+	private static String[] defaultValidExts;
 	
 	static {
 		
-		// html entity 변환 맵 초기화 
+		/* html entity 변환 맵 초기화 */ 
 		htmlEntityMap = new HashMap<Character, String>();
 		
 		htmlEntityMap.put('&', "&amp;");
@@ -34,64 +34,36 @@ public class StringUtil {
 		htmlEntityMap.put('(', "&#x28;");
 		htmlEntityMap.put(')', "&#x29;");
 		
-		// 유효한 확장자 모음 초기화
-		defaultValidExts = new HashSet<String>();
-		
+		/* 유효한 확장자 모음 초기화 */
+		defaultValidExts = new String[] {
+
 		// 텍스트 파일 확장자
-		defaultValidExts.add(".txt");
-		defaultValidExts.add(".rtf");
+		".txt", ".rtf",
 
 		// 엑셀 파일 확장자
-		defaultValidExts.add(".csv");
-		defaultValidExts.add(".xls");
-		defaultValidExts.add(".xlsx");
-		defaultValidExts.add(".xlt");
-		defaultValidExts.add(".xltx");
-		defaultValidExts.add(".xltm");
-		defaultValidExts.add(".xlw");
+		".csv", ".xls", ".xlsx", ".xlt", ".xltx", ".xltm", ".xlw",
 
 		// 파워포인트 파일 확장자
-		defaultValidExts.add(".ppt");
-		defaultValidExts.add(".pptx");
+		".ppt", ".pptx",
 
 		// 워드 파일 확장자
-		defaultValidExts.add(".doc");
-		defaultValidExts.add(".docx");
-		defaultValidExts.add(".docm");
-		defaultValidExts.add(".dot");
-		defaultValidExts.add(".dotx");
-		defaultValidExts.add(".dotm");
+		".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm",
 
 		// MS Access 파일 확장자
-		defaultValidExts.add(".accdb");
-		defaultValidExts.add(".mdb");
+		".accdb", ".mdb",
 
 		// 아래한글 파일 확장자
-		defaultValidExts.add(".hwp");
-		defaultValidExts.add(".hwpx");
+		".hwp", ".hwpx",
 
 		// pdf 파일 확장자
-		defaultValidExts.add(".pdf");
+		".pdf",
 
 		// 이미지 파일 확장자
-		defaultValidExts.add(".jpg");
-		defaultValidExts.add(".jpeg");
-		defaultValidExts.add(".tiff");
-		defaultValidExts.add(".gif");
-		defaultValidExts.add(".bmp");
-		defaultValidExts.add(".png");
+		".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".png",
 
 		// 동영상 파일 확장자
-		defaultValidExts.add(".mp3");
-		defaultValidExts.add(".mp4");
-		defaultValidExts.add(".mov");
-		defaultValidExts.add(".wmv");
-		defaultValidExts.add(".avi");
-		defaultValidExts.add(".avchd");
-		defaultValidExts.add(".flv");
-		defaultValidExts.add(".f4v");
-		defaultValidExts.add(".swf");
-		defaultValidExts.add(".mpeg");
+		".mp3", ".mp4", ".mov", ".wmv", ".avi", ".avchd", ".flv", ".f4v", ".swf", ".mpeg"
+		};
 	}
 	
 	/**
@@ -312,6 +284,31 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 파일명이 유효한지 검증하는 메소드<br>
+	 * 유효한 확장자 모음(StringUtil.defaultValidExts)에 있는 확장자인지 검사함<br>
+	 * 유효할 경우 true
+	 * 
+	 * @param fileName 검사할 파일명
+	 * @param length 파일명의 최대 길이
+	 * @return 파일명의 유효성 여부
+	 */
+	public static boolean isValidFileName(String fileName, int length) throws Exception {
+		return isValidFileName(fileName, length, defaultValidExts);
+	}
+	
+	/**
+	 * 파일명이 유효한지 검증하는 메소드<br>
+	 * 유효한 확장자 모음(StringUtil.defaultValidExts)에 있는 확장자인지 검사함<br>
+	 * 유효할 경우 true
+	 * 
+	 * @param fileName 검사할 파일명
+	 * @return 파일명의 유효성 여부
+	 */
+	public static boolean isValidFileName(String fileName) throws Exception {
+		return isValidFileName(fileName, -1);
+	}
+	
+	/**
 	 * 문자열 내에 null(\0)가 포함 여부 반환<br>
 	 * 포함되어 있을 경우 true
 	 * 
@@ -449,7 +446,7 @@ public class StringUtil {
 				int findIndex = this.getPins().get(startIndex);
 				char findCh = this.getFindStr().charAt(findIndex);
 				
-				if(ch == findCh) {
+				if(this.isEqual(ch, findCh) == true) {
 					
 					findIndex++;
 					
@@ -480,6 +477,23 @@ public class StringUtil {
 			// 최초 문자와 일치하는 경우 새로운 pin 생성
 			if(ch == this.getFindStr().charAt(0)) {
 				this.getPins().put(index, 1);
+			}
+		}
+		
+		/**
+		 * 두 문자가 동일한지 비교<br>
+		 * 대소문자 구분 여부를 확인하여 두 문자를 비교함
+		 * 
+		 * @param ch1 비교할 문자 1 
+		 * @param ch2 비교할 문자 2
+		 * @return 동일 여부
+		 */
+		private boolean isEqual(char ch1, char ch2) {
+			
+			if(this.isCaseSensitivity() == true) {
+				return ch1 == ch2;
+			} else {
+				return Character.toLowerCase(ch1) == Character.toLowerCase(ch2);
 			}
 		}
 		

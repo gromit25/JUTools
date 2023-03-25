@@ -3,8 +3,6 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.HashMap;
-
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
@@ -12,8 +10,8 @@ class StringUtilTest {
 	@Test
 	void test() {
 		
-		System.out.println(Math.pow(0.0, 0.0));
-
+		char ch = Character.toLowerCase('=');
+		System.out.println(ch);
 	}
 
 	@Test
