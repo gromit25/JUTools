@@ -19,9 +19,9 @@ public class DateUtil {
 	private static String DEFAULT_TIME_DELIMITER = ":";
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -45,9 +45,9 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -62,9 +62,9 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -79,8 +79,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
-	 * ex) "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 날짜 문자열
@@ -90,8 +90,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 날짜 문자열
@@ -101,8 +101,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
-	 * ex) "2023/03/25"
+	 * 날짜 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 날짜 문자열
@@ -112,8 +112,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : ":"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
 	 * @param delimiter 시간 구분자
@@ -138,8 +138,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : ":"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
 	 * @param delimiter 시간 구분자
@@ -155,8 +155,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환
-	 * ex) delimiter : ":"
+	 * 날짜 문자열 반환<br>
+	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
 	 * @param delimiter 시간 구분자
@@ -172,7 +172,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
+	 * 날짜 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
@@ -183,7 +183,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
+	 * 날짜 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
@@ -194,7 +194,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 날짜 문자열 반환
+	 * 날짜 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
@@ -267,7 +267,7 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 양력 날짜를 음력 날짜로 변환
+	 * 양력 날짜를 음력 날짜로 변환<br>
 	 * -> 
 	 * 
 	 * @param year 양력 년도
@@ -280,9 +280,9 @@ public class DateUtil {
 	}
 
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -312,9 +312,9 @@ public class DateUtil {
 	}
 
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -329,9 +329,9 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) delimiter : "/"
-	 *     -> "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) delimiter : "-"<br>
+	 *     -> "2023-03-25"
 	 * 
 	 * @param delimiter 일자 구분자
 	 * @param date 날짜
@@ -346,8 +346,8 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 음력 날짜 문자열
@@ -357,8 +357,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 음력 날짜 문자열
@@ -368,8 +368,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환
-	 * ex) "2023/03/25"
+	 * 양력 날짜를 음력 날짜로 변환 후 문자열 반환<br>
+	 * ex) "2023-03-25"
 	 * 
 	 * @param date 날짜
 	 * @return 음력 날짜 문자열
