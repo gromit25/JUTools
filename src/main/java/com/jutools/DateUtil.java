@@ -12,10 +12,13 @@ import java.util.GregorianCalendar;
 public class DateUtil {
 	
 	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
 	 * 
-	 * @param delimiter
-	 * @param date
-	 * @return
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(String delimiter, Calendar date) throws Exception {
 		
@@ -30,6 +33,15 @@ public class DateUtil {
 		return StringUtil.join(delimiter, year, month, day);
 	}
 	
+	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
+	 * 
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 날짜 문자열
+	 */
 	public static String getDateStr(String delimiter, Date date) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
@@ -38,6 +50,15 @@ public class DateUtil {
 		return getDateStr(delimiter, cal);
 	}
 	
+	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : "/"
+	 *     -> "2023/03/25"
+	 * 
+	 * @param delimiter 일자 구분자
+	 * @param date 날짜
+	 * @return 날짜 문자열
+	 */
 	public static String getDateStr(String delimiter, long date) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
@@ -46,16 +67,53 @@ public class DateUtil {
 		return getDateStr(delimiter, cal);
 	}
 
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 날짜 문자열
+	 */
 	public static String getDateStr(Calendar date) throws Exception {
 		return getDateStr("/", date);
 	}
 	
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 날짜 문자열
+	 */
 	public static String getDateStr(Date date) throws Exception {
 		return getDateStr("/", date);
 	}
 
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "2023/03/25"
+	 * 
+	 * @param date 날짜
+	 * @return 날짜 문자열
+	 */
 	public static String getDateStr(long date) throws Exception {
 		return getDateStr("/", date);
+	}
+
+	public static Calendar lunarToGregorian(int year, int month, int day) throws Exception {
+		return null;
+	}
+	
+	public static Calendar lunarToGregorian(Calendar date) throws Exception {
+		return null;
+	}
+	
+	public static Calendar lunarToGregorian(Date date) throws Exception {
+		return null;
+	}
+	
+	public static Calendar lunarToGregorian(long date) throws Exception {
+		return null;
 	}
 	
 	public static String getLunarStr(String delimiter, Calendar date) throws Exception {
@@ -90,16 +148,14 @@ public class DateUtil {
 		return getLunarStr("/", date);
 	}
 	
-	public static Calendar lunarToGregorian(int year, int month, int day) throws Exception {
-		return null;
-	}
-	
 	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : ":"
+	 *     -> "16:30:45"
 	 * 
-	 * 
-	 * @param delimiter
-	 * @param time
-	 * @return
+	 * @param delimiter 시간 구분자
+	 * @param time 시간
+	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(String delimiter, Calendar time) throws Exception {
 		
@@ -114,6 +170,15 @@ public class DateUtil {
 		return StringUtil.join(delimiter, hour, minute, second);
 	}
 	
+	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : ":"
+	 *     -> "16:30:45"
+	 * 
+	 * @param delimiter 시간 구분자
+	 * @param time 시간
+	 * @return 시간 문자열
+	 */
 	public static String getTimeStr(String delimiter, Date time) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
@@ -122,6 +187,15 @@ public class DateUtil {
 		return getTimeStr(delimiter, cal);
 	}
 	
+	/**
+	 * 날짜 문자열 반환
+	 * ex) delimiter : ":"
+	 *     -> "16:30:45"
+	 * 
+	 * @param delimiter 시간 구분자
+	 * @param time 시간
+	 * @return 시간 문자열
+	 */
 	public static String getTimeStr(String delimiter, long time) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
@@ -130,22 +204,44 @@ public class DateUtil {
 		return getTimeStr(delimiter, cal);
 	}
 
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "16:30:45"
+	 * 
+	 * @param time 시간
+	 * @return 시간 문자열
+	 */
 	public static String getTimeStr(Calendar time) throws Exception {
 		return getTimeStr(":", time);
 	}
 
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "16:30:45"
+	 * 
+	 * @param time 시간
+	 * @return 시간 문자열
+	 */
 	public static String getTimeStr(Date time) throws Exception {
 		return getTimeStr(":", time);
 	}
 
+	/**
+	 * 날짜 문자열 반환
+	 * ex) "16:30:45"
+	 * 
+	 * @param time 시간
+	 * @return 시간 문자열
+	 */
 	public static String getTimeStr(long time) throws Exception {
 		return getTimeStr(":", time);
 	}
 	
 	/**
+	 * 날짜에 일자를 더함(음수 가능)
 	 * 
-	 * @param date
-	 * @param day
+	 * @param date 날짜
+	 * @param day 더할 날짜
 	 */
 	public static void addDay(Calendar date, int day) throws Exception {
 		
@@ -157,10 +253,11 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 날짜에 일자를 더함(음수 가능)
 	 * 
-	 * @param date
-	 * @param day
-	 * @return
+	 * @param date 날짜
+	 * @param day 더할 날짜
+	 * @return 더해진 날짜(ms)
 	 */
 	public static long addDay(long date, int day) {
 		long milsInDay = day * 1000 * 60 * 60 * 24;
@@ -168,9 +265,10 @@ public class DateUtil {
 	}
 	
 	/**
+	 * 날짜에 일자를 더함(음수 가능)
 	 * 
-	 * @param date
-	 * @param day
+	 * @param date 날짜
+	 * @param day 더할 날짜
 	 */
 	public static void addDay(Date date, int day) throws Exception {
 		
@@ -180,7 +278,6 @@ public class DateUtil {
 		
 		long newDate = addDay(date.getTime(), day);
 		date.setTime(newDate);
-		
 	}
 
 }
