@@ -37,32 +37,32 @@ public class StringUtil {
 		/* 유효한 확장자 모음 초기화 */
 		defaultValidExts = new String[] {
 
-		// 텍스트 파일 확장자
-		".txt", ".rtf",
-
-		// 엑셀 파일 확장자
-		".csv", ".xls", ".xlsx", ".xlt", ".xltx", ".xltm", ".xlw",
-
-		// 파워포인트 파일 확장자
-		".ppt", ".pptx",
-
-		// 워드 파일 확장자
-		".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm",
-
-		// MS Access 파일 확장자
-		".accdb", ".mdb",
-
-		// 아래한글 파일 확장자
-		".hwp", ".hwpx",
-
-		// pdf 파일 확장자
-		".pdf",
-
-		// 이미지 파일 확장자
-		".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".png",
-
-		// 동영상 파일 확장자
-		".mp3", ".mp4", ".mov", ".wmv", ".avi", ".avchd", ".flv", ".f4v", ".swf", ".mpeg"
+			// 텍스트 파일 확장자
+			".txt", ".rtf",
+	
+			// 엑셀 파일 확장자
+			".csv", ".xls", ".xlsx", ".xlt", ".xltx", ".xltm", ".xlw",
+	
+			// 파워포인트 파일 확장자
+			".ppt", ".pptx",
+	
+			// 워드 파일 확장자
+			".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm",
+	
+			// MS Access 파일 확장자
+			".accdb", ".mdb",
+	
+			// 아래한글 파일 확장자
+			".hwp", ".hwpx",
+	
+			// pdf 파일 확장자
+			".pdf",
+	
+			// 이미지 파일 확장자
+			".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".png",
+	
+			// 동영상 파일 확장자
+			".mp3", ".mp4", ".mov", ".wmv", ".avi", ".avchd", ".flv", ".f4v", ".swf", ".mpeg"
 		};
 	}
 	
