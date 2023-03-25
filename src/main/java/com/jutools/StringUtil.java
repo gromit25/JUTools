@@ -16,7 +16,9 @@ import lombok.Data;
 public class StringUtil {
 	
 	/** html entity 변환 맵(replaceHtmlEntity) */ 
-	private static HashMap<Character, String> htmlEntityMap;
+	private static Map<Character, String> htmlEntityMap;
+	/** 유효한 확장자 모음 */
+	private static Set<String> defaultValidExts;
 	
 	static {
 		
@@ -32,6 +34,64 @@ public class StringUtil {
 		htmlEntityMap.put('(', "&#x28;");
 		htmlEntityMap.put(')', "&#x29;");
 		
+		// 유효한 확장자 모음 초기화
+		defaultValidExts = new HashSet<String>();
+		
+		// 텍스트 파일 확장자
+		defaultValidExts.add(".txt");
+		defaultValidExts.add(".rtf");
+
+		// 엑셀 파일 확장자
+		defaultValidExts.add(".csv");
+		defaultValidExts.add(".xls");
+		defaultValidExts.add(".xlsx");
+		defaultValidExts.add(".xlt");
+		defaultValidExts.add(".xltx");
+		defaultValidExts.add(".xltm");
+		defaultValidExts.add(".xlw");
+
+		// 파워포인트 파일 확장자
+		defaultValidExts.add(".ppt");
+		defaultValidExts.add(".pptx");
+
+		// 워드 파일 확장자
+		defaultValidExts.add(".doc");
+		defaultValidExts.add(".docx");
+		defaultValidExts.add(".docm");
+		defaultValidExts.add(".dot");
+		defaultValidExts.add(".dotx");
+		defaultValidExts.add(".dotm");
+
+		// MS Access 파일 확장자
+		defaultValidExts.add(".accdb");
+		defaultValidExts.add(".mdb");
+
+		// 아래한글 파일 확장자
+		defaultValidExts.add(".hwp");
+		defaultValidExts.add(".hwpx");
+
+		// pdf 파일 확장자
+		defaultValidExts.add(".pdf");
+
+		// 이미지 파일 확장자
+		defaultValidExts.add(".jpg");
+		defaultValidExts.add(".jpeg");
+		defaultValidExts.add(".tiff");
+		defaultValidExts.add(".gif");
+		defaultValidExts.add(".bmp");
+		defaultValidExts.add(".png");
+
+		// 동영상 파일 확장자
+		defaultValidExts.add(".mp3");
+		defaultValidExts.add(".mp4");
+		defaultValidExts.add(".mov");
+		defaultValidExts.add(".wmv");
+		defaultValidExts.add(".avi");
+		defaultValidExts.add(".avchd");
+		defaultValidExts.add(".flv");
+		defaultValidExts.add(".f4v");
+		defaultValidExts.add(".swf");
+		defaultValidExts.add(".mpeg");
 	}
 	
 	/**
@@ -229,7 +289,7 @@ public class StringUtil {
 			rValidExts[index] = reverse(validExts[index]);
 		}
 		
-		for(int loc: find(rFileName, rValidExts)) {
+		for(int loc: find(rFileName, false, rValidExts)) {
 			if(loc == 0) {
 				return true;
 			}
@@ -278,11 +338,12 @@ public class StringUtil {
 	 * 문자열 내 여러 문자열을 검색하는 메소드<br>
 	 * -> 문자열을 한번만 읽어 수행 속도 향상 목적
 	 * 
-	 * @param contents 문자열 
+	 * @param contents 문자열
+	 * @param caseSensitivity 대소문자 구분 여부(true - 구분함, false - 구분하지 않음)  
 	 * @param findStrs 검색할 문자열들
 	 * @return 최초로 발견된 위치 목록(못찾은 경우 -1)
 	 */
-	public static int[] find(String contents, String... findStrs) throws Exception {
+	public static int[] find(String contents, boolean caseSensitivity, String... findStrs) throws Exception {
 		
 		// 입력값 검증
 		if(contents == null) {
@@ -300,7 +361,7 @@ public class StringUtil {
 		// 검색 문자열들에 대한 정보 객체 변수 선언 및 초기화 수행
 		ArrayList<FindStr> findStrObjs = new ArrayList<FindStr>(findStrs.length);
 		for(int index = 0; index < findStrs.length; index++) {
-			findStrObjs.add(new FindStr(findStrs[index]));
+			findStrObjs.add(new FindStr(findStrs[index], caseSensitivity));
 		}
 		
 		// 대상 문자열을 한문자씩 읽어서 검색 수행
@@ -334,6 +395,11 @@ public class StringUtil {
 		
 		/** 검색해야할 문자열 */
 		private String findStr;
+		/**
+		 * 대소문자 구별 여부
+		 * true - 구분함, false - 구분하지 않음
+		 */
+		private boolean caseSensitivity;
 		/** 최초 일치 위치 */
 		private int findLoc;
 		/**
@@ -347,13 +413,14 @@ public class StringUtil {
 		 * 
 		 * @param findStr
 		 */
-		FindStr(String findStr) throws Exception {
+		FindStr(String findStr, boolean caseSensitivity) throws Exception {
 			
 			if(findStr == null) {
 				throw new NullPointerException("findStr is null");
 			}
 			
 			this.setFindStr(findStr);
+			this.setCaseSensitivity(caseSensitivity);
 			this.setFindLoc(-1);	// 못찾은 경우 -1
 			this.setPins(new HashMap<Integer, Integer>());
 		}
@@ -421,13 +488,14 @@ public class StringUtil {
 	/**
 	 * 문자열 내에 검색할 문자열이 하나라도 있는지 확인하는 메소드
 	 * 
-	 * @param contents 문자열 
+	 * @param contents 문자열
+	 * @param caseSensitivity 대소문자 구분 여부(true - 구분함, false - 구분하지 않음)
 	 * @param findStrs 검색할 문자열들
 	 * @return 문자열 내에 검색할 문자열이 하나라도 있는지 여부
 	 */
-	public static boolean containsAny(String contents, String... findStrs) throws Exception {
+	public static boolean containsAny(String contents, boolean caseSensitivity, String... findStrs) throws Exception {
 		
-		int[] indexes = find(contents, findStrs);
+		int[] indexes = find(contents, caseSensitivity, findStrs);
 		
 		for(int index: indexes) {
 			

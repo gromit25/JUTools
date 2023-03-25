@@ -67,7 +67,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "hello world!"; 
-			int[] result = StringUtil.find(testMsg, "hello", "world");
+			int[] result = StringUtil.find(testMsg, true, "hello", "world");
 			
 			assertEquals(0, result[0]);
 			assertEquals(6, result[1]);
@@ -83,7 +83,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
-			int[] result = StringUtil.find(testMsg, "aabb", "bb");
+			int[] result = StringUtil.find(testMsg, true, "aabb", "bb");
 			
 			assertEquals(1, result[0]);
 			assertEquals(3, result[1]);
@@ -99,7 +99,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
-			int[] result = StringUtil.find(testMsg, "ccc", "bb");
+			int[] result = StringUtil.find(testMsg, true, "ccc", "bb");
 			
 			assertEquals(-1, result[0]);
 			assertEquals(3, result[1]);
