@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -44,7 +44,7 @@ public class SetFormatter extends AbstractFlowFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="exp", mandatory=true)
-	private MathExp exp;
+	private OLExp exp;
 
 	@Override
 	public void addText(String text) throws FormatterException {
@@ -62,8 +62,7 @@ public class SetFormatter extends AbstractFlowFormatter {
 		// exp에 설정된 operation을 수행 후 결과를
 		// value container에 설정할 이름(SetFormatter.name)으로 넣음
 		try {
-			values.put(this.getName(), this.getExp().execute(values)
-					.getResult().getValue(Object.class));
+			values.put(this.getName(), this.getExp().execute(values).pop(Object.class));
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
 		}

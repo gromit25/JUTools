@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
@@ -23,7 +24,7 @@ public class ForFormatter extends AbstractFlowComponentFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="init", mandatory=true)
-	private MathExp initExp;
+	private OLExp initExp;
 
 	/** for문 conditionExp속성의 Evaluator */
 	@Getter
@@ -48,7 +49,7 @@ public class ForFormatter extends AbstractFlowComponentFormatter {
 				this.getInitExp().execute(values);
 				// for 문 조건문 수행, true 이면 for 문 수행
 				this.getConditionExp().execute(values)
-					.getResult().getValue(Boolean.class) == true;
+					.pop(Boolean.class) == true;
 				// for 문 인덱스 증가문 수행
 				this.getStepExp().execute(values)
 			) {

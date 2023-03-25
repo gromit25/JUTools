@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
@@ -31,7 +31,7 @@ public class IfFormatter extends AbstractFlowComponentFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="exp", mandatory=true)
-	private MathExp exp;
+	private OLExp exp;
 
 	@Override
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
@@ -41,7 +41,7 @@ public class IfFormatter extends AbstractFlowComponentFormatter {
 			// if 문 설정된 script의 수행결과가
 			// TRUE 이면, basic flow를 수행함
 			Boolean condition = this.getExp().execute(values)
-					.getResult().getValue(Boolean.class);
+					.pop(Boolean.class);
 			
 			if(condition == true) {
 				this.getBasicFlowFormatter().format(out, charset, values);

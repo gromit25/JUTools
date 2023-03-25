@@ -305,7 +305,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			throw new Exception("unrecognized xml tag:" + qName);
 		}
 		
-		return Formatter.class.cast(formatterType.newInstance());
+		return Formatter.class.cast(formatterType.getConstructor().newInstance());
 	}
 	
 	/**

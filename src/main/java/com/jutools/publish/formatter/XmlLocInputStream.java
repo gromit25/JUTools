@@ -422,7 +422,7 @@ public class XmlLocInputStream extends InputStream {
 		Integer tagSearchBase = this.getTagSearchBaseMap().get(tagName);
 		
 		if(null == tagSearchBase) {
-			tagSearchBase = new Integer(0);
+			tagSearchBase = 0;
 			this.getTagSearchBaseMap().put(tagName, tagSearchBase);
 		}
 		

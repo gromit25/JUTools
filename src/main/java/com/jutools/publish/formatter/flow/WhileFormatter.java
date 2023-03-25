@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
@@ -31,7 +31,7 @@ public class WhileFormatter extends AbstractFlowComponentFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="exp", mandatory=true)
-	private MathExp exp;
+	private OLExp exp;
 	
 	@Override
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
@@ -40,7 +40,7 @@ public class WhileFormatter extends AbstractFlowComponentFormatter {
 			
 			// 설정된 조건이 TRUE 이면,
 			// while문을 계속 수행함
-			while(this.getExp().execute(values).getResult().getValue(Boolean.class) == true) {
+			while(this.getExp().execute(values).pop(Boolean.class) == true) {
 				this.getBasicFlowFormatter().format(out, charset, values);
 			}
 			

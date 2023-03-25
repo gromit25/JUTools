@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.xml.sax.Attributes;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -35,7 +35,7 @@ public class MapToListFormatter extends AbstractFlowFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="mapExp", mandatory=true)
-	private MathExp mapExp;
+	private OLExp mapExp;
 
 	/** List로 변환시 sorting 기준 클래스 */
 	@Getter
@@ -83,7 +83,7 @@ public class MapToListFormatter extends AbstractFlowFormatter {
 		// 1. map 객체를 가져옴
 		Object mapObj = null;
 		try {
-			mapObj = this.getMapExp().execute(values).getResult().getValue();
+			mapObj = this.getMapExp().execute(values).pop(Object.class);
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
 		}
@@ -108,7 +108,7 @@ public class MapToListFormatter extends AbstractFlowFormatter {
 			try {
 				// attribute 설정시 체크함
 				@SuppressWarnings("unchecked")
-				Comparator<Object> comparatorObj = (Comparator<Object>)this.getComparator().newInstance();
+				Comparator<Object> comparatorObj = (Comparator<Object>)this.getComparator().getConstructor().newInstance();
 				list.sort(comparatorObj);
 			} catch(Exception ex) {
 				throw new FormatterException(this, ex);

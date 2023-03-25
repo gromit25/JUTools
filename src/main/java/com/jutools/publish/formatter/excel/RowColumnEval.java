@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 
 import lombok.Data;
 
@@ -18,9 +18,9 @@ import lombok.Data;
 public class RowColumnEval {
 	
 	/** row의 수식 */
-	private MathExp rowEval;
+	private OLExp rowEval;
 	/** column의 수식 */
-	private MathExp columnEval;
+	private OLExp columnEval;
 	
 	/**
 	 * 생성자
@@ -63,7 +63,7 @@ public class RowColumnEval {
 				rowExp = rowDefaultExp;
 			}
 			
-			eval.setRowEval(MathExp.compile(rowExp));
+			eval.setRowEval(OLExp.compile(rowExp));
 		}
 
 		// columnExp compile 수행
@@ -74,7 +74,7 @@ public class RowColumnEval {
 				columnExp = columnDefaultExp;
 			}
 			
-			eval.setColumnEval(MathExp.compile(columnExp));
+			eval.setColumnEval(OLExp.compile(columnExp));
 		}
 		
 		return eval;
@@ -91,7 +91,7 @@ public class RowColumnEval {
 		// 설정된 row script의 값을 계산함
 		// 0보다 작으면, 0으로 설정
 		int rowValue = this.getRowEval().execute(values)
-				.getResult().getValue(Double.class).intValue();
+				.pop(Double.class).intValue();
 		
 		if(rowValue < 0) {
 			rowValue = 0;
@@ -111,7 +111,7 @@ public class RowColumnEval {
 		// 설정된 column script의 값을 계산함
 		// 0보다 작으면, 0으로 설정
 		int columnValue = this.getColumnEval().execute(values)
-				.getResult().getValue(Double.class).intValue();
+				.pop(Double.class).intValue();
 		
 		if(columnValue < 0) {
 			columnValue = 0;

@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -41,7 +41,7 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="listExp", mandatory=true)
-	private MathExp listExp;
+	private OLExp listExp;
 	
 	/** element 속성의 설정값 */
 	@Getter
@@ -75,7 +75,7 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 		Object obj = null;
 		
 		try {
-			obj = this.getListExp().execute(values).getResult();
+			obj = this.getListExp().execute(values).pop(Object.class);
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
 		}

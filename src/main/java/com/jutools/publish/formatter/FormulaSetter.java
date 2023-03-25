@@ -3,7 +3,7 @@ package com.jutools.publish.formatter;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.Setter;
 	
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private MathExp formula;
+	private OLExp formula;
 	
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -27,18 +27,18 @@ import lombok.Setter;
 	@Setter(AccessLevel.PACKAGE)
 	private Method writer;
 	
-	/*package*/ FormulaSetter(MathExp formula, Method setter, Method writer) {
+	/*package*/ FormulaSetter(OLExp formula, Method setter, Method writer) {
 		this.setFormula(formula);
 		this.setSetter(setter);
 		this.setWriter(writer);
 	}
 	
 	/*package*/ FormulaSetter(String formulaScript, Method setter, Method writer) throws Exception {
-		this(MathExp.compile(formulaScript), setter, writer);
+		this(OLExp.compile(formulaScript), setter, writer);
 	}
 	
 	/*package*/ void setData(Formatter formatter, Map<String, Object> values) throws Exception {
-		Object retValue = this.getFormula().execute(values).getResult();
+		Object retValue = this.getFormula().execute(values).pop(Object.class);
 		this.getSetter().invoke(null, formatter, this.getWriter(), retValue.toString());
 	}
 

@@ -39,11 +39,11 @@ public class CustomFormatter extends BasicFlowFormatter {
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
 		try {
 			
-			if(false == Formatter.class.isAssignableFrom(this.getCustomClass())) {
+			if(Formatter.class.isAssignableFrom(this.getCustomClass()) == false) {
 				throw new FormatterException(this, "Unexpected class(Expect:Formatter):" + this.getCustomClass());
 			}
 			
-			Formatter customInstance = Formatter.class.cast(this.getCustomClass().newInstance());
+			Formatter customInstance = Formatter.class.cast(this.getCustomClass().getConstructor().newInstance());
 			this.copy(customInstance);
 			customInstance.format(out, charset, values);
 			

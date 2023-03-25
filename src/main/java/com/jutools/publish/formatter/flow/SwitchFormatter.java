@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -30,7 +30,7 @@ public class SwitchFormatter extends AbstractFlowFormatter {
 	@Getter
 	@Setter
 	@FormatterAttr(name="exp", mandatory=true)
-	private MathExp switchExp;
+	private OLExp switchExp;
 	
 	/**
 	 * 분기를 위한 case formatter 맵
@@ -78,8 +78,7 @@ public class SwitchFormatter extends AbstractFlowFormatter {
 		// 1. switch 문의 내용을 수행하여, 수행결과를 가지고 옴
 		Object condition = null;
 		try {
-			condition = this.getSwitchExp().execute(values)
-					.getResult().getValue();
+			condition = this.getSwitchExp().execute(values).pop(Object.class);
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
 		}
