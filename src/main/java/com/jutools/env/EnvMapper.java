@@ -96,7 +96,7 @@ public class EnvMapper {
 				Class<?> memberType = null;
 				
 				if(field.getType().isArray() == true) {
-					arrayObj = new ArrayList();
+					arrayObj = new ArrayList<Object>();
 					memberType = field.getType().componentType();
 				} else {
 					arrayObj = field.getType().getConstructor().newInstance();
