@@ -263,12 +263,13 @@ public class DateUtil {
 		private int month;
 		/** 음력 날짜 */
 		private int day;
+		/** 윤달 여부 */
+		private boolean intercalation;
 		
 	}
 	
 	/**
 	 * 양력 날짜를 음력 날짜로 변환<br>
-	 * -> 
 	 * 
 	 * @param year 양력 년도
 	 * @param month 양력 달(1-12)
