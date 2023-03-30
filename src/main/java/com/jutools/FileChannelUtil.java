@@ -157,7 +157,6 @@ public class FileChannelUtil implements Closeable {
 		this(FileChannel.open(file.toPath(), options));
 	}
 
-
 	/**
 	 * 설정된 file channel에 문자열을 쓰는 메소드
 	 * 
