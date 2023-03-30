@@ -353,5 +353,4 @@ public class FileChannelUtil implements Closeable {
 			this.chnl.close();
 		}
 	}
-
 }
