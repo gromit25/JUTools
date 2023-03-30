@@ -76,8 +76,8 @@ public class NIOBufferUtil {
 		}
 		
 		if(NIOBufferUtil.clearMethod == null) {
-		    buffer.position(0);              // position = 0; mark = -1; 주의) mark가 0으로 설정되어 있으면 -1이 되지 않음
-		    buffer.limit(buffer.capacity()); // limit = capacity;
+			buffer.position(0);              // position = 0; mark = -1; 주의) mark가 0으로 설정되어 있으면 -1이 되지 않음
+			buffer.limit(buffer.capacity()); // limit = capacity;
 		} else {
 			clearMethod.invoke(buffer);
 		}
