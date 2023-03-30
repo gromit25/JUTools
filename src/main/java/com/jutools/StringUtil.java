@@ -62,7 +62,7 @@ public class StringUtil {
 			".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".png",
 	
 			// 동영상 파일 확장자
-			".mp3", ".mp4", ".mov", ".wmv", ".avi", ".avchd", ".flv", ".f4v", ".swf", ".mpeg"
+			".mp3", ".mp4", ".mov", ".wmv", ".avi", ".mpeg"
 		};
 	}
 	
