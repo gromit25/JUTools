@@ -49,9 +49,6 @@ public class StringUtil {
 			// 워드 파일 확장자
 			".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm",
 	
-			// MS Access 파일 확장자
-			".accdb", ".mdb",
-	
 			// 아래한글 파일 확장자
 			".hwp", ".hwpx",
 	
