@@ -177,9 +177,9 @@ public class FileChannelUtil implements Closeable {
 				length = this.buffer.limit();
 			}
 
-			this.buffer.clear();
+			NIOBufferUtil.clear(this.buffer);
 			this.buffer.put(msgBytes, start, length);
-			this.buffer.flip();
+			NIOBufferUtil.flip(this.buffer);
 
 			while(buffer.hasRemaining() == true) {
 				this.chnl.write(buffer);
@@ -253,10 +253,10 @@ public class FileChannelUtil implements Closeable {
 			isFirst = false;
 			
 			// buffer의 데이터를 byte 배열에 복사
-			this.buffer.flip();  // Limit:Position, Position:0 로 변경  
+			NIOBufferUtil.flip(this.buffer);  // Limit:Position, Position:0 로 변경  
 			byte[] readNow = new byte[this.buffer.remaining()];  // remain: Limit - Position
 			this.buffer.get(readNow); //buffer의 데이터를 byte 배열로 복사
-			this.buffer.clear(); // buffer를 비움
+			NIOBufferUtil.clear(this.buffer); // buffer를 비움
 			
 			// 이전에 읽은 배열과 합침
 			read = BytesUtil.concat(read, readNow);
