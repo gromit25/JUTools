@@ -40,6 +40,7 @@ public class EnvMapper {
 	 * 
 	 * @param mapClass
 	 */
+	@SuppressWarnings("unchecked")
 	public void set() throws Exception {
 		
 		//
@@ -113,9 +114,9 @@ public class EnvMapper {
 					
 					Object valueObject = transferValue(memberType, splitValue, methodName);
 					if(List.class.isAssignableFrom(arrayObj.getClass()) == true) {
-						((List)arrayObj).add(valueObject);
+						((List<Object>)arrayObj).add(valueObject);
 					} else if(Set.class.isAssignableFrom(arrayObj.getClass()) == true) {
-						((Set)arrayObj).add(valueObject);
+						((Set<Object>)arrayObj).add(valueObject);
 					} else {
 						throw new Exception("Unexpected array type:" + arrayObj.getClass());
 					}
@@ -124,10 +125,10 @@ public class EnvMapper {
 				//
 				if(field.getType().isArray() == true) {
 					
-					Object array = Array.newInstance(memberType, ((List)arrayObj).size());
+					Object array = Array.newInstance(memberType, ((List<?>)arrayObj).size());
 					
-					for(int index = 0; index < ((List)arrayObj).size(); index++) {
-						setArrayElement(array, memberType, index, ((List)arrayObj).get(index));
+					for(int index = 0; index < ((List<?>)arrayObj).size(); index++) {
+						setArrayElement(array, memberType, index, ((List<?>)arrayObj).get(index));
 					}
 					
 					field.set(null, array);
