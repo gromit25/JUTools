@@ -697,4 +697,30 @@ public class StringUtil {
 	public static String[] split(String str, char delimiter) throws Exception {
 		return split(str, delimiter, true, true);
 	}
+	
+	/**
+	 * 문자열 객체의 내용을 수정하는 메소드<br>
+	 * - 문자열은 불변(immutable)으로 내용을 수정할 수 없음<br>
+	 *   보안상 문제가 되는 문자열도 메모리상에 남아 있음<br>
+	 *   이에, 문자열의 사용 이후 보안 문자를 메모리상에서 완전히 삭제 또는 마스킹하는 방법을 제공함<br>
+	 * - 이 메소드를 사용할 경우 illegal access warning이 발생함
+	 *   이는 java 실행시 "--illegal-access=warn" 옵션을 추가하여 방지할 수 있음
+	 * 
+	 * @param str 수정할 문자열
+	 * @param toStr 변경할 문자열
+	 */
+	public static void changeStr(String str, String toStr) throws Exception {
+		
+		// 입력값 검증
+		if(str == null) {
+			throw new NullPointerException("str is null");
+		}
+		
+		if(toStr == null) {
+			throw new NullPointerException("toStr is null");
+		}
+		
+		// 문자열 필드에 변경할 문자열을 강제 설정
+		TypeUtil.setField(str, "value", toStr.getBytes());
+	}
 }

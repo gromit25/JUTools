@@ -1,5 +1,6 @@
 package com.jutools;
 
+import java.lang.reflect.Field;
 import java.util.function.Function;
 
 /**
@@ -106,5 +107,40 @@ public class TypeUtil {
 		return toXXX(obj, Double.class, str -> {
 			return Double.parseDouble(str);
 		});
+	}
+	
+	/**
+	 * 객체의 필드에 값을 설정<br>
+	 * private, protected 필드에 값을 설정할 수 있도록 함<br>
+	 * 이 메소드를 사용할 경우 illegal access warning이 발생함
+	 * 이는 java 실행시 "--illegal-access=warn" 옵션을 추가하여 방지할 수 있음
+	 * 
+	 * @param obj 객체
+	 * @param fieldName 설정할 필드명
+	 * @param value 필드에 설정할 값
+	 */
+	public static void setField(Object obj, String fieldName, Object value) throws Exception {
+		
+		// 입력값 검증
+		if(obj == null) {
+			throw new NullPointerException("obj is null");
+		}
+		
+		if(StringUtil.isEmpty(fieldName) == true) {
+			throw new NullPointerException("fieldName is empty");
+		}
+		
+		// field 정보를 가져옴
+		Class<?> objClass = obj.getClass();
+		Field field = objClass.getDeclaredField(fieldName);
+		if(field == null) {
+			throw new Exception(fieldName + " is not found in " + objClass);
+		}
+		
+		// 접근 가능하도록 수정
+		field.setAccessible(true);
+		
+		// 값을 설정함
+		field.set(obj, value);
 	}
 }
