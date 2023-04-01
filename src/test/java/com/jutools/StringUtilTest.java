@@ -302,6 +302,25 @@ class StringUtilTest {
 	}
 	
 	@Test
+	void testEncryptDecryptAES2() {
+		try {
+			
+			// key는 16 byte 이어야 함
+			String key = "mysecretpassword";
+			String msg = "테스트 입니다.";
+			
+			String encryptedMsg = StringUtil.encryptAES(key, msg);
+			String decryptedMsg = StringUtil.decryptAES(key, encryptedMsg);
+			
+			assertEquals(msg, decryptedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	void testChangeStr1() {
 		try {
 			

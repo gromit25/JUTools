@@ -1,5 +1,6 @@
 package com.jutools;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -780,12 +781,29 @@ public class StringUtil {
 	 * @return 암호화된 문자열
 	 */
 	public static String encryptAES(String key, String str) throws Exception {
+		return encryptAES(key, Charset.defaultCharset(), str);
+	}
+	
+	/**
+	 * AES 암호화 메소드
+	 * 
+	 * @param key 암호화 키
+	 * @param cs charset
+	 * @param str 암호화할 문자열
+	 * @return 암호화된 문자열
+	 */
+	public static String encryptAES(String key, Charset cs, String str) throws Exception {
+		
+		// 입력값 검증
+		if(cs == null) {
+			throw new Exception("charset is null");
+		}
 		
 		// 암호화 모듈 생성
 		Cipher cipher = makeCipher(Cipher.ENCRYPT_MODE, key);
 		
 		// 암호화 수행
-		byte[] encryptedData = cipher.doFinal(str.getBytes());
+		byte[] encryptedData = cipher.doFinal(str.getBytes(cs));
 		
 		// 인코딩하여 문자열로 만들어 반환
 		return Base64.getEncoder().encodeToString(encryptedData);
@@ -799,6 +817,23 @@ public class StringUtil {
 	 * @return 복호화된 문자열
 	 */
 	public static String decryptAES(String key, String str) throws Exception {
+		return decryptAES(key, Charset.defaultCharset(), str);
+	}
+	
+	/**
+	 * AES 복호화 메소드
+	 * 
+	 * @param key 암호화 키
+	 * @param cs charset
+	 * @param str 암호화된 문자열
+	 * @return 복호화된 문자열
+	 */
+	public static String decryptAES(String key, Charset cs, String str) throws Exception {
+		
+		// 입력값 검증
+		if(cs == null) {
+			throw new Exception("charset is null");
+		}
 		
 		// 암호화 모듈 생성
 		Cipher cipher = makeCipher(Cipher.DECRYPT_MODE, key);
@@ -807,8 +842,9 @@ public class StringUtil {
 		byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(str));
 		
 		// 문자열로 만들어 반환
-		return new String(decryptedData);
+		return new String(decryptedData, cs);
 	}
+
 	
 	/**
 	 * 문자열 객체의 내용을 수정하는 메소드<br>
