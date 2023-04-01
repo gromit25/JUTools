@@ -1,5 +1,6 @@
 package com.jutools;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -696,6 +697,56 @@ public class StringUtil {
 	 */
 	public static String[] split(String str, char delimiter) throws Exception {
 		return split(str, delimiter, true, true);
+	}
+	
+	/**
+	 * 문자열을 SHA 단방향 암호화 수행
+	 * 
+	 * @param algorithm SHA 암호화 알고리즘 명
+	 * @param str 암호화할 문자열
+	 * @return 암호화된 문자열
+	 */
+	public static String encryptSHA(String algorithm, String str) throws Exception {
+		
+		// 입력값 검증
+		if(str == null) {
+			throw new Exception("str is null");
+		}
+		
+		// hash 생성 
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
+        byte[] hash = digest.digest(str.getBytes());
+        
+        // 문자열 변환
+        StringBuffer hexStr = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if (hex.length() == 1) hexStr.append('0');
+            hexStr.append(hex);
+        }
+        
+        // 변환된 문자열 반환
+        return hexStr.toString();
+	}
+	
+	/**
+	 * 문자열을 SHA-256 단방향 암호화 수행
+	 * 
+	 * @param str 암호화할 문자열
+	 * @return
+	 */
+	public static String encryptSHA256(String str) throws Exception {
+        return encryptSHA("SHA-256", str);
+	}
+
+	/**
+	 * 문자열을 SHA-512 단방향 암호화 수행
+	 * 
+	 * @param str 암호화할 문자열
+	 * @return 암호화된 문자열
+	 */
+	public static String encryptSHA512(String str) throws Exception {
+        return encryptSHA("SHA-512", str);
 	}
 	
 	/**
