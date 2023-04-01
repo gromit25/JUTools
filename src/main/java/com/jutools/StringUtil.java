@@ -2,10 +2,14 @@ package com.jutools;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import lombok.Data;
 
@@ -747,6 +751,52 @@ public class StringUtil {
 	 */
 	public static String encryptSHA512(String str) throws Exception {
         return encryptSHA("SHA-512", str);
+	}
+	
+	/**
+	 * AES 암호화 메소드
+	 * 
+	 * @param key 암호화 키
+	 * @param str 암호화할 문자열
+	 * @return 암호화된 문자열
+	 */
+	public static String encryptAES(String key, String str) throws Exception {
+		
+		// 암호화 키 생성
+		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
+		
+		// 암호화 모듈 생성
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		
+		// 암호화 수행
+		byte[] encryptedData = cipher.doFinal(str.getBytes());
+		
+		// 인코딩하여 문자열로 만들어 반환
+		return Base64.getEncoder().encodeToString(encryptedData);
+	}
+	
+	/**
+	 * AES 복호화 메소드
+	 * 
+	 * @param key 암호화 키
+	 * @param str 암호화된 문자열
+	 * @return 복호화된 문자열
+	 */
+	public static String decryptAES(String key, String str) throws Exception {
+		
+		// 암호화 키 생성
+		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
+		
+		// 암호화 모듈 생성
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		cipher.init(Cipher.DECRYPT_MODE, secretKey);
+		
+		// 복호화 수행
+		byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(str));
+		
+		// 문자열로 만들어 반환
+		return new String(decryptedData);
 	}
 	
 	/**
