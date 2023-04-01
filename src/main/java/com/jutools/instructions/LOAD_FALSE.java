@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * 
+ * False 값을 스택에 넣는 명령어 클래스
  * 
  * @author jmsohn
  */

@@ -3,6 +3,11 @@ package com.jutools.instructions;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Not 연산 명령어 클래스
+ * 
+ * @author jmsohn
+ */
 public class NOT extends Instruction {
 
 	@Override

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * 
+ * 두개의 객체가 동일한지 여부 확인 명령어 클래스
  * 
  * @author jmsohn
  */

@@ -1,5 +1,10 @@
 package com.jutools.instructions;
 
+/**
+ * built in method 클래스
+ * 
+ * @author jmsohn
+ */
 public class BuiltInMethods {
 	
 	/**
