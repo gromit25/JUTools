@@ -3,26 +3,12 @@ package com.jutools;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
-
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
 	
 	@Test
 	void test() throws Exception  {
-		
-		String testMsg = "0123456789";
-		Class<String> strClass = String.class;
-		
-		Field valueField = strClass.getDeclaredField("value");
-		valueField.setAccessible(true);
-		byte[] value = (byte[])valueField.get(testMsg);
-		System.out.println(value.length);
-		
-		String newValue = "*****";
-		valueField.set(testMsg, newValue.getBytes());
-		System.out.println(testMsg);
 	}
 
 	@Test
@@ -289,6 +275,25 @@ class StringUtilTest {
 			boolean result = StringUtil.isValidFileName(fileName);
 			
 			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testEncryptDecryptAES1() {
+		try {
+			
+			// key는 16 byte 이어야 함
+			String key = "mysecretpassword";
+			String msg = "Hello World";
+			
+			String encryptedMsg = StringUtil.encryptAES(key, msg);
+			String decryptedMsg = StringUtil.decryptAES(key, encryptedMsg);
+			
+			assertEquals(msg, decryptedMsg);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

@@ -767,7 +767,7 @@ public class StringUtil {
 		
 		// 암호화 모듈 생성
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		cipher.init(opmode, secretKey);
 		
 		return cipher;
 	}
