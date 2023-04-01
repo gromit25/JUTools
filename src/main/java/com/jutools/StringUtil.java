@@ -754,6 +754,25 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 암호화 모듈 생성 메소드
+	 * 
+	 * @param opmode 생성 모드
+	 * @param key 암호화 키
+	 * @return 암호화 모듈
+	 */
+	private static Cipher makeCipher(int opmode, String key) throws Exception {
+		
+		// 암호화 키 생성
+		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
+		
+		// 암호화 모듈 생성
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		
+		return cipher;
+	}
+	
+	/**
 	 * AES 암호화 메소드
 	 * 
 	 * @param key 암호화 키
@@ -762,12 +781,8 @@ public class StringUtil {
 	 */
 	public static String encryptAES(String key, String str) throws Exception {
 		
-		// 암호화 키 생성
-		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
-		
 		// 암호화 모듈 생성
-		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+		Cipher cipher = makeCipher(Cipher.ENCRYPT_MODE, key);
 		
 		// 암호화 수행
 		byte[] encryptedData = cipher.doFinal(str.getBytes());
@@ -785,12 +800,8 @@ public class StringUtil {
 	 */
 	public static String decryptAES(String key, String str) throws Exception {
 		
-		// 암호화 키 생성
-		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
-		
 		// 암호화 모듈 생성
-		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-		cipher.init(Cipher.DECRYPT_MODE, secretKey);
+		Cipher cipher = makeCipher(Cipher.DECRYPT_MODE, key);
 		
 		// 복호화 수행
 		byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(str));
