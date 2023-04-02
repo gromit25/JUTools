@@ -1,10 +1,10 @@
 package com.jutools;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
@@ -27,8 +27,6 @@ import lombok.Setter;
 public class FileTracker {
 	
 	// config 값
-	/** 파일 경로 */
-	private String pathStr;
 	/** line 구분자 */
 	private String lineSeparator = "\n";
 	/** buffer의 크기 */
@@ -53,18 +51,17 @@ public class FileTracker {
 	/**
 	 * 생성자
 	 * 
-	 * @param pathStr 트레킹할 파일명
+	 * @param file 트레킹할 파일
 	 */
-	protected FileTracker(String pathStr) throws Exception {
+	protected FileTracker(File file) throws Exception {
 
 		// 입력값 검증
-		if(StringUtil.isEmpty(pathStr) == true) {
-			throw new Exception("path is not set");
+		if(file == null) {
+			throw new NullPointerException("file is null");
 		}
 		
 		// 타겟 파일 Path 객체 생성
-		this.pathStr = pathStr;
-		this.path = Paths.get(this.pathStr);
+		this.path = file.toPath();
 
 		// 타겟 파일이 있는 디렉토리의 Path 객체 생성
 		Path parentPath = this.path.getParent();
@@ -76,20 +73,31 @@ public class FileTracker {
 		this.watchService =  parentPath.getFileSystem().newWatchService();
 
 		// target을 watchService에 등록
-		path.register(this.watchService
+		parentPath.register(this.watchService
 				, StandardWatchEventKinds.ENTRY_CREATE
 				, StandardWatchEventKinds.ENTRY_DELETE
 				, StandardWatchEventKinds.ENTRY_MODIFY);
+		
 	}
 	
 	/**
 	 * FileTracker 생성 메소드
 	 * 
-	 * @param pathStr 트레킹할 파일명
+	 * @param file 트레킹할 파일
 	 * @return 생성된 FileTracker 
 	 */
-	public static FileTracker create(String pathStr) throws Exception {
-		return new FileTracker(pathStr);
+	public static FileTracker create(File file) throws Exception {
+		return new FileTracker(file);
+	}
+	
+	/**
+	 * FileTracker 생성 메소드
+	 * 
+	 * @param fileName 트레킹할 파일명
+	 * @return 생성된 FileTracker 
+	 */
+	public static FileTracker create(String fileName) throws Exception {
+		return create(new File(fileName));
 	}
 	
 	/**
