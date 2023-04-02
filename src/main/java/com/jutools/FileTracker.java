@@ -123,8 +123,11 @@ public class FileTracker {
 				readChannel.position(offset);
 			}
 			
-			// 읽은 데이터를 저장할 데이터 버퍼
+			// 읽은 데이터를 저장할 데이터 버퍼 변수
 			ByteBuffer readBuffer = ByteBuffer.allocateDirect(this.bufferSize);
+			
+			// 끝나지 않은 데이터 임시 저장 변수
+			byte[] temp = null;
 			
 			// 중지 설정이 될때까지 반복
 			while(this.isStop() == false) {
@@ -168,9 +171,6 @@ public class FileTracker {
 					}
 	
 					/* 데이터 읽기 및 처리 */
-					// 끝나지 않은 데이터 임시 저장
-					byte[] temp = null;
-	
 					// 더이상 읽을 바이트가 없을 때까지 반복
 					while ((readChannel.read(readBuffer)) != -1) {
 	
