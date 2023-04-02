@@ -98,7 +98,7 @@ public class FileTracker {
 	 */
 	public void tracking(Consumer<String> action) throws Exception {
 		
-	    // 모니터링할 파일을 읽기 위한 파일 채널 변수
+		// 모니터링할 파일을 읽기 위한 파일 채널 변수
 		FileChannel readChannel = null;
 	    
 		// 파일이 이미 존재하면 채널을 생성함
