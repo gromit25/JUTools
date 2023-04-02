@@ -110,118 +110,127 @@ public class FileTracker {
 		// 모니터링할 파일을 읽기 위한 파일 채널 변수
 		FileChannel readChannel = null;
 	    
-		// 파일이 이미 존재하면 채널을 생성함
-		// 주의) InputStream이나 Reader로 읽으면 안됨 -> 파일에 Write Lock이 걸림
-		if(this.path.toFile().exists() == true) {
-
-			readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
-
-			// 파일을 읽기 시작하는 위치를
-			// 파일의 마지막으로 설정함
-			long offset = this.path.toFile().length();
-			readChannel.position(offset);
-		}
-		
-		// 읽은 데이터를 저장할 데이터 버퍼
-		ByteBuffer readBuffer = ByteBuffer.allocateDirect(this.bufferSize);
-		
-		// 중지 설정이 될때까지 반복
-		while(this.isStop() == false) {
-
-			// WatchKey에 이벤트 들어올 때 까지 대기
-			WatchKey watchKey = this.watchService.poll(this.pollingTime, this.pollingTimeUnit);
-			
-			if(this.isStop() == true) {
-				break;
-			}
-			
-			if(watchKey == null) {
-				continue;
-			}
+		try {
+			// 파일이 이미 존재하면 채널을 생성함
+			// 주의) InputStream이나 Reader로 읽으면 안됨 -> 파일에 Write Lock이 걸림
+			if(this.path.toFile().exists() == true) {
 	
-			/* 이벤트 목록에 현재 tracking 파일이 있으면, 파일을 읽음 */
-			List<WatchEvent<?>> events = watchKey.pollEvents();
-			for (WatchEvent<?> event : events) {
-
-				WatchEvent.Kind<?> kind = event.kind(); // 이벤트 종류
-				Path eventFile = (Path) event.context(); // 이벤트가 발생한 파일
-
-				// 이벤트 발생 파일이 tracking 파일(this.path)이 아닐 경우 다음 이벤트 처리
-				String eventFileName = eventFile.toFile().getName();
-				if(eventFileName.equals(this.path.toFile().getName()) == false) {
+				readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
+	
+				// 파일을 읽기 시작하는 위치를
+				// 파일의 마지막으로 설정함
+				long offset = this.path.toFile().length();
+				readChannel.position(offset);
+			}
+			
+			// 읽은 데이터를 저장할 데이터 버퍼
+			ByteBuffer readBuffer = ByteBuffer.allocateDirect(this.bufferSize);
+			
+			// 중지 설정이 될때까지 반복
+			while(this.isStop() == false) {
+	
+				// WatchKey에 이벤트 들어올 때 까지 대기
+				WatchKey watchKey = this.watchService.poll(this.pollingTime, this.pollingTimeUnit);
+				
+				if(this.isStop() == true) {
+					break;
+				}
+				
+				if(watchKey == null) {
 					continue;
 				}
-
-				// 새로 파일이 생성된 경우(원본 파일은 이름이 변경되고, 파일이 새로 생성될 경우),
-				// -> 기존 채널을 닫고, 새로 생성함
-				if(kind == StandardWatchEventKinds.ENTRY_CREATE) {
-
-					// 기존 채널 닫음
-					if (readChannel != null) {
-						readChannel.close();
-						readChannel = null;
+		
+				/* 이벤트 목록에 현재 tracking 파일이 있으면, 파일을 읽음 */
+				List<WatchEvent<?>> events = watchKey.pollEvents();
+				for (WatchEvent<?> event : events) {
+	
+					WatchEvent.Kind<?> kind = event.kind(); // 이벤트 종류
+					Path eventFile = (Path) event.context(); // 이벤트가 발생한 파일
+	
+					// 이벤트 발생 파일이 tracking 파일(this.path)이 아닐 경우 다음 이벤트 처리
+					String eventFileName = eventFile.toFile().getName();
+					if(eventFileName.equals(this.path.toFile().getName()) == false) {
+						continue;
 					}
-
-					// 새로 채널을 오픈함
-					readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
-				}
-
-				/* 데이터 읽기 및 처리 */
-				// 끝나지 않은 데이터 임시 저장
-				byte[] temp = null;
-
-				// 더이상 읽을 바이트가 없을 때까지 반복
-				while ((readChannel.read(readBuffer)) != -1) {
-
-					NIOBufferUtil.flip(readBuffer);
-
-					/* 지정한 bufferSize 만큼 받은 데이터를 lineSeparator 로 잘라 한 문장씩 처리
-					   데이터가 끝나지 않은 경우 임시 저장 후 다음 데이터 앞에 붙임 */
-
-					// ByteBuffer -> ByteArray
-					byte[] buffer = new byte[readBuffer.remaining()];
-					readBuffer.get(buffer);
-
-					// 데이터 끝에 lineSeparator가 있는지 확인
-					boolean isEndsWithLineSeparator = BytesUtil.endsWith(buffer, this.lineSeparator.getBytes());
-
-					// lineSeparator로 데이터를 한 문장씩 split함
-					ArrayList<byte[]> messages = BytesUtil.split(buffer, this.lineSeparator.getBytes());
-					for(int index = 0; index < messages.size(); index++) {
-
-						byte[] message = messages.get(index);
-
-						// 임시 저장된 데이터가 있을 경우
-						// 데이터 합친 뒤 임시 저장 초기화
-						if(index == 0 && temp != null) {
-							message = BytesUtil.concat(temp, message);
-							temp = null;
+	
+					// 새로 파일이 생성된 경우(원본 파일은 이름이 변경되고, 파일이 새로 생성될 경우),
+					// -> 기존 채널을 닫고, 새로 생성함
+					if(kind == StandardWatchEventKinds.ENTRY_CREATE) {
+	
+						// 기존 채널 닫음
+						if (readChannel != null) {
+							readChannel.close();
+							readChannel = null;
 						}
-
-						// lineSeparator 를 통해 잘린 데이터는
-						// 날짜 포맷 후 logMessageArr 에 추가
-						if(index != messages.size() - 1) {
-							action.accept(new String(message, this.charset));
-						} else {
-							if(isEndsWithLineSeparator == true) {
+	
+						// 새로 채널을 오픈함
+						readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
+					}
+	
+					/* 데이터 읽기 및 처리 */
+					// 끝나지 않은 데이터 임시 저장
+					byte[] temp = null;
+	
+					// 더이상 읽을 바이트가 없을 때까지 반복
+					while ((readChannel.read(readBuffer)) != -1) {
+	
+						NIOBufferUtil.flip(readBuffer);
+	
+						/* 지정한 bufferSize 만큼 받은 데이터를 lineSeparator 로 잘라 한 문장씩 처리
+						   데이터가 끝나지 않은 경우 임시 저장 후 다음 데이터 앞에 붙임 */
+	
+						// ByteBuffer -> ByteArray
+						byte[] buffer = new byte[readBuffer.remaining()];
+						readBuffer.get(buffer);
+	
+						// 데이터 끝에 lineSeparator가 있는지 확인
+						boolean isEndsWithLineSeparator = BytesUtil.endsWith(buffer, this.lineSeparator.getBytes());
+	
+						// lineSeparator로 데이터를 한 문장씩 split함
+						ArrayList<byte[]> messages = BytesUtil.split(buffer, this.lineSeparator.getBytes());
+						for(int index = 0; index < messages.size(); index++) {
+	
+							byte[] message = messages.get(index);
+	
+							// 임시 저장된 데이터가 있을 경우
+							// 데이터 합친 뒤 임시 저장 초기화
+							if(index == 0 && temp != null) {
+								message = BytesUtil.concat(temp, message);
+								temp = null;
+							}
+	
+							// lineSeparator 를 통해 잘린 데이터는
+							// 날짜 포맷 후 logMessageArr 에 추가
+							if(index != messages.size() - 1) {
 								action.accept(new String(message, this.charset));
 							} else {
-								// 데이터가 끝나지 않았을 경우 임시 저장
-								temp = message;
+								if(isEndsWithLineSeparator == true) {
+									action.accept(new String(message, this.charset));
+								} else {
+									// 데이터가 끝나지 않았을 경우 임시 저장
+									temp = message;
+								}
 							}
 						}
-					}
-                    
-					NIOBufferUtil.clear(readBuffer);
+	                    
+						NIOBufferUtil.clear(readBuffer);
+						
+					} // End of while readChannel
 					
-				} // End of while readChannel
+				} // End of for events
 				
-			} // End of for events
+				// 다음 이벤트를 얻기 위해 reset 수행함
+				watchKey.reset();
+				
+			} // End of while
 			
-			// 다음 이벤트를 얻기 위해 reset 수행함
-			watchKey.reset();
+		} finally {
 			
-		} // End of while
+			// close 수행
+			if(readChannel != null && readChannel.isOpen() == true) {
+				readChannel.close();
+			}
+		}
 	}
 	
 	/**
