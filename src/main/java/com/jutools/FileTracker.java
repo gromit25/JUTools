@@ -212,7 +212,7 @@ public class FileTracker {
 			// 다음 이벤트를 얻기 위해 reset 수행함
 			watchKey.reset();
 			
-        } // End of while
+		} // End of while
 	}
 	
 	/**
