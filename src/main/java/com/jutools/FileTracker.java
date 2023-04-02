@@ -201,15 +201,12 @@ public class FileTracker {
 	
 							// lineSeparator 를 통해 잘린 데이터는
 							// 날짜 포맷 후 logMessageArr 에 추가
-							if(index != messages.size() - 1) {
+							if(index != messages.size() - 1 || isEndsWithLineSeparator == true) {
+								// 람다 함수에서 데이터를 처리함
 								action.accept(new String(message, this.charset));
 							} else {
-								if(isEndsWithLineSeparator == true) {
-									action.accept(new String(message, this.charset));
-								} else {
-									// 데이터가 끝나지 않았을 경우 임시 저장
-									temp = message;
-								}
+								// 데이터가 끝나지 않았을 경우 임시 저장
+								temp = message;
 							}
 						}
 	                    
