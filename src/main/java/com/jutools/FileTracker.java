@@ -206,7 +206,7 @@ public class FileTracker {
                     
 					NIOBufferUtil.clear(readBuffer);
 					
-                } // End of while readChannel
+				} // End of while readChannel
 				
 			} // End of for events
 			
