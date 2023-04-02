@@ -101,17 +101,17 @@ public class FileTracker {
 	    // 모니터링할 파일을 읽기 위한 파일 채널 변수
 		FileChannel readChannel = null;
 	    
-        // 파일이 이미 존재하면 채널을 생성함
-        // 주의) InputStream이나 Reader로 읽으면 안됨 -> 파일에 Write Lock이 걸림
-        if(this.path.toFile().exists() == true) {
+		// 파일이 이미 존재하면 채널을 생성함
+		// 주의) InputStream이나 Reader로 읽으면 안됨 -> 파일에 Write Lock이 걸림
+		if(this.path.toFile().exists() == true) {
 
-            readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
+			readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
 
-            // 파일을 읽기 시작하는 위치를
-            // 파일의 마지막으로 설정함
-            long offset = this.path.toFile().length();
-            readChannel.position(offset);
-        }
+			// 파일을 읽기 시작하는 위치를
+			// 파일의 마지막으로 설정함
+			long offset = this.path.toFile().length();
+			readChannel.position(offset);
+		}
 		
 		// 읽은 데이터를 저장할 데이터 버퍼
 		ByteBuffer readBuffer = ByteBuffer.allocateDirect(this.bufferSize);
