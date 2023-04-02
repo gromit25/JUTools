@@ -61,24 +61,25 @@ public class FileTracker {
 		if(StringUtil.isEmpty(pathStr) == true) {
 			throw new Exception("path is not set");
 		}
+		
 		// 타겟 파일 Path 객체 생성
 		this.pathStr = pathStr;
-        this.path = Paths.get(this.pathStr);
+		this.path = Paths.get(this.pathStr);
 
-        // 타겟 파일이 있는 디렉토리의 Path 객체 생성
-        Path parentPath = this.path.getParent();
-        if(parentPath.toFile().exists() == true) {
-        	
-        }
+		// 타겟 파일이 있는 디렉토리의 Path 객체 생성
+		Path parentPath = this.path.getParent();
+		if(parentPath.toFile().exists() == false) {
+        	throw new Exception("directory is not exists:" + parentPath.toFile().getAbsolutePath());
+		}
 
-        /* watchService 생성 */
-        this.watchService =  parentPath.getFileSystem().newWatchService();
+		/* watchService 생성 */
+		this.watchService =  parentPath.getFileSystem().newWatchService();
 
-        // target을 watchService에 등록
-        path.register(this.watchService
-                , StandardWatchEventKinds.ENTRY_CREATE
-                , StandardWatchEventKinds.ENTRY_DELETE
-                , StandardWatchEventKinds.ENTRY_MODIFY);
+		// target을 watchService에 등록
+		path.register(this.watchService
+				, StandardWatchEventKinds.ENTRY_CREATE
+				, StandardWatchEventKinds.ENTRY_DELETE
+				, StandardWatchEventKinds.ENTRY_MODIFY);
 	}
 	
 	/**
