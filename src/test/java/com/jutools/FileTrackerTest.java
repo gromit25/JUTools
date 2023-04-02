@@ -18,7 +18,7 @@ class FileTrackerTest {
 			System.out.println("tracking end");
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			throw ex;
+			fail("exception is occured");
 		}
 	}
 
