@@ -287,5 +287,36 @@ public class BytesUtil {
 		
 		return concatenatedArray;
 	}
+	
+	public static byte[] strToBytes(String str) throws Exception {
+		
+		byte[] bytes = new byte[str.length()/2];
+		
+		for(int index = 0; index < bytes.length; index++) {
+			char ch = str.charAt(index * 2);
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static String bytesToStr(byte[] bytes) throws Exception {
+		
+		if(bytes == null) {
+			throw new NullPointerException("bytes is null");
+		}
+		
+		StringBuilder builder = new StringBuilder("");
+		
+		for(int index = 0; index < bytes.length; index++) {
+			builder.append(String.format("%02X", bytes[index]));
+		}
+		
+		return builder.toString();
+	}
 
 }

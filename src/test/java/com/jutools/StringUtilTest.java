@@ -9,6 +9,16 @@ class StringUtilTest {
 	
 	@Test
 	void test() throws Exception  {
+		//byte ch1 = '3' - '0';
+		byte ch1 = 'F' - 'A' + 10;
+		ch1 = (byte)(ch1 << 4);
+		byte ch2 = 'B' - 'A' + 10;
+		
+		byte result = (byte)(ch1 + ch2);
+		
+		System.out.println(ch1);
+		System.out.println(ch2);
+		System.out.println(String.format("%02X", result));
 	}
 
 	@Test
@@ -287,8 +297,12 @@ class StringUtilTest {
 		try {
 			
 			// key는 16 byte 이어야 함
-			String key = "mysecretpassword";
+			//String key = StringUtil.genAESKey();
+			String key = "7888f6880752e89bf89ccb492b43b6ee";
+			//String key = "8461e35173b4f4c4218cf4e7bbd12cbc";
 			String msg = "Hello World";
+			
+			System.out.println(key);
 			
 			String encryptedMsg = StringUtil.encryptAES(key, msg);
 			String decryptedMsg = StringUtil.decryptAES(key, encryptedMsg);
@@ -306,13 +320,28 @@ class StringUtilTest {
 		try {
 			
 			// key는 16 byte 이어야 함
-			String key = "mysecretpassword";
+			String key = StringUtil.genAESKey();
+			System.out.println(key);
+			System.out.println(key.length());
 			String msg = "테스트 입니다.";
 			
 			String encryptedMsg = StringUtil.encryptAES(key, msg);
 			String decryptedMsg = StringUtil.decryptAES(key, encryptedMsg);
 			
 			assertEquals(msg, decryptedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testGenAESKey() {
+		try {
+			
+			String key = StringUtil.genAESKey();
+			System.out.println(key);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
