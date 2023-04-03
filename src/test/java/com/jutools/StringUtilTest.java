@@ -296,10 +296,7 @@ class StringUtilTest {
 	void testEncryptDecryptAES1() {
 		try {
 			
-			// key는 16 byte 이어야 함
-			//String key = StringUtil.genAESKey();
-			String key = "7888f6880752e89bf89ccb492b43b6ee";
-			//String key = "8461e35173b4f4c4218cf4e7bbd12cbc";
+			String key = StringUtil.genAESKey();
 			String msg = "Hello World";
 			
 			System.out.println(key);
@@ -321,8 +318,6 @@ class StringUtilTest {
 			
 			// key는 16 byte 이어야 함
 			String key = StringUtil.genAESKey();
-			System.out.println(key);
-			System.out.println(key.length());
 			String msg = "테스트 입니다.";
 			
 			String encryptedMsg = StringUtil.encryptAES(key, msg);
@@ -342,6 +337,8 @@ class StringUtilTest {
 			
 			String key = StringUtil.genAESKey();
 			System.out.println(key);
+			
+			assertEquals(32, key.length());
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

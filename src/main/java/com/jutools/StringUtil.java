@@ -1,10 +1,8 @@
 package com.jutools;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -708,6 +706,86 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 문자열을 byte 배열로 변환<br>
+	 * ex) "1A03" -> byte[] {26, 3}
+	 * 
+	 * @param str 문자열
+	 * @return 변환된 byte 배열
+	 */
+	public static byte[] strToBytes(String str) throws Exception {
+		
+		// 입력값 검증
+		if(str == null) {
+			throw new NullPointerException("str is null");
+		}
+		
+		if(str.length() % 2 != 0) {
+			throw new Exception("str must be even");
+		}
+		
+		// 변환된 byte 배열을 담을 변수
+		byte[] bytes = new byte[str.length()/2];
+		
+		for(int index = 0; index < bytes.length; index++) {
+			
+			// 상위 니블의 데이터를 가져옴
+			byte b1 = getByte(str.charAt(index * 2));
+			// 왼쪽으로 4 bit를 이동하여 상위 니블로 만듦
+			b1 = (byte)(b1 << 4);
+			
+			// 하위 니블의 데이터를 가져옴
+			byte b2 = getByte(str.charAt(index * 2 + 1));
+
+			// 상위 니블(b1)과 하위니블(b2)를 합쳐서 저장
+			bytes[index] = (byte)(b1 + b2);
+		}
+		
+		// 변환 결과를 반환
+		return bytes;
+	}
+	
+	/**
+	 * 주어진 문자에 해당하는 byte를 반환하는 메소드
+	 * 
+	 * @param ch 문자
+	 * @return 문자를 byte로 변환한 결과
+	 */
+	private static byte getByte(char ch) throws Exception {
+		
+		if(ch >= '0' && ch <= '9') {
+			return (byte)(ch - '0');
+		} else if(ch >= 'a' && ch <= 'z') {
+			return (byte)(ch - 'a' + 10);
+		} else if(ch >= 'A' && ch <= 'Z') {
+			return (byte)(ch - 'A' + 10);
+		} else {
+			throw new Exception("Unexpected char:" + ch); 
+		}
+	}
+	
+	/**
+	 * byte 배열을 문자열로 변환
+	 * ex) byte[] {26, 3} -> "1A03" 
+	 * 
+	 * @param bytes byte 배열
+	 * @return 변환된 문자열
+	 */
+	public static String bytesToStr(byte[] bytes) throws Exception {
+		
+		if(bytes == null) {
+			throw new NullPointerException("bytes is null");
+		}
+		
+		StringBuilder builder = new StringBuilder("");
+		
+		for(int index = 0; index < bytes.length; index++) {
+			builder.append(String.format("%02X", bytes[index]));
+		}
+		
+		return builder.toString();
+	}
+	
+	/**
 	 * 문자열을 SHA 단방향 암호화 수행
 	 * 
 	 * @param algorithm SHA 암호화 알고리즘 명
@@ -758,21 +836,20 @@ public class StringUtil {
 	}
 
 	/**
+	 * AES 키 생성 반환 메소드
 	 * 
-	 * @return
+	 * @return 생성된 AES 키
 	 */
 	public static String genAESKey() throws Exception {
 		
 		// 키 생성
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(128); // 128비트 AES 키 생성
-        SecretKey key = keyGen.generateKey();
-        
-        // 키를 문자열로 변환하여 반환
-        byte[] keyBytes = key.getEncoded();
-        BigInteger bigInteger = new BigInteger(1, keyBytes);
-        
-        return String.format("%0" + (keyBytes.length << 1) + "x", bigInteger);
+		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+		keyGen.init(128); // 128비트 AES 키 생성
+		SecretKey key = keyGen.generateKey();
+
+		// 키를 문자열로 변환하여 반환
+		byte[] keyBytes = key.getEncoded();
+		return bytesToStr(keyBytes);
 	}
 	
 	/**
@@ -827,7 +904,7 @@ public class StringUtil {
 		byte[] encryptedData = cipher.doFinal(str.getBytes(cs));
 		
 		// 인코딩하여 문자열로 만들어 반환
-		return Base64.getEncoder().encodeToString(encryptedData);
+		return bytesToStr(encryptedData);
 	}
 	
 	/**
@@ -839,17 +916,6 @@ public class StringUtil {
 	 */
 	public static String encryptAES(String key, String str) throws Exception {
 		return encryptAES(key, Charset.defaultCharset(), str);
-	}
-	
-	/**
-	 * AES 복호화 메소드
-	 * 
-	 * @param key 암호화 키(32자리 문자열 - genAESKey 메소드를 통해 생성할 수 있음)
-	 * @param str 암호화된 문자열
-	 * @return 복호화된 문자열
-	 */
-	public static String decryptAES(String key, String str) throws Exception {
-		return decryptAES(key, Charset.defaultCharset(), str);
 	}
 	
 	/**
@@ -871,12 +937,22 @@ public class StringUtil {
 		Cipher cipher = makeCipher(Cipher.DECRYPT_MODE, key);
 		
 		// 복호화 수행
-		byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(str));
+		byte[] decryptedData = cipher.doFinal(strToBytes(str));
 		
 		// 문자열로 만들어 반환
 		return new String(decryptedData, cs);
 	}
-
+	
+	/**
+	 * AES 복호화 메소드
+	 * 
+	 * @param key 암호화 키(32자리 문자열 - genAESKey 메소드를 통해 생성할 수 있음)
+	 * @param str 암호화된 문자열
+	 * @return 복호화된 문자열
+	 */
+	public static String decryptAES(String key, String str) throws Exception {
+		return decryptAES(key, Charset.defaultCharset(), str);
+	}
 	
 	/**
 	 * 문자열 객체의 내용을 수정하는 메소드<br>
