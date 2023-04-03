@@ -9,16 +9,7 @@ class StringUtilTest {
 	
 	@Test
 	void test() throws Exception  {
-		//byte ch1 = '3' - '0';
-		byte ch1 = 'F' - 'A' + 10;
-		ch1 = (byte)(ch1 << 4);
-		byte ch2 = 'B' - 'A' + 10;
-		
-		byte result = (byte)(ch1 + ch2);
-		
-		System.out.println(ch1);
-		System.out.println(ch2);
-		System.out.println(String.format("%02X", result));
+
 	}
 
 	@Test
@@ -285,6 +276,21 @@ class StringUtilTest {
 			boolean result = StringUtil.isValidFileName(fileName);
 			
 			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testEncryptSHA512_1() {
+		try {
+			
+			String msg = "Hello World";
+			String encryptedMsg = StringUtil.encryptSHA512(msg);
+			
+			System.out.println(encryptedMsg);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

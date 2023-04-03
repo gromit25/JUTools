@@ -803,16 +803,8 @@ public class StringUtil {
 		MessageDigest digest = MessageDigest.getInstance(algorithm);
 		byte[] hash = digest.digest(str.getBytes());
 
-		// 문자열 변환
-		StringBuffer hexStr = new StringBuffer();
-		for (int i = 0; i < hash.length; i++) {
-			String hex = Integer.toHexString(0xff & hash[i]);
-			if (hex.length() == 1) hexStr.append('0');
-			hexStr.append(hex);
-		}
-
-		// 변환된 문자열 반환
-		return hexStr.toString();
+		// 문자열 변환 후 반환
+		return bytesToStr(hash);
 	}
 	
 	/**
