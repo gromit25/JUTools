@@ -124,13 +124,6 @@
       <artifactId>poi-ooxml</artifactId>
       <version>4.1.1</version>
     </dependency>
-    
-    <!-- Evaluator에 이스케이프 문자 처리 라이브러리 -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
-      <version>1.7</version>
-    </dependency>
 	
   </dependencies>
   
