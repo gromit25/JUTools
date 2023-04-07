@@ -2,6 +2,7 @@ package com.jutools.mathexp.parser;
 
 import com.jutools.instructions.DIV;
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.MOD;
 import com.jutools.instructions.MUL;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
@@ -52,13 +53,13 @@ public class TermParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("\\*\\/", "OPERATION")
+				.add("\\*\\/\\%", "OPERATION")
 				.add("^ \t\\*\\/", "FACTOR_1", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR_1", new TransferBuilder()
 				.add(" \t", "FACTOR_1")
-				.add("\\*\\/", "OPERATION")
+				.add("\\*\\/\\%", "OPERATION")
 				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
@@ -69,8 +70,8 @@ public class TermParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
 				.add(" \t", "FACTOR_2")
-				.add("\\*\\/", "OPERATION")
-				.add("^ \t\\*\\/", "END", -1)
+				.add("\\*\\/\\%", "OPERATION")
+				.add("^ \t\\*\\/\\%", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
@@ -94,7 +95,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * *,/의 연산자 상태로 전이시 핸들러 메소드
+	 * *,/,%의 연산자 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
@@ -108,6 +109,8 @@ public class TermParser extends AbstractParser<Instruction> {
 			this.operation = new MUL();
 		} else if(event.getCh() == '/') {
 			this.operation = new DIV();
+		} else if(event.getCh() == '%') {
+			this.operation = new MOD();
 		} else {
 			throw new Exception("Unexpected operation:" + event.getCh());
 		}
@@ -115,7 +118,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * *,/의 첫번째 파라미터 상태로 전이시 핸들러 메소드
+	 * *,/,%의 첫번째 파라미터 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
@@ -177,14 +180,14 @@ public class TermParser extends AbstractParser<Instruction> {
 		
 		if(this.operation != null && this.p2 != null) {
 			
-			// *,/ 연산이 존재하는 경우
+			// *,/,% 연산이 존재하는 경우
 			this.setNodeData(this.operation);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			
 		} else {
 			
-			// *,/ 연산이 존재하지 않는 경우
+			// *,/,% 연산이 존재하지 않는 경우
 			this.setNode(this.p1);
 		}
 	}

@@ -88,6 +88,44 @@ class MathUtilTest {
 		}
 	}
 
+	@Test
+	void testCalculate3_4() {
+		try {
+			
+			double result = MathUtil.calculate("5%2");
+			assertEquals(1, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate3_5() {
+		try {
+			
+			double result = MathUtil.calculate("6%2.5");
+			assertEquals(1, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testCalculate3_6() {
+		try {
+			
+			double result = MathUtil.calculate("6%2.5*2/10");
+			assertEquals(0.2, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 	
 	@Test
 	void testCalculate4_1() {
