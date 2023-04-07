@@ -10,7 +10,7 @@ import com.jutools.env.EnvMapper;
 public class EnvUtil {
 
 	/**
-	 * 주어진 클래스의 변수(EnvMapper Annotation이 설정된 변수)에 설정하는 메소드
+	 * 주어진 클래스의 변수(Env Annotation이 설정된 변수)에 설정하는 메소드
 	 * 
 	 * @param type 설정할 클래스
 	 */
