@@ -3,16 +3,16 @@ package com.jutools;
 import com.jutools.env.EnvMapper;
 
 /**
- * 
+ * 환경변수 관련 Utility 클래스
  * 
  * @author jmsohn
  */
 public class EnvUtil {
 
 	/**
+	 * 주어진 클래스의 변수(EnvMapper Annotation이 설정된 변수)에 설정하는 메소드
 	 * 
-	 * 
-	 * @param type
+	 * @param type 설정할 클래스
 	 */
 	public static void set(Class<?> type) throws Exception {
 		new EnvMapper(type).set();
