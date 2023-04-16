@@ -704,6 +704,67 @@ public class StringUtil {
 	public static String[] split(String str, char delimiter) throws Exception {
 		return split(str, delimiter, true, true);
 	}
+
+	/**
+	 * 주어진 문자열을 delimiter로 나눈 후 특정 위치들의 문자열들을 선택하여 반환<br>
+	 * ex) str: test1\ttest2\ttest3, delimiter: \t, locs: {0, 2, 1}<br>
+	 *     -> {"test1", "test3", "test2"} 가 반환됨
+	 * 
+	 * @param str 문자열
+	 * @param delimiter 나눌 문자열
+	 * @param locs 선택할 위치 목록
+	 * @return 선택된 문자열 목록 
+	 */
+	public static String[] pick(String str, String delimiter, int[] locs) throws Exception {
+		
+		// 입력값 검증
+		if(isEmpty(delimiter) == true) {
+			throw new Exception("delimiter is empty");
+		}
+		
+		if(locs == null) {
+			throw new NullPointerException("locs is null");
+		}
+		
+		// 선택된 문자열 목록 변수
+		String[] picks = new String[locs.length];
+		if(isEmpty(str) == true) {
+			return picks;
+		}
+		
+		// delimiter로 분해
+		String[] splitedStrs = str.split(delimiter);
+		
+		for(int index = 0; index < locs.length; index++) {
+			
+			// 현재 loc 값
+			int loc = locs[index];
+			
+			// loc 값이 0 보다 작거나 나누어진 문자열의 수보다 크면
+			// 다음 loc 값을 찾음
+			if(loc < 0 || loc >= splitedStrs.length) {
+				continue;
+			}
+			
+			picks[index] = splitedStrs[loc];
+		}
+		
+		return picks;
+	}
+
+	/**
+	 * 주어진 문자열을 delimiter로 나눈 후 특정 위치의 문자열을 선택하여 반환
+	 * ex) str: test1\ttest2\ttest3, delimiter: \t, loc: 1<br>
+	 *     -> "test2" 가 반환됨
+	 * 
+	 * @param str 문자열
+	 * @param delimiter 나눌 문자열
+	 * @param loc 선택할 위치
+	 * @return 선택된 문자열
+	 */
+	public static String pick(String str, String delimiter, int loc) throws Exception {
+		return pick(str, delimiter, new int[]{loc})[0];
+	}
 	
 	/**
 	 * 문자열을 byte 배열로 변환<br>
@@ -828,15 +889,32 @@ public class StringUtil {
 	}
 
 	/**
-	 * AES 키 생성 반환 메소드
+	 * AES-128 키 생성 반환 메소드
 	 * 
 	 * @return 생성된 AES 키
 	 */
-	public static String genAESKey() throws Exception {
+	public static String genAES128Key() throws Exception {
 		
 		// 키 생성
 		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
 		keyGen.init(128); // 128비트 AES 키 생성
+		SecretKey key = keyGen.generateKey();
+
+		// 키를 문자열로 변환하여 반환
+		byte[] keyBytes = key.getEncoded();
+		return bytesToStr(keyBytes);
+	}
+	
+	/**
+	 * AES-256 키 생성 반환 메소드
+	 * 
+	 * @return 생성된 AES 키
+	 */
+	public static String genAES256Key() throws Exception {
+		
+		// 키 생성
+		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+		keyGen.init(256); // 256비트 AES 키 생성
 		SecretKey key = keyGen.generateKey();
 
 		// 키를 문자열로 변환하여 반환
@@ -853,17 +931,17 @@ public class StringUtil {
 	 */
 	private static Cipher makeCipher(int opmode, String key) throws Exception {
 		
-		//
+		// 입력값 검증
 		if(StringUtil.isEmpty(key) == true) {
 			throw new Exception("key is empty");
 		}
 		
-		if(key.length() != 32) {
-			throw new Exception("key str length must be 32");
+		if(key.length() != 32 && key.length() != 64) {
+			throw new Exception("key str length must be 32 or 64");
 		}
 		
 		// 암호화 키 생성
-		byte[] keyBytes = new byte[16];
+		byte[] keyBytes = new byte[key.length()/2];
 		
 		SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 		

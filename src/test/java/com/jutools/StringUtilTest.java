@@ -302,10 +302,8 @@ class StringUtilTest {
 	void testEncryptDecryptAES1() {
 		try {
 			
-			String key = StringUtil.genAESKey();
+			String key = StringUtil.genAES128Key();
 			String msg = "Hello World";
-			
-			System.out.println(key);
 			
 			String encryptedMsg = StringUtil.encryptAES(key, msg);
 			String decryptedMsg = StringUtil.decryptAES(key, encryptedMsg);
@@ -323,7 +321,7 @@ class StringUtilTest {
 		try {
 			
 			// key는 16 byte 이어야 함
-			String key = StringUtil.genAESKey();
+			String key = StringUtil.genAES128Key();
 			String msg = "테스트 입니다.";
 			
 			String encryptedMsg = StringUtil.encryptAES(key, msg);
@@ -338,13 +336,28 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testGenAESKey() {
+	void testGenAES128Key() {
 		try {
 			
-			String key = StringUtil.genAESKey();
+			String key = StringUtil.genAES128Key();
 			System.out.println(key);
 			
 			assertEquals(32, key.length());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testGenAES256Key() {
+		try {
+			
+			String key = StringUtil.genAES256Key();
+			System.out.println(key);
+			
+			assertEquals(64, key.length());
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
