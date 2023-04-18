@@ -23,6 +23,9 @@ public class SysUtil {
 	private static OperatingSystemMXBean osBean;
 	
 	static {
+		// OperatingSystemMXBean를 가져옴
+		// 주의!! java.lang.management.OperatingSystemMXBean 이 아님
+		//       com.sun.management.OperatingSystemMXBean 임
 		SysUtil.osBean = (OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 	}
 	
