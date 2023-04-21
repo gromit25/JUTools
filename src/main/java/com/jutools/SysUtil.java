@@ -20,6 +20,7 @@ import org.json.JSONObject;
 @SuppressWarnings("restriction")
 public class SysUtil {
 	
+	/** 시스템 정보를 얻기 위한 OperationSystemMXBean */
 	private static OperatingSystemMXBean osBean;
 	
 	static {
