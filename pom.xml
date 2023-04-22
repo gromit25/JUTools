@@ -116,6 +116,13 @@
       <version>20230227</version>
     </dependency>
     
+    <!-- DB Connection Pool (취약점 있음으로 나옴) -->
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>5.0.1</version>
+    </dependency>
+    
     <!-- PressUtil 용 라이브러리들 -->
     <!-- Command Line 출력시 컬러 출력용 라이브러리 -->
     <dependency>
