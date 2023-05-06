@@ -1,12 +1,19 @@
 package com.jutools;
 
+import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 import com.sun.management.*;
+
+import lombok.Builder;
+import lombok.Data;
+
+import java.nio.charset.Charset;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import org.json.JSONArray;
@@ -161,6 +168,146 @@ public class SysUtil {
 		}
 
 		return diskUsage;
+	}
+	
+	/**
+	 * 시스템 command를 실행하고 결과를 반환하는 메소드
+	 * ex) cmd = "cmd /c dir \"C:\\Program Files\""
+	 * 
+	 * @param cmd 명령어 문자열
+	 * @return 명령어 실행 결과
+	 */
+	public static SysCmdResult execCmd(String cmd) throws Exception {
+		
+		// command 목록으로 분리
+		String[] cmdList = splitCmd(cmd);
+		
+		// 명령어 실행 객체 생성 및 설정
+		ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
+		processBuilder.redirectErrorStream(true);
+		
+		// 명령어 실행
+		Process process = processBuilder.start();
+		
+		// 출력 결과 저장
+		String output = "";
+		try(InputStream is = process.getInputStream()) {
+			output = new String(is.readAllBytes(), Charset.defaultCharset());
+		}
+		
+		// 실행 결과 기다림
+		int result = process.waitFor();
+		
+		// 실행 결과 객체 생성
+		return SysCmdResult.builder()
+				.result(result)
+				.output(output)
+				.build();
+	}
+	
+	/**
+	 * command 실행 결과 클래스
+	 * 
+	 * @author jmsohn 
+	 */
+	@Data
+	@Builder
+	public static class SysCmdResult {
+		
+		/** 실행 결과 값 */
+		private int result;
+		/** 실행 출력 문자열 */
+		private String output;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param result 실행 결과 값
+		 * @param output 실행 출력 문자열
+		 */
+		public SysCmdResult(int result, String output) {
+			this.result = result;
+			this.output = output;
+		}
+	}
+	
+	/**
+	 * 명령어 문자열을 분할하여 문자열 목록으로 반환
+	 * -> 스페이스 문자(' ', '\t') 로 분리하지만 문자열 타입("abc def")은
+	 *    하나의 명령어 문자열로 분할해야함
+	 * ex) cmd \c dir "C:\Program Files" 일 경우
+	 *     cmd, \c, dir, C:\Program Files 로 분해됨 
+	 * 
+	 * @param cmdStr 명
+	 * @return 분할된 cmd 목록
+	 */
+	private static String[] splitCmd(String cmdStr) throws Exception {
+		
+		// 입력값 검증
+		if(StringUtil.isEmpty(cmdStr) == true) {
+			throw new Exception("command string is empty");
+		}
+		
+		// 분할된 cmd 목록
+		ArrayList<String> cmds = new ArrayList<>(); 
+		
+		// cmd를 임시 저장할 변수
+		StringBuilder cmd = new StringBuilder("");
+		
+		// 문자열 내인지 확인하는 상태값
+		// 0 - 문자열 아님
+		// 1 - 문자열 내
+		int status = 0;
+		
+		for(int index = 0; index < cmdStr.length(); index++) {
+			
+			char ch = cmdStr.charAt(index);
+			
+			if(status == 0) {
+				
+				if(ch == ' ' || ch == '\t' || ch == '"') {
+					
+					// cmd가 비어 있지 않으면 cmd 목록(cmds)에 추가
+					if(cmd.length() != 0) {
+						cmds.add(cmd.toString());
+						cmd.setLength(0); // 내용 삭제
+					}
+					
+					// 문자열 상태로 변경
+					if(ch == '"') {
+						status = 1; 
+					}
+					
+				} else {
+					cmd.append(ch);
+				}
+				
+			} else {
+				
+				if(ch == '"') {
+					// 문자열 종료
+					status = 0;
+				} else {
+					cmd.append(ch);
+				}
+				
+			}
+			
+		} // End of for 
+		
+		// 종료 상태가 정상인지 확인
+		// status가 0이 아니면 문자열 상태 중에 종료된 것이므로 예외 발생
+		if(status != 0) {
+			throw new Exception("Unexpected end:" + status);
+		}
+		
+		// cmd가 비어 있지 않으면 cmd 목록(cmds)에 추가
+		if(cmd.length() != 0) {
+			cmds.add(cmd.toString());
+		}
+		
+		// 명령어 목록 반환
+		return cmds.stream().toArray(String[]::new);
 	}
 
 }
