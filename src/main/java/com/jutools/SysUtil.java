@@ -4,12 +4,6 @@ import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-
-import com.sun.management.*;
-
-import lombok.Builder;
-import lombok.Data;
-
 import java.nio.charset.Charset;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
@@ -18,6 +12,11 @@ import java.util.Enumeration;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.sun.management.OperatingSystemMXBean;
+
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * 시스템 정보 관련 Utility 클래스
@@ -52,46 +51,40 @@ public class SysUtil {
 	 * 
 	 * @return 시스템의 ip 목록
 	 */
-	public static String getIps() throws Exception {
+	public static String[] getIps() throws Exception {
 		
-		StringBuilder ips = new StringBuilder("");
-		
-		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-		boolean isFirst = true;
+		ArrayList<String> ips = new ArrayList<>();
 		
 		// Network Interface별 IP를 가져옴
+		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+		
 		while(interfaces.hasMoreElements() == true) {
 			
-		    NetworkInterface iface = interfaces.nextElement();
-		    if (iface.isLoopback() == true || iface.isUp() == false) {
-		        continue;
-		    }
-		    
-		    Enumeration<InetAddress> addresses = iface.getInetAddresses();
-		    while(addresses.hasMoreElements() == true) {
-		    	
-		        InetAddress addr = addresses.nextElement();
-		        
-		        // loopback 제외
-		        if(addr.isLoopbackAddress() == true) {
-		        	continue;
-		        }
-		        
-		        // IpV6 제외
-		        if(addr.getHostAddress().contains(":") == true) {
-		        	continue;
-		        }
-		        
-		        if(isFirst == true) {
-		        	ips.append(addr.getHostAddress());
-		        	isFirst = false;
-		        } else {
-		        	ips.append(",").append(addr.getHostAddress());
-		        }
-		    }
+			NetworkInterface iface = interfaces.nextElement();
+			if (iface.isLoopback() == true || iface.isUp() == false) {
+				continue;
+			}
+			
+			Enumeration<InetAddress> addresses = iface.getInetAddresses();
+			while(addresses.hasMoreElements() == true) {
+				
+				InetAddress addr = addresses.nextElement();
+				
+				// loopback 제외
+				if(addr.isLoopbackAddress() == true) {
+					continue;
+				}
+				
+				// IpV6 제외
+				if(addr.getHostAddress().contains(":") == true) {
+					continue;
+				}
+				
+				ips.add(addr.getHostAddress());
+			}
 		}
 		
-		return ips.toString();
+		return ips.stream().toArray(String[]::new);
 	}
 	
 	/**
@@ -109,7 +102,7 @@ public class SysUtil {
 		
 		// system 정보 body 메시지 설정
 		perp.put("hostname", getHostname());
-		perp.put("ips", getIps());
+		perp.put("ips", StringUtil.join(",", getIps()));
 		perp.put("cpu", cpuLoad * 100);
 		perp.put("mem", getMemUsage());
 		perp.put("disk", getDiskUsage());
@@ -210,13 +203,14 @@ public class SysUtil {
 	 * 
 	 * @author jmsohn 
 	 */
-	@Data
 	@Builder
 	public static class SysCmdResult {
 		
 		/** 실행 결과 값 */
+		@Getter
 		private int result;
 		/** 실행 출력 문자열 */
+		@Getter
 		private String output;
 		
 		/**
