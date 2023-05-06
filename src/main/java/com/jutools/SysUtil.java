@@ -170,7 +170,7 @@ public class SysUtil {
 	 * @param cmd 명령어 문자열
 	 * @return 명령어 실행 결과
 	 */
-	public static SysCmdResult execCmd(String cmd) throws Exception {
+	public static SysCmdResult execute(String cmd) throws Exception {
 		
 		// command 목록으로 분리
 		String[] cmdList = splitCmd(cmd);
