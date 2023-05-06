@@ -63,7 +63,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "hello world!"; 
-			int[] result = StringUtil.find(testMsg, true, "hello", "world");
+			int[] result = StringUtil.find(testMsg, false, "hello", "world");
 			
 			assertEquals(0, result[0]);
 			assertEquals(6, result[1]);
@@ -79,7 +79,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
-			int[] result = StringUtil.find(testMsg, true, "aabb", "bb");
+			int[] result = StringUtil.find(testMsg, false, "aabb", "bb");
 			
 			assertEquals(1, result[0]);
 			assertEquals(3, result[1]);
@@ -95,7 +95,7 @@ class StringUtilTest {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
-			int[] result = StringUtil.find(testMsg, true, "ccc", "bb");
+			int[] result = StringUtil.find(testMsg, false, "ccc", "bb");
 			
 			assertEquals(-1, result[0]);
 			assertEquals(3, result[1]);
@@ -274,6 +274,310 @@ class StringUtilTest {
 			
 			String fileName = "테스트.dOcabc";
 			boolean result = StringUtil.isValidFileName(fileName);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard1() {
+		try {
+			
+		    String pattern = "abc*def";
+		    String input = "abc111def";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard2() {
+		try {
+			
+		    String pattern = "abc?def";
+		    String input = "abc1def";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard3() {
+		try {
+			
+		    String pattern = "abc?def";
+		    String input = "abc11def";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	@Test
+	void testMatchWildcard4() {
+		try {
+			
+		    String pattern = "abc";
+		    String input = "abcdef";
+
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard5() {
+		try {
+			
+		    String pattern = "abc";
+		    String input = "abc";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard6() {
+		try {
+			
+		    String pattern = "*";
+		    String input = "abcdef";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard7() {
+		try {
+			
+		    String pattern = "??";
+		    String input = "ab";
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard8() {
+		try {
+			
+		    String pattern = "???";
+		    String input = "ab";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard9() {
+		try {
+			
+		    String pattern = "??";
+		    String input = "abc";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard10() {
+		try {
+			
+		    String pattern = "a??";
+		    String input = "abc";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard11() {
+		try {
+			
+		    String pattern = "a?*";
+		    String input = "abc";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard12() {
+		try {
+		    
+		    String pattern = "a?*";
+		    String input = "a";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard13() {
+		try {
+			
+		    String pattern = "?*a";
+		    String input = "ba";
+
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard14() {
+		try {
+			
+		    String pattern = "?*a";
+		    String input = "a";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard15() {
+		try {
+			
+		    String pattern = "A?*";
+		    String input = "abc";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern, true);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard16() {
+		try {
+			
+		    String pattern = "A?*";
+		    String input = "abc";
+		    
+		    boolean result = StringUtil.matchWildcard(input, pattern);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard17() {
+		try {
+			
+		    String pattern = "abc?DEF";
+		    String input = "ABC1def";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern, true);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	void testMatchWildcard18() {
+		try {
+			
+		    String pattern = "abc?DEF";
+		    String input = "ABC1def";
+			
+		    boolean result = StringUtil.matchWildcard(input, pattern);
 			
 			assertEquals(false, result);
 			
