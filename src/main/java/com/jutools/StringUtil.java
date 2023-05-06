@@ -567,6 +567,25 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 여러 객체의 toString()한 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드
+	 * 
+	 * @param delimiter 구분자
+	 * @param iter 여러 객체를 담고 있는 iterator
+	 * @return 이어 붙힌 문자열
+	 */
+	public static String join(String delimiter, Iterable<?> iter) throws Exception {
+		
+		// iterator에서 문자열 목록을 만듦
+		ArrayList<String> strs = new ArrayList<>();
+		
+		iter.forEach(obj -> {
+			strs.add(obj.toString());
+		});
+		
+		return join(delimiter, strs.stream().toArray(String[]::new));
+	}
+	
+	/**
 	 * 문자열의 길이를 반환하는 메소드<br>
 	 * -> 주어진 문자열이 null 일 경우 0을 반환함
 	 * 
