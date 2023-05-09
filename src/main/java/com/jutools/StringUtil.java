@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -179,7 +181,28 @@ public class StringUtil {
 		return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
 	}
 	
-	
+	/**
+	 * "호스트:포트" 형태의 문자열을 {"호스트", "포트"} 문자열 배열로 파싱하여 반환
+	 * 
+	 * @param hostStr "호스트:포트" 형태의 문자열
+	 * @return {"호스트", "포트"} 문자열 배열
+	 */
+	public static String[] parseHostPort(String hostStr) throws Exception {
+		
+		String hostPatternStr = "(?<hostname>[a-zA-Z0-9\\-\\_]+(\\.[a-zA-Z0-9\\-\\_]+)*)\\:(?<port>[0-9]+)";
+		
+		Pattern hostPattern = Pattern.compile(hostPatternStr);
+		Matcher hostMatcher = hostPattern.matcher(hostStr);
+		
+		if(hostMatcher.matches() == false) {
+			throw new Exception("host string is not matched:" + hostStr);
+		}
+		
+		String hostName = hostMatcher.group("hostname");
+		String port = hostMatcher.group("hostname");
+		
+		return new String[] {hostName, port};
+	}
 	
 	/**
 	 * 문자열의 html 엔터티(<>& 등 -> &amp;lt;&amp;gt;&amp;amp; 등)를 변경 
