@@ -27,16 +27,19 @@ import lombok.Setter;
 public class FileTracker {
 	
 	// config 값
+	
 	/** line 구분자 */
 	private String lineSeparator = "\n";
 	/** buffer의 크기 */
 	private int bufferSize = 1024 * 1024;
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset = Charset.defaultCharset();
+	
 	/** tracking polling time */
 	private long pollingTime = 10;
 	/** tracking polling time unit */
 	private TimeUnit pollingTimeUnit = TimeUnit.SECONDS;
+	
 	/** tracking 중지 여부 */
 	@Getter
 	@Setter
@@ -234,7 +237,7 @@ public class FileTracker {
 	 * line 구분자 설정
 	 * 
 	 * @param lineSeparator line 구분자
-	 * @return
+	 * @return 현재 객체
 	 */
 	public FileTracker setLineSeparator(String lineSeparator) throws Exception {
 		
