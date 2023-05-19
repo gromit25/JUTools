@@ -1415,4 +1415,157 @@ public class StringUtil {
 		// 문자열 필드에 변경할 문자열을 강제 설정
 		TypeUtil.setField(str, "value", toStr.getBytes());
 	}
+	
+	/**
+	 * 문자열 내에 ${변수} 목록을 반환하는 메소드
+	 *
+	 * @param str 변수가 포함된 문자열
+	 * @return 변수 목록
+	 */
+	public static String replaceVars(String str, Map<String, String> values) {
+
+		// 재구성 문자열 변수
+		StringBuilder replacedStr = new StringBuilder();
+		// ${변수}의 변수 명을 담을 임시 변수
+		StringBuilder var = new StringBuilder();
+
+		// 상태 변수, false: 일반 문자열 상태, true: 변수명 상태
+		boolean isVar = false;
+		for (int index = 0; index < str.length(); index++) {  // 한 문자씩
+
+			char ch = str.charAt(index);
+
+			if (isVar == true) {
+				// 변수 상태
+
+				if (ch == '}') {
+					// 변수 종료
+                    
+					// 변수에 설정된 값으로 추가
+					replacedStr.append(values.get(var.toString()));
+                        
+					// 변수명 초기화
+					var.setLength(0);
+                    
+					// 일반 문자열 상태로 상태 변경 
+					isVar = false;
+
+				} else if(
+						(ch >= 'a' && ch <= 'z') ||
+						(ch >= 'A' && ch <= 'Z') ||
+						(ch >= '0' && ch <= '9') ||
+						ch == '_'
+					) {
+                	
+					// 변수명 내
+					// 변수명에 문자 추가
+					var.append(ch);
+
+				} else {
+                	
+					// 변수명이 아닌 문자가 들어올 경우
+                	
+					// 현재까지 임시저장한 문자열은 일반 문자열이므로
+					// 재구성 문자열에 추가함
+					replacedStr.append("${").append(var);
+                	
+					// 한칸 뒤로 이동하여 다시 파싱(pushback)
+					index--;
+
+					// 변수명 초기화
+					var.setLength(0);
+                	
+					// 일반 문자열 상태로 변환
+					isVar = false;
+				}
+                
+			} else {
+            	
+				// 일반 문자열 상태
+				if (ch == '$' && str.charAt(index+1) == '{' && index+1 < str.length()) {
+                	
+					// "${" 가 들어온 경우 변수명 상태로 변환
+					isVar = true;
+					index++;
+					
+				} else {
+					replacedStr.append(ch);
+				}
+			}
+		}
+		
+		// 파싱 중인 변수명이 있으면 추가함
+		if(var.length() != 0) {
+			replacedStr.append("${").append(var);
+		}
+        
+		return replacedStr.toString();
+	}
+	
+	/**
+	 * 문자열 내에 ${변수} 목록을 반환하는 메소드
+	 *
+	 * @param str 변수가 포함된 문자열
+	 * @return 변수 목록
+	 */
+	public static ArrayList<String> findAllVars(String str) {
+
+		// 변수명을 순서대로 담을 목록
+		ArrayList<String> vars = new ArrayList<>();
+		// ${변수}의 변수 명을 담을 임시 변수
+		StringBuilder var = new StringBuilder();
+
+		// 상태 변수, false: 일반 문자열 상태, true: 변수명 상태
+		boolean isVar = false;
+		for (int index = 0; index < str.length(); index++) {  // 한 문자씩
+
+			char ch = str.charAt(index);
+            
+			if (isVar == true) {
+				// 변수 상태
+
+				if (ch == '}') {
+					// 변수 종료
+
+					// 변수 목록에 추가
+					vars.add(var.toString());
+                        
+					// 변수명 초기화
+					var.setLength(0);
+
+					// 일반 문자열 상태로 상태 변경 
+					isVar = false;
+                    
+				} else if(
+						(ch >= 'a' && ch <= 'z') ||
+						(ch >= 'A' && ch <= 'Z') ||
+						(ch >= '0' && ch <= '9') ||
+						ch == '_'
+					) {
+					// 변수명 내
+					// 변수명에 문자 추가
+					var.append(ch);
+
+				} else {
+                	
+					// 변수명이 아닌 문자가 들어올 경우
+					// 변수명 초기화
+					var.setLength(0);
+					isVar = false;
+				}
+
+			} else {
+            	
+				// 일반 문자열 상태
+				if (ch == '$' && str.charAt(index+1) == '{' && index+1 < str.length()) {
+
+					// "${" 가 들어온 경우 변수명 상태로 변환
+					isVar = true;
+					index++;
+				}
+			}
+		}
+        
+		return vars;
+    }
 }
