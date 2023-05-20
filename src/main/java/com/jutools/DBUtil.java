@@ -45,16 +45,16 @@ public class DBUtil {
 		}
 
 		/**
-		 * DB 종류에 따른 JDBC 드라이버 클래스명 찾기
+		 * DB 명에 따른 JDBC 드라이버 클래스명 찾기
 		 *
-		 * @param dbKind:
-		 * @return RdbDriverEnum:
+		 * @param name DB 명
+		 * @return DB driver 종류
 		 */
-		public static DBDriver findByRdbKind(String dbKind) {
-			return driverMap.get(dbKind);
+		public static DBDriver findByRdbKind(String name) {
+			return driverMap.get(name);
 		}
 
-		/** db 종류 */
+		/** db 명 */
 		@Getter
 		private String name;
 		/** jdbc driver class 명 */
