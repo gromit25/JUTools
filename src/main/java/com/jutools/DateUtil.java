@@ -247,6 +247,164 @@ public class DateUtil {
 		date.setTime(newDate);
 	}
 	
+	/**
+	 * Date -> long(millis)
+	 * 
+	 * @param date Date 날짜 객체
+	 * @return 날짜의 long 값
+	 */
+	public static long toMillis(Date date) throws Exception {
+		
+		if(date == null) {
+			throw new IllegalArgumentException("date is null");
+		}
+		
+		return date.getTime();
+	}
+
+	/**
+	 * Calendar -> long(millis)
+	 * 
+	 * @param cal Calendar 날짜 객체
+	 * @return 날짜의 long 값
+	 */
+	public static long toMillis(Calendar cal) throws Exception {
+
+		if(cal == null) {
+			throw new IllegalArgumentException("cal is null");
+		}
+		
+		return cal.getTimeInMillis();
+	}
+	
+	/**
+	 * long(mills) -> Date
+	 * 
+	 * @param millis 날짜의 long 값
+	 * @return Date 날짜 객체
+	 */
+	public static Date toDate(long millis) {
+		return new Date(millis);
+	}
+
+	/**
+	 * Calendar -> Date
+	 * 
+	 * @param cal Calendar 날짜 객체
+	 * @return Date 날짜 객체
+	 */
+	public static Date toDate(Calendar cal) {
+
+		if(cal == null) {
+			throw new IllegalArgumentException("cal is null");
+		}
+
+		return cal.getTime();
+	}
+	
+	/**
+	 * long(millis) -> Calendar
+	 * 
+	 * @param millis 날짜의 long 값
+	 * @return Calendar 날짜 객체
+	 */
+	public static Calendar toCalendar(long millis) {
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(millis);
+		
+		return cal;
+	}
+	
+	/**
+	 * date -> Calendar
+	 * 
+	 * @param date Date 날짜 객체
+	 * @return Calendar 날짜 객체
+	 */
+	public static Calendar toCalendar(Date date) {
+		
+		if(date == null) {
+			throw new IllegalArgumentException("date is null");
+		}
+		
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		
+		return cal;
+	}
+	
+	/**
+	 * 날짜가 유효한 지 여부를 반환<br>
+	 * 유효하면 true, 유효하지 않으면 false<br>
+	 * ex) year:2023, month:2, day:30 이면 false
+	 * 
+	 * @param year 년도
+	 * @param month 월(1~12)
+	 * @param day(1~31)
+	 * @return 날짜의 유효성 여부
+	 */
+	public static boolean isValidDate(int year, int month, int day) {
+		
+		if(month > 12 || month < 1) {
+			return false;
+		}
+		
+		if(day > 31 || day < 1) {
+			return false;
+		}
+		
+		if(month == 2) {
+			
+			int lastDay = 28;
+			if(isLeapYear(year) == true) {
+				lastDay = 29;
+			}
+			
+			if(day <= lastDay && day >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		} else if( month == 1 || month == 3  || month == 5 || month == 7 ||
+			month == 8 || month == 10 || month == 12) {
+			
+			if(day <= 31 && day >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		} else {
+			
+			if(day <= 30 && day >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	/**
+	 * 년도가 윤년인지 여부를 반환<br>
+	 * 윤년이면 true, 윤년이 아니면 false
+	 * 
+	 * @param year 년도
+	 * @return 윤년 여부
+	 */
+	public static boolean isLeapYear(int year) {
+		if (year % 4 != 0) {
+			return false;
+		} else if (year % 100 != 0) {
+			return true;
+		} else if (year % 400 != 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	// ----------------- 음력 관련 --------------------
 	// 개발 중
 	

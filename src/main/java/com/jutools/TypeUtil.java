@@ -1,6 +1,7 @@
 package com.jutools;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -107,6 +108,48 @@ public class TypeUtil {
 		return toXXX(obj, Double.class, str -> {
 			return Double.parseDouble(str);
 		});
+	}
+	
+	/**
+	 * Integer List를 int 배열로 변환함 
+	 * 
+	 * @param arrayList Integer 타입의 List
+	 * @return 변환된 int 배열
+	 */
+	public static int[] toIntArray(List<Integer> arrayList) {
+		
+		if(arrayList == null) {
+			return new int[0];
+		}
+		
+		int[] intArray = new int[arrayList.size()];
+		for(int index = 0; index < intArray.length; index++) {
+			intArray[index] = arrayList.get(index);
+		}
+		
+		return intArray;
+		
+	}
+	
+	/**
+	 * Float List를 float 배열로 변환함 
+	 * 
+	 * @param arrayList Float 타입의 List
+	 * @return 변환된 float 배열
+	 */
+	public static float[] toFloatArray(List<Float> arrayList) {
+		
+		if(arrayList == null) {
+			return new float[0];
+		}
+		
+		float[] floatArray = new float[arrayList.size()];
+		for(int index = 0; index < floatArray.length; index++) {
+			floatArray[index] = arrayList.get(index);
+		}
+		
+		return floatArray;
+		
 	}
 	
 	/**
