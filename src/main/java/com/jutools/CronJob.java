@@ -303,22 +303,29 @@ public class CronJob {
 		 */
 		public long getNextTimeInMillis(Calendar baseTime) {
 			
-			//
+			// 시간 단위 별(분/시/일/월/년도, 요일 대신 년도) 현재 시간을 가져옴 
 			int min = baseTime.get(Calendar.MINUTE);
 			int hour = baseTime.get(Calendar.HOUR_OF_DAY);
 			int day = baseTime.get(Calendar.DAY_OF_MONTH);
 			int month = baseTime.get(Calendar.MONTH) + 1;
 			int year = baseTime.get(Calendar.YEAR);
 			
-			//
+			// 분의 다음 시간을 가져옴
 			NextTime minNext = this.getNextTime(new NextTime(min, true), this.mins);
 			min = minNext.getTime();
+			
+			// 시의 다음 시간을 가져옴
 			NextTime hourNext = this.getNextTime(new NextTime(hour, minNext.isRolled()), this.hours);
 			hour = hourNext.getTime();
 			
+			// 날짜 및 월의 다음 시간을 가져옴
 			NextTime dayNext = null;
 			NextTime monthNext = null;
 			
+			// 다음 날짜가 존재하지 않는 날짜이면, 존재하는 날짜가 나올때 까지 while 문 반복
+			// ex) 2023.02.30이면 다시 다음 날짜를 가져와 검사
+			//
+			// 또한, 다음 날짜가 설정된 요일 목록에 없는 경우에도 다음 날짜를 다시 가져오도록 함 
 			do {
 				
 				dayNext = this.getNextTime(new NextTime(day, hourNext.isRolled()), this.days);
@@ -326,23 +333,27 @@ public class CronJob {
 				monthNext = this.getNextTime(new NextTime(month, dayNext.isRolled()), this.months);
 				month = monthNext.getTime();
 				
+				// 월이 한바퀴 돌아(roll) 월 목록의 처음으로 이동하면
+				// 년도를 하나 올림
 				if(monthNext.isRolled() == true) {
 					year++;
 				}
 				
+				// 다음 날짜가 존재하는 날짜인지, 요일 목록에 있는 날짜인지 확인 
 			} while(DateUtil.isValidDate(year, month, day) == false || isValidDayOfWeek(year, month, day) == false);
 			
-			//
-			baseTime.set(Calendar.YEAR, year);
-			baseTime.set(Calendar.MONTH, month-1);
-			baseTime.set(Calendar.DAY_OF_MONTH, day);
-			baseTime.set(Calendar.HOUR_OF_DAY, hour);
-			baseTime.set(Calendar.MINUTE, min);
-			baseTime.set(Calendar.SECOND, 0);
-			baseTime.set(Calendar.MILLISECOND, 0);
+			// 다음 날짜를 설정하고 long 값으로 반환
+			Calendar nextTime = new GregorianCalendar();
 			
-			//
-			return baseTime.getTimeInMillis();
+			nextTime.set(Calendar.YEAR, year);
+			nextTime.set(Calendar.MONTH, month-1);
+			nextTime.set(Calendar.DAY_OF_MONTH, day);
+			nextTime.set(Calendar.HOUR_OF_DAY, hour);
+			nextTime.set(Calendar.MINUTE, min);
+			nextTime.set(Calendar.SECOND, 0);
+			nextTime.set(Calendar.MILLISECOND, 0);
+			
+			return nextTime.getTimeInMillis();
 		}
 		
 		/**
