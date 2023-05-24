@@ -68,7 +68,7 @@ public class CronJob {
 			FIXED_LIST("[0-9]+(\\,[0-9]+)*") { // 고정된 시간 형태 : 0,15,30,45
 				
 				@Override
-				int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception {
+				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
 					//
 					Pattern fixedTimeP = Pattern.compile("[0-9]+");
@@ -92,7 +92,7 @@ public class CronJob {
 			RANGE("[0-9]+\\-[0-9]+") {		// 시간 범위 형태 : 0-30
 				
 				@Override
-				int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception {
+				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
 					//
 					Pattern rangeP = Pattern.compile("(?<lower>[0-9]+)\\-(?<upper>[0-9]+)");
@@ -126,7 +126,7 @@ public class CronJob {
 			REPEAT("\\*(\\/[0-9]+)?") {		// 반복 형태 : */10
 				
 				@Override
-				int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception {
+				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
 					//
 					Pattern rangeP = Pattern.compile("\\*(\\/(?<divider>[0-9]+))?");
@@ -169,7 +169,7 @@ public class CronJob {
 			 * @param unit 시간 종류(분/시/일/월/요일)
 			 * @return 시간 목록 배열
 			 */
-			abstract int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception;
+			protected abstract int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception;
 			
 			/**
 			 * 생성자
@@ -181,20 +181,50 @@ public class CronJob {
 			}
 			
 			/**
+			 * 크론 시간 표현 방식별로 
+			 * 
+			 * @param exp
+			 * @param unit
+			 * @return
+			 */
+			static int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception {
+				
+				// 적합한 시간 단위별 표현 종류를 찾음
+				TimeExpType type = null;
+				for(TimeExpType candidateType: TimeExpType.values()) {
+					if(candidateType.match(exp) == true) {
+						type = candidateType;
+						break;
+					}
+				}
+				
+				// 없을 경우, 예외 발생
+				if(type == null) {
+					throw new Exception("invalid cron expression:" + exp);
+				}
+				
+				// 시간 단위별 표현에서 시간 목록을 반환
+				return type.makeTimeListByExpType(exp, unit);
+			}
+			
+			/**
 			 * 주어진 시간 표현이 현재 표현방법 코드와 일치하는지 여부 반환<br>
 			 * 일치하면 true, 일치하지 않으면 false
 			 * 
 			 * @param timeExp 검사할 시간 표현
 			 * @return 일치 여부 반환
 			 */
-			boolean match(String timeExp) throws Exception {
+			private boolean match(String timeExp) throws Exception {
 				return this.timeP.matcher(timeExp).matches();
 			}
 		}
 		
+		/** 크론 표현의 정규 표현식 문자열 */
 		private static String cronExpPStr;
 		
 		static {
+			
+			// 클래스 로딩시 크론 표현의 정규 표현식 문자열을 만듦
 			String timePStr = "[0-9]+(\\,[0-9]+)*|[0-9]+\\-[0-9]+|\\*(\\/[0-9]+)?";
 			CronExp.cronExpPStr = 
 					"^(?<min>" + timePStr + ") "
@@ -244,47 +274,32 @@ public class CronJob {
 			}
 
 			// 크론 표현식에 설정된 유효 시간을 설정함
-			this.mins = this.makeTimeList(cronExpM.group("min"), CronTimeUnit.MIN);
-			this.hours = this.makeTimeList(cronExpM.group("hour"), CronTimeUnit.HOUR);
-			this.days = this.makeTimeList(cronExpM.group("day"), CronTimeUnit.DAY);
-			this.months = this.makeTimeList(cronExpM.group("month"), CronTimeUnit.MONTH);
-			this.daysOfWeek = this.makeTimeList(cronExpM.group("dayOfWeek"), CronTimeUnit.WEEK);
+			this.mins = TimeExpType.makeTimeList(cronExpM.group("min"), CronTimeUnit.MIN);
+			this.hours = TimeExpType.makeTimeList(cronExpM.group("hour"), CronTimeUnit.HOUR);
+			this.days = TimeExpType.makeTimeList(cronExpM.group("day"), CronTimeUnit.DAY);
+			this.months = TimeExpType.makeTimeList(cronExpM.group("month"), CronTimeUnit.MONTH);
+			this.daysOfWeek = TimeExpType.makeTimeList(cronExpM.group("dayOfWeek"), CronTimeUnit.WEEK);
 		}
 		
 		/**
+		 * 현재 시간에서 가장 가까운 다음 실행 시간 반환
 		 * 
-		 * @param exp
-		 * @param unit
-		 * @return
-		 */
-		private int[] makeTimeList(String exp, CronTimeUnit unit) throws Exception {
-			
-			TimeExpType type = null;
-			for(TimeExpType candidateType: TimeExpType.values()) {
-				if(candidateType.match(exp) == true) {
-					type = candidateType;
-					break;
-				}
-			}
-			
-			if(type == null) {
-				throw new Exception("invalid cron expression:" + exp);
-			}
-			
-			return type.makeTimeList(exp, unit);
-		}
-		
-		/**
-		 * 
-		 * @return
+		 * @return 가장 가까운 다음 실행 시간(단위: ms)
 		 */
 		public long getNextTimeInMillis() {
-			return getNextTimeInMillis(new GregorianCalendar());
+			
+			// 현재 시간을 가져옴
+			Calendar cal = new GregorianCalendar();
+			cal.setTimeInMillis(System.currentTimeMillis());
+			
+			return getNextTimeInMillis(cal);
 		}
 		
 		/**
+		 * 기준 시간(baseTime)에서 가장 가까운 다음 실행 시간 반환
 		 * 
-		 * @return
+		 * @param baseTime 기준 시간
+		 * @return 가장 가까운 다음 실행 시간(단위: ms)
 		 */
 		public long getNextTimeInMillis(Calendar baseTime) {
 			
@@ -298,7 +313,7 @@ public class CronJob {
 			//
 			NextTime minNext = this.getNextTime(new NextTime(min, true), this.mins);
 			min = minNext.getTime();
-			NextTime hourNext = this.getNextTime(new NextTime(hour, minNext.isRotate()), this.hours);
+			NextTime hourNext = this.getNextTime(new NextTime(hour, minNext.isRolled()), this.hours);
 			hour = hourNext.getTime();
 			
 			NextTime dayNext = null;
@@ -306,12 +321,12 @@ public class CronJob {
 			
 			do {
 				
-				dayNext = this.getNextTime(new NextTime(day, hourNext.isRotate()), this.days);
+				dayNext = this.getNextTime(new NextTime(day, hourNext.isRolled()), this.days);
 				day = dayNext.getTime();
-				monthNext = this.getNextTime(new NextTime(month, dayNext.isRotate()), this.months);
+				monthNext = this.getNextTime(new NextTime(month, dayNext.isRolled()), this.months);
 				month = monthNext.getTime();
 				
-				if(monthNext.isRotate() == true) {
+				if(monthNext.isRolled() == true) {
 					year++;
 				}
 				
@@ -331,36 +346,76 @@ public class CronJob {
 		}
 		
 		/**
+		 * 시간 단위 별(분/시/일/월/요일) 시간 목록 중<br>
+		 * 현재 시간(cur)가 가장 가까운 다음 시간 및 시간 목록의 처음으로 이동(roll)하였는지 여부 반환<br>
+		 * ex)<br>
+		 * 만일 timeList=[1,3,8] 이고, 현재 시간이 7 이면<br>
+		 * 가까운 다음 시간은 8이고, roll 여부는 false 임<br>
+		 * <br>
+		 * 만일 timeList=[1,3,8] 이고, 현재 시간이 9 이면<br>
+		 * 가까운 다음 시간은 1이고, roll 여부는 true 임<br>
 		 * 
-		 * @param cur
-		 * @param timeList
-		 * @return
+		 * @param cur 현재 시간 및 이전 시간 단위에서 roll이 있었는지 여부
+		 * @param timeList 시간 목록
+		 * @return 가장 가까운 시간과 시간 목록의 처음으로 이동(roll)하였는지 여부
 		 */
 		private NextTime getNextTime(NextTime cur, int[] timeList) {
 			
-			//
+			// 시간 목록을 순회하면서, 시간 목록의 시간이 현재 시간과 같거나 큰 경우 처리함
 			for(int index = 0; index < timeList.length; index++) {
 				
 				int time = timeList[index];
 				
 				if(cur.getTime() == time) {
 					
-					if(cur.isRotate() == true) {
+					if(cur.isRolled() == true) {
 						if(index + 1 == timeList.length) {
+							
+							// 시간 목록의 시간과 현재 시간이 같고,
+							// 시간 목록에서 가장 가까운 시간이 시간 목록의 가장 마지막에 있고,
+							// 이전 시간 단위에서 roll이 있었던 경우
+							// ex)
+							// timeList=[1,3,8], cur의 시간 값이 8이고, 이전 시간에서 roll 이 true 인 경우
+							// 1, true를 반환함
 							return new NextTime(timeList[0], true);
+							
 						} else {
+							
+							// 시간 목록의 시간과 현재 시간이 같고,
+							// 시간 목록에서 가장 가까운 시간이 시간 목록의 가장 마지막이 아니고
+							// 이전 시간 단위에서 roll이 있었던 경우
+							// ex)
+							// timeList=[1,3,8], cur의 시간 값이 3이고, 이전 시간에서 roll 이 true 인 경우
+							// 8, false를 반환함
 							return new NextTime(timeList[index + 1], false);
 						}
 					} else {
+						
+						// 시간 목록의 시간과 현재 시간이 일치하면서,
+						// 이전 시간 단위에서 roll이 없었던 경우
+						// ex)
+						// timeList=[1,3,8], cur의 시간 값이 8이고, 이전 시간에서 roll 이 false 인 경우
+						// 8, false를 반환함
 						return new NextTime(timeList[index], false);
 					}
 					
 				} else if(cur.getTime() < time) {
+					
+					// 시간 목록의 시간이 현재 시간보다 큰 경우
+					// ex)
+					// timeList=[1,3,8], cur의 시간 값이 6일 경우,
+					//   -> 이때는, 이전 시간 roll여부와 상관 없이, time 값(즉 timeList[index])을 설정함
+					//   -> 만일 cur 시간 값이 9일 경우, 1,3,8 중 9보다 큰값이 없기 때문에
+					//      for 문을 빠져 나가게 됨
+					// 8, false를 반환함
 					return new NextTime(timeList[index], false);
 				}
 			}
 			
-			//
+			// 시간 목록의 시간이 현재 시간보다 같거나 큰 경우가 없는 경우
+			// ex)
+			// timeList=[1,3,8], cur의 시간 값이 9일 경우,
+			// 1, true를 반환함
 			return new NextTime(timeList[0], true);
 		}
 		
@@ -368,11 +423,11 @@ public class CronJob {
 		private class NextTime {
 			
 			private int time;
-			private boolean rotate;
+			private boolean rolled;
 			
-			NextTime(int time, boolean rotate) {
+			NextTime(int time, boolean rolled) {
 				this.time = time;
-				this.rotate = rotate;
+				this.rolled = rolled;
 			}
 		}
 		
