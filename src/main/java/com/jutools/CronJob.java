@@ -511,6 +511,11 @@ public class CronJob {
 			return builder.toString();
 		}
 		
+		/**
+		 * 
+		 * @param array
+		 * @return
+		 */
 		private static String toString(int[] array) {
 			
 			if(array == null) {
