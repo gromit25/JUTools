@@ -70,7 +70,7 @@ public class CronJob {
 				@Override
 				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
-					//
+					// 문자열 내에 시간(숫자)을 찾아 목록에 추가 
 					Pattern fixedTimeP = Pattern.compile("[0-9]+");
 					Matcher fixedTimeM = fixedTimeP.matcher(exp);
 					
@@ -94,7 +94,7 @@ public class CronJob {
 				@Override
 				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
-					//
+					// 범위의 최대값, 최소값을 추출
 					Pattern rangeP = Pattern.compile("(?<lower>[0-9]+)\\-(?<upper>[0-9]+)");
 					Matcher rangeM = rangeP.matcher(exp);
 					
@@ -102,19 +102,20 @@ public class CronJob {
 						throw new Exception("invalid cron expression:" + exp);
 					}
 					
-					//
 					int lower = Integer.parseInt(rangeM.group("lower"));
 					int upper = Integer.parseInt(rangeM.group("upper"));
 					
+					// 최소값이 최대값 보다 크면 예외 발생
 					if(lower >= upper) {
 						throw new Exception("invalid range(lower, upper): (" + lower + ", " + upper + ")");
 					}
 					
+					// 최소값과 최대값이 시간단위 보다 크면 예외 발생
 					if(lower > unit.getUpper() || upper > unit.getUpper()) {
 						throw new Exception("invalid range(lower, upper): (" + lower + ", " + upper + ")");
 					}
 					
-					//
+					// 최소값과 최대값 사이의 모든 값을 시간 목록에 추가함
 					ArrayList<Integer> timeList = new ArrayList<>();
 					for(int index = lower; index <= upper; index++) {
 						timeList.add(index);
@@ -128,23 +129,25 @@ public class CronJob {
 				@Override
 				protected int[] makeTimeListByExpType(String exp, CronTimeUnit unit) throws Exception {
 					
-					//
-					Pattern rangeP = Pattern.compile("\\*(\\/(?<divider>[0-9]+))?");
-					Matcher rangeM = rangeP.matcher(exp);
+					// 반복 주기(divider)를 문자열 내에서 찾음
+					Pattern repeatP = Pattern.compile("\\*(\\/(?<divider>[0-9]+))?");
+					Matcher repeatM = repeatP.matcher(exp);
 					
-					if(rangeM.matches() == false) {
+					if(repeatM.matches() == false) {
 						throw new Exception("invalid cron expression:" + exp);
 					}
 					
-					//
+					// 반복 주기 변수
+					// 설정 되어 있지 않은 경우 1로 설정
 					int divider = 1;
 					
-					String dividerStr = rangeM.group("divider");
+					String dividerStr = repeatM.group("divider");
 					if(dividerStr != null) {	
 						divider = Integer.parseInt(dividerStr);
 					}
 					
-					//
+					// 반복 주기에 해당되는 값을 시간목록에 추가함
+					// 반복 주기로 나누어서 나머지가 0이 되면 대상
 					ArrayList<Integer> timeList = new ArrayList<>();
 					for(int index = unit.getLower(); index <= unit.getUpper(); index++) {
 						if(index % divider == 0) {
@@ -236,15 +239,15 @@ public class CronJob {
 		
 		/** 크론 시간 표현 원본 */
 		private String cronExp;
-		/** 분 */
+		/** 분 목록 */
 		private int[] mins;
-		/** 시간 */
+		/** 시간 목록 */
 		private int[] hours;
-		/** 날짜 */
+		/** 날짜 목록 */
 		private int[] days;
-		/** 월 */
+		/** 월 목록 */
 		private int[] months;
-		/** 요일 : 0-7, 0과 7은 일요일, 1은 월요일, 6은 토요일 */
+		/** 요일 목록 : 0-7, 0과 7은 일요일, 1은 월요일, 6은 토요일 */
 		private int[] daysOfWeek;
 		
 		/**
@@ -311,11 +314,11 @@ public class CronJob {
 			int year = baseTime.get(Calendar.YEAR);
 			
 			// 분의 다음 시간을 가져옴
-			NextTime minNext = this.getNextTime(new NextTime(min, true), this.mins);
+			NextTime minNext = this.getNextTime(min, true, this.mins);
 			min = minNext.getTime();
 			
 			// 시의 다음 시간을 가져옴
-			NextTime hourNext = this.getNextTime(new NextTime(hour, minNext.isRolled()), this.hours);
+			NextTime hourNext = this.getNextTime(hour, minNext.isRolled(), this.hours);
 			hour = hourNext.getTime();
 			
 			// 날짜 및 월의 다음 시간을 가져옴
@@ -328,9 +331,9 @@ public class CronJob {
 			// 또한, 다음 날짜가 설정된 요일 목록에 없는 경우에도 다음 날짜를 다시 가져오도록 함 
 			do {
 				
-				dayNext = this.getNextTime(new NextTime(day, hourNext.isRolled()), this.days);
+				dayNext = this.getNextTime(day, hourNext.isRolled(), this.days);
 				day = dayNext.getTime();
-				monthNext = this.getNextTime(new NextTime(month, dayNext.isRolled()), this.months);
+				monthNext = this.getNextTime(month, dayNext.isRolled(), this.months);
 				month = monthNext.getTime();
 				
 				// 월이 한바퀴 돌아(roll) 월 목록의 처음으로 이동하면
@@ -366,20 +369,21 @@ public class CronJob {
 		 * 만일 timeList=[1,3,8] 이고, 현재 시간이 9 이면<br>
 		 * 가까운 다음 시간은 1이고, roll 여부는 true 임<br>
 		 * 
-		 * @param cur 현재 시간 및 이전 시간 단위에서 roll이 있었는지 여부
+		 * @param cur 현재 시간 
+		 * @param isRolled 이전 시간 단위에서 roll이 있었는지 여부
 		 * @param timeList 시간 목록
 		 * @return 가장 가까운 시간과 시간 목록의 처음으로 이동(roll)하였는지 여부
 		 */
-		private NextTime getNextTime(NextTime cur, int[] timeList) {
+		private NextTime getNextTime(int cur, boolean isRolled, int[] timeList) {
 			
 			// 시간 목록을 순회하면서, 시간 목록의 시간이 현재 시간과 같거나 큰 경우 처리함
 			for(int index = 0; index < timeList.length; index++) {
 				
 				int time = timeList[index];
 				
-				if(cur.getTime() == time) {
+				if(cur == time) {
 					
-					if(cur.isRolled() == true) {
+					if(isRolled == true) {
 						if(index + 1 == timeList.length) {
 							
 							// 시간 목록의 시간과 현재 시간이 같고,
@@ -410,7 +414,7 @@ public class CronJob {
 						return new NextTime(timeList[index], false);
 					}
 					
-				} else if(cur.getTime() < time) {
+				} else if(cur < time) {
 					
 					// 시간 목록의 시간이 현재 시간보다 큰 경우
 					// ex)
@@ -430,12 +434,25 @@ public class CronJob {
 			return new NextTime(timeList[0], true);
 		}
 		
+		/**
+		 * 다음 시간 클래스
+		 * 
+		 * @author jmsohn
+		 */
 		@Getter
 		private class NextTime {
 			
+			/** 다음 시간 */
 			private int time;
+			/** roll(목록의 마지막에서 처음으로 이동) 여부 */
 			private boolean rolled;
 			
+			/**
+			 * 생성자
+			 * 
+			 * @param time 다음 시간
+			 * @param rolled roll 여부
+			 */
 			NextTime(int time, boolean rolled) {
 				this.time = time;
 				this.rolled = rolled;
