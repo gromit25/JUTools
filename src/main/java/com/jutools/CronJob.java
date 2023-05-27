@@ -47,23 +47,29 @@ public class CronJob {
 	 */
 	public void run() {
 		
-		this.cronThread = Thread.currentThread();
-		
-		while(true) {
-			
-			//
-			try {
-				this.nextTime = this.cronExp.getNextTimeInMillis();
-				Thread.sleep(this.nextTime - System.currentTimeMillis());
-			} catch(InterruptedException iex) {
-				break;
+		this.cronThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				
+				while(true) {
+					
+					//
+					try {
+						nextTime = cronExp.getNextTimeInMillis();
+						Thread.sleep(nextTime - System.currentTimeMillis());
+					} catch(InterruptedException iex) {
+						break;
+					}
+					
+					//
+					jobThread = new Thread(job);
+					jobThread.start();
+				}
 			}
-			
-			//
-			this.jobThread = new Thread(this.job);
-			this.jobThread.start();
-		}
+		});
 		
+		this.cronThread.setDaemon(true);
+		this.cronThread.start();
 	}
 
 	/**
