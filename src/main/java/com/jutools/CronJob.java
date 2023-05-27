@@ -112,8 +112,30 @@ public class CronJob {
 	 * 
 	 * @param job 수행할 잡
 	 */
-	public void setJob(Runnable job) {
+	public void setJob(Runnable job) throws Exception {
+		
+		if(job == null) {
+			throw new NullPointerException("job is null");
+		}
+		
 		this.job = job;
+	}
+	
+	/**
+	 * CronJob 객체의 정보 문자열 반환
+	 * 
+	 * @return CronJob 객체의 정보 문자열
+	 */
+	public String toString() {
+		
+		StringBuilder builder = new StringBuilder("");
+		
+		builder
+			.append(this.getCronExp())
+			.append(" ")
+			.append(this.job.getClass().getCanonicalName());
+		
+		return builder.toString();
 	}
 	
 	/**
