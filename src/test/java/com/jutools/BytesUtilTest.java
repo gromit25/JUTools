@@ -134,7 +134,10 @@ class BytesUtilTest {
 	void testConcat3() throws Exception {
 		
 		try {
-			BytesUtil.concat(null);
+			
+			byte[] array = null;
+			BytesUtil.concat(array);
+			
 			fail("exception is expected");
 		} catch(Exception ex) {
 			assertTrue(true);
