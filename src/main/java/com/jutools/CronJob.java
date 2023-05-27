@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -14,6 +15,98 @@ import lombok.Getter;
  * @author jmsohn
  */
 public class CronJob {
+	
+	/** */
+	private CronExp cronExp;
+	/** */
+	private Runnable job;
+	
+	/** */
+	private Thread cronThread;
+	/** */
+	private Thread jobThread;
+	
+	/** 다음 작업 시간: 중지되어 있을 경우 -1 */
+	@Getter
+	private long nextTime;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param cronExp
+	 * @param job
+	 */
+	@Builder
+	public CronJob(String cronExp, Runnable job) throws Exception {
+		this.setCronExp(cronExp);
+		this.setJob(job);
+	}
+	
+	/**
+	 * 
+	 */
+	public void run() {
+		
+		this.cronThread = Thread.currentThread();
+		
+		while(true) {
+			
+			//
+			try {
+				this.nextTime = this.cronExp.getNextTimeInMillis();
+				Thread.sleep(this.nextTime - System.currentTimeMillis());
+			} catch(InterruptedException iex) {
+				break;
+			}
+			
+			//
+			this.jobThread = new Thread(this.job);
+			this.jobThread.start();
+		}
+		
+	}
+
+	/**
+	 * 현재 작업 중지, 예약도 중지됨 
+	 */
+	public void stop() {
+		
+		if(this.jobThread != null) {
+			this.jobThread.interrupt();
+		}
+		
+		if(this.cronThread != null) {
+			this.cronThread.interrupt();
+		}
+		
+		this.nextTime = -1;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param cronExp
+	 */
+	public void setCronExp(String cronExp) throws Exception {
+		this.cronExp = new CronExp(cronExp);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getCronExp() {
+		return this.cronExp.getCronExp();
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param job
+	 */
+	public void setJob(Runnable job) {
+		this.job = job;
+	}
 	
 	/**
 	 * 크론 표현식 클래스
@@ -238,6 +331,7 @@ public class CronJob {
 		}
 		
 		/** 크론 시간 표현 원본 */
+		@Getter
 		private String cronExp;
 		/** 분 목록 */
 		private int[] mins;
@@ -493,7 +587,7 @@ public class CronJob {
 		}
 		
 		/**
-		 * 
+		 * 현재 크론 표현식 객체의 정보를 문자열로 반환
 		 */
 		@Override
 		public String toString() {
@@ -502,36 +596,11 @@ public class CronJob {
 			
 			builder
 				.append(this.cronExp).append("\n")
-				.append(toString(this.mins)).append("\n")
-				.append(toString(this.hours)).append("\n")
-				.append(toString(this.days)).append("\n")
-				.append(toString(this.months)).append("\n")
-				.append(toString(this.daysOfWeek));
-			
-			return builder.toString();
-		}
-		
-		/**
-		 * 
-		 * @param array
-		 * @return
-		 */
-		private static String toString(int[] array) {
-			
-			if(array == null) {
-				return "";
-			}
-			
-			StringBuilder builder = new StringBuilder();
-			
-			for(int index = 0; index < array.length; index++) {
-				
-				if(index != 0) {
-					builder.append(",");
-				}
-				
-				builder.append(array[index]);
-			}
+				.append(StringUtil.join(",", this.mins)).append("\n")
+				.append(StringUtil.join(",", this.hours)).append("\n")
+				.append(StringUtil.join(",", this.days)).append("\n")
+				.append(StringUtil.join(",", this.months)).append("\n")
+				.append(StringUtil.join(",", this.daysOfWeek));
 			
 			return builder.toString();
 		}

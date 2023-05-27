@@ -556,7 +556,7 @@ public class StringUtil {
 	/**
 	 * 여러 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드
 	 * 
-	 * @param delimiter 구분자
+	 * @param delimiter 문자열 목록 사이에 추가할 구분자(null 일경우 "")
 	 * @param strs 문자열들
 	 * @return 이어 붙힌 문자열
 	 */
@@ -564,11 +564,11 @@ public class StringUtil {
 		
 		// 입력값 검증
 		if(delimiter == null) {
-			throw new NullPointerException("delimiter is null");
+			delimiter = "";
 		}
 		
 		if(strs == null) {
-			throw new NullPointerException("strs is null");
+			return "";
 		}
 		
 		// 문자열을 이어 붙히기 위한 StringBuilder 변수
@@ -609,6 +609,37 @@ public class StringUtil {
 		});
 		
 		return join(delimiter, strs.stream().toArray(String[]::new));
+	}
+	
+	/**
+	 * int 배열을 구분자(delimiter)를 넣어 문자열로 만드는 메소드
+	 * 
+	 * @param delimiter int 목록 사이에 추가할 구분자(null 일경우 "")
+	 * @param array 문자열로 변환할 int 배열
+	 * @return 변환된 문자열
+	 */
+	public static String join(String delimiter, int... array) {
+		
+		if(delimiter == null) {
+			delimiter = "";
+		}
+		
+		if(array == null) {
+			return "";
+		}
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for(int index = 0; index < array.length; index++) {
+			
+			if(index != 0) {
+				builder.append(delimiter);
+			}
+			
+			builder.append(array[index]);
+		}
+		
+		return builder.toString();
 	}
 	
 	/**
