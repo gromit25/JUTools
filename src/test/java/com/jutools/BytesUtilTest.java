@@ -1,25 +1,21 @@
-/**
- * 
- */
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * BytesUtil 클래스의 테스트 케이스
  * 
  * @author jmsohn
  */
-class BytesUtilTest {
+public class BytesUtilTest {
 
 	@Test
-	void testSplit1() throws Exception {
+	public void testSplit1() throws Exception {
 		
 		String test1 = "123|||6789";
 	       
@@ -31,7 +27,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testSplit2() throws Exception {
+	public void testSplit2() throws Exception {
 		
 		String test1 = "123||45|||6789";
 	       
@@ -43,7 +39,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testSplit3() throws Exception {
+	public void testSplit3() throws Exception {
 		
 		String test1 = "123||||||6789";
 	       
@@ -56,7 +52,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testSplit4() throws Exception {
+	public void testSplit4() throws Exception {
 		
 		String test1 = "123|||||||6789";
 	       
@@ -69,7 +65,7 @@ class BytesUtilTest {
 	}
 
 	@Test
-	void testSplit5() throws Exception {
+	public void testSplit5() throws Exception {
 		
 		String test1 = "123|||6789|";
 	       
@@ -81,7 +77,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testSplit6() throws Exception {
+	public void testSplit6() throws Exception {
 		
 		String test1 = "123|||6789|||";
 	       
@@ -93,7 +89,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testSplit7() throws Exception {
+	public void testSplit7() throws Exception {
 		
 		String test1 = "123|||6789|||";
 	       
@@ -106,7 +102,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testConcat1() throws Exception {
+	public void testConcat1() throws Exception {
 
 		String src1 = "abcd";
 		String src2 = "efgh";
@@ -118,7 +114,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testConcat2() throws Exception {
+	public void testConcat2() throws Exception {
 
 		String src1 = "abcd";
 		String src2 = "efgh";
@@ -131,28 +127,23 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testConcat3() throws Exception {
+	public void testConcat3() throws Exception {
 		
-		try {
-			
-			byte[] array = null;
-			BytesUtil.concat(array);
-			
-			fail("exception is expected");
-		} catch(Exception ex) {
-			assertTrue(true);
-		}
+		byte[] array = null;
+		byte[] result = BytesUtil.concat(array);
+		
+		assertEquals(0, result.length);
 	}
 	
 	@Test
-	void testConcat4() throws Exception {
+	public void testConcat4() throws Exception {
 		
 		byte[] concatenated = BytesUtil.concat();
 		assertEquals(0, concatenated.length);
 	}
 	
 	@Test
-	void testConcat5() throws Exception {
+	public void testConcat5() throws Exception {
 
 		String src1 = "abcd";
 		String src2 = "efgh";
@@ -164,7 +155,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testIndexOf1() throws Exception {
+	public void testIndexOf1() throws Exception {
 
 		String src1 = "abcd||efghi";
 		String src2 = "||";
@@ -175,7 +166,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testIndexOf2() throws Exception {
+	public void testIndexOf2() throws Exception {
 
 		String src1 = "abcd||efghi";
 		String src2 = "||a";
@@ -186,7 +177,7 @@ class BytesUtilTest {
 	}
 	
 	@Test
-	void testIndexOf3() throws Exception {
+	public void testIndexOf3() throws Exception {
 
 		String src1 = "aaaabaccc";
 		String src2 = "ab";

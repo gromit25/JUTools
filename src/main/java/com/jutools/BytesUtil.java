@@ -1,5 +1,6 @@
 package com.jutools;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -286,5 +287,63 @@ public class BytesUtil {
 		}
 		
 		return concatenatedArray;
+	}
+	
+	/**
+	 * 
+	 * @param array
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public static byte[] cut(byte[] array, int start, int length) throws Exception {
+		
+		if(array == null) {
+			throw new NullPointerException("array is null");
+		}
+		
+		if(start < 0 || start >= array.length) {
+			throw new IllegalArgumentException("start is invalid:" + start);
+		}
+		
+		if(length < 0) {
+			throw new IllegalArgumentException("length is invalid:" + start);
+		}
+
+		byte[] cutArray = new byte[length];
+		System.arraycopy(array, start, cutArray, 0, length);
+		
+		return cutArray;
+	}
+	
+	/**
+	 * 
+	 * @param is
+	 * @return
+	 */
+	public static byte[] readAllBytes(InputStream is) throws Exception {
+		
+		if(is == null) {
+			return new byte[0];
+		}
+		
+		byte[] readAll = new byte[0];
+
+		// buffer 설정
+		int bufferSize = 1024 * 1024;
+		byte[] buffer = new byte[bufferSize];
+		
+		// input stream의 모든 데이터를 읽음
+		int readcnt = -1;
+		while((readcnt = is.read(buffer)) != -1) {
+			
+			if(readcnt == bufferSize) {
+				readAll = concat(readAll, buffer);
+			} else {
+				readAll = concat(readAll, cut(buffer, 0, readcnt));
+			}
+		}
+		
+		return readAll;
 	}
 }

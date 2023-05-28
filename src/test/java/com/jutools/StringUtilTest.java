@@ -1,19 +1,19 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class StringUtilTest {
+public class StringUtilTest {
 	
 	@Test
-	void test() throws Exception  {
+	public void test() throws Exception  {
 
 	}
 
 	@Test
-	void testEscape1() {
+	public void testEscape1() {
 		try {
 			
 			String testMsg = "hello world!\\n이름:\\tJohn doe";
@@ -28,7 +28,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testEscape2() {
+	public void testEscape2() {
 		try {
 			
 			String testMsg = "\\0\\b\\f\\n\\r\\t\\\\\\\'\\\"";
@@ -43,7 +43,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testEscape3() {
+	public void testEscape3() {
 		try {
 			
 			// "가나다라마바사"
@@ -59,7 +59,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testFind1() {
+	public void testFind1() {
 		try {
 			
 			String testMsg = "hello world!"; 
@@ -75,7 +75,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testFind2() {
+	public void testFind2() {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
@@ -91,7 +91,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testFind3() {
+	public void testFind3() {
 		try {
 			
 			String testMsg = "aaabbbbbb"; 
@@ -107,7 +107,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testJoin1() {
+	public void testJoin1() {
 		try {
 			 
 			String result = StringUtil.join("|", "abc", "def");
@@ -121,7 +121,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testJoin2() {
+	public void testJoin2() {
 		try {
 			 
 			String result = StringUtil.join("|", "abc", "def", "ghi");
@@ -135,7 +135,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testJoin3() {
+	public void testJoin3() {
 		try {
 			 
 			String result = StringUtil.join("|", new String[]{"abc", "def", "ghi"});
@@ -149,7 +149,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testReplaceEnterToBR1() {
+	public void testReplaceEnterToBR1() {
 		try {
 			
 			String contents = "Hello World!\r\nThis is Test.";
@@ -164,7 +164,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testReplaceEnterToBR2() {
+	public void testReplaceEnterToBR2() {
 		try {
 			
 			String contents = "Hello World!\nThis is Test.";
@@ -179,7 +179,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName1() {
+	public void testIsValidFileName1() {
 		try {
 			
 			String fileName = "test.xls";
@@ -194,7 +194,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName2() {
+	public void testIsValidFileName2() {
 		try {
 			
 			String fileName = "테스트.ppt";
@@ -209,7 +209,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName3() {
+	public void testIsValidFileName3() {
 		try {
 			
 			String fileName = "테스트.jsp\0.doc";
@@ -224,7 +224,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName4() {
+	public void testIsValidFileName4() {
 		try {
 			
 			String fileName = "테스트.doc";
@@ -239,7 +239,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName5() {
+	public void testIsValidFileName5() {
 		try {
 			
 			String fileName = "테스트.doc";
@@ -254,7 +254,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName6() {
+	public void testIsValidFileName6() {
 		try {
 			
 			String fileName = "테스트.dOc";
@@ -269,7 +269,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testIsValidFileName7() {
+	public void testIsValidFileName7() {
 		try {
 			
 			String fileName = "테스트.dOcabc";
@@ -284,7 +284,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard1() {
+	public void testMatchWildcard1() {
 		try {
 			
 		    String pattern = "abc*def";
@@ -301,7 +301,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard2() {
+	public void testMatchWildcard2() {
 		try {
 			
 		    String pattern = "abc?def";
@@ -318,7 +318,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard3() {
+	public void testMatchWildcard3() {
 		try {
 			
 		    String pattern = "abc?def";
@@ -334,7 +334,7 @@ class StringUtilTest {
 		}
 	}
 	@Test
-	void testMatchWildcard4() {
+	public void testMatchWildcard4() {
 		try {
 			
 		    String pattern = "abc";
@@ -351,7 +351,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard5() {
+	public void testMatchWildcard5() {
 		try {
 			
 		    String pattern = "abc";
@@ -368,7 +368,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard6() {
+	public void testMatchWildcard6() {
 		try {
 			
 		    String pattern = "*";
@@ -385,7 +385,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard7() {
+	public void testMatchWildcard7() {
 		try {
 			
 		    String pattern = "??";
@@ -401,7 +401,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard8() {
+	public void testMatchWildcard8() {
 		try {
 			
 		    String pattern = "???";
@@ -418,7 +418,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard9() {
+	public void testMatchWildcard9() {
 		try {
 			
 		    String pattern = "??";
@@ -435,7 +435,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard10() {
+	public void testMatchWildcard10() {
 		try {
 			
 		    String pattern = "a??";
@@ -452,7 +452,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard11() {
+	public void testMatchWildcard11() {
 		try {
 			
 		    String pattern = "a?*";
@@ -469,7 +469,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard12() {
+	public void testMatchWildcard12() {
 		try {
 		    
 		    String pattern = "a?*";
@@ -486,7 +486,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard13() {
+	public void testMatchWildcard13() {
 		try {
 			
 		    String pattern = "?*a";
@@ -503,7 +503,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard14() {
+	public void testMatchWildcard14() {
 		try {
 			
 		    String pattern = "?*a";
@@ -520,7 +520,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard15() {
+	public void testMatchWildcard15() {
 		try {
 			
 		    String pattern = "A?*";
@@ -537,7 +537,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard16() {
+	public void testMatchWildcard16() {
 		try {
 			
 		    String pattern = "A?*";
@@ -554,7 +554,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard17() {
+	public void testMatchWildcard17() {
 		try {
 			
 		    String pattern = "abc?DEF";
@@ -571,7 +571,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testMatchWildcard18() {
+	public void testMatchWildcard18() {
 		try {
 			
 		    String pattern = "abc?DEF";
@@ -588,7 +588,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testEncryptSHA512_1() {
+	public void testEncryptSHA512_1() {
 		try {
 			
 			String msg = "Hello World";
@@ -603,7 +603,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testEncryptDecryptAES1() {
+	public void testEncryptDecryptAES1() {
 		try {
 			
 			String key = StringUtil.genAES128Key();
@@ -621,7 +621,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testEncryptDecryptAES2() {
+	public void testEncryptDecryptAES2() {
 		try {
 			
 			// key는 16 byte 이어야 함
@@ -640,7 +640,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testGenAES128Key() {
+	public void testGenAES128Key() {
 		try {
 			
 			String key = StringUtil.genAES128Key();
@@ -655,7 +655,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testGenAES256Key() {
+	public void testGenAES256Key() {
 		try {
 			
 			String key = StringUtil.genAES256Key();
@@ -670,7 +670,7 @@ class StringUtilTest {
 	}
 	
 	@Test
-	void testChangeStr1() {
+	public void testChangeStr1() {
 		try {
 			
 			String str = "abcdefghijk";

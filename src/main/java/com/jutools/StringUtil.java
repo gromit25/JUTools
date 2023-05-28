@@ -763,7 +763,7 @@ public class StringUtil {
 			
 		splitedStrs.add(splitedStr);
 		
-		return splitedStrs.toArray(String[]::new);
+		return splitedStrs.toArray(new String[splitedStrs.size()]);
 	}
 
 	/**
@@ -1444,7 +1444,10 @@ public class StringUtil {
 		}
 		
 		// 문자열 필드에 변경할 문자열을 강제 설정
-		TypeUtil.setField(str, "value", toStr.getBytes());
+		char[] buffer = new char[toStr.length()];
+		toStr.getChars(0, toStr.length(), buffer, 0);
+		
+		TypeUtil.setField(str, "value", buffer);
 	}
 	
 	/**

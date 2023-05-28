@@ -1,16 +1,15 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.SetEnvironmentVariable;
+import org.junit.Test;
 
-class EnvUtilTest {
+public class EnvUtilTest {
 
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_NAME", value = "john doe")
-	void testEnvPrimitiveString() {
+	//@SetEnvironmentVariable(key = "CONFIG_NAME", value = "john doe")
+	public void testEnvPrimitiveString() {
 		
 		try {
 			
@@ -25,8 +24,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_BOOLEAN", value = "true")
-	void testEnvPrimitiveBoolean() {
+	//@SetEnvironmentVariable(key = "CONFIG_BOOLEAN", value = "true")
+	public void testEnvPrimitiveBoolean() {
 		
 		try {
 			
@@ -41,8 +40,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_INT", value = "123")
-	void testEnvPrimitiveInt() {
+	//@SetEnvironmentVariable(key = "CONFIG_INT", value = "123")
+	public void testEnvPrimitiveInt() {
 		
 		try {
 			
@@ -57,13 +56,13 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_FLOAT", value = "123")
-	void testEnvPrimitiveFloat() {
+	//@SetEnvironmentVariable(key = "CONFIG_FLOAT", value = "123")
+	public void testEnvPrimitiveFloat() {
 		
 		try {
 			
 			EnvUtil.set(Config.class);
-			assertEquals((float)123, Config.FLOAT_VALUE);
+			assertEquals((float)123, Config.FLOAT_VALUE, 0);
 			
 		} catch(Exception ex) {
 			
@@ -73,8 +72,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_CLASS", value = "java.lang.Integer")
-	void testEnvMethod() {
+	//@SetEnvironmentVariable(key = "CONFIG_CLASS", value = "java.lang.Integer")
+	public void testEnvMethod() {
 		
 		try {
 			
@@ -89,8 +88,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_STR_LIST", value = "john doe, hong gil-dong, jang gil-san")
-	void testEnvStrArray() {
+	//@SetEnvironmentVariable(key = "CONFIG_STR_LIST", value = "john doe, hong gil-dong, jang gil-san")
+	public void testEnvStrArray() {
 		
 		try {
 			
@@ -109,8 +108,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_INT_LIST", value = "1, 2, 3")
-	void testEnvIntArray() {
+	//@SetEnvironmentVariable(key = "CONFIG_INT_LIST", value = "1, 2, 3")
+	public void testEnvIntArray() {
 		
 		try {
 			
@@ -129,8 +128,8 @@ class EnvUtilTest {
 	}
 	
 	@Test
-	@SetEnvironmentVariable(key = "CONFIG_CLASSES", value = "java.lang.Integer, java.lang.Float")
-	void testEnvMethodArray() {
+	//@SetEnvironmentVariable(key = "CONFIG_CLASSES", value = "java.lang.Integer, java.lang.Float")
+	public void testEnvMethodArray() {
 		
 		try {
 			

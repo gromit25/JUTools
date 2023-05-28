@@ -1,14 +1,14 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class FileChannelUtilTest {
+public class FileChannelUtilTest {
 	
 	/**
 	 * 람다 함수 테스트용 클래스
@@ -24,7 +24,7 @@ class FileChannelUtilTest {
 	}
 
 	@Test
-	void testRead1() throws Exception {
+	public void testRead1() throws Exception {
 		
 		File file = new File("resources/read_test.txt");
 		
@@ -46,7 +46,7 @@ class FileChannelUtilTest {
 	}
 	
 	@Test
-	void testRead2() throws Exception {
+	public void testRead2() throws Exception {
 		
 		File file = new File("resources/read_test.txt");
 		
@@ -68,7 +68,7 @@ class FileChannelUtilTest {
 	}
 	
 	@Test
-	void testRead3() throws Exception {
+	public void testRead3() throws Exception {
 		
 		File file = new File("resources/read_test.txt");
 		
@@ -89,7 +89,7 @@ class FileChannelUtilTest {
 	}
 	
 	@Test
-	void testRead4() throws Exception {
+	public void testRead4() throws Exception {
 		
 		File file = new File("resources/read_test.txt");
 		
@@ -110,7 +110,7 @@ class FileChannelUtilTest {
 	}
 	
 	@Test
-	void testRead5() throws Exception {
+	public void testRead5() throws Exception {
 		
 		File file = new File("resources/read_test.txt");
 		

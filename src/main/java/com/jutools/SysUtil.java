@@ -98,7 +98,7 @@ public class SysUtil {
 		JSONObject perp = new JSONObject();
 		
 		// system 정보 수집
-		double cpuLoad = osBean.getCpuLoad();
+		double cpuLoad = osBean.getSystemCpuLoad();
 		
 		// system 정보 body 메시지 설정
 		perp.put("hostname", getHostname());
@@ -122,8 +122,8 @@ public class SysUtil {
 		JSONObject memUsage = new JSONObject();
 		
 		memUsage
-			.put("total", osBean.getTotalMemorySize())
-			.put("free", osBean.getFreeMemorySize());
+			.put("total", osBean.getTotalPhysicalMemorySize())
+			.put("free", osBean.getFreePhysicalMemorySize());
 
 		return memUsage;
 	}
@@ -185,7 +185,7 @@ public class SysUtil {
 		// 출력 결과 저장
 		String output = "";
 		try(InputStream is = process.getInputStream()) {
-			output = new String(is.readAllBytes(), Charset.defaultCharset());
+			output = new String(BytesUtil.readAllBytes(is), Charset.defaultCharset());
 		}
 		
 		// 실행 결과 기다림

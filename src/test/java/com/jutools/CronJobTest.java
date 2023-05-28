@@ -1,13 +1,13 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class CronJobTest {
+public class CronJobTest {
 
 	@Test
-	void test() throws Exception {
+	public void test() throws Exception {
 		
 		CronJob job = CronJob.builder()
 			.cronExp("* * * * *")

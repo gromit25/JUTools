@@ -2,12 +2,12 @@ package com.jutools;
 
 import java.util.Date;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class DateUtilTest {
+public class DateUtilTest {
 
 	@Test
-	void testGetDateStr1() {
+	public void testGetDateStr1() {
 		try {
 			
 			String dateStr = DateUtil.getDateStr(new Date());
@@ -19,7 +19,7 @@ class DateUtilTest {
 	}
 	
 	@Test
-	void testGetTimeStr1() {
+	public void testGetTimeStr1() {
 		try {
 			
 			String timeStr = DateUtil.getTimeStr(new Date());

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.jutools.StringUtil;
+
 /**
  * 
  * 
@@ -98,7 +100,7 @@ public class EnvMapper {
 				
 				if(field.getType().isArray() == true) {
 					arrayObj = new ArrayList<Object>();
-					memberType = field.getType().componentType();
+					memberType = field.getType().getComponentType();
 				} else {
 					arrayObj = field.getType().getConstructor().newInstance();
 					memberType = Object.class;
@@ -150,7 +152,7 @@ public class EnvMapper {
 	 */
 	private Object transferValue(Class<?> type, String value, String methodName) throws Exception {
 		
-		if(methodName == null || methodName.isBlank() == true) {
+		if(StringUtil.isEmpty(methodName) == true) {
 		
 			if(isPrimitiveType(type) == true) {
 				return getPrimitiveValue(type, value);

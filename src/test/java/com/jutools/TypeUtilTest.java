@@ -1,13 +1,13 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class TypeUtilTest {
+public class TypeUtilTest {
 
 	@Test
-	void testToInteger1() {
+	public void testToInteger1() {
 		try {
 
 			int result = TypeUtil.toInteger(1);
@@ -21,7 +21,7 @@ class TypeUtilTest {
 	}
 	
 	@Test
-	void testToInteger2() {
+	public void testToInteger2() {
 		try {
 
 			int result = TypeUtil.toInteger("1");

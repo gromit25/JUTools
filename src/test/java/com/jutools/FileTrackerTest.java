@@ -1,13 +1,13 @@
 package com.jutools;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class FileTrackerTest {
+public class FileTrackerTest {
 
 	@Test
-	void test() throws Exception {
+	public void test() throws Exception {
 		
 		try {
 			System.out.println("tracking started");

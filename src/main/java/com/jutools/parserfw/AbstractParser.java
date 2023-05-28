@@ -270,7 +270,7 @@ public abstract class AbstractParser<T> {
 						
 						// pushback할 배열 생성
 						char[] unread = new char[pushbackSize];
-						pushbackBuffer.get(
+						copyBuffer(pushbackBuffer,
 							pushbackBuffer.remaining() - pushbackSize
 							, unread
 							, 0
@@ -333,6 +333,20 @@ public abstract class AbstractParser<T> {
 		return this.node;
 		
 	} // End of parse
+	
+	/**
+	 * 
+	 * @param src
+	 * @param index
+	 * @param dst
+	 * @param offset
+	 * @param length
+	 */
+	private static void copyBuffer(CharBuffer src, int index, char[] dst, int offset, int length) {
+		 for (int i = offset, j = index; i < offset + length; i++, j++) {
+	         dst[i] = src.get(j);
+		 }
+	}
 	
 	/**
 	 * 현재 노드에 데이터를 설정함
