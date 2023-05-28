@@ -13,11 +13,23 @@
   <build>
     <plugins>
     
-      <plugin>    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+      
+      <!-- install시 test 스킵 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
       
@@ -78,7 +90,7 @@
               <outputDirectory>
                 ${deploy.target.dir}/lib
               </outputDirectory>
-              <excludeScope>provided, test</excludeScope>
+              <excludeArtifactIds>lombok,junit</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
@@ -113,7 +125,7 @@
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
-      <version>5.0.1</version>
+      <version>4.0.3</version>
     </dependency>
     
     <!-- PressUtil 용 라이브러리들 -->
