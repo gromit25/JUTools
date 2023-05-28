@@ -62,7 +62,7 @@ public class CronJob {
 						break;
 					}
 					
-					// 
+					// 잡 수행
 					jobThread = new Thread(job);
 					jobThread.start();
 				}
@@ -443,7 +443,13 @@ public class CronJob {
 			
 			// 시의 다음 시간을 가져옴
 			NextTime hourNext = this.getNextTime(hour, minNext.isRolled(), this.hours);
-			hour = hourNext.getTime();
+			
+			// 시가 변경되면 분은 목록의 첫번째 분으로 설정
+			if(hour != hourNext.getTime()) {
+				
+				hour = hourNext.getTime();
+				min = this.mins[0];
+			}
 			
 			// 날짜 및 월의 다음 시간을 가져옴
 			NextTime dayNext = null;
@@ -456,14 +462,36 @@ public class CronJob {
 			do {
 				
 				dayNext = this.getNextTime(day, hourNext.isRolled(), this.days);
-				day = dayNext.getTime();
+				
+				// 일이 변경되면 시,분은 목록의 첫번째 시,분으로 설정
+				if(day != dayNext.getTime()) {
+					
+					day = dayNext.getTime();
+					hour = this.hours[0];
+					min = this.mins[0];
+				}
+				
 				monthNext = this.getNextTime(month, dayNext.isRolled(), this.months);
-				month = monthNext.getTime();
+				
+				// 월이 변경되면 일,시,분은 목록의 첫번째 일,시,분으로 설정
+				if(month != monthNext.getTime()) {
+					
+					month = monthNext.getTime();
+					day = this.days[0];
+					hour = this.hours[0];
+					min = this.mins[0];
+				}
 				
 				// 월이 한바퀴 돌아(roll) 월 목록의 처음으로 이동하면
 				// 년도를 하나 올림
 				if(monthNext.isRolled() == true) {
+					
 					year++;
+					
+					month = this.months[0];
+					day = this.days[0];
+					hour = this.hours[0];
+					min = this.mins[0];
 				}
 				
 				// 다음 날짜가 존재하는 날짜인지, 요일 목록에 있는 날짜인지 확인 

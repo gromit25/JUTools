@@ -1,8 +1,14 @@
 package com.jutools;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
+
+import com.jutools.CronJob.CronExp;
 
 public class CronJobTest {
 
@@ -31,5 +37,96 @@ public class CronJobTest {
 		
 		assertTrue(true);
 	}
-
+	
+	@Test
+	public void testCronExp1() throws Exception {
+		
+		Calendar baseTime = new GregorianCalendar();
+		baseTime.set(Calendar.YEAR, 2023);
+		baseTime.set(Calendar.MONTH, 5 - 1);	// 5월
+		baseTime.set(Calendar.DAY_OF_MONTH, 10);
+		baseTime.set(Calendar.HOUR_OF_DAY, 14);
+		baseTime.set(Calendar.MINUTE, 59);
+		baseTime.set(Calendar.SECOND, 40);
+		
+		CronExp exp = CronExp.create("* * * * *");
+		long nextTime = exp.getNextTimeInMillis(baseTime);
+		
+		assertEquals("2023-05-10", DateUtil.getDateStr(nextTime));
+		assertEquals("15:00:00", DateUtil.getTimeStr(nextTime));
+	}
+	
+	@Test
+	public void testCronExp2() throws Exception {
+		
+		Calendar baseTime = new GregorianCalendar();
+		baseTime.set(Calendar.YEAR, 2023);
+		baseTime.set(Calendar.MONTH, 5 - 1);	// 5월
+		baseTime.set(Calendar.DAY_OF_MONTH, 10);
+		baseTime.set(Calendar.HOUR_OF_DAY, 14);
+		baseTime.set(Calendar.MINUTE, 16);
+		baseTime.set(Calendar.SECOND, 40);
+		
+		CronExp exp = CronExp.create("0,15,30,45 * * * *");
+		long nextTime = exp.getNextTimeInMillis(baseTime);
+		
+		assertEquals("2023-05-10", DateUtil.getDateStr(nextTime));
+		assertEquals("14:30:00", DateUtil.getTimeStr(nextTime));
+	}
+	
+	@Test
+	public void testCronExp3() throws Exception {
+		
+		Calendar baseTime = new GregorianCalendar();
+		baseTime.set(Calendar.YEAR, 2023);
+		baseTime.set(Calendar.MONTH, 5 - 1);	// 5월
+		baseTime.set(Calendar.DAY_OF_MONTH, 10);
+		baseTime.set(Calendar.HOUR_OF_DAY, 14);
+		baseTime.set(Calendar.MINUTE, 16);
+		baseTime.set(Calendar.SECOND, 40);
+		
+		CronExp exp = CronExp.create("*/15 * * * *");
+		long nextTime = exp.getNextTimeInMillis(baseTime);
+		
+		assertEquals("2023-05-10", DateUtil.getDateStr(nextTime));
+		assertEquals("14:30:00", DateUtil.getTimeStr(nextTime));
+	}
+	
+	@Test
+	public void testCronExp4() throws Exception {
+		
+		Calendar baseTime = new GregorianCalendar();
+		baseTime.set(Calendar.YEAR, 2023);
+		baseTime.set(Calendar.MONTH, 5 - 1);	// 5월
+		baseTime.set(Calendar.DAY_OF_MONTH, 10);
+		baseTime.set(Calendar.HOUR_OF_DAY, 14);
+		baseTime.set(Calendar.MINUTE, 16);
+		baseTime.set(Calendar.SECOND, 40);
+		
+		CronExp exp = CronExp.create("*/15 18 * * *");
+		long nextTime = exp.getNextTimeInMillis(baseTime);
+		
+		assertEquals("2023-05-10", DateUtil.getDateStr(nextTime));
+		assertEquals("18:00:00", DateUtil.getTimeStr(nextTime));
+	}
+	
+	@Test
+	public void testCronExp5() throws Exception {
+		
+		Calendar baseTime = new GregorianCalendar();
+		baseTime.set(Calendar.YEAR, 2023);
+		baseTime.set(Calendar.MONTH, 2 - 1);	// 2월
+		baseTime.set(Calendar.DAY_OF_MONTH, 28);
+		baseTime.set(Calendar.HOUR_OF_DAY, 23);
+		baseTime.set(Calendar.MINUTE, 59);
+		baseTime.set(Calendar.SECOND, 30);
+		
+		CronExp exp = CronExp.create("15 * 1 * *");
+		long nextTime = exp.getNextTimeInMillis(baseTime);
+		
+		System.out.println(exp.toString());
+		
+		assertEquals("2023-03-01", DateUtil.getDateStr(nextTime));
+		assertEquals("00:15:00", DateUtil.getTimeStr(nextTime));
+	}
 }
