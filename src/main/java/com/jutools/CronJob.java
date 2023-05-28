@@ -459,9 +459,10 @@ public class CronJob {
 			// ex) 2023.02.30이면 다시 다음 날짜를 가져와 검사
 			//
 			// 또한, 다음 날짜가 설정된 요일 목록에 없는 경우에도 다음 날짜를 다시 가져오도록 함 
-			do {
+			boolean isHourRolled = hourNext.isRolled();
+			while(true) {
 				
-				dayNext = this.getNextTime(day, hourNext.isRolled(), this.days);
+				dayNext = this.getNextTime(day, isHourRolled, this.days);
 				
 				// 일이 변경되면 시,분은 목록의 첫번째 시,분으로 설정
 				if(day != dayNext.getTime()) {
@@ -494,8 +495,14 @@ public class CronJob {
 					min = this.mins[0];
 				}
 				
-				// 다음 날짜가 존재하는 날짜인지, 요일 목록에 있는 날짜인지 확인 
-			} while(DateUtil.isValidDate(year, month, day) == false || isValidDayOfWeek(year, month, day) == false);
+				// 다음 날짜가 존재하는 날짜이고 요일 목록에 있는 날짜이면 중단
+				if(DateUtil.isValidDate(year, month, day) == true && isValidDayOfWeek(year, month, day) == true) {
+					break;
+				} else {
+					// 다음 날짜로 이동
+					isHourRolled = true;
+				}
+			}
 			
 			// 다음 날짜를 설정하고 long 값으로 반환
 			Calendar nextTime = new GregorianCalendar();
