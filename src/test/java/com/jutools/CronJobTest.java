@@ -15,6 +15,8 @@ public class CronJobTest {
 	@Test
 	public void test() throws Exception {
 		
+		// 테스트에 1분 10초 걸림
+		
 		CronJob job = CronJob.builder()
 			.cronExp("* * * * *")
 			.job(new Runnable() {
