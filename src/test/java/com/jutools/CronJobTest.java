@@ -139,7 +139,7 @@ public class CronJobTest {
 		baseTime.set(Calendar.MINUTE, 16);
 		baseTime.set(Calendar.SECOND, 40);
 		
-		CronExp exp = CronExp.create("15 * * 6 *");
+		CronExp exp = CronExp.create("15-30 * * 6 *");
 		long nextTime = exp.getNextTimeInMillis(baseTime);
 		
 		assertEquals("2023-06-01", DateUtil.getDateStr(nextTime));
