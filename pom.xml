@@ -99,6 +99,16 @@
     </plugins>
   </build>
   
+  <!-- Nexus 배포 설정 -->
+  <distributionManagement>
+    <repository>
+      <id>my-repo</id>
+      <name>Nexus Repository</name>
+      <url>http://192.168.0.4:8081/repository/my-repo/</url>
+    </repository>
+  </distributionManagement>
+  
+  <!-- library -->
   <dependencies>
   
     <dependency>
