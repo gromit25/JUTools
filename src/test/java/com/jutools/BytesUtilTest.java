@@ -1,8 +1,11 @@
 package com.jutools;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -185,6 +188,32 @@ public class BytesUtilTest {
 		int index = BytesUtil.indexOf(src1.getBytes(), src2.getBytes());
 
 		assertEquals(3, index);
+	}
+	
+	@Test
+	public void testReadAllBytes1() throws Exception {
+		
+		File testFile = new File("resources/read_test.txt");
+		
+		try(FileInputStream is = new FileInputStream(testFile)) {
+			byte[] read = BytesUtil.readAllBytes(is);
+			assertEquals(1597, read.length);
+		}
+
+	}
+	
+	@Test
+	public void testReadAllBytes2() throws Exception {
+		
+		File testFile = new File("resources/read_test.txt");
+		
+		try(FileInputStream is = new FileInputStream(testFile)) {
+			BytesUtil.readAllBytes(is, 0);
+			assertTrue(false);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+
 	}
 
 }

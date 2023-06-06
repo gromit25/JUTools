@@ -290,11 +290,12 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * byte 배열의 특정 위치를 잘라서 반환
 	 * 
-	 * @param array
-	 * @param start
-	 * @param length
-	 * @return
+	 * @param array 대상 byte 배열
+	 * @param start 자르기 시작 지점
+	 * @param length 자를 크기
+	 * @return 잘라진 배열
 	 */
 	public static byte[] cut(byte[] array, int start, int length) throws Exception {
 		
@@ -306,7 +307,7 @@ public class BytesUtil {
 			throw new IllegalArgumentException("start is invalid:" + start);
 		}
 		
-		if(length < 0) {
+		if(length < 1) {
 			throw new IllegalArgumentException("length is invalid:" + start);
 		}
 
@@ -317,20 +318,41 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
+	 * 읽을 데이터가 적을 경우 사용(많으면 성능 문제와 메모리 문제가 발생할 수 있음)<br>
+	 * 임시 버퍼의 크기는 1024 * 1024 byte 임
 	 * 
-	 * @param is
-	 * @return
+	 * @param is 읽을 입력 스트림
+	 * @return 읽은 데이터
 	 */
 	public static byte[] readAllBytes(InputStream is) throws Exception {
+		return readAllBytes(is, 1024 * 1024);
+	}
+	
+	/**
+	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
+	 * 읽을 데이터가 적을 경우 사용(많으면 성능 문제와 메모리 문제가 발생할 수 있음)
+	 * 
+	 * @param is 읽을 입력 스트림
+	 * @param bufferSize 입력 스트림에서 데이터를 읽을 때 사용할 임시 버퍼의 크기
+	 * @return 읽은 데이터
+	 */
+	public static byte[] readAllBytes(InputStream is, int bufferSize) throws Exception {
 		
-		if(is == null) {
-			return new byte[0];
+		// buffer의 크기가 1보다 작을 경우 예외 발생
+		if(bufferSize < 1) {
+			throw new IllegalArgumentException("buffer size is invalid:" + bufferSize);
 		}
 		
+		// 모든 데이터 읽기 버퍼 변수
 		byte[] readAll = new byte[0];
+		
+		// 입력 스트림이 null 일 경우 빈 버퍼 반환
+		if(is == null) {
+			return readAll;
+		}
 
 		// buffer 설정
-		int bufferSize = 1024 * 1024;
 		byte[] buffer = new byte[bufferSize];
 		
 		// input stream의 모든 데이터를 읽음
