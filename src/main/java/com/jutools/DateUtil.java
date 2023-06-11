@@ -23,11 +23,11 @@ public class DateUtil {
 	 * ex) delimiter : "-"<br>
 	 *     -> "2023-03-25"
 	 * 
-	 * @param delimiter 일자 구분자
 	 * @param date 날짜
+	 * @param delimiter 일자 구분자
 	 * @return 날짜 문자열
 	 */
-	public static String getDateStr(String delimiter, Calendar date) throws Exception {
+	public static String getDateStr(Calendar date, String delimiter) throws Exception {
 		
 		if(date == null) {
 			throw new NullPointerException("date is null");
@@ -49,16 +49,16 @@ public class DateUtil {
 	 * ex) delimiter : "-"<br>
 	 *     -> "2023-03-25"
 	 * 
-	 * @param delimiter 일자 구분자
 	 * @param date 날짜
+	 * @param delimiter 일자 구분자
 	 * @return 날짜 문자열
 	 */
-	public static String getDateStr(String delimiter, Date date) throws Exception {
+	public static String getDateStr(Date date, String delimiter) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		
-		return getDateStr(delimiter, cal);
+		return getDateStr(cal, delimiter);
 	}
 	
 	/**
@@ -66,16 +66,16 @@ public class DateUtil {
 	 * ex) delimiter : "-"<br>
 	 *     -> "2023-03-25"
 	 * 
-	 * @param delimiter 일자 구분자
 	 * @param date 날짜
+	 * @param delimiter 일자 구분자
 	 * @return 날짜 문자열
 	 */
-	public static String getDateStr(String delimiter, long date) throws Exception {
+	public static String getDateStr(long date, String delimiter) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(date);
 		
-		return getDateStr(delimiter, cal);
+		return getDateStr(cal, delimiter);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(Calendar date) throws Exception {
-		return getDateStr(DEFAULT_DATE_DELIMITER, date);
+		return getDateStr(date, DEFAULT_DATE_DELIMITER);
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(Date date) throws Exception {
-		return getDateStr(DEFAULT_DATE_DELIMITER, date);
+		return getDateStr(date, DEFAULT_DATE_DELIMITER);
 	}
 
 	/**
@@ -108,19 +108,19 @@ public class DateUtil {
 	 * @return 날짜 문자열
 	 */
 	public static String getDateStr(long date) throws Exception {
-		return getDateStr(DEFAULT_DATE_DELIMITER, date);
+		return getDateStr(date, DEFAULT_DATE_DELIMITER);
 	}
 
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
-	 * @param delimiter 시간 구분자
 	 * @param time 시간
+	 * @param delimiter 시간 구분자
 	 * @return 시간 문자열
 	 */
-	public static String getTimeStr(String delimiter, Calendar time) throws Exception {
+	public static String getTimeStr(Calendar time, String delimiter) throws Exception {
 		
 		if(time == null) {
 			throw new NullPointerException("time is null");
@@ -138,70 +138,168 @@ public class DateUtil {
 	}
 	
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
-	 * @param delimiter 시간 구분자
 	 * @param time 시간
+	 * @param delimiter 시간 구분자
 	 * @return 시간 문자열
 	 */
-	public static String getTimeStr(String delimiter, Date time) throws Exception {
+	public static String getTimeStr(Date time, String delimiter) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(time);
 		
-		return getTimeStr(delimiter, cal);
+		return getTimeStr(cal, delimiter);
 	}
 	
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) delimiter : ":"<br>
 	 *     -> "16:30:45"
 	 * 
-	 * @param delimiter 시간 구분자
 	 * @param time 시간
+	 * @param delimiter 시간 구분자
 	 * @return 시간 문자열
 	 */
-	public static String getTimeStr(String delimiter, long time) throws Exception {
+	public static String getTimeStr(long time, String delimiter) throws Exception {
 		
 		Calendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(time);
 		
-		return getTimeStr(delimiter, cal);
+		return getTimeStr(cal, delimiter);
 	}
 
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(Calendar time) throws Exception {
-		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
+		return getTimeStr(time, DEFAULT_TIME_DELIMITER);
 	}
 
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(Date time) throws Exception {
-		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
+		return getTimeStr(time, DEFAULT_TIME_DELIMITER);
 	}
 
 	/**
-	 * 날짜 문자열 반환<br>
+	 * 시간 문자열 반환<br>
 	 * ex) "16:30:45"
 	 * 
 	 * @param time 시간
 	 * @return 시간 문자열
 	 */
 	public static String getTimeStr(long time) throws Exception {
-		return getTimeStr(DEFAULT_TIME_DELIMITER, time);
+		return getTimeStr(time, DEFAULT_TIME_DELIMITER);
+	}
+	
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex)<br>
+	 * dateDelimiter: "-"<br>
+	 * timeDelimiter: ":"<br>
+	 * -> "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @param dateDelimiter 날짜 구분자
+	 * @param timeDelimiter 시간 구분자
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(Calendar dateTime, String dateDelimiter, String timeDelimiter) throws Exception {
+		
+		// 날짜 문자열 생성
+		String dateStr = getDateStr(dateTime, dateDelimiter);
+		// 시간 문자열 생성
+		String timeStr = getTimeStr(dateTime, timeDelimiter);
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return StringUtil.join(" ", dateStr, timeStr);
+	}
+
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex)<br>
+	 * dateDelimiter: "-"<br>
+	 * timeDelimiter: ":"<br>
+	 * -> "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @param dateDelimiter 날짜 구분자
+	 * @param timeDelimiter 시간 구분자
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(Date dateTime, String dateDelimiter, String timeDelimiter) throws Exception {
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return getDateTimeStr(toCalendar(dateTime), dateDelimiter, timeDelimiter);
+	}
+	
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex)<br>
+	 * dateDelimiter: "-"<br>
+	 * timeDelimiter: ":"<br>
+	 * -> "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @param dateDelimiter 날짜 구분자
+	 * @param timeDelimiter 시간 구분자
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(long dateTime, String dateDelimiter, String timeDelimiter) throws Exception {
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return getDateTimeStr(toCalendar(dateTime), dateDelimiter, timeDelimiter);
+	}
+	
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex) "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(Calendar dateTime) throws Exception {
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return getDateTimeStr(dateTime, DEFAULT_DATE_DELIMITER, DEFAULT_TIME_DELIMITER);
+	}
+	
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex) "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(Date dateTime) throws Exception {
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return getDateTimeStr(dateTime, DEFAULT_DATE_DELIMITER, DEFAULT_TIME_DELIMITER);
+	}
+
+	/**
+	 * 날짜-시간 문자열 반환<br>
+	 * ex) "2023-03-25 16:30:45"
+	 * 
+	 * @param dateTime 날짜시간
+	 * @return 날짜-시간 문자열 
+	 */
+	public static String getDateTimeStr(long dateTime) throws Exception {
+		
+		// 날짜-시간 문자열 생성 후 반환
+		return getDateTimeStr(dateTime, DEFAULT_DATE_DELIMITER, DEFAULT_TIME_DELIMITER);
 	}
 	
 	/**
