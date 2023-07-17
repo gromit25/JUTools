@@ -223,5 +223,27 @@ public class MathUtil {
 		DecimalFormat df = new DecimalFormat("###,###.###");
 		return df.format(value);
 	}
+	
+	/**
+	 * 주어진 숫자가 양,음,0 부호 반환<br>
+	 * 양수 이면, 1<br>
+	 * 음수 이면, -1<br>
+	 * 0 이면, 0
+	 * 
+	 * @param value 검사할 숫자
+	 * @return 부호
+	 */
+	public static int sign(double value) {
+		
+		int sign = 0;
+		
+		if(value > 0) {
+			sign = 1;
+		} else if(value < 0) {
+			sign = -1;
+		}
+		
+		return sign;
+	}
 
 }
