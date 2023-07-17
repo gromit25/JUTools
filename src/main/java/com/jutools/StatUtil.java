@@ -1,7 +1,9 @@
 package com.jutools;
 
+import com.jutools.stat.nelsonrule.NelsonRule;
+
 /**
- * 
+ * 통계 유틸리티 클래스
  * 
  * @author jmsohn
  */
@@ -37,6 +39,22 @@ public class StatUtil {
 		
 		double mean = sum/count;
 		return (squaredSum/count) - (mean*mean);
+	}
+	
+	/**
+	 * 넬슨룰 검사 객체 생성
+	 * 
+	 * @param mean 평균
+	 * @param std 표준편차
+	 * @param rules 검사할 넬슨룰 목록 비트맵
+	 * @return
+	 */
+	public static NelsonRule createNelsonRuleChecker(double mean, double std, int rules) throws Exception {
+		return NelsonRule.builder()
+				.mean(10)
+				.std(1)
+				.rules(rules)
+				.build();
 	}
 	
 }

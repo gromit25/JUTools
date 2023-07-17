@@ -66,7 +66,7 @@ public class NelsonRule {
 	 * 
 	 * @param mean 평균
 	 * @param std 표준 편차
-	 * @param rules 넬슨룰 목록 비트맵
+	 * @param rules 검사할 넬슨룰 목록 비트맵
 	 */
 	@Builder
 	private NelsonRule(double mean, double std, int rules) throws Exception {
