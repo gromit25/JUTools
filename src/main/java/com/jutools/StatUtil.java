@@ -10,7 +10,7 @@ import com.jutools.stat.nelsonrule.NelsonRule;
 public class StatUtil {
 	
 	/**
-	 * 표준 편차 계산 후 반환
+	 * 표준 편차 계산 후 반환<br>
 	 * 만일) count 가 0 이하 이면 0을 반환
 	 * 
 	 * @param sum 합계
@@ -23,7 +23,7 @@ public class StatUtil {
 	}
 	
 	/**
-	 * 분산 계산 후 반환
+	 * 분산 계산 후 반환<br>
 	 * 만일) count 가 0 이하 이면 0을 반환
 	 * 
 	 * @param sum 합계
