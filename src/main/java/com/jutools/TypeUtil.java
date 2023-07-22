@@ -1,5 +1,6 @@
 package com.jutools;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.function.Function;
@@ -150,6 +151,43 @@ public class TypeUtil {
 		
 		return floatArray;
 		
+	}
+	
+	/**
+	 * List 형 객체를 배열 형태로 변환하여 반환<br>
+	 * List 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
+	 * 
+	 * @param array 변환할 List 객체
+	 * @param type List 객체 요소의 타입
+	 * @return 변환된 배열 객체
+	 */
+	public static <T> T[] toArray(List<T> arrayList, Class<T> type) throws Exception {
+		
+		// 리스트의 요소 타입이 정의 되지 않은 경우 예외 발생
+		if(type == null) {
+			throw new Exception("type is null.");
+		}
+		
+		// 생성할 배열 크기 변수
+		int arrayLength = 0;
+		
+		// 리스트가 null일 경우, 빈 배열 생성
+		if(arrayList != null) {
+			arrayLength = arrayList.size();
+		}
+		
+		// 배열 객체 생성
+		// new T[];는 안됨
+		@SuppressWarnings("unchecked")
+		T[] array = (T[])Array.newInstance(type, arrayLength);
+		
+		// 배열 복사
+		for(int index = 0; index < arrayLength; index++) {
+			array[index] = arrayList.get(index);
+		}
+		
+		// 배열 반환
+		return array;
 	}
 	
 	/**
