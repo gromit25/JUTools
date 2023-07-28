@@ -1602,4 +1602,56 @@ public class StringUtil {
         
 		return vars;
     }
+	
+	/**
+	 * target 문자열 내에 패턴(pattern)이 나타난 곳까지의 문자열과<br>
+	 * 패턴이 나타난 이후의 문자열을 분리하여 반환<br>
+	 * 만일, target 문자열 내에 패턴이 나타나지 않으면 target 문자열만 반환함<br>
+	 * <pre>
+	 * ex) target: "test1 > test2> test3",
+	 *     pattern: "\\s>\\s" 이면
+	 *     결과: {"test1", "test2> test3"}
+	 *     
+	 *     taget: "test1 > test2"
+	 *     pattern: "\\sA\\s" 이면
+	 *     결과: {"test1 > test2"}
+	 * </pre>
+	 * 
+	 * @param target 대상 문자열
+	 * @param pattern 나눌 패턴
+	 * @return 분리된 문자열 배열
+	 */
+	public static String[] splitFirst(String target, String pattern) throws Exception {
+		
+		// 입력값 검증
+		if(target == null) {
+			throw new NullPointerException("target is null.");
+		}
+		
+		if(pattern == null) {
+			throw new NullPointerException("pattern is null");
+		}
+		
+		// target 문자열에 패턴 적용
+		Pattern patternP = Pattern.compile(pattern);
+		Matcher patternM = patternP.matcher(target);
+		
+		// 만일 패턴을 찾지 못했을 경우,
+		// target 문자열을 배열에 담아 반환
+		if(patternM.find() == false) {
+			return new String[] {target};
+		}
+		
+		// 패턴이 target 문자열 내에 있는 경우
+		// target 문자열에서 처음부터 패턴이 나타나는 곳까지 문자열과
+		// 패턴이 나타난 이후 부터 문자열의 끝까지 나눈 문자열을 반환함
+		int start = patternM.start();
+		int end = patternM.end();
+		
+		return new String[] {
+				target.substring(0, start),
+				target.substring(end, target.length())
+			};
+		
+	} // End of splitFirst
 }
