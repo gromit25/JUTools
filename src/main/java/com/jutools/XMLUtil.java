@@ -28,6 +28,11 @@ public class XMLUtil {
 	 * @return root node 객체
 	 */
 	public static XMLNode getRootNode(String fileName) throws Exception {
+		
+		if(StringUtil.isEmpty(fileName) == true) {
+			throw new IllegalArgumentException("file name is empty.");
+		}
+		
 		return getRootNode(new File(fileName));
 	}
 	
@@ -38,6 +43,15 @@ public class XMLUtil {
 	 * @return root node 객체
 	 */
 	public static XMLNode getRootNode(File file) throws Exception {
+		
+		if(file == null) {
+			throw new NullPointerException("file is null.");
+		}
+		
+		if(file.canRead() == false) {
+			throw new Exception("can't read file:" + file.getAbsolutePath());
+		}
+		
 		return getRootNode(new FileInputStream(file));
 	}
 	
@@ -48,6 +62,10 @@ public class XMLUtil {
 	 * @return root node 객체
 	 */
 	public static XMLNode getRootNode(InputStream is) throws Exception {
+		
+		if(is == null) {
+			throw new NullPointerException("input stream is null.");
+		}
 		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -63,6 +81,10 @@ public class XMLUtil {
 	 * @return root node 객체
 	 */
 	public static XMLNode getRootNode(Document doc) throws Exception {
+		
+		if(doc == null) {
+			throw new NullPointerException("document obj is null.");
+		}
 		
 		Element root = doc.getDocumentElement();
 		return new XMLNode(root);
