@@ -3,13 +3,20 @@ package com.jutools.xml;
 import java.util.Iterator;
 import java.util.Vector;
 
+/**
+ * XML 노드 목록 클래스
+ * 
+ * @author jmsohn
+ */
 public class XMLArray implements Iterable<XMLNode> {
 	
+	/** XML 노드 목록 객체 */
 	private Vector<XMLNode> nodes;
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param nodes
+	 * @param nodes 노드 배열 객체
 	 */
 	XMLArray(XMLNode[] nodes) throws Exception {
 		
@@ -25,7 +32,7 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
-	 * 
+	 * 생성자
 	 */
 	XMLArray() throws Exception {
 		this(new XMLNode[] {});
@@ -37,9 +44,10 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
+	 * XML 목록에 조회 query 결과를 반환
 	 * 
-	 * @param query
-	 * @return
+	 * @param query 조회 query
+	 * @return query 결과 반환
 	 */
 	public XMLArray select(String query) throws Exception {
 		
@@ -53,35 +61,37 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
+	 * XML 목록에 XML 노드를 하나 추가
 	 * 
-	 * 
-	 * @param node
+	 * @param node 추가할 XML 노드
 	 */
 	void add(XMLNode node) throws Exception {
 		this.nodes.add(node);
 	}
 	
 	/**
+	 * 현재 XML목록에 다른 XML 목록을 추가
 	 * 
-	 * 
-	 * @param nodes
+	 * @param nodes 추가할 XML 목록
 	 */
 	void addAll(XMLArray nodes) throws Exception {
 		this.nodes.addAll(nodes.nodes);
 	}
 	
 	/**
+	 * XML 목록에서 특정 인덱스의 XML 노드를 반환 
 	 * 
-	 * @param index
-	 * @return
+	 * @param index 가져올 인덱스
+	 * @return XML 노드 객체
 	 */
 	public XMLNode get(int index) throws Exception {
 		return this.nodes.get(index);
 	}
 	
 	/**
+	 * XML 노드 목록의 첫번째 XML 노드를 반환 
 	 * 
-	 * @return
+	 * @return 첫번째 XML 노드
 	 */
 	public XMLNode getFirst() {
 		if(this.nodes == null || this.nodes.size() < 1) {
@@ -92,8 +102,9 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
+	 * XML 노드 목록 크기를 반환
 	 * 
-	 * @return
+	 * @return XML 노드 모록 크기
 	 */
 	public int size() {
 		if(this.nodes == null) {

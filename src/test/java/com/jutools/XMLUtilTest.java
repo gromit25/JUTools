@@ -2,12 +2,7 @@ package com.jutools;
 
 import java.io.ByteArrayInputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
@@ -39,13 +34,8 @@ public class XMLUtilTest {
 				+ "  </book>\r\n"
 				+ "</bookstore>";
 		
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(new ByteArrayInputStream(xml.getBytes()));
-		Element root = doc.getDocumentElement();
-		
-		XMLNode rootNode = new XMLNode(root);
-		XMLArray books = rootNode.select("book(category='종류1')");
+		XMLArray books = XMLUtil.select(
+				new ByteArrayInputStream(xml.getBytes()), "book(category='종류1')");
 		
 		for(XMLNode book: books) {
 			
