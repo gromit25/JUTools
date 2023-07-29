@@ -14,19 +14,19 @@ public class XMLUtilTest {
 		
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
 				+ "<bookstore>\r\n"
-				+ "  <book category=\"종류1\">\r\n"
+				+ "  <book category=\"역사\">\r\n"
 				+ "    <title lang=\"en\">Book 1</title>\r\n"
 				+ "    <author>Author 1</author>\r\n"
 				+ "    <year>2010</year>\r\n"
 				+ "    <price>29.99</price>\r\n"
 				+ "  </book>\r\n"
-				+ "  <book category=\"종류1\">\r\n"
+				+ "  <book category=\"역사\">\r\n"
 				+ "    <title lang=\"kr\">Book 2</title>\r\n"
 				+ "    <author>Author 2</author>\r\n"
 				+ "    <year>2015</year>\r\n"
 				+ "    <price>39.95</price>\r\n"
 				+ "  </book>\r\n"
-				+ "  <book category=\"종류2\">\r\n"
+				+ "  <book category=\"수학\">\r\n"
 				+ "    <title lang=\"en\">Book 3</title>\r\n"
 				+ "    <author>Author 2</author>\r\n"
 				+ "    <year>2015</year>\r\n"
@@ -35,7 +35,7 @@ public class XMLUtilTest {
 				+ "</bookstore>";
 		
 		XMLArray books = XMLUtil.select(
-				new ByteArrayInputStream(xml.getBytes()), "book(category='종류1')");
+				new ByteArrayInputStream(xml.getBytes()), "book(category='역사')");
 		
 		for(XMLNode book: books) {
 			

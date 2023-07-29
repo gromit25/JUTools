@@ -142,7 +142,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(Node node, String query) throws Exception {
-		return select(new XMLNode(node), query);
+		return (new XMLNode(node)).select(query);
 	}
 	
 	/**
