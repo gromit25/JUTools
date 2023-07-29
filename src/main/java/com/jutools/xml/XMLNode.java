@@ -384,10 +384,10 @@ public class XMLNode {
 					}
 				}
 				
-				// 추출한 쿼리로 
+				// 추출한 쿼리로 AttrMatcher를 만들고 목록에 추가함
 				attrMatchers.add(new AttrMatcher(attr, value, matchType));
 				
-				//
+				// 다음 속성 쿼리 검색을 위해, 현재 속성 쿼리의 마지막으로 이동
 				index = attrM.end();
 			}
 
