@@ -60,7 +60,7 @@ public class XMLUtilTest {
 		
 		XMLArray books = XMLUtil
 				.getRootNode(new ByteArrayInputStream(xml.getBytes()))
-				.select("book(cate*ry='역사') > title(#text=w'삼국*')")
+				.select("book > title(#text=w'삼국*')")
 				.getParents();
 		
 		for(XMLNode book: books) {
