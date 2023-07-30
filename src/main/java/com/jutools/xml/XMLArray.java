@@ -61,6 +61,27 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
+	 * 부모 XML 노드 객체 목록 반환
+	 * 
+	 * @return 부모 XML 노드 객체 목록
+	 */
+	public XMLArray getParents() throws Exception {
+		
+		XMLArray parents = new XMLArray();
+		
+		for(XMLNode node: this.nodes) {
+			
+			XMLNode parent = node.getParent();
+			
+			if(node.getParent() != null) {
+				parents.add(parent);
+			}
+		}
+		
+		return parents;
+	}
+	
+	/**
 	 * XML 목록에 XML 노드를 하나 추가
 	 * 
 	 * @param node 추가할 XML 노드

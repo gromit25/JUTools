@@ -98,6 +98,23 @@ public class XMLNode {
 	}
 	
 	/**
+	 * 현재 노드의 하위 노드를 쿼리로 조회 후 첫번째 결과 반환
+	 * 
+	 * @param query 조회 쿼리
+	 * @return 조회된 XML 노드
+	 */
+	public XMLNode selectFirst(String query) throws Exception{
+		
+		XMLArray nodes = this.select(query);
+		
+		if(nodes.size() >= 1) {
+			return nodes.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * 노드의 테그명 반환
 	 * 
 	 * @return 노드의 테그명
@@ -154,7 +171,14 @@ public class XMLNode {
 	 * @return 상위 XML 노드
 	 */
 	public XMLNode getParent() throws Exception {
-		return new XMLNode(this.node.getParentNode());
+		
+		Node parent = this.node.getParentNode();
+		
+		if(parent != null && parent.getNodeType() == Node.ELEMENT_NODE) {
+			return new XMLNode(parent);
+		} else {
+			return null;
+		}
 	}
 	
 	/**
@@ -274,7 +298,14 @@ public class XMLNode {
 		 * @author jmsohn
 		 */
 		enum MatchType {
-			
+
+			/** 검사하지 않음, 항상 true를 반환 */
+			NONE {
+				@Override
+				boolean match(String target, String pattern) throws Exception {
+					return true;
+				}
+			},
 			/** 모든 문자열 일치 */
 			EQUAL {
 				@Override
@@ -310,13 +341,11 @@ public class XMLNode {
 		
 		/** 속성 쿼리의 패턴 */
 		private static String ATTR_P = "[a-zA-Z_\\*\\?][a-zA-Z0-9_\\-\\*\\?]*"
-				+ "\\s*\\=\\s*"
-				+ "[wp]?\\'[^\\']*\\'";
+				+ "(\\s*\\=\\s*[wp]?\\'[^\\']*\\')?";
 		
 		/** 속성 쿼리의 패턴 - 이름 설정 */
 		private static String ATTR_P_NAMED = "(?<attr>[a-zA-Z_\\*\\?][a-zA-Z0-9_\\-\\*\\?]*)"
-				+ "\\s*\\=\\s*"
-				+ "(?<matchtype>[wp])?\\'(?<value>[^\\']*)\\'";
+				+ "(\\s*\\=\\s*(?<matchtype>[wp])?\\'(?<value>[^\\']*)\\')?";
 		
 		/** 속성명 쿼리 */
 		private String attrQuery;
@@ -374,13 +403,17 @@ public class XMLNode {
 				
 				// 쿼리에서 검사 방식을 추출
 				String matchTypeStr = attrM.group("matchtype");
-				MatchType matchType = MatchType.EQUAL;
+				MatchType matchType = MatchType.NONE;
 				
 				if(matchTypeStr != null) {
-					if(matchTypeStr == "w") {
+					if(matchTypeStr.equals("w") == true) {
 						matchType = MatchType.WILDCARD;
-					} else if(matchTypeStr == "p") {
+					} else if(matchTypeStr.equals("p") == true) {
 						matchType = MatchType.REGEXP;
+					}
+				} else {
+					if(value != null) {
+						matchType = MatchType.EQUAL;
 					}
 				}
 				
