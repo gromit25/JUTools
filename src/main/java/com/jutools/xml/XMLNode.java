@@ -340,12 +340,15 @@ public class XMLNode {
 		}
 		
 		/** 속성 쿼리의 패턴 */
-		private static String ATTR_P = "[a-zA-Z_\\*\\?][a-zA-Z0-9_\\-\\*\\?]*"
+		private static String ATTR_P = "[a-zA-Z_\\*\\?\\#][a-zA-Z0-9_\\-\\*\\?]*"
 				+ "(\\s*\\=\\s*[wp]?\\'[^\\']*\\')?";
 		
 		/** 속성 쿼리의 패턴 - 이름 설정 */
-		private static String ATTR_P_NAMED = "(?<attr>[a-zA-Z_\\*\\?][a-zA-Z0-9_\\-\\*\\?]*)"
+		private static String ATTR_P_NAMED = "(?<attr>[a-zA-Z_\\*\\?\\#][a-zA-Z0-9_\\-\\*\\?]*)"
 				+ "(\\s*\\=\\s*(?<matchtype>[wp])?\\'(?<value>[^\\']*)\\')?";
+		
+		/** 테그의 텍스트 속성 명 */
+		private static String TEXT_ATTR_NAME = "#text";
 		
 		/** 속성명 쿼리 */
 		private String attrQuery;
@@ -417,6 +420,14 @@ public class XMLNode {
 					}
 				}
 				
+				// 텍스트 속성에 대한 검사일 경우, 값이 있어야 함
+				// ex) #text = '홍길동'(O), #text (X)
+				if(TEXT_ATTR_NAME.equals(attr) == true) {
+					if(value == null) {
+						throw new Exception("#text attribute must have value.");
+					}
+				}
+				
 				// 추출한 쿼리로 AttrMatcher를 만들고 목록에 추가함
 				attrMatchers.add(new AttrMatcher(attr, value, matchType));
 				
@@ -441,34 +452,42 @@ public class XMLNode {
 				throw new NullPointerException("node is null.");
 			}
 			
-			// 노드의 속성 목록을 가져옴
-			NamedNodeMap attrMap = node.getAttributes();
+			//
+			if(this.attrQuery.equals(TEXT_ATTR_NAME) == true) {
+				
+				return this.valueMatchType.match(node.getTextContent(), this.valueQuery);
+				
+			} else {
 			
-			for(int index = 0; index < attrMap.getLength(); index++) {
+				// 노드의 속성 목록을 가져옴
+				NamedNodeMap attrMap = node.getAttributes();
 				
-				// 속성을 가져옴
-				Node attrNode = attrMap.item(index);
-				if (attrNode.getNodeType() != Node.ATTRIBUTE_NODE) {
-					continue;
+				for(int index = 0; index < attrMap.getLength(); index++) {
+					
+					// 속성을 가져옴
+					Node attrNode = attrMap.item(index);
+					if (attrNode.getNodeType() != Node.ATTRIBUTE_NODE) {
+						continue;
+					}
+					
+					// 속성의 이름과 값을 가져옴
+					String attrName = attrNode.getNodeName();
+					String attrValue = attrNode.getNodeValue();
+					
+					// 속성명 일치 여부 검사
+					boolean isAttrNameMatch = StringUtil.matchWildcard(attrName, this.attrQuery);
+					// 속성값 일치 여부 검사
+					boolean isAttrValueMatch = this.valueMatchType.match(attrValue, this.valueQuery);
+					
+					// 속정명과 속성값이 일치할 경우 true 반환
+					if(isAttrNameMatch == true && isAttrValueMatch == true) {
+						return true;
+					}
 				}
 				
-				// 속성의 이름과 값을 가져옴
-				String attrName = attrNode.getNodeName();
-				String attrValue = attrNode.getNodeValue();
-				
-				// 속성명 일치 여부 검사
-				boolean isAttrNameMatch = StringUtil.matchWildcard(attrName, this.attrQuery);
-				// 속성값 일치 여부 검사
-				boolean isAttrValueMatch = this.valueMatchType.match(attrValue, this.valueQuery);
-				
-				// 속정명과 속성값이 일치할 경우 true 반환
-				if(isAttrNameMatch == true && isAttrValueMatch == true) {
-					return true;
-				}
+				// match 되는 것이 없으면 false
+				return false;
 			}
-			
-			// match 되는 것이 없으면 false
-			return false;
 		}
 		
 	} // End of AttrMatcher
