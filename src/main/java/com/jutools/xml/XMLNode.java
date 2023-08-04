@@ -310,6 +310,7 @@ public class XMLNode {
 			EQUAL {
 				@Override
 				boolean match(String target, String pattern) throws Exception {
+					pattern = StringUtil.escape(pattern);
 					return pattern.equals(target);
 				}
 			},
