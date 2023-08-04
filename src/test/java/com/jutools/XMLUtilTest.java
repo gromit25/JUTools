@@ -52,7 +52,7 @@ public class XMLUtilTest {
 				+ "  </book>\r\n"
 				+ "  <book category=\"역사\">\r\n"
 				+ "    <title lang=\"kr\">삼국유사</title>\r\n"
-				+ "    <author>일연</author>\r\n"
+				+ "    <author>일'연</author>\r\n"
 				+ "    <year>1310</year>\r\n"
 				+ "    <price>39.95</price>\r\n"
 				+ "  </book>\r\n"
@@ -60,7 +60,7 @@ public class XMLUtilTest {
 		
 		XMLArray books = XMLUtil
 				.getRootNode(new ByteArrayInputStream(xml.getBytes()))
-				.select("book > title(#text=w'삼국*')")
+				.select("book > author(#text=w'일\\'연')")
 				.getParents();
 		
 		for(XMLNode book: books) {

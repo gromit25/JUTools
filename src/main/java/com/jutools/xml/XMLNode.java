@@ -341,11 +341,11 @@ public class XMLNode {
 		
 		/** 속성 쿼리의 패턴 */
 		private static String ATTR_P = "[a-zA-Z_\\*\\?\\#][a-zA-Z0-9_\\-\\*\\?]*"
-				+ "(\\s*\\=\\s*[wp]?\\'[^\\']*\\')?";
+				+ "(\\s*\\=\\s*[wp]?'[^'\\\\]*(\\\\.[^'\\\\]*)*')?";
 		
 		/** 속성 쿼리의 패턴 - 이름 설정 */
 		private static String ATTR_P_NAMED = "(?<attr>[a-zA-Z_\\*\\?\\#][a-zA-Z0-9_\\-\\*\\?]*)"
-				+ "(\\s*\\=\\s*(?<matchtype>[wp])?\\'(?<value>[^\\']*)\\')?";
+				+ "(\\s*\\=\\s*(?<matchtype>[wp])?'(?<value>[^'\\\\]*(\\\\.[^'\\\\]*)*)')?";
 		
 		/** 테그의 텍스트 속성 명 */
 		private static String TEXT_ATTR_NAME = "#text";
