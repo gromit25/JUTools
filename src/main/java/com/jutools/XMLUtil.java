@@ -3,7 +3,9 @@ package com.jutools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -53,6 +55,36 @@ public class XMLUtil {
 		}
 		
 		return getRootNode(new FileInputStream(file));
+	}
+	
+	/**
+	 * HTTPS로 가져온 XML 파일에서 root node를 읽어옴
+	 * 
+	 * @param conn HTTPS 연결
+	 * @return root node 객체
+	 */
+	public static XMLNode getRootNode(HttpsURLConnection conn) throws Exception {
+		return getRootNode((HttpURLConnection)conn);
+	}
+	
+	/**
+	 * HTTP로 가져온 XML 파일에서 root node를 읽어옴
+	 * 
+	 * @param conn HTTP 연결
+	 * @return root node 객체
+	 */
+	public static XMLNode getRootNode(HttpURLConnection conn) throws Exception {
+		
+		if(conn == null) {
+			throw new NullPointerException("http connection is null");
+		}
+		
+		int responseCode = conn.getResponseCode();
+		if(responseCode < 200 || responseCode > 299) {
+			throw new Exception("http response code is not valid: " + responseCode);
+		}
+		
+		return getRootNode(conn.getInputStream());
 	}
 	
 	/**
@@ -110,6 +142,28 @@ public class XMLUtil {
 	 */
 	public static XMLArray select(File file, String query) throws Exception {
 		return getRootNode(file).select(query);
+	}
+	
+	/**
+	 * HTTPS로 가져온 XML에서 query 조회하여 결과 반환
+	 * 
+	 * @param conn HTTPS 연결
+	 * @param query 조회문
+	 * @return query 조회 결과
+	 */
+	public static XMLArray select(HttpsURLConnection conn, String query) throws Exception {
+		return getRootNode(conn).select(query);
+	}
+	
+	/**
+	 * HTTP로 가져온 XML에서 query 조회하여 결과 반환
+	 * 
+	 * @param conn HTTP 연결
+	 * @param query 조회문
+	 * @return query 조회 결과
+	 */
+	public static XMLArray select(HttpURLConnection conn, String query) throws Exception {
+		return getRootNode(conn).select(query);
 	}
 	
 	/**
