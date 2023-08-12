@@ -3,6 +3,7 @@ package com.jutools.stat;
 import com.jutools.StatUtil;
 
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 통계량(statistic) 클래스
@@ -17,15 +18,26 @@ public class Statistic {
 	/** 제곱합(표준편차 계산용) */
 	private double squaredSum;
 	/** 데이터의 개수 */
+	@Getter
 	private int count;
+	/** 최소 값 */
+	@Getter
+	private double min;
+	/** 최대 값 */
+	@Getter
+	private double max;
 	
 	/**
 	 * 생성자
 	 */
 	public Statistic() {
+		
 		this.sum = 0.0;
 		this.squaredSum = 0.0;
 		this.count = 0;
+		
+		this.min = Double.MAX_VALUE;
+		this.max = Double.MIN_VALUE;
 	}
 	
 	/**
@@ -39,9 +51,18 @@ public class Statistic {
 		double squaredValue = value * value;
 		
 		synchronized(this) {
+			
 			this.sum += value;
 			this.squaredSum += squaredValue;
 			this.count++;
+			
+			if(this.min > value) {
+				this.min = value;
+			}
+			
+			if(this.max < value) {
+				this.max = value;
+			}
 		}
 	}
 	
