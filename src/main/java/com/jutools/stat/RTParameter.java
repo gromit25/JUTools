@@ -7,7 +7,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public class StatisticRT {
+public class RTParameter {
 	
 	/** 데이터의 개수 */
 	@Getter
@@ -46,7 +46,7 @@ public class StatisticRT {
 	/**
 	 * 생성자
 	 */
-	public StatisticRT() {
+	public RTParameter() {
 		this.reset();
 	}
 

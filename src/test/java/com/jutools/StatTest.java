@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.jutools.stat.StatisticRT;
+import com.jutools.stat.RTParameter;
 
 public class StatTest {
 
@@ -13,7 +13,7 @@ public class StatTest {
 		
 		double[] values = {10, 12, 14, 18, 20, 22, 24, 25, 28, 30};
 		
-		StatisticRT stat = new StatisticRT();
+		RTParameter stat = new RTParameter();
 		for(double value: values) {
 			stat.add(value);
 		}
