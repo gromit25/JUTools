@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import org.junit.Test;
 
 import com.jutools.xml.XMLArray;
-import com.jutools.xml.XMLNode;
 
 public class XMLUtilTest {
 	

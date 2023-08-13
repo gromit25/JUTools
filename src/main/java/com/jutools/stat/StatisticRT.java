@@ -1,25 +1,41 @@
 package com.jutools.stat;
 
-import com.jutools.StatUtil;
-
-import lombok.Data;
 import lombok.Getter;
 
 /**
- * 통계량(statistic) 클래스
+ * 실시간 통계량(statistic) 계산 클래스
  * 
  * @author jmsohn
  */
-@Data
 public class StatisticRT {
 	
-	/** 합계 */
-	private double sum;
-	/** 제곱합(표준편차 계산용) */
-	private double squaredSum;
 	/** 데이터의 개수 */
 	@Getter
 	private int count;
+	
+	/** 합계 */
+	@Getter
+	private double sum;
+	/** 제곱합(표준편차 계산용) */
+	private double squaredSum;
+	/** 세제곱 합(왜도 계산용) */
+	private double cubedSum;
+	/** 네제곱 합(첨도 계산용) */
+	private double fourthPoweredSum;
+	
+	/** 평균 값 */
+	@Getter
+	private double mean;
+	/** 분산 */
+	@Getter
+	private double variance;
+	/** 왜도 */
+	@Getter
+	private double skewness;
+	/** 첨도 */
+	@Getter
+	private double kurtosis;
+	
 	/** 최소 값 */
 	@Getter
 	private double min;
@@ -31,10 +47,25 @@ public class StatisticRT {
 	 * 생성자
 	 */
 	public StatisticRT() {
+		this.reset();
+	}
+
+	/**
+	 * 
+	 */
+	public void reset() {
+
+		this.count = 0;
 		
 		this.sum = 0.0;
 		this.squaredSum = 0.0;
-		this.count = 0;
+		this.cubedSum = 0.0;
+		this.fourthPoweredSum = 0.0;
+		
+		this.mean = 0.0;
+		this.variance = 0.0;
+		this.skewness = 0.0;
+		this.kurtosis = 0.0;
 		
 		this.min = Double.MAX_VALUE;
 		this.max = Double.MIN_VALUE;
@@ -46,42 +77,60 @@ public class StatisticRT {
 	 * @param value 추가할 데이터
 	 * @param squaredValue 추가할 데이터의 제곱값
 	 */
-	void add(double value) {
+	public synchronized void add(double value) {
 		
 		double squaredValue = value * value;
+		double cubedValue = squaredValue * value;
+		double fourthPoweredValue = cubedValue * value;
 		
-		synchronized(this) {
-			
-			this.sum += value;
-			this.squaredSum += squaredValue;
-			this.count++;
-			
-			if(this.min > value) {
-				this.min = value;
-			}
-			
-			if(this.max < value) {
-				this.max = value;
-			}
+		this.count++;
+		
+		//----
+		this.sum += value;
+		this.squaredSum += squaredValue;
+		this.cubedSum += cubedValue;
+		this.fourthPoweredSum += fourthPoweredValue;
+		
+		//----
+		this.mean = this.sum/this.count;
+		double squaredMean = this.mean * this.mean;
+		double cubedMean = squaredMean * this.mean;
+		double fourthPoweredMean = cubedMean * this.mean;
+		
+		this.variance = (this.squaredSum/this.count) - squaredMean;
+		this.skewness =
+				(
+					(this.cubedSum/this.count)
+					- cubedMean
+					- (3 * this.mean * this.variance)
+				)
+				/ Math.pow(this.variance, 3/2);
+		this.kurtosis =
+				(
+					(this.fourthPoweredSum/this.count)
+					- (4 * this.mean * this.cubedSum / this.count)
+					+ (6 * squaredMean * this.variance)
+					+ (3 * fourthPoweredMean)
+				)
+				/ (this.variance * this.variance);
+		
+		//----
+		if(this.min > value) {
+			this.min = value;
+		}
+		
+		if(this.max < value) {
+			this.max = value;
 		}
 	}
 	
 	/**
-	 * 실시간 표준 편차 반환
+	 * 표준 편차 반환
 	 * 
-	 * @return 실시간 표준 편차
+	 * @return 표준 편차
 	 */
-	public double std() {
-		return StatUtil.std(this.sum, this.squaredSum, this.count); 
-	}
-	
-	/**
-	 * 실시간 분산 값 반환
-	 * 
-	 * @return 실시간 분산 값
-	 */
-	public double variance() {
-		return StatUtil.variance(this.sum, this.squaredSum, this.count);
+	public double getStd() {
+		return Math.sqrt(this.variance);
 	}
 	
 	/**
@@ -94,9 +143,13 @@ public class StatisticRT {
 		
 		builder
 			.append("{").append("\r\n")
-			.append("\"sum\":").append(this.sum).append("\r\n")
-			.append("\"squaredSum\":").append(this.squaredSum).append("\r\n")
 			.append("\"count\":").append(this.count).append("\r\n")
+			.append("\"sum\":").append(this.sum).append("\r\n")
+			.append("\"mean\":").append(this.mean).append("\r\n")
+			.append("\"variance\":").append(this.variance).append("\r\n")
+			.append("\"std\":").append(this.getStd()).append("\r\n")
+			.append("\"skewness\":").append(this.skewness).append("\r\n")
+			.append("\"kurtosis\":").append(this.kurtosis).append("\r\n")
 			.append("}");
 		
 		return builder.toString();
