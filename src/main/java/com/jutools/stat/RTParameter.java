@@ -3,7 +3,7 @@ package com.jutools.stat;
 import lombok.Getter;
 
 /**
- * 실시간 통계량(statistic) 계산 클래스
+ * 실시간 모수(Parameter) 계산 클래스
  * 
  * @author jmsohn
  */
