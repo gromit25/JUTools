@@ -11,7 +11,7 @@ import lombok.Getter;
  * @author jmsohn
  */
 @Data
-public class Statistic {
+public class StatisticRT {
 	
 	/** 합계 */
 	private double sum;
@@ -30,7 +30,7 @@ public class Statistic {
 	/**
 	 * 생성자
 	 */
-	public Statistic() {
+	public StatisticRT() {
 		
 		this.sum = 0.0;
 		this.squaredSum = 0.0;
