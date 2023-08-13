@@ -51,7 +51,7 @@ public class RTParameter {
 	}
 
 	/**
-	 * 
+	 * 모수 값 초기화
 	 */
 	public void reset() {
 
@@ -79,19 +79,21 @@ public class RTParameter {
 	 */
 	public synchronized void add(double value) {
 		
+		//----
 		double squaredValue = value * value;
 		double cubedValue = squaredValue * value;
 		double fourthPoweredValue = cubedValue * value;
 		
+		//---- 데이터 초기화
 		this.count++;
 		
-		//----
+		//---- 모수 계산을 위한 값 설정
 		this.sum += value;
 		this.squaredSum += squaredValue;
 		this.cubedSum += cubedValue;
 		this.fourthPoweredSum += fourthPoweredValue;
 		
-		//----
+		//---- 모수 계산 수행
 		this.mean = this.sum/this.count;
 		double squaredMean = this.mean * this.mean;
 		double cubedMean = squaredMean * this.mean;
@@ -114,7 +116,7 @@ public class RTParameter {
 				)
 				/ (this.variance * this.variance);
 		
-		//----
+		//---- 최대값, 최소값 계산
 		if(this.min > value) {
 			this.min = value;
 		}
