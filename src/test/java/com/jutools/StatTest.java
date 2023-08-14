@@ -38,15 +38,13 @@ public class StatTest {
 			stat.add(value);
 		}
 		
-		System.out.println(stat.toString());
-		
-//		assertEquals(10, stat.getCount());
-//		assertEquals(203.0, stat.getSum(), 0.0);
-//		assertEquals(20.3, stat.getMean(), 0.0);
-//		assertEquals(41.21, stat.getVariance(), 0.01);
-//		assertEquals(6.419, stat.getStd(), 0.01);
-//		assertEquals(-0.966, stat.getSkewness(), 0.01);
-//		assertEquals(-1.1948, stat.getKurtosis(), 0.01);
+		assertEquals(10, stat.getCount());
+		assertEquals(203.0, stat.getSum(), 0.0);
+		assertEquals(20.3, stat.getMean(), 0.0);
+		assertEquals(45.7888, stat.getVariance(), 0.01);
+		assertEquals(6.7667, stat.getStd(), 0.01);
+		assertEquals(-0.1784, stat.getSkewness(), 0.01);
+		assertEquals(-1.1480, stat.getKurtosis(), 0.01);
 	}
 
 }
