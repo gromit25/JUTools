@@ -15,9 +15,7 @@ public class StatTest {
 		double[] values = {10, 12, 14, 18, 20, 22, 24, 25, 28, 30};
 		
 		RTParameter stat = new RTParameter();
-		for(double value: values) {
-			stat.add(value);
-		}
+		stat.addAll(values);
 		
 		assertEquals(10, stat.getCount());
 		assertEquals(203.0, stat.getSum(), 0.0);
@@ -34,9 +32,7 @@ public class StatTest {
 		double[] values = {10, 12, 14, 18, 20, 22, 24, 25, 28, 30};
 		
 		RTStatistic stat = new RTStatistic();
-		for(double value: values) {
-			stat.add(value);
-		}
+		stat.addAll(values);
 		
 		assertEquals(10, stat.getCount());
 		assertEquals(203.0, stat.getSum(), 0.0);
