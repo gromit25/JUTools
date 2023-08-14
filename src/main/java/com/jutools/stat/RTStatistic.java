@@ -72,6 +72,17 @@ public class RTStatistic {
 	}
 	
 	/**
+	 * 데이터 배열 추가
+	 * 
+	 * @param values 추가할 데이터 배열
+	 */
+	public void add(double... values) {
+		for(double value: values) {
+			this.add(value);
+		}
+	}
+	
+	/**
 	 * 데이터 추가
 	 * 
 	 * @param value 추가할 데이터
