@@ -2,12 +2,7 @@ package com.jutools.stat;
 
 import lombok.Getter;
 
-/**
- * 실시간 모수(Parameter) 계산 클래스
- * 
- * @author jmsohn
- */
-public class RTParameter {
+public class RTStatistic {
 	
 	/** 데이터의 개수 */
 	@Getter
@@ -46,7 +41,7 @@ public class RTParameter {
 	/**
 	 * 생성자
 	 */
-	public RTParameter() {
+	public RTStatistic() {
 		this.reset();
 	}
 
@@ -88,7 +83,7 @@ public class RTParameter {
 		this.count++;
 		double n = (double)this.count;
 		
-		//---- 모수 계산을 위한 값 설정
+		//---- 표본 통계치 계산을 위한 값 설정
 		this.sum += value;
 		this.squaredSum += squaredValue;
 		this.cubedSum += cubedValue;
@@ -99,23 +94,56 @@ public class RTParameter {
 		double squaredMean = this.mean * this.mean;
 		double cubedMean = squaredMean * this.mean;
 		double fourthPoweredMean = cubedMean * this.mean;
+
+		//---- 분산 계산
+		if(this.count < 2) {
+			
+			this.variance = 0.0;
+			
+		} else {
+			
+			this.variance = (this.squaredSum - (squaredMean * n)) / (n - 1);
+			
+		}
 		
-		this.variance = (this.squaredSum/n) - squaredMean;
-		this.skewness =
-				(
-					(this.cubedSum/n)
-					- cubedMean
-					- (3 * this.mean * this.variance)
+		//---- 왜도 계산
+		if(this.count < 3) {
+			
+			this.skewness = 0.0;
+			
+		} else {
+			
+			this.skewness =
+				(n / ((n - 1) * (n - 2)))
+				* (
+					this.cubedSum
+					- (cubedMean * n)
+					- (3 * this.mean * this.variance * (n - 1))
 				)
 				/ Math.pow(this.variance, 3.0/2.0);
-		this.kurtosis =
+		}
+		
+		//---- 첨도 계산
+		
+		if(this.count < 4) {
+			
+			this.kurtosis = 0.0;
+			
+		} else {
+			
+			this.kurtosis =
 				(
-					(this.fourthPoweredSum/n)
-					- (4 * this.mean * this.cubedSum / n)
-					+ (6 * squaredMean * this.variance)
-					+ (3 * fourthPoweredMean)
-				)
-				/ (this.variance * this.variance) - 3;
+					(n * (n + 1) / ((n - 1) * (n - 2) * (n - 3)))
+					* (
+						this.fourthPoweredSum
+						- (4 * this.mean * this.cubedSum)
+						+ (6 * squaredMean * this.variance * (n - 1))
+						+ (3 * fourthPoweredMean * n)
+					)
+		  		)
+				/ (this.variance * this.variance)
+				- (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3));
+		}
 		
 		//---- 최대값, 최소값 계산
 		if(this.min > value) {
