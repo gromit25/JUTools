@@ -2,6 +2,11 @@ package com.jutools.stat;
 
 import lombok.Getter;
 
+/**
+ * 실시간 표본 통계량(Statistic) 계산 클래스
+ * 
+ * @author jmsohn
+ */
 public class RTStatistic {
 	
 	/** 데이터의 개수 */
