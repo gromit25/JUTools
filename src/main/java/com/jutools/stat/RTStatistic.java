@@ -124,7 +124,6 @@ public class RTStatistic {
 		}
 		
 		//---- 첨도 계산
-		
 		if(this.count < 4) {
 			
 			this.kurtosis = 0.0;

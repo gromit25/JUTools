@@ -1,5 +1,7 @@
 package com.jutools;
 
+import com.jutools.stat.RTParameter;
+import com.jutools.stat.RTStatistic;
 import com.jutools.stat.nelsonrule.NelsonRule;
 
 /**
@@ -10,35 +12,21 @@ import com.jutools.stat.nelsonrule.NelsonRule;
 public class StatUtil {
 	
 	/**
-	 * 표준 편차 계산 후 반환<br>
-	 * 만일) count 가 0 이하 이면 0을 반환
+	 * 실시간 모수(parameter) 계산 객체 반환
 	 * 
-	 * @param sum 합계
-	 * @param squaredSum 제곱 합
-	 * @param count 개수
-	 * @return 표준 편차
+	 * @return 실시간 모수(parameter) 계산 객체
 	 */
-	public static double std(double sum, double squaredSum, int count) {
-		return Math.sqrt(variance(sum, squaredSum, count));
+	public RTParameter createRTParameter() {
+		return new RTParameter();
 	}
 	
 	/**
-	 * 분산 계산 후 반환<br>
-	 * 만일) count 가 0 이하 이면 0을 반환
+	 * 실시간 표본 통계량(statistic) 계산 객체 반환
 	 * 
-	 * @param sum 합계
-	 * @param squaredSum 제곱 합
-	 * @param count 개수
-	 * @return 분산 계산
+	 * @return 실시간 표본 통계량(statistic) 계산 객체
 	 */
-	public static double variance(double sum, double squaredSum, int count) {
-		
-		if(count <= 0) {
-			return 0;
-		}
-		
-		double mean = sum/count;
-		return (squaredSum/count) - (mean*mean);
+	public RTStatistic createRTStatistic() {
+		return new RTStatistic();
 	}
 	
 	/**
