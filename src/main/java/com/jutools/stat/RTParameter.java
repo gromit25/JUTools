@@ -76,7 +76,7 @@ public class RTParameter {
 	 * 
 	 * @param values 추가할 데이터 배열
 	 */
-	public void add(double... values) {
+	public void addAll(double... values) {
 		for(double value: values) {
 			this.add(value);
 		}
