@@ -42,5 +42,22 @@ public class StatTest {
 		assertEquals(-0.1784, stat.getSkewness(), 0.01);
 		assertEquals(-1.1480, stat.getKurtosis(), 0.01);
 	}
+	
+	@Test
+	public void testRTStatistic2() throws Exception {
+		
+		double[] values = {10};
+		
+		RTStatistic stat = new RTStatistic();
+		stat.addAll(values);
+		
+		assertEquals(1, stat.getCount());
+		assertEquals(10.0, stat.getSum(), 0.0);
+		assertEquals(10.0, stat.getMean(), 0.0);
+		assertEquals(0.0, stat.getVariance(), 0.01);
+		assertEquals(0.0, stat.getStd(), 0.01);
+		assertEquals(0.0, stat.getSkewness(), 0.01);
+		assertEquals(0.0, stat.getKurtosis(), 0.01);
+	}
 
 }
