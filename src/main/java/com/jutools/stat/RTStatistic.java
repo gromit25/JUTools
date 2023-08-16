@@ -1,5 +1,7 @@
 package com.jutools.stat;
 
+import java.util.List;
+
 import lombok.Getter;
 
 /**
@@ -78,6 +80,17 @@ public class RTStatistic {
 	 */
 	public void addAll(double... values) {
 		for(double value: values) {
+			this.add(value);
+		}
+	}
+	
+	/**
+	 * 데이터 배열 추가
+	 * 
+	 * @param values 추가할 데이터 배열
+	 */
+	public void addAll(List<Double> values) {
+		for(Double value: values) {
 			this.add(value);
 		}
 	}
