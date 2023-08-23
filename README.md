@@ -12,20 +12,14 @@ Java 관련 Utility 기능 모음
 > 일정시간 간격으로 Thread를 실행시키는 Utility    
 > 리눅스 크론잡과 동일한 형식으로 설정 가능
 ```java
-CronJob job = CronJob.builder()
-			.cronExp("* * * * *")
-			.job(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						long cur = System.currentTimeMillis();
-						System.out.println("CRON:" + DateUtil.getTimeStr(cur));
-					} catch(Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-			})
-			.build();
-		job.run();
+CronJob.builder()
+    .cronExp("0 1 * * *")  // 매 1시간 마다 수행
+    .job(new Runnable() {
+        @Override
+        public void run() {
+            long cur = System.currentTimeMillis();
+        }
+    })
+    .build().run();
 ```
 
