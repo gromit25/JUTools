@@ -1,5 +1,4 @@
 # JUTools(Java Utility Tools)
------------------------------------
 Java 관련 Utility 기능 모음
 주의) lombok:1.18.26 을 사용하고 있음. 개발툴에 설정 필요
 
