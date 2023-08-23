@@ -31,9 +31,32 @@ CronJob.builder()
 FileTracker.create("C:\\test.log")
     .tracking(
         msg -> {
-            // 추가된 메시지 처리
+            // 파일에 추가된 메시지 처리
             System.out.println(msg);
         }
     );
+```
+
+### XMLUtil    
+----------------------------------    
+> XML 문서의 tag에 대해 쉽게 접근할 수 있는 Utility
+> DOM(Document Object Model)을 기반으로 개발됨
+> select 메소드를 통해 XML 노드를 
+
+```java
+XMLArray books = XMLUtil
+    .getRootNode("C:\\test.xml")
+    // book 테그 이하에 author 테그 중 "일연"을 찾아 반환
+    // 매칭 방식은 세가지 형태로 제공
+    // - 완전 매칭 : '일연'
+    // - 와일드 카드 매칭 : w'*지문?' -> "을지문덕" 매칭
+    // - 정규표현식 매칭 : p'[0-9]{3}' -> "123" 매칭
+    .select("book > auth*(#text='일연')")
+    .getParents(); 
+
+// book title 출력
+for(XMLNode book: books) {
+	System.out.println(book.selectFirst("title").getText());
+}
 ```
 
