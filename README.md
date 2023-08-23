@@ -17,7 +17,8 @@ CronJob.builder()
     .job(new Runnable() {
         @Override
         public void run() {
-            long cur = System.currentTimeMillis();
+            // 수행할 내용
+            System.out.println("Hello world");
         }
     })
     .build().run();
