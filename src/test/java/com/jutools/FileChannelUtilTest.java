@@ -1,9 +1,12 @@
 package com.jutools;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.nio.channels.FileChannel;
+import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 
 import org.junit.Test;
@@ -20,6 +23,40 @@ public class FileChannelUtilTest {
 		
 		ReadCnt() {
 			this.count = 0;
+		}
+	}
+	
+	@Test
+	public void testWrite1() throws Exception {
+		
+		File file = new File("resources/write_test.txt");
+		OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE};
+		
+		try(
+			FileChannelUtil util = new FileChannelUtil(file, options);
+		) {
+			util.write("Hello World!");
+			assertTrue(true);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testWrite2() throws Exception {
+		
+		File file = new File("resources/write_test.txt");
+		OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE};
+		
+		try(
+			FileChannelUtil util = new FileChannelUtil(file, options);
+		) {
+			util.write("안녕하세요.");
+			assertTrue(true);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
 		}
 	}
 
