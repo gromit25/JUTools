@@ -73,5 +73,30 @@ for(XMLNode book: books) {
 > * 실시간 6시그마 통제도(Control Chart)의 넬슨룰 위반 여부 검사 기능    
 >   [Nelson rules](https://en.wikipedia.org/wiki/Nelson_rules) 참고
 
+```java
+// 모수 계산 객체 생성
+RTParameter rtparam = StatUtil.createRTParameter();
+// 통계량 계산 객체 생성
+RTStatistic rtstat = StatUtil.createRTStatistic();
+// 넬슨룰 검사 객체 생성 - 여기에서는 rule1과 rule2 만 검사
+NelsonRule nrule = StatUtil.createNelsonRule(10, 1, NelsonRule.RULE1|NelsonRule.RULE2);
 
+for(double data: dataList) {
+
+    // 데이터의 모수와 통계량 계산
+    rtparam.add(data);
+    rtstat.add(data);
+
+    // 모수와 통계량의 개수, 합계, 평균, 분산, 표준편차, 왜도, 첨도를 JSON 형태로 출력
+    System.out.println(rtparam);
+    System.out.println(rtstat);
+
+    // 넬슨룰 검사
+    ArrayList<Integer> violatedRules = nrule.check(data);
+    for(Integer ruleIndex: violatedRules) {
+        // 넬슨룰 위반 처리
+        System.out.println(ruleIndex);
+    }
+}
+```
 
