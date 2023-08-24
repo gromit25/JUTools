@@ -17,6 +17,9 @@ BytesUtil.endsWith(bytes1, bytes2);  // bytes1이 bytes2로 끝나는지 여부�
 
 BytesUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용을 읽어 바이트 배열로 반환(스트림도 가능)
 BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
+
+BytesUtil.strToBytes(str);           // "1A03" -> byte[] {26, 3}
+BytesUtil.bytesToStr(bytes1);        // byte[] {26, 3} -> "1A03"
 ```
 
 ### NIOBufferUtil   
