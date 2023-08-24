@@ -220,5 +220,14 @@ public class BytesUtilTest {
 		byte[] read = BytesUtil.readNBytes(testFile, 10);
 		assertTrue("별 헤는".equals(new String(read)));
 	}
+	
+	@Test
+	public void testReadNBytes2() throws Exception {
+		
+		File testFile = new File("resources/read_test.txt");
+		
+		byte[] read = BytesUtil.readNBytes(testFile, 20, 10);
+		assertTrue("별 헤는 밤 - 윤".equals(new String(read)));
+	}
 
 }
