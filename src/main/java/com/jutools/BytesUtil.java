@@ -1,5 +1,7 @@
 package com.jutools;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -316,6 +318,37 @@ public class BytesUtil {
 		
 		return cutArray;
 	}
+	
+	/**
+	 * 파일의 모든 바이트를 읽어 반환 
+	 * 
+	 * @param file 읽을 파일 객체
+	 * @return 읽은 바이트 배열
+	 */
+	public static byte[] readAllBytes(File file) throws Exception {
+		return readAllBytes(file, 1024 * 1024);
+	}
+	
+	/**
+	 * 파일의 모든 바이트를 읽어 반환 
+	 * 
+	 * @param file 읽을 파일 객체
+	 * @param bufferSize 입력 스트림에서 데이터를 읽을 때 사용할 임시 버퍼의 크기
+	 * @return 읽은 바이트 배열
+	 */
+	public static byte[] readAllBytes(File file, int bufferSize) throws Exception {
+		
+		if(file == null) {
+			throw new NullPointerException("file is null.");
+		}
+		
+		if(file.canRead() == false) {
+			throw new IllegalAccessException("can't read file:" + file.getAbsolutePath());
+		}
+		
+		return readAllBytes(new FileInputStream(file), bufferSize);
+	}
+
 	
 	/**
 	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
