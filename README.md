@@ -70,7 +70,7 @@ XMLArray books = XMLUtil
 
 // book title 출력
 for(XMLNode book: books) {
-	System.out.println(book.selectFirst("title").getText());
+    System.out.println(book.selectFirst("title").getText());
 }
 ```
 
