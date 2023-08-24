@@ -138,8 +138,15 @@ for(XMLNode book: books) {
 ### MathUtil
 ----------------------------------    
 > 수학식 관련 Utility    
+> 주요 기능   
 > * 설정 파일등에 수학식을 이용하여 값을 설정할 수 있도록 지원하기 위함    
 > 예를 들어, 로그 파일 최대 사이즈 : 5 * 1024 KiB -> 5242880, "B" 로 분리   
+```java
+MathResult result = MathUtil.calculateWithUnit("3*4/ 2 + -2 * 2.5 MiB");
+
+System.out.println(result.getValue());      // "1048576" 출력
+System.out.println(result.getBaseUnit());   // "B" 출력
+```
 
 ### StatUtil
 ----------------------------------    
