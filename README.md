@@ -18,6 +18,33 @@ BytesUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용�
 BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
 ```
 
+### FileChannelUtil   
+----------------------------------    
+> 파일 채널을 통한 read/write Utility
+> read    
+```java
+try(
+    FileChannelUtil channel = new FileChannelUtil(file, StandardOpenOption.READ);
+) {
+    String read = null;
+    while((read = channel.readLine()) != null) {
+        // 읽은 문자열 처리
+        System.out.println(read);
+    }
+}
+```
+```java
+try(
+    FileChannelUtil channel = new FileChannelUtil(file, StandardOpenOption.READ);
+) {
+    channel.readLine(read -> {
+        // 읽은 문자열 처리
+        System.out.println(read);
+    });
+}
+```
+> write
+
 ### EnvUtil   
 ----------------------------------
 > 환경변수를 클래스의 static 변수에 설정해 주는 Utility
@@ -61,7 +88,8 @@ CronJob.builder()
 > 파일의 변경사항에 대해 추적(Tracking)하는 Utility
 > tail -f 와 같은 기능임, 로그 추적 등에서 활용
 ```java
-FileTracker.create("C:\\test.log")
+FileTracker
+    .create("C:\\test.log")
     .tracking(
         msg -> {
             // 파일에 추가된 메시지 처리
