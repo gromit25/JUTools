@@ -351,7 +351,6 @@ public class BytesUtil {
 			return readAllBytes(fis, bufferSize);
 		}
 	}
-
 	
 	/**
 	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
@@ -400,6 +399,106 @@ public class BytesUtil {
 			} else {
 				readAll = concat(readAll, cut(buffer, 0, readcnt));
 			}
+		}
+		
+		return readAll;
+	}
+	
+	/**
+	 * 입력 스트림에서 N 바이트를 읽어 반환<br>
+	 * 만일, 스트림의 바이트 크기가 N보다 작으면 전체를 다 읽어 들임
+	 * 
+	 * @param file 읽을 파일 객체
+	 * @param n 읽을 바이트 수
+	 * @return 읽은 바이트 배열
+	 */
+	public static byte[] readNBytes(File file, int n) throws Exception {
+		return readNBytes(file, n, 1024 * 1024);
+	}
+	
+	/**
+	 * 입력 스트림에서 N 바이트를 읽어 반환<br>
+	 * 만일, 스트림의 바이트 크기가 N보다 작으면 전체를 다 읽어 들임
+	 * 
+	 * @param file 읽을 파일 객체
+	 * @param n 읽을 바이트 수
+	 * @param bufferSize 입력 스트림에서 데이터를 읽을 때 사용할 임시 버퍼의 크기
+	 * @return 읽은 바이트 배열
+	 */
+	public static byte[] readNBytes(File file, int n, int bufferSize) throws Exception {
+		
+		if(file == null) {
+			throw new NullPointerException("file is null.");
+		}
+		
+		if(file.canRead() == false) {
+			throw new IllegalAccessException("can't read file:" + file.getAbsolutePath());
+		}
+		
+		// 파일에서 N바이트를 읽어서 반환
+		try(FileInputStream fis = new FileInputStream(file)) {
+			return readNBytes(fis, n, bufferSize);
+		}
+	}
+
+	/**
+	 * 입력 스트림에서 N 바이트를 읽어 반환<br>
+	 * 만일, 스트림의 바이트 크기가 N보다 작으면 전체를 다 읽어 들임
+	 * 
+	 * @param is 읽을 입력 스트림
+	 * @param n 읽을 바이트 수
+	 * @return 읽은 데이터
+	 */
+	public static byte[] readNBytes(InputStream is, int n) throws Exception {
+		return readNBytes(is, n, 1024 * 1024);
+	}
+	
+	/**
+	 * 입력 스트림에서 N 바이트를 읽어 반환<br>
+	 * 만일, 스트림의 바이트 크기가 N보다 작으면 전체를 다 읽어 들임
+	 * 
+	 * @param is 읽을 입력 스트림
+	 * @param n 읽을 바이트 수
+	 * @param bufferSize 입력 스트림에서 데이터를 읽을 때 사용할 임시 버퍼의 크기
+	 * @return 읽은 데이터
+	 */
+	public static byte[] readNBytes(InputStream is, int n, int bufferSize) throws Exception {
+		
+		// 읽을 바이트수(n)이 1보다 작으면 예외 발생
+		if(n < 1) {
+			throw new IllegalArgumentException("n is invalid:" + n);
+		}
+		
+		// buffer의 크기가 1보다 작을 경우 예외 발생
+		if(bufferSize < 1) {
+			throw new IllegalArgumentException("buffer size is invalid:" + bufferSize);
+		}
+		
+		// 모든 데이터 읽기 버퍼 변수
+		byte[] readAll = new byte[0];
+		
+		// 입력 스트림이 null 일 경우 빈 버퍼 반환
+		if(is == null) {
+			return readAll;
+		}
+
+		// buffer 설정
+		byte[] buffer = new byte[bufferSize];
+		
+		// input stream의 모든 데이터를 읽음
+		int readCount = -1;
+		int readSize = (n - buffer.length > buffer.length)?buffer.length:n - buffer.length;
+		
+		while(readSize > 0 && (readCount = is.read(buffer, 0, readSize)) != -1) {
+			
+			if(readCount == bufferSize) {
+				readAll = concat(readAll, buffer);
+			} else {
+				readAll = concat(readAll, cut(buffer, 0, readCount));
+			}
+			
+			// 다음 읽을 크기 재계산
+			readSize = (n - readAll.length > buffer.length)?buffer.length:n - readAll.length;
 		}
 		
 		return readAll;
