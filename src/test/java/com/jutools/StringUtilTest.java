@@ -8,11 +8,6 @@ import org.junit.Test;
 public class StringUtilTest {
 	
 	@Test
-	public void test() throws Exception  {
-
-	}
-
-	@Test
 	public void testEscape1() {
 		try {
 			
