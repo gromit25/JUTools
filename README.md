@@ -1,6 +1,6 @@
 # JUTools(Java Utility Tools)
 Java 관련 Utility 기능 모음    
-주의) lombok:1.18.26 을 사용하고 있음. 개발툴에 설정 필요    
+주의) lombok:1.18.26 을 사용하고 있음. IDE에 설정 필요    
 
 ### BytesUtil   
 ----------------------------------    
@@ -38,7 +38,7 @@ FileTracker.create("C:\\test.log")
 ```
 
 ### XMLUtil    
-----------------------------------    
+========================================    
 > XML 문서의 tag에 대해 쉽게 접근할 수 있는 Utility   
 > DOM(Document Object Model)을 기반으로 개발   
 > * 주요 특징   
@@ -62,3 +62,4 @@ for(XMLNode book: books) {
 }
 ```
 
+### StatUtil
