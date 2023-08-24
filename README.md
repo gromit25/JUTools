@@ -161,8 +161,8 @@ System.out.println(result.getBaseUnit());   // "B" 출력
 
 ### StatUtil
 ----------------------------------    
-> 통계 관련 Utility
-> 주요기능
+> 통계 관련 Utility    
+> 주요기능    
 > * 실시간 모수(Parameter)/통계치(Statistic) 계산 기능    
 >   평균, 분산, 표준편차, 왜도(skewness), 첨도(kurtosis) 계산    
 >   계산을 위해 모든 데이터를 저장하게 되면 메모리 소요가 증가하기 떄문에    
