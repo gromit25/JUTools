@@ -5,6 +5,15 @@ Java 관련 Utility 기능 모음
 ### BytesUtil   
 ----------------------------------    
 > TCP/UDP 통신, File read/write 등에서 byte 단위로 다루기 위한 Utility   
+```java
+ByteUtil.concat(bytes1, bytes2);    // bytes1, bytes2 배열을 합쳐서 바이트 배열로 반환
+ByteUtil.cut(bytes1, 10, 20);       // bytes1의 10번째 부터 20번째까지 잘라서 바이트 배열로 반환
+ByteUtil.split(bytes1, bytes2);     // bytes1을 bytes2로 나우어 바이트 배열의 Array로 반환
+
+ByteUtil.contains(bytes1, bytes2);  // bytes1 내에 bytes2가 포함되어 있는지 여부를 반환 
+ByteUtil.indexOf(bytes1, bytes2);   // bytes1 내에 bytes2가 처음으로 발견되는 위치를 반환
+ByteUtil.endsWith(bytes1, bytes2);  // bytes1이 bytes2로 끝나는지 여부를 반환
+```
 
 ### CronJob   
 ----------------------------------    
