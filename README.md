@@ -44,6 +44,18 @@ try(
 }
 ```
 > write
+```java
+// write할 파일
+File file = new File("resources/write_test.txt");
+// 파일 채널 오픈 옵션
+OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE};
+
+try(
+    FileChannelUtil channel = new FileChannelUtil(file, options);
+) {
+    channel.write("안녕하세요.");
+}
+```
 
 ### EnvUtil   
 ----------------------------------
