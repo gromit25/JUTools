@@ -10,12 +10,12 @@ ByteUtil.concat(bytes1, bytes2);    // bytes1, bytes2 배열을 합쳐서 바이
 ByteUtil.cut(bytes1, 10, 20);       // bytes1의 10번째 부터 20번째까지 잘라서 바이트 배열로 반환
 ByteUtil.split(bytes1, bytes2);     // bytes1을 bytes2로 나우어 바이트 배열의 Array로 반환
 
-ByteUtil.contains(bytes1, bytes2);  // bytes1 내에 bytes2가 포함되어 있는지 여부를 반환 
-ByteUtil.indexOf(bytes1, bytes2);   // bytes1 내에 bytes2가 처음으로 발견되는 위치를 반환
-ByteUtil.endsWith(bytes1, bytes2);  // bytes1이 bytes2로 끝나는지 여부를 반환
+BytesUtil.contains(bytes1, bytes2);  // bytes1 내에 bytes2가 포함되어 있는지 여부를 반환 
+BytesUtil.indexOf(bytes1, bytes2);   // bytes1 내에 bytes2가 처음으로 발견되는 위치를 반환
+BytesUtil.endsWith(bytes1, bytes2);  // bytes1이 bytes2로 끝나는지 여부를 반환
 
-ByteUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용을 읽어 바이트 배열로 반환(스트림도 가능)
-ByteUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
+BytesUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용을 읽어 바이트 배열로 반환(스트림도 가능)
+BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
 ```
 
 ### CronJob   
