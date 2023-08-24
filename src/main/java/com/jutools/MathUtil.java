@@ -32,7 +32,6 @@ public class MathUtil {
 		unitPrefixMap.put("G", 1000000000.0);
 		unitPrefixMap.put("M", 1000000.0);
 		unitPrefixMap.put("k", 1000.0);
-		unitPrefixMap.put("K", 1000.0);	// 표준은 소문자 k 이나, 대문자도 일반적으로 사용하기 때문에 추가
 		unitPrefixMap.put("h", 100.0);
 		unitPrefixMap.put("da", 10.0);
 		unitPrefixMap.put("d", 0.1);
