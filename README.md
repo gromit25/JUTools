@@ -20,7 +20,7 @@ BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N �
 
 ### FileChannelUtil   
 ----------------------------------    
-> 파일 채널을 통한 read/write Utility
+> 파일 채널을 통한 read/write Utility    
 > read    
 ```java
 try(
