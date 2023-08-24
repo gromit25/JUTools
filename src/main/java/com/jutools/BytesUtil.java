@@ -487,7 +487,7 @@ public class BytesUtil {
 		
 		// input stream의 모든 데이터를 읽음
 		int readCount = -1;
-		int readSize = (n - buffer.length > buffer.length)?buffer.length:n - buffer.length;
+		int readSize = (n > buffer.length)?buffer.length:n;
 		
 		while(readSize > 0 && (readCount = is.read(buffer, 0, readSize)) != -1) {
 			
