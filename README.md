@@ -18,6 +18,29 @@ BytesUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용�
 BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
 ```
 
+### EnvUtil   
+----------------------------------
+> 환경변수를 클래스의 static 변수에 설정해 주는 Utility
+```
+SET NAME=HONG GIL-DONG
+```
+
+```java
+public class Config {
+	
+	@Env(name = "NAME")
+	public static String NAME;
+	
+}
+
+public class Test {
+    public static void main(String[] args) throws Exception {
+        EnvUtil.set(Config.class);       // 환경 변수
+        System.out.println(Config.NAME); // "HONG GIL-DONG"을 출력
+    }
+}
+```
+
 ### CronJob   
 ----------------------------------    
 > 일정시간 간격으로 Thread를 실행시키는 Utility    
@@ -68,7 +91,7 @@ XMLArray books = XMLUtil
     .select("book > auth*(#text='일연')") // book 테그 이하에 author 테그 중 "일연"을 찾아 반환   
     .getParents(); 
 
-// book title 출력
+// book 테그의 title에 설정된 text 출력
 for(XMLNode book: books) {
     System.out.println(book.selectFirst("title").getText());
 }
