@@ -124,7 +124,7 @@ FileTracker
 ### XMLUtil    
 ----------------------------------    
 > XML 문서의 tag에 대해 쉽게 접근할 수 있는 Utility   
-> DOM(Document Object Model)을 기반으로 개발   
+> DOM(Document Object Model) 파서를 기반으로 개발   
 > 주요 특징   
 > * select 메소드를 통해 XML 노드를 선택 및 조회   
 > 포맷) 테그1 > 테그2(속성1='값') > ...   
