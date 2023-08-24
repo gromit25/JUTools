@@ -346,7 +346,10 @@ public class BytesUtil {
 			throw new IllegalAccessException("can't read file:" + file.getAbsolutePath());
 		}
 		
-		return readAllBytes(new FileInputStream(file), bufferSize);
+		// 파일 전체를 읽어서 반환
+		try(FileInputStream fis = new FileInputStream(file)) {
+			return readAllBytes(fis, bufferSize);
+		}
 	}
 
 	
