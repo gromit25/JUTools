@@ -317,12 +317,11 @@ public class FileChannelUtil implements Closeable {
 	
 	/**
 	 * 설정된 file channel에서 한줄씩 읽어서 반환, 다 읽었을 경우 null 반환
-	 * 한줄의 끝은 "\r\n"
 	 * 
 	 * @return FileChannel에서 읽은 한줄
 	 */
 	public String readLine() throws Exception {
-		return this.readLine("\r\n");
+		return this.readLine(System.lineSeparator());
 	}
 	
 	/**
