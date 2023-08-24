@@ -27,10 +27,8 @@ SET NAME=HONG GIL-DONG
 
 ```java
 public class Config {
-	
-	@Env(name = "NAME")
-	public static String NAME;
-	
+    @Env(name = "NAME")          // "NAME" 환경변수 값을 Config.NAME에 설정하기 위한 어노테이션
+    public static String NAME;
 }
 
 public class Test {
