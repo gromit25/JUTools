@@ -71,6 +71,7 @@ for(XMLNode book: books) {
 >   계산을 위해 모든 데이터를 저장하게 되면 메모리 소요가 증가하기 떄문에    
 >   데이터의 합, 제곱합, 세제곱합, 네제곱합과 데이터 개수 데이터만 가지고 실시간으로 계산함    
 > * 실시간 6시그마 통제도(Control Chart)의 넬슨룰 위반 여부 검사 기능    
+>   [Nelson rules](https://en.wikipedia.org/wiki/Nelson_rules) 참고
 
 
 
