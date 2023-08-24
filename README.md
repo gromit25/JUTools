@@ -93,7 +93,9 @@ public class Test {
 ----------------------------------    
 > 암복호화 Utility    
 > * 양방향 암복호화 : AES 및 AES 키 생성
-> * 단방향 암호화 : SHA
+> * 단방향 암호화 : SHA   
+>
+> AES
 ```java
 // AES 키 생성
 String key = CipherUtil.genAES128Key();
@@ -107,6 +109,16 @@ System.out.println(encryptedMsg);
 // AES 복호화
 String decryptedMsg = CipherUtil.decryptAES(key, encryptedMsg);
 System.out.println(decryptedMsg);
+```
+> SHA
+```java
+
+// 암호화할 문장
+String msg = "Hello World";
+
+// SHA 암호화 수행
+String encryptedMsg = CipherUtil.encryptSHA512(msg);
+System.out.println(encryptedMsg);
 ```
 
 ### CronJob   
