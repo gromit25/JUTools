@@ -50,8 +50,8 @@ public class StatUtil {
 	 */
 	public static NelsonRule createNelsonRule(double mean, double std, int rules) throws Exception {
 		return NelsonRule.builder()
-				.mean(10)
-				.std(1)
+				.mean(mean)
+				.std(std)
 				.rules(rules)
 				.build();
 	}
