@@ -12,7 +12,7 @@ Java 관련 Utility 기능 모음
 > 리눅스 크론잡과 동일한 형식으로 설정 가능
 ```java
 CronJob.builder()
-    .cronExp("0 1 * * *")  // 매 1시간 마다 수행
+    .cronExp("0 1,2 * * *")  // 매일 1시, 2시에 수행
     .job(new Runnable() {
         @Override
         public void run() {
@@ -40,18 +40,20 @@ FileTracker.create("C:\\test.log")
 ### XMLUtil    
 ----------------------------------    
 > XML 문서의 tag에 대해 쉽게 접근할 수 있는 Utility
-> DOM(Document Object Model)을 기반으로 개발됨
-> select 메소드를 통해 XML 노드를 
+> DOM(Document Object Model)을 기반으로 개발
+> * 주요 특징
+> select 메소드를 통해 XML 노드를 선택 및 조회   
+> 포맷) 테그1 > 테그2(속성1='값') > ...
+> 테그와 속성은 와일드 카드 매칭을 기본으로 함
+> 값의 매칭은 아래의 세가지 형태를 제공함
+> - 완전 매칭 : '일연'
+> - 와일드 카드 매칭 : w'*지문?' -> "을지문덕" 매칭
+> - 정규표현식 매칭 : p'[0-9]{3}' -> "123" 매칭
 
 ```java
 XMLArray books = XMLUtil
     .getRootNode("C:\\test.xml")
-    // book 테그 이하에 author 테그 중 "일연"을 찾아 반환
-    // 매칭 방식은 세가지 형태로 제공
-    // - 완전 매칭 : '일연'
-    // - 와일드 카드 매칭 : w'*지문?' -> "을지문덕" 매칭
-    // - 정규표현식 매칭 : p'[0-9]{3}' -> "123" 매칭
-    .select("book > auth*(#text='일연')")
+    .select("book > auth*(#text='일연')") // book 테그 이하에 author 테그 중 "일연"을 찾아 반환   
     .getParents(); 
 
 // book title 출력
