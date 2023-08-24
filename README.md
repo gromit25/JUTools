@@ -92,10 +92,21 @@ public class Test {
 ### CipherUtil   
 ----------------------------------    
 > 암복호화 Utility    
-> * 양방향 암복호화 : AES
+> * 양방향 암복호화 : AES 및 AES 키 생성
 > * 단방향 암호화 : SHA
 ```java
+// AES 키 생성
+String key = CipherUtil.genAES128Key();
+// 암복호화할 문장
+String msg = "테스트 입니다.";
 
+// AES 암호화
+String encryptedMsg = CipherUtil.encryptAES(key, msg);
+System.out.println(encryptedMsg);
+
+// AES 복호화
+String decryptedMsg = CipherUtil.decryptAES(key, encryptedMsg);
+System.out.println(decryptedMsg);
 ```
 
 ### CronJob   
