@@ -3,6 +3,20 @@ Java 관련 Utility 기능 모음
 JDK 1.8 기준으로 작성     
 주의) lombok:1.18.26 을 사용하고 있음. IDE에 설정 필요    
 
+### StringUtil    
+----------------------------------    
+> 문자열 처리 Utility
+```java
+StringUtil.escape(str);                // str="test\t입니다." -> "test	입니다."로 변환, 입력 받는 문자열에 이스케이프 문자열이 있는 경우 사용
+StringUtil.replaceHtmlEntity(str);     // 문자열의 html 엔터티(<>& 등 -> &amp;lt;&amp;gt;&amp;amp; 등)를 변경, XSS 해결용
+StringUtil.replaceEnterToBr(str);      // 문자열(contents) 내에 "(\r)\n" -> "&lt;br&gt;\r\n"로 변경
+StringUtil.isValidFileName(fileName);  // 파일명이 유효한지 검증하는 메소드
+StringUtil.parseHostPort("192.168.0.1:8080");  // "192.168.0.1:8080" -> { "192.168.0.1", "8080" }
+
+StringUtil.hasNull(str);               // 문자열 내에 null(\0)가 포함 여부 반환
+StringUtil.find();                     // 문자열 내 여러 문자열을 검색하는 메소드
+```
+
 ### BytesUtil   
 ----------------------------------    
 > TCP/UDP 통신, File read/write 등에서 byte 배열을 다루기 위한 Utility   
