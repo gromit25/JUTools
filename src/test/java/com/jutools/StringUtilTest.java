@@ -102,6 +102,22 @@ public class StringUtilTest {
 	}
 	
 	@Test
+	public void testFind4() {
+		try {
+			
+			String testMsg = "aaaBBbbbb"; 
+			int[] result = StringUtil.find(testMsg, true, "ccc", "bb");
+			
+			assertEquals(-1, result[0]);
+			assertEquals(3, result[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	public void testJoin1() {
 		try {
 			 

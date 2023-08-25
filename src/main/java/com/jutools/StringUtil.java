@@ -382,7 +382,7 @@ public class StringUtil {
 	 * @param findStrs 검색할 문자열들
 	 * @return 최초로 발견된 위치 목록(못찾은 경우 -1)
 	 */
-	public static int[] find(String contents, boolean caseSensitivity, String... findStrs) throws Exception {
+	public static int[] find(String contents, boolean ignoreCase, String... findStrs) throws Exception {
 		
 		// 입력값 검증
 		if(contents == null) {
@@ -400,7 +400,7 @@ public class StringUtil {
 		// 검색 문자열들에 대한 정보 객체 변수 선언 및 초기화 수행
 		ArrayList<FindStr> findStrObjs = new ArrayList<FindStr>(findStrs.length);
 		for(int index = 0; index < findStrs.length; index++) {
-			findStrObjs.add(new FindStr(findStrs[index], caseSensitivity));
+			findStrObjs.add(new FindStr(findStrs[index], ignoreCase));
 		}
 		
 		// 대상 문자열을 한문자씩 읽어서 검색 수행
@@ -516,7 +516,7 @@ public class StringUtil {
 			}
 			
 			// 최초 문자와 일치하는 경우 새로운 pin 생성
-			if(ch == this.getFindStr().charAt(0)) {
+			if(StringUtil.isEqualChar(ch, this.getFindStr().charAt(0), this.ignoreCase) == true) {
 				this.getPins().put(index, 1);
 			}
 		}
