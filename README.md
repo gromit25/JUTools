@@ -14,7 +14,36 @@ StringUtil.isValidFileName(fileName);  // 파일명이 유효한지 검증하는
 StringUtil.parseHostPort("192.168.0.1:8080");  // "192.168.0.1:8080" -> { "192.168.0.1", "8080" }
 
 StringUtil.hasNull(str);               // 문자열 내에 null(\0)가 포함 여부 반환
-StringUtil.find();                     // 문자열 내 여러 문자열을 검색하는 메소드
+StringUtil.length(str);                // 문자열 길이 반환, null일 경우 0 반환
+StringUtil.isEmpty(str);               // 문자열이 null 이거나 "" 일 경우 true 반환
+
+StringUtil.join("hello", " ", "world");// 문자열 결합
+StringUtil.reverse(str);               // 문자열 역전 "abc" -> "cba"
+StringUtil.split(str, ',');            // Character로 문자열을 나눔
+
+// 주어진 문자열을 delimiter로 나눈 후 특정 위치들의 문자열들을 선택하여 반환
+// str: test1\ttest2\ttest3, delimiter: \t, locs: {0, 2, 1} -> {"test1", "test3", "test2"} 가 반환됨
+String[] splited = StringUtil.pick(str, '\t', new int[]{0, 2, 1});
+System.out.println(splited[0]);        // "test1" 출력
+
+// 문자열 내 여러 문자열을 검색
+String msg = "hello world!"; 
+int[] result = StringUtil.find(msg, false, "hello", "world");
+			
+System.out.println(result[0]);         // 0 출력
+System.out.println(result[1]);         // 6 출력
+
+// 문자열 내 문자열 중 포함 된 것이 있는지 여부 반환
+StringUtil.containsAny(msg, false, "hello", "world");
+
+// 와일드 카드 패턴 매치
+// "*문?" -> "을지문덕"에 매치
+StringUtil.matchWildcard(msg, pattern);
+
+// 문자열은 불변이나 보안상의 이유(메모리 해킹 등)로
+// 문자열을 내부의 내용을 toStr로 수정함
+StringUtil.changeStr(str, toStr);
+
 ```
 
 ### BytesUtil   
