@@ -48,7 +48,9 @@ StringUtil.changeStr(str, toStr);
 // str: "${count}회 발생하였습니다." vars: "count": "2" -> "2회 발생하였습니다."
 StringUtil.replaceVars(str, vars);
 
-
+// 문자열 내에 ${변수} 목록을 반환
+// str: "${count}회 발생하였습니다." -> {"count"} 반환
+StringUtil.findAllVars(str);
 
 ```
 
