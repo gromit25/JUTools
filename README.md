@@ -247,6 +247,11 @@ for(XMLNode book: books) {
 }
 ```
 
+### PublishUtil - Under construction   
+----------------------------------    
+> 출력 Utility (Console, txt 파일, 엑셀 파일 등)    
+> presspublisher 프로젝트를 통합, presspublisher는 삭제 예정    
+
 ### MathUtil
 ----------------------------------    
 > 수학식 관련 Utility    
