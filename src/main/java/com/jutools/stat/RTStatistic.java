@@ -53,7 +53,7 @@ public class RTStatistic {
 	}
 
 	/**
-	 * 모수 값 초기화
+	 * 통계량 초기화
 	 */
 	public void reset() {
 
@@ -112,13 +112,13 @@ public class RTStatistic {
 		this.count++;
 		double n = (double)this.count;
 		
-		//---- 표본 통계치 계산을 위한 값 설정
+		//---- 표본 통계량 계산을 위한 값 설정
 		this.sum += value;
 		this.squaredSum += squaredValue;
 		this.cubedSum += cubedValue;
 		this.fourthPoweredSum += fourthPoweredValue;
 		
-		//---- 모수 계산 수행
+		//---- 표본 통계량 계산 수행
 		this.mean = this.sum/n;
 		double squaredMean = this.mean * this.mean;
 		double cubedMean = squaredMean * this.mean;
@@ -126,20 +126,14 @@ public class RTStatistic {
 
 		//---- 분산 계산
 		if(this.count < 2) {
-			
 			this.variance = 0.0;
-			
 		} else {
-			
 			this.variance = (this.squaredSum - (squaredMean * n)) / (n - 1);
-			
 		}
 		
 		//---- 왜도 계산
 		if(this.count < 3) {
-			
 			this.skewness = 0.0;
-			
 		} else {
 			
 			this.skewness =
@@ -154,9 +148,7 @@ public class RTStatistic {
 		
 		//---- 첨도 계산
 		if(this.count < 4) {
-			
 			this.kurtosis = 0.0;
-			
 		} else {
 			
 			this.kurtosis =
