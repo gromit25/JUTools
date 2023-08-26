@@ -1186,7 +1186,8 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열 내에 ${변수}을 변수 목록(vars)에서 찾아 대체하는 메소드
+	 * 문자열 내에 ${변수}을 변수 목록(vars)에서 찾아 대체하는 메소드<br>
+	 * str: "${count}회 발생하였습니다." vars: "count": "2" -> "2회 발생하였습니다."
 	 *
 	 * @param str 변수가 포함된 문자열
 	 * @return 변수 목록
@@ -1273,7 +1274,7 @@ public class StringUtil {
 	
 	/**
 	 * 문자열 내에 ${변수} 목록을 반환하는 메소드<br>
-	 * str: "${count}회 발생하였습니다." vars: "count": "2" -> "2회 발생하였습니다."
+	 * str: "${count}회 발생하였습니다." -> {"count"} 반환
 	 *
 	 * @param str 변수가 포함된 문자열
 	 * @return 변수 목록
