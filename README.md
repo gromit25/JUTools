@@ -154,7 +154,7 @@ SysUtil.getIps();           // ip 목록 반환(ipv4만)
 SysUtil.getSysPerp();       // 현재 시스템 성능 정보를 JSON 형태로 반환
                             // 시스템 성능 정보 : cpu, memory, disk 사용율
                             
-SysUtil.execute(cmd);       // 시스템 command를 실행하고 결과를 반환
+SysUtil.execute(cmd);       // 시스템 command를 실행하고 결과 반환
                             // cmd = "cmd /c dir \"C:\\Program Files\""
 ```
 
