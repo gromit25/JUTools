@@ -44,6 +44,12 @@ StringUtil.matchWildcard(msg, pattern);
 // 문자열을 내부의 내용을 toStr로 수정함
 StringUtil.changeStr(str, toStr);
 
+// 문자열 내에 ${변수}을 변수 목록(vars)에서 찾아 대체함
+// str: "${count}회 발생하였습니다." vars: "count": "2" -> "2회 발생하였습니다."
+StringUtil.replaceVars(str, vars);
+
+
+
 ```
 
 ### BytesUtil   
