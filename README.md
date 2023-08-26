@@ -88,7 +88,7 @@ NIOBufferUtil.clear(buffer);
 ### FileChannelUtil   
 ----------------------------------    
 > 파일 채널을 통한 read/write Utility    
-> read    
+* read    
 ```java
 try(
     FileChannelUtil channel = new FileChannelUtil(file, StandardOpenOption.READ);
@@ -110,7 +110,7 @@ try(
     });
 }
 ```
-> write
+* write   
 ```java
 // write할 파일
 File file = new File("resources/write_test.txt");
@@ -164,7 +164,7 @@ SysUtil.execute(cmd);       // 시스템 command를 실행하고 결과 반환
 > * 양방향 암복호화 : AES 및 AES 키 생성
 > * 단방향 암호화 : SHA   
 >
-> AES
+* AES
 ```java
 // AES 키 생성
 String key = CipherUtil.genAES128Key();
@@ -179,7 +179,7 @@ System.out.println(encryptedMsg);
 String decryptedMsg = CipherUtil.decryptAES(key, encryptedMsg);
 System.out.println(decryptedMsg);
 ```
-> SHA
+* SHA
 ```java
 
 // 암호화할 문장
@@ -250,7 +250,7 @@ for(XMLNode book: books) {
 ### PublishUtil - Under construction   
 ----------------------------------    
 > 출력 Utility (Console, txt 파일, 엑셀 파일 등)    
-> presspublisher 프로젝트를 통합, presspublisher는 삭제 예정    
+> presspublisher 프로젝트를 통합 진행 중, presspublisher는 삭제 예정    
 
 ### MathUtil
 ----------------------------------    
