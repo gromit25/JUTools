@@ -34,7 +34,7 @@ public class TransferBuilder {
 		spec[1] = nextStatus;
 		spec[2] = pushback;
 		if(pushback > 0) {
-			throw new Exception("pushback value must be greater than 0");
+			throw new Exception("pushback value must be less than 0");
 		}
 		
 		specs.add(spec);
