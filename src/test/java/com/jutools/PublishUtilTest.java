@@ -28,8 +28,12 @@ public class PublishUtilTest {
 			File formatFile = new File("resources/publisher/testformat.xml");
 			PublishUtil.publishToConsole(formatFile, values);
 			
+			assertTrue(true);
+			
 		} catch(Exception ex) {
+			
 			ex.printStackTrace();
+			fail("fail");
 		}
 	}
 
