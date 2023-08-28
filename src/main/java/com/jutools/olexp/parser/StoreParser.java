@@ -55,7 +55,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("STORE_OP", new TransferBuilder()
-				.add("^=", "STORE_OP_END")
+				.add("^=", "STORE_OP_END", -1)
 				.add("=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
