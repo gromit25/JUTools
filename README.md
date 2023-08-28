@@ -20,7 +20,7 @@ StringUtil.isEmpty(str);               // 문자열이 null 이거나 "" 일 경
 StringUtil.join("hello", " ", "world");// 문자열 결합 "hello world"
 StringUtil.reverse(str);               // 문자열 역전 "abc" -> "cba"
 StringUtil.split(str, ',');            // 문자로 문자열을 나눔
-StringUtil.splitFirst(str, ">");      // str: "abc>def>ghi", delimiter: ">" 일 경우,
+StringUtil.splitFirst(str, ">");       // str: "abc>def>ghi", delimiter: ">" 일 경우,
                                        // -> {"abc", "def>ghi"} 반환
 
 // 주어진 문자열을 delimiter로 나눈 후 특정 위치들의 문자열들을 선택하여 반환
