@@ -250,6 +250,7 @@ for(XMLNode book: books) {
 ### PublishUtil - Under construction   
 ----------------------------------    
 > 출력 Utility (Console, txt 파일, 엑셀 파일 등)    
+> XML에 정의에 형태로 출력 수행    
 > presspublisher 프로젝트를 통합 진행 중, presspublisher는 삭제 예정    
 
 ### MathUtil
