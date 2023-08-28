@@ -252,6 +252,7 @@ for(XMLNode book: books) {
 > 출력 Utility (Console, txt 파일, 엑셀 파일 등)    
 > XML에 정의에 형태로 출력 수행    
 > presspublisher 프로젝트를 통합 진행 중, presspublisher는 삭제 예정    
+* 출력 format xml file(resources/publisher/testformat.xml)
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <format>
@@ -262,6 +263,35 @@ for(XMLNode book: books) {
 	</foreach>
 	|   --------------------------------------------------------------------------
 </format>
+```
+* java 프로그램
+```java
+// 출력할 메시지 설정
+ArrayList<String> messages = new ArrayList<String>();
+messages.add("test message 1");
+messages.add("test message 2");
+		
+Map<String, Object> values = new HashMap<>();
+values.put("messages", messages);
+		
+try {
+
+    // 출력 format file		
+    File formatFile = new File("resources/publisher/testformat.xml");
+    // 화면 출력 실행
+    PublishUtil.publishToConsole(formatFile, values);
+
+} catch(Exception ex) {
+    ex.printStackTrace();
+}
+```
+* 출력
+```
+   TEST MESSAGE - XML FORMAT
+   --------------------------------------------------------------------------
+      test message 1
+      test message 2
+   --------------------------------------------------------------------------
 ```
 
 ### MathUtil
