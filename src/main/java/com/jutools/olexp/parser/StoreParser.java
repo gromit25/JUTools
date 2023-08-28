@@ -37,19 +37,19 @@ public class StoreParser extends AbstractParser<Instruction> {
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("a-zA-Z\\_", "VAR")
+				.add("a-zA-Z\\_", "L_VAR")
 				.add("^ a-zA-Z\\_", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
-		this.putTransferMap("VAR", new TransferBuilder()
-				.add("a-zA-Z0-9\\_", "VAR")
-				.add(" \t", "VAR_BLANK")
+		this.putTransferMap("L_VAR", new TransferBuilder()
+				.add("a-zA-Z0-9\\_", "L_VAR")
+				.add(" \t", "L_VAR_BLANK")
 				.add("=", "STORE_OP")
 				.add("^ a-zA-Z0-9\\_=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
-		this.putTransferMap("VAR_BLANK", new TransferBuilder()
-				.add(" \t", "VAR_BLANK")
+		this.putTransferMap("L_VAR_BLANK", new TransferBuilder()
+				.add(" \t", "L_VAR_BLANK")
 				.add("=", "STORE_OP")
 				.add("^ \t=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
@@ -69,8 +69,8 @@ public class StoreParser extends AbstractParser<Instruction> {
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"START", "VAR"},
-			target={"VAR"}
+			source={"START", "L_VAR"},
+			target={"L_VAR"}
 	)
 	public void handleVar(Event event) throws Exception {
 		this.LValueBuffer.append(event.getCh());
@@ -94,7 +94,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"START", "VAR", "VAR_BLANK", "STORE_OP"},
+			source={"START", "L_VAR", "L_VAR_BLANK", "STORE_OP"},
 			target={"NOT_STORE_OP"}
 	)
 	public void handleNotStoreOp(Event event) throws Exception {

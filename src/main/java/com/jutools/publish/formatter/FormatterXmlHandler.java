@@ -97,7 +97,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 		
 		// 초기화 수행
 		//
-		Reflections reflect = new Reflections("com.gromit25.presspublisher.formatter");
+		Reflections reflect = new Reflections("com.jutools.publish.formatter");
 		
 		this.loadFormatterTypes(reflect);
 		this.loadFormatterAttrSetter(reflect);

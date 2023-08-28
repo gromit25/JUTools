@@ -3,7 +3,7 @@ package com.jutools.publish.formatter;
 import java.io.File;
 import java.lang.reflect.Method;
 
-import com.jutools.mathexp.MathExp;
+import com.jutools.olexp.OLExp;
 
 /**
  * 자바의 기본타입(primitive type) 또는 공통적으로 사용되는 타입(ex. Evaluator)에 대한
@@ -111,9 +111,9 @@ public class CommonAttrSetter {
 	 * @param setMethod formatter의 속성값 setMethod
 	 * @param attrValue formatter에 설정할 속성의 문자열값
 	 */
-	@FormatterAttrSetter(MathExp.class)
+	@FormatterAttrSetter(OLExp.class)
 	public static void setEvaluator(Formatter formatter, Method setMethod, String attrValue) throws Exception {
-		setMethod.invoke(formatter, MathExp.compile(attrValue));
+		setMethod.invoke(formatter, OLExp.compile(attrValue));
 	}
 	
 }
