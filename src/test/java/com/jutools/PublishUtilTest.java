@@ -23,15 +23,11 @@ public class PublishUtilTest {
 		Map<String, Object> values = new HashMap<>();
 		values.put("messages", messages);
 		
-		
-		File formatFile = new File("resources/publisher/testformat.xml");
-		System.out.println(formatFile.canRead());
-		
-		byte[] read = BytesUtil.readAllBytes(formatFile);
-		System.out.println(new String(read));
-		
 		try {
-			PublishUtil.publishToConsole(formatFile);
+			
+			File formatFile = new File("resources/publisher/testformat.xml");
+			PublishUtil.publishToConsole(formatFile, values);
+			
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
