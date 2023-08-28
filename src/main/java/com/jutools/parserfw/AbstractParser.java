@@ -263,17 +263,24 @@ public abstract class AbstractParser<T> {
 						// pushback할 크기를 가져옴
 						// pushback 크기가 버퍼의 크기보다 크면,
 						// pushback 크기를 버퍼의 크기로 맞춤
-						int pushbackSize = transferFunction.getPushback() * -1;
-						if(pushbackBuffer.remaining() - pushbackSize < 0) {
+						int pushbackSize = 0;
+						if(pushbackSize != Integer.MIN_VALUE) {
+							
+							// 주의) Integer.MIN_VALUE * -1은 Integer.MIN_VALUE(-2147483648)가 나옴
+							pushbackSize = transferFunction.getPushback() * -1;
+							if(pushbackBuffer.remaining() - pushbackSize < 0) {
+								pushbackSize = pushbackBuffer.remaining();
+							}
+							
+						} else {
 							pushbackSize = pushbackBuffer.remaining();
 						}
 						
 						// pushback할 배열 생성
 						char[] unread = new char[pushbackSize];
-						copyBuffer(pushbackBuffer,
-							pushbackBuffer.remaining() - pushbackSize
+						copyBuffer(pushbackBuffer
 							, unread
-							, 0
+							, pushbackBuffer.remaining() - pushbackSize
 							, pushbackSize 
 						);
 						
@@ -335,15 +342,15 @@ public abstract class AbstractParser<T> {
 	} // End of parse
 	
 	/**
+	 * CharBuffer의 내용을 배열(dst)에 복사하는 메소드
 	 * 
-	 * @param src
-	 * @param index
-	 * @param dst
-	 * @param offset
-	 * @param length
+	 * @param src 복사할 CharBuffer
+	 * @param dst 복사 대상 배열
+	 * @param index CharBuffer의 시작 위치
+	 * @param length 복사할 크기
 	 */
-	private static void copyBuffer(CharBuffer src, int index, char[] dst, int offset, int length) {
-		 for (int i = offset, j = index; i < offset + length; i++, j++) {
+	private static void copyBuffer(CharBuffer src, char[] dst, int index, int length) {
+		 for (int i = 0, j = index; i < length; i++, j++) {
 	         dst[i] = src.get(j);
 		 }
 	}

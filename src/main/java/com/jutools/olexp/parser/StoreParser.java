@@ -38,26 +38,30 @@ public class StoreParser extends AbstractParser<Instruction> {
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
 				.add("a-zA-Z\\_", "VAR")
-				.add("^ a-zA-Z\\_", "NOT_STORE_OP")
+				.add("^ a-zA-Z\\_", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
 		this.putTransferMap("VAR", new TransferBuilder()
 				.add("a-zA-Z0-9\\_", "VAR")
 				.add(" \t", "VAR_BLANK")
 				.add("=", "STORE_OP")
-				.add("^ a-zA-Z0-9\\_=", "NOT_STORE_OP")
+				.add("^ a-zA-Z0-9\\_=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
 		this.putTransferMap("VAR_BLANK", new TransferBuilder()
 				.add(" \t", "VAR_BLANK")
 				.add("=", "STORE_OP")
-				.add("^ \t=", "NOT_STORE_OP")
+				.add("^ \t=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
 		
 		this.putTransferMap("STORE_OP", new TransferBuilder()
 				.add("^=", "STORE_OP_END")
-				.add("=", "NOT_STORE_OP")
+				.add("=", "NOT_STORE_OP", Integer.MIN_VALUE)
 				.build());
+		
+		// 종료 상태 설정
+		this.putEndStatus("STORE_OP_END");
+		this.putEndStatus("NOT_STORE_OP");
 	}
 	
 	/**

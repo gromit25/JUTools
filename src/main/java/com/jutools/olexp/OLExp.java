@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.jutools.instructions.AbstractExp;
 import com.jutools.instructions.Instruction;
-import com.jutools.olexp.parser.EqualityParser;
+import com.jutools.olexp.parser.StoreParser;
 import com.jutools.parserfw.AbstractParser;
 
 /**
@@ -23,7 +23,7 @@ public class OLExp extends AbstractExp {
 
 	@Override
 	protected AbstractParser<Instruction> getRootParser() throws Exception {
-		return new EqualityParser();
+		return new StoreParser();
 	}
 	
 	/**

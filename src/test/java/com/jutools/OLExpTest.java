@@ -2,6 +2,8 @@ package com.jutools;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Test;
 
 import com.jutools.olexp.OLExp;
@@ -177,6 +179,24 @@ public class OLExpTest {
 								.pop(Boolean.class);
 			
 			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testStore1_1() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+
+			OLExp.compile("a = 10")
+				.execute(values);
+			
+			assertEquals(10.0, (double)(values.get("a")), 0.1);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
