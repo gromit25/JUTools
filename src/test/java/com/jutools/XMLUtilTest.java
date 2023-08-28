@@ -3,10 +3,12 @@ package com.jutools;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 
 import org.junit.Test;
 
 import com.jutools.xml.XMLArray;
+import com.jutools.xml.XMLNode;
 
 public class XMLUtilTest {
 	
@@ -133,5 +135,27 @@ public class XMLUtilTest {
 		
 		assertTrue(checkISBNs(books, "0007"));
 	}
+	
+	@Test
+	public void test() throws Exception {
+		
+		XMLArray printNodes = XMLUtil
+					.getRootNode(new File("resources/publisher/testformat.xml"))
+					.select("foreach>style>print");
+		
+		for(XMLNode node: printNodes) {
+			System.out.println(node.getAttribute("exp"));
+		}
+	}
+	
+	@Test
+	public void test1() throws Exception {
+		
+		XMLNode rootNode = XMLUtil
+					.getRootNode(new File("resources/publisher/testformat.xml"));
+
+		System.out.println(rootNode.getText());
+	}
+
 
 }
