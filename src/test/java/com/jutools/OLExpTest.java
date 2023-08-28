@@ -193,10 +193,99 @@ public class OLExpTest {
 			
 			HashMap<String, Object> values = new HashMap<String, Object>();
 
-			OLExp.compile("a = 10")
+			OLExp.compile("a=10")
 				.execute(values);
 			
 			assertEquals(10.0, (double)(values.get("a")), 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testStore1_2() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+
+			OLExp.compile("a =(3*4/ 2 + -2 * 2.5) * 10")
+				.execute(values);
+			
+			assertEquals(10.0, (double)(values.get("a")), 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testStore1_3() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			values.put("compare", 10);
+
+			OLExp.compile("a = (3*4/ 2 + -2 * 2.5) * 10 == compare")
+				.execute(values);
+			
+			assertEquals(true, (boolean)(values.get("a")));
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMethodCall1_1() {
+		
+		try {
+			
+			Double result = OLExp.compile("pow(10, 2)")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(100.0, result, 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMethodCall1_2() {
+		
+		try {
+			
+			Double result = OLExp.compile("(pow(10, 2) + 10)/2")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(55.0, result, 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMethodCall1_3() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			OLExp.compile("a123=(pow(10, 2) + 10)/2 - 5")
+				.execute(values);
+			
+			assertEquals(50.0, (double)(values.get("a123")), 0.1);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
