@@ -112,12 +112,10 @@ public class VarParser extends AbstractParser<Instruction> {
 		
 		if(this.isMethod == false) {
 			
-			// LOAD_VAR 변수명
-			LOAD_VAR inst = new LOAD_VAR();
-			inst.addParam(this.buffer.toString());
-			
-			// Node로 설정
-			this.setNodeData(inst);
+			// LOAD_VAR 명령어 Node로 설정
+			this.setNodeData(
+				new LOAD_VAR().addParam(this.buffer.toString())
+			);
 			
 		} else {
 			

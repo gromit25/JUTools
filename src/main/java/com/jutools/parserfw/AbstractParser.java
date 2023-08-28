@@ -23,6 +23,7 @@ import lombok.Setter;
 public abstract class AbstractParser<T> {
 
 	/** 파싱 상태 변수 */
+	@Getter(value = AccessLevel.PROTECTED)
 	private String status;
 	
 	/** 파싱 트리의 루트 노드 */

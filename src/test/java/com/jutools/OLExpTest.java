@@ -8,7 +8,30 @@ import org.junit.Test;
 
 import com.jutools.olexp.OLExp;
 
+/**
+ * 
+ * @author jmsohn
+ */
 public class OLExpTest {
+	
+	@Test
+	public void testCalculate1_1() {
+		try {
+
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			values.put("test", 10);
+			
+			Double result = OLExp.compile("test")
+								.execute(values)
+								.pop(Double.class);
+			
+			assertEquals(10.0, result, 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 
 	@Test
 	public void testComparison1_1() {

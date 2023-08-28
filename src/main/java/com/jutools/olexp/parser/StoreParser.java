@@ -1,6 +1,7 @@
 package com.jutools.olexp.parser;
 
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.LOAD_VAR;
 import com.jutools.instructions.STORE;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.TransferBuilder;
@@ -60,6 +61,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 				.build());
 		
 		// 종료 상태 설정
+		this.putEndStatus("L_VAR");
 		this.putEndStatus("STORE_OP_END");
 		this.putEndStatus("NOT_STORE_OP");
 	}
@@ -85,8 +87,14 @@ public class StoreParser extends AbstractParser<Instruction> {
 			target={"STORE_OP_END"}
 	)
 	public void handleStoreOp(Event event) throws Exception {
-		this.setNodeData(new STORE().addParam(this.LValueBuffer.toString()));
-		this.addChild(new EqualityParser().parse(event.getReader()));
+		
+		this.setNodeData(
+			new STORE().addParam(this.LValueBuffer.toString())
+		);
+		
+		this.addChild(
+			new EqualityParser().parse(event.getReader())
+		);
 	}
 	
 	/**
@@ -98,7 +106,19 @@ public class StoreParser extends AbstractParser<Instruction> {
 			target={"NOT_STORE_OP"}
 	)
 	public void handleNotStoreOp(Event event) throws Exception {
-		this.setNode(new EqualityParser().parse(event.getReader()));
+		this.setNode(
+			new EqualityParser().parse(event.getReader())
+		);
+	}
+	
+	@Override
+	protected void exit() throws Exception {
+		
+		if(this.getStatus().equals("L_VAR") == true) {
+			this.setNodeData(
+				new LOAD_VAR().addParam(this.LValueBuffer.toString())
+			);
+		}
 	}
 
 }
