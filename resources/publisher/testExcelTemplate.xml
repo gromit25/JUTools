@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook template="resources/org.xlsx">
+
+	<!-- Template1 Worksheet를 복제하여 2개의 Worksheet를 만듦 -->
+	<for initExp="index = 0" condExp="index &lt; 2" stepExp="index = index+1">
+		<worksheet name="='Test' + Integer.toString(index)" copyFrom="Template1">
+			<cursor position="2:1"/>
+			<rowcells>
+				<cell type="NUMERIC">|<print exp="1000*(index + 1)"/></cell>
+				<cell type="NUMERIC">|2</cell>
+			</rowcells>
+		</worksheet>
+	</for>
+	
+	<!-- Template1 Worksheet를 삭제함 -->
+	<worksheet name="Template1" remove="TRUE"/>
+	
+</workbook>
