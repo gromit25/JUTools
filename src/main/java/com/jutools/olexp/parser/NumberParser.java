@@ -8,20 +8,20 @@ import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 
 /**
+ * 숫자 파서 수행
  * 
  * @author jmsohn
  */
 public class NumberParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** 숫자 저장 버퍼 변수 */
 	private StringBuffer buffer;
 
 	/**
-	 * 
+	 * 생성자
 	 */
 	public NumberParser() throws Exception {
 		super();
-		this.buffer = new StringBuffer();
 	}
 
 	@Override
@@ -34,6 +34,9 @@ public class NumberParser extends AbstractParser<Instruction> {
 	 */
 	@Override
 	protected void init() throws Exception {
+		
+		// 숫자 저장 버퍼 생성
+		this.buffer = new StringBuffer();
 		
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
