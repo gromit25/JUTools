@@ -112,6 +112,38 @@ public class OLExpTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	public void testString1_5() {
+		try {
+
+			String result = OLExp.compile("'abc' + 'def'")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("abcdef", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testString1_6() {
+		try {
+
+			String result = OLExp.compile("'홍' + '길동'")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("홍길동", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 
 	@Test
 	public void testComparison1_1() {
