@@ -193,7 +193,7 @@ public class TypeUtil {
 	/**
 	 * 객체의 필드에 값을 설정<br>
 	 * private, protected 필드에 값을 설정할 수 있도록 함<br>
-	 * 이 메소드를 사용할 경우 illegal access warning이 발생함
+	 * 이 메소드를 사용할 경우 illegal access warning이 발생함<br>
 	 * 이는 java 실행시 "--illegal-access=warn" 옵션을 추가하여 방지할 수 있음
 	 * 
 	 * @param obj 객체
