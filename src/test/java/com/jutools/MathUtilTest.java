@@ -223,7 +223,7 @@ public class MathUtilTest {
 	public void testCalculate5_1() {
 		try {
 			
-			double result = MathUtil.calculate("300 KB");
+			double result = MathUtil.calculate("300 kB");
 			assertEquals(300000, result, 0);
 			
 		} catch(Exception ex) {
