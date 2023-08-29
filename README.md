@@ -356,6 +356,79 @@ try {
 * 엑셀 파일 출력 결과   
 ![엑셀출력화면](https://github.com/gromit25/jutools/blob/main/resources/readmeimg/%EC%97%91%EC%85%80%EC%B6%9C%EB%A0%A51.png)
 
+#### 엑셀 출력 - 라인차트   
+* 엑셀 라인차트 출력 format xml file(resources/publisher/testExcelLineChart.xml)    
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+	<worksheet name="Line Chart">
+		<cursor position="0:0"/>
+		<rowcells>
+			<cell>|Russia</cell>
+			<cell>|Canada</cell>
+			<cell>|USA</cell>
+			<cell>|China</cell>
+			<cell>|Brazil</cell>
+			<cell>|Australia</cell>
+			<cell>|India</cell>
+		</rowcells>
+		<rowcells>
+			<cell type="NUMERIC">|17098242</cell>
+			<cell type="NUMERIC">|9984670</cell>
+			<cell type="NUMERIC">|9826675</cell>
+			<cell type="NUMERIC">|9596961</cell>
+			<cell type="NUMERIC">|8514877</cell>
+			<cell type="NUMERIC">|7741220</cell>
+			<cell type="NUMERIC">|3287263</cell>
+		</rowcells>
+		<rowcells>
+			<cell type="NUMERIC">|14590041</cell>
+			<cell type="NUMERIC">|35151728</cell>
+			<cell type="NUMERIC">|32993302</cell>
+			<cell type="NUMERIC">|14362887</cell>
+			<cell type="NUMERIC">|21172141</cell>
+			<cell type="NUMERIC">|25335727</cell>
+			<cell type="NUMERIC">|13724923</cell>
+		</rowcells>
+
+		<chart
+			title="Area-wise Top Seven Countries"
+			range="4:0~26:7">
+		
+			<axes>
+				<category-axis position="BOTTOM" title="Country"/>
+				<value-axis position="LEFT" title="Area &amp; Population"/>
+			</axes>
+			
+			<line-series title="Area" smooth="false" mark-style="STAR">
+				<category-ds range="0:0~0:6" type="STRING"/>
+				<value-ds range="1:0~1:6" type="NUMBER"/>
+			</line-series>
+			
+			<bar-series title="Population" direction="COL">
+				<category-ds range="0:0~0:6" type="STRING"/>
+				<value-ds range="2:0~2:6" type="NUMBER"/>
+			</bar-series>
+			
+		</chart>
+		
+	</worksheet>
+</workbook>
+```
+* java 프로그램    
+```java
+try {
+
+    File formatFile = new File("resources/publisher/testExcelLineChart.xml");   
+    File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
+
+    PublishUtil.publishToExcel(formatFile, outFile);
+
+} catch(Exception ex) {
+    ex.printStackTrace();
+}
+```
+
 ### MathUtil
 ----------------------------------    
 > 수학식 관련 Utility    
