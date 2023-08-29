@@ -7,14 +7,15 @@ import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 
 /**
- * 
+ * 변수, 메소드, 숫자 등 항목에 대한 파싱 수행<br>
+ * 실제 파싱은 각 파서에서 수행함, 여기에서는 종류별로 나누어 주는 역활
  * 
  * @author jmsohn
  */
 public class FactorParser extends AbstractParser<Instruction> {
 
 	/**
-	 * 
+	 * 생성자
 	 */
 	public FactorParser() throws Exception {
 		super();
@@ -52,6 +53,11 @@ public class FactorParser extends AbstractParser<Instruction> {
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 
+	/**
+	 * 숫자 파싱 
+	 * 
+	 * @param event
+	 */
 	@TransferEventHandler(
 			source={"START"},
 			target={"NUMBER"}
@@ -61,6 +67,11 @@ public class FactorParser extends AbstractParser<Instruction> {
 		this.setNode(parser.parse(event.getReader()));
 	}
 	
+	/**
+	 * 변수, 메소드 파싱
+	 * 
+	 * @param event
+	 */
 	@TransferEventHandler(
 			source={"START"},
 			target={"VAR"}
@@ -70,6 +81,11 @@ public class FactorParser extends AbstractParser<Instruction> {
 		this.setNode(parser.parse(event.getReader()));
 	}
 	
+	/**
+	 * 새로운 괄호가 시작되었을 때 파싱
+	 * 
+	 * @param event
+	 */
 	@TransferEventHandler(
 			source={"START"},
 			target={"ARITHMATIC"}
