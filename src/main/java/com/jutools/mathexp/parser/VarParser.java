@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.jutools.instructions.INVOKE;
 import com.jutools.instructions.Instruction;
 import com.jutools.instructions.LOAD_VAR;
+import com.jutools.olexp.parser.ArithmaticParser;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
@@ -12,19 +13,22 @@ import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
 
 /**
- * 
+ * 변수 및 메소드 파서 수행
  * 
  * @author jmsohn
  */
 public class VarParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** 변수명 혹은 메소드명 */
 	private StringBuffer buffer;
-	/** */
+	/** 메소드 여부 */
 	private boolean isMethod;
-	/** */
+	/** 메소드의 파라미터 목록 */
 	private ArrayList<TreeNode<Instruction>> params;
 
+	/**
+	 * 생성자
+	 */
 	public VarParser() throws Exception {
 		super();
 	}
@@ -106,18 +110,17 @@ public class VarParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * 
+	 * 파싱 종료 처리
 	 */
+	@Override
 	protected void exit() throws Exception {
 		
 		if(this.isMethod == false) {
 			
-			// LOAD_VAR 변수명
-			LOAD_VAR inst = new LOAD_VAR();
-			inst.addParam(this.buffer.toString());
-			
-			// Node로 설정
-			this.setNodeData(inst);
+			// LOAD_VAR 명령어 Node로 설정
+			this.setNodeData(
+				new LOAD_VAR().addParam(this.buffer.toString())
+			);
 			
 		} else {
 			
@@ -137,5 +140,4 @@ public class VarParser extends AbstractParser<Instruction> {
 			this.setNode(instNode);
 		}
 	}
-
 }
