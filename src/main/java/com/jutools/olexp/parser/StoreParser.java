@@ -120,5 +120,4 @@ public class StoreParser extends AbstractParser<Instruction> {
 			);
 		}
 	}
-
 }
