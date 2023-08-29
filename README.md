@@ -353,6 +353,8 @@ try {
     ex.printStackTrace();
 }
 ```
+* 엑셀 파일 출력 결과   
+![엑셀출력화면](https://github.com/gromit25/jutools/blob/main/resources/readmeimg/%EC%97%91%EC%85%80%EC%B6%9C%EB%A0%A51.png)
 
 ### MathUtil
 ----------------------------------    
