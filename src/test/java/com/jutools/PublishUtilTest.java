@@ -10,6 +10,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
+/**
+ * 
+ * 
+ * @author jmsohn
+ */
 public class PublishUtilTest {
 
 	@Test
@@ -58,6 +63,44 @@ public class PublishUtilTest {
 			
 			ex.printStackTrace();
 			fail("fail");
+		}
+	}
+	
+	@Test
+	public void testExcelLineChart1() throws Exception {
+		
+		try {
+
+			File formatFile = new File("resources/publisher/testExcelLineChart.xml");   
+			File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
+
+			PublishUtil.publishToExcel(formatFile, outFile);
+			
+			assertTrue(true);
+
+		} catch(Exception ex) {
+			
+		    ex.printStackTrace();
+		    fail("fail");
+		}
+	}
+	
+	@Test
+	public void testExcelPieChart1() throws Exception {
+		
+		try {
+
+			File formatFile = new File("resources/publisher/testExcelPieChart.xml");   
+			File outFile = new File("C:\\data\\publish\\testPieChart.xlsx");
+
+			PublishUtil.publishToExcel(formatFile, outFile);
+			
+			assertTrue(true);
+
+		} catch(Exception ex) {
+			
+		    ex.printStackTrace();
+		    fail("fail");
 		}
 	}
 
