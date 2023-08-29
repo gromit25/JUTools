@@ -29,6 +29,7 @@ import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
+import com.jutools.publish.formatter.text.PrintFormatter;
 import com.jutools.publish.formatter.text.TextFlowFormatter;
 import com.jutools.publish.formatter.text.TextFormatOutputStream;
 
@@ -148,7 +149,7 @@ public class CellFormatter extends AbstractExcelFormatter {
 		// text/flow formatter 여부는
 		// TextFlowFormatter의 추상 클래스인 AbstractTextFormatter에서 체크함
 		
-		if(formatter instanceof TextFlowFormatter) {
+		if(formatter instanceof TextFlowFormatter || formatter instanceof PrintFormatter) {
 			this.getCellTextFormatter().addChildFormatter(formatter);
 		} else {
 			throw new FormatterException(this, "unexpected formatter type:" + formatter.getClass());
