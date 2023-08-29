@@ -332,6 +332,26 @@ try {
 ```
 * java 프로그램    
 ```java
+// 출력할 메시지 설정
+ArrayList<String> messages = new ArrayList<String>();
+messages.add("test message 1");
+messages.add("test message 2");
+
+Map<String, Object> values = new HashMap<>();
+values.put("messages", messages);
+
+try {
+
+    // 출력 format file
+    File formatFile = new File("resources/publisher/testExcelformat.xml");
+    // 출력할 엑셀 파일
+    File outFile = new File("C:\\data\\publish\\test.xlsx");
+    // 엑셀 파일 출력 실행
+    PublishUtil.publishToExcel(formatFile, outFile, values);
+		
+} catch(Exception ex) {
+    ex.printStackTrace();
+}
 ```
 
 ### MathUtil
