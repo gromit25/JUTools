@@ -247,7 +247,7 @@ for(XMLNode book: books) {
 }
 ```
 
-### PublishUtil - Under construction   
+### PublishUtil
 ----------------------------------    
 > 출력 Utility (Console, txt 파일, 엑셀 파일 등)    
 > XML에 정의에 형태로 출력 수행    
@@ -346,6 +346,7 @@ try {
     File formatFile = new File("resources/publisher/testExcelformat.xml");
     // 출력할 엑셀 파일
     File outFile = new File("C:\\data\\publish\\test.xlsx");
+    
     // 엑셀 파일 출력 실행
     PublishUtil.publishToExcel(formatFile, outFile, values);
 		
@@ -419,9 +420,12 @@ try {
 ```java
 try {
 
-    File formatFile = new File("resources/publisher/testExcelLineChart.xml");   
+    // 출력 format file
+    File formatFile = new File("resources/publisher/testExcelLineChart.xml");
+    // 출력할 엑셀 파일
     File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
 
+    // 엑셀 파일 출력 실행
     PublishUtil.publishToExcel(formatFile, outFile);
 
 } catch(Exception ex) {
@@ -430,6 +434,63 @@ try {
 ```
 * 엑셀 파일 출력 결과   
 ![엑셀출력화면](https://github.com/gromit25/jutools/blob/main/resources/readmeimg/%EC%97%91%EC%85%80%EB%9D%BC%EC%9D%B8%EC%B0%A8%ED%8A%B8%EC%B6%9C%EB%A0%A51.png)
+
+#### 엑셀 출력 - 파이차트   
+* 엑셀 파이차트 출력 format xml file(resources/publisher/testExcelPieChart.xml)    
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<workbook>
+	<worksheet name="Line Chart">
+		<cursor position="0:0"/>
+		<rowcells>
+			<cell>|Russia</cell>
+			<cell>|Canada</cell>
+			<cell>|USA</cell>
+			<cell>|China</cell>
+			<cell>|Brazil</cell>
+			<cell>|Australia</cell>
+			<cell>|India</cell>
+		</rowcells>
+		
+		<rowcells>
+			<cell type="NUMERIC">|17098242</cell>
+			<cell type="NUMERIC">|9984670</cell>
+			<cell type="NUMERIC">|9826675</cell>
+			<cell type="NUMERIC">|9596961</cell>
+			<cell type="NUMERIC">|8514877</cell>
+			<cell type="NUMERIC">|7741220</cell>
+			<cell type="NUMERIC">|3287263</cell>
+		</rowcells>
+
+		<chart
+			title="Area-wise Top Seven Countries"
+			range="4:0~26:7">
+			
+			<legend position="RIGHT"/>
+			
+			<pie-series title="Area">
+				<category-ds range="0:0~0:6" type="STRING"/>
+				<value-ds range="1:0~1:6" type="NUMBER"/>
+			</pie-series>
+		</chart>
+	</worksheet>
+</workbook>
+```
+```java
+try {
+
+    // 출력 format file
+    File formatFile = new File("resources/publisher/testExcelPieChart.xml");   
+    // 출력할 엑셀 파일
+    File outFile = new File("C:\\data\\publish\\testPieChart.xlsx");
+    
+    // 엑셀 파일 출력 실행
+    PublishUtil.publishToExcel(formatFile, outFile);
+    
+} catch(Exception ex) {
+    ex.printStackTrace();
+}
+```
 
 ### MathUtil
 ----------------------------------    
