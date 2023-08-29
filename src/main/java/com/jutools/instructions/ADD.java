@@ -37,14 +37,35 @@ public class ADD extends Instruction {
 			result = ((Double)p1) + ((Double)p2);
 
 		} else {
-
+			
 			// p1, p2의 문자열을 합침
-			result = p1.toString() + p2.toString();
+			result = toString(p1) + toString(p2);
 		
 		}
 		
 		// 스택에 결과 푸시
 		stack.push(result);
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	private static String toString(Object p) throws Exception {
+		
+		if(p instanceof Double) {
+			
+			String pStr = p.toString();
+			if(pStr.endsWith(".0") == true) {
+				pStr = pStr.substring(0, pStr.length() - 2);
+			}
+			
+			return pStr;
+				
+		} else {
+			return p.toString();
+		}
 	}
 
 }

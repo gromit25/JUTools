@@ -32,6 +32,86 @@ public class OLExpTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	public void testCalculate1_2() {
+		try {
+
+			Double result = OLExp.compile("10")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(10.0, result, 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testString1_1() {
+		try {
+
+			String result = OLExp.compile("'a'")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("a", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testString1_2() {
+		try {
+
+			String result = OLExp.compile("'a' + 1")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("a1", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testString1_3() {
+		try {
+
+			String result = OLExp.compile("1 + 'abc'")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("1abc", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testString1_4() {
+		try {
+
+			String result = OLExp.compile("(12 + 1/2) + 'a'")
+								.execute()
+								.pop(String.class);
+			
+			assertEquals("12.5a", result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 
 	@Test
 	public void testComparison1_1() {

@@ -36,8 +36,9 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.add(" \t", "START")
 				.add("0-9\\-", "NUMBER", -1)
 				.add("a-zA-Z\\_", "VAR", -1)
+				.add("'", "STR", -1)
 				.add("(", "EXPRESSION")
-				.add("^ \t0-9\\-a-zA-Z\\_(", "ERROR")
+				.add("^ \t0-9'\\-a-zA-Z\\_(", "ERROR")
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
@@ -53,6 +54,7 @@ public class FactorParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("NUMBER", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("STR", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
@@ -72,6 +74,15 @@ public class FactorParser extends AbstractParser<Instruction> {
 	)
 	public void handleVar(Event event) throws Exception {
 		VarParser parser = new VarParser();
+		this.setNode(parser.parse(event.getReader()));
+	}
+	
+	@TransferEventHandler(
+			source={"START"},
+			target={"STR"}
+	)
+	public void handleStr(Event event) throws Exception {
+		StringParser parser = new StringParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
 	
