@@ -12,19 +12,22 @@ import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
 
 /**
- * 
+ * 변수 및 메소드 파서 수행
  * 
  * @author jmsohn
  */
 public class VarParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** 변수명 혹은 메소드명 */
 	private StringBuffer buffer;
-	/** */
+	/** 메소드 여부 */
 	private boolean isMethod;
-	/** */
+	/** 메소드의 파라미터 목록 */
 	private ArrayList<TreeNode<Instruction>> params;
 
+	/**
+	 * 생성자
+	 */
 	public VarParser() throws Exception {
 		super();
 	}
@@ -136,5 +139,4 @@ public class VarParser extends AbstractParser<Instruction> {
 			this.setNode(instNode);
 		}
 	}
-
 }
