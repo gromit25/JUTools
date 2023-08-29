@@ -158,13 +158,13 @@ public class TypeUtil {
 	 * List 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
 	 * 
 	 * @param array 변환할 List 객체
-	 * @param type List 객체 요소의 타입
+	 * @param elementType List 객체 요소의 타입
 	 * @return 변환된 배열 객체
 	 */
-	public static <T> T[] toArray(List<T> arrayList, Class<T> type) throws Exception {
+	public static <T> T[] toArray(List<T> arrayList, Class<T> elementType) throws Exception {
 		
 		// 리스트의 요소 타입이 정의 되지 않은 경우 예외 발생
-		if(type == null) {
+		if(elementType == null) {
 			throw new Exception("type is null.");
 		}
 		
@@ -179,7 +179,7 @@ public class TypeUtil {
 		// 배열 객체 생성
 		// new T[];는 안됨
 		@SuppressWarnings("unchecked")
-		T[] array = (T[])Array.newInstance(type, arrayLength);
+		T[] array = (T[])Array.newInstance(elementType, arrayLength);
 		
 		// 배열 복사
 		for(int index = 0; index < arrayLength; index++) {
