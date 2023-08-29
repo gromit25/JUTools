@@ -106,8 +106,9 @@ public class VarParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * 
+	 * 파싱 종료 처리
 	 */
+	@Override
 	protected void exit() throws Exception {
 		
 		if(this.isMethod == false) {

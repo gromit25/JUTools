@@ -154,7 +154,8 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	/**
 	 * 파싱 종료 처리
 	 */
-	public void exit() {
+	@Override
+	protected void exit() throws Exception {
 		
 		if(this.operation != null && this.p2 != null) {
 		

@@ -81,6 +81,7 @@ public class NumberParser extends AbstractParser<Instruction> {
 	/**
 	 * 파싱 종료 처리
 	 */
+	@Override
 	protected void exit() throws Exception {
 		
 		// LOAD_NUMBER "숫자"
