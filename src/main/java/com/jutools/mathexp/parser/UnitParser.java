@@ -13,15 +13,15 @@ import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
 
 /**
- * 
+ * 단위 파싱 수행
  * 
  * @author jmsohn
  */
 public class UnitParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** 값에 대한 파싱 트리 객체 */
 	private TreeNode<Instruction> value;
-	/** */
+	/** 단위에 대한 버퍼 */
 	private StringBuffer unitBuffer;
 
 	/**
@@ -69,6 +69,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * 값에 대한 처리 수행
 	 * 
 	 * @param event
 	 */
@@ -83,6 +84,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 
 	
 	/**
+	 * 단위에 대한 처리 수행
 	 * 
 	 * @param event
 	 */
@@ -95,18 +97,18 @@ public class UnitParser extends AbstractParser<Instruction> {
 	}
 
 	/**
-	 * 
+	 * 파싱 종료 처리
 	 */
 	@Override
 	protected void exit() throws Exception {
 		
-		// 단위(unit)을 접두사(unit prefix)와 기본단위(base unit)로 분리함
+		// 단위(unit)를 접두사(unit prefix)와 기본단위(base unit)로 분리함
 		String unit = this.unitBuffer.toString();
 		String[] unitPrefixAndBase = MathUtil.devideUnitToPrefixAndBase(unit);
 		String unitPrefix = unitPrefixAndBase[0];
 		String baseUnit = unitPrefixAndBase[1];
 
-		//
+		// 
 		this.setNodeData(new NOP());
 		this.addChildData(new LOAD_STRING().addParam(baseUnit));
 		
