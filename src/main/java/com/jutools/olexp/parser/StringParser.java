@@ -9,14 +9,18 @@ import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 
 /**
- * 
+ * 문자열 파싱 수행
  * 
  * @author jmsohn
  */
 public class StringParser extends AbstractParser<Instruction> {
 	
+	/** 문자열 저장 버퍼 */
 	private StringBuffer strBuffer;
 
+	/**
+	 * 생성자
+	 */
 	public StringParser() throws Exception {
 		super();
 	}
@@ -29,7 +33,7 @@ public class StringParser extends AbstractParser<Instruction> {
 	@Override
 	protected void init() throws Exception {
 		
-		//
+		// 문자열 임시 저장 버퍼 생성
 		this.strBuffer = new StringBuffer("");
 		
 		// 상태 변환 맵 추가
@@ -63,8 +67,12 @@ public class StringParser extends AbstractParser<Instruction> {
 	
 	@Override
 	protected void exit() throws Exception {
+		
+		// 문자열 생성 (Escape 문자열 처리)
+		String str = StringUtil.escape(this.strBuffer.toString());
+		
 		this.setNodeData(
-			new LOAD_STRING().addParam(StringUtil.escape(this.strBuffer.toString()))
+			new LOAD_STRING().addParam(str)
 		);
 	}
 }
