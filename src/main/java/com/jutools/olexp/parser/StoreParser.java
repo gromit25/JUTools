@@ -8,13 +8,13 @@ import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 
 /**
- * 
+ * L-value에 R-value를 저장 문장 파싱 수행
  * 
  * @author jmsohn
  */
 public class StoreParser extends AbstractParser<Instruction> {
 	
-	/** */
+	/** L-value 변수명 저장 변수 */
 	private StringBuffer LValueBuffer;
 
 	/**
@@ -32,7 +32,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	@Override
 	protected void init() throws Exception {
 		
-		// 속성 초기화
+		// L-value 변수명 저장 버퍼 생성
 		this.LValueBuffer = new StringBuffer("");
 		
 		// 상태 변환 맵 추가
@@ -67,6 +67,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * L-value 변수 파싱
 	 * 
 	 * @param event
 	 */
@@ -79,6 +80,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * L-value 저장 파싱 완료시 수행
 	 * 
 	 * @param event
 	 */
@@ -98,6 +100,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
+	 * L-value 저장이 아닐 경우 파싱 수행
 	 * 
 	 * @param event
 	 */
