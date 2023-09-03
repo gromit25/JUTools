@@ -10,6 +10,11 @@ import org.junit.Test;
 
 import com.jutools.CronJob.CronExp;
 
+/**
+ * CronJob 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class CronJobTest {
 
 	@Test

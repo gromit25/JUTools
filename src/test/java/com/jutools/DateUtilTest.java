@@ -4,6 +4,11 @@ import java.util.Date;
 
 import org.junit.Test;
 
+/**
+ * DateUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class DateUtilTest {
 
 	@Test

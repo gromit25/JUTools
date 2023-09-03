@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.jutools.olexp.OLExp;
 
 /**
+ * OLExp 클래스의 테스트 케이스
  * 
  * @author jmsohn
  */

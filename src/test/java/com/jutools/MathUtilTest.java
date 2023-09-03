@@ -8,6 +8,11 @@ import org.junit.Test;
 
 import com.jutools.mathexp.MathResult;
 
+/**
+ * MathUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class MathUtilTest {
 
 	@Test

@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * CipherUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class CipherUtilTest {
 
 	@Test

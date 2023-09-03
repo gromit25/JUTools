@@ -11,6 +11,11 @@ import java.nio.file.StandardOpenOption;
 
 import org.junit.Test;
 
+/**
+ * FileChannelUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class FileChannelUtilTest {
 	
 	/**

@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * FileTracker 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class FileTrackerTest {
 
 	@Test
