@@ -38,18 +38,40 @@ public class RTParameter {
 	@Getter
 	private double kurtosis;
 	
-	/** 최소 값 */
-	@Getter
-	private double min;
-	/** 최대 값 */
-	@Getter
-	private double max;
-	
 	/**
 	 * 생성자
 	 */
 	public RTParameter() {
 		this.reset();
+	}
+	
+	/**
+	 * 생성자
+	 *  
+	 * @param sum 합계
+	 * @param squaredSum 제곱합(표준편차 계산용)
+	 * @param cubedSum 세제곱 합(왜도 계산용)
+	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
+	 * @param count 데이터의 개수
+	 */
+	public RTParameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		
+		// 입력값 검증
+		if(count <= 0) {
+			throw new IllegalArgumentException("count must be greater than 0:" + count); 
+		}
+		
+		//---- 데이터 개수 설정
+		this.count = count;
+		
+		//---- 모수 계산을 위한 설정
+		this.sum = sum;
+		this.squaredSum = squaredSum;
+		this.cubedSum = cubedSum;
+		this.fourthPoweredSum = fourthPoweredSum;
+		
+		//---- 설정된 값으로 모수를 계산
+		this.calParameter();
 	}
 
 	/**
@@ -68,9 +90,6 @@ public class RTParameter {
 		this.variance = 0.0;
 		this.skewness = 0.0;
 		this.kurtosis = 0.0;
-		
-		this.min = Double.MAX_VALUE;
-		this.max = Double.MIN_VALUE;
 	}
 	
 	/**
@@ -110,13 +129,25 @@ public class RTParameter {
 		
 		//---- 데이터 초기화
 		this.count++;
-		double n = (double)this.count;
 		
 		//---- 모수 계산을 위한 값 설정
 		this.sum += value;
 		this.squaredSum += squaredValue;
 		this.cubedSum += cubedValue;
 		this.fourthPoweredSum += fourthPoweredValue;
+		
+		//---- 설정된 값으로 모수를 계산
+		this.calParameter();
+		
+	}
+	
+	/**
+	 * 객체에 설정된 값으로 모수 계산
+	 */
+	private void calParameter() {
+		
+		//---- 데이터 개수 초기화
+		double n = (double)this.count;
 		
 		//---- 모수 계산 수행
 		this.mean = this.sum/n;
@@ -140,15 +171,6 @@ public class RTParameter {
 					+ (3 * fourthPoweredMean)
 				)
 				/ (this.variance * this.variance) - 3;
-		
-		//---- 최대값, 최소값 계산
-		if(this.min > value) {
-			this.min = value;
-		}
-		
-		if(this.max < value) {
-			this.max = value;
-		}
 	}
 	
 	/**
