@@ -19,6 +19,20 @@ public class StatUtil {
 	public RTParameter createRTParameter() {
 		return new RTParameter();
 	}
+
+	/**
+	 * 실시간 모수(parameter) 계산 객체 반환
+	 * 
+	 * @param sum 합계
+	 * @param squaredSum 제곱합(표준편차 계산용)
+	 * @param cubedSum 세제곱 합(왜도 계산용)
+	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
+	 * @param count 데이터의 개수
+	 * @return 실시간 모수(parameter) 계산 객체
+	 */
+	public RTParameter createRTParameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		return new RTParameter(sum, squaredSum, cubedSum, fourthPoweredSum, count);
+	}
 	
 	/**
 	 * 실시간 표본 통계량(statistic) 계산 객체 반환
@@ -28,6 +42,21 @@ public class StatUtil {
 	public RTStatistic createRTStatistic() {
 		return new RTStatistic();
 	}
+
+	/**
+	 * 실시간 표본 통계량(statistic) 계산 객체 반환
+	 * 
+	 * @param sum 합계
+	 * @param squaredSum 제곱합(표준편차 계산용)
+	 * @param cubedSum 세제곱 합(왜도 계산용)
+	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
+	 * @param count 데이터의 개수
+	 * @return 실시간 표본 통계량(statistic) 계산 객체
+	 */
+	public RTStatistic createRTStatistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		return new RTStatistic();
+	}
+
 	
 	/**
 	 * 넬슨룰 검사 객체 생성<br>
