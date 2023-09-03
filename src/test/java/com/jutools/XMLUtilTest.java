@@ -10,6 +10,11 @@ import org.junit.Test;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
 
+/**
+ * XMLUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class XMLUtilTest {
 	
 	private static final String XML_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"

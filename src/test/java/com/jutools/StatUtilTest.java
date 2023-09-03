@@ -7,6 +7,11 @@ import org.junit.Test;
 import com.jutools.stat.RTParameter;
 import com.jutools.stat.RTStatistic;
 
+/**
+ * PublishUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class StatUtilTest {
 
 	@Test

@@ -5,6 +5,11 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+/**
+ * StringUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class StringUtilTest {
 	
 	@Test

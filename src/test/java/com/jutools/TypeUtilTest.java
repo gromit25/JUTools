@@ -7,6 +7,11 @@ import java.util.Vector;
 
 import org.junit.Test;
 
+/**
+ * TypeUtil 클래스의 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class TypeUtilTest {
 
 	@Test
