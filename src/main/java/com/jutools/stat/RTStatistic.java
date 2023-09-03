@@ -38,18 +38,40 @@ public class RTStatistic {
 	@Getter
 	private double kurtosis;
 	
-	/** 최소 값 */
-	@Getter
-	private double min;
-	/** 최대 값 */
-	@Getter
-	private double max;
-	
 	/**
 	 * 생성자
 	 */
 	public RTStatistic() {
 		this.reset();
+	}
+	
+	/**
+	 * 생성자
+	 *  
+	 * @param sum 합계
+	 * @param squaredSum 제곱합(표준편차 계산용)
+	 * @param cubedSum 세제곱 합(왜도 계산용)
+	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
+	 * @param count 데이터의 개수
+	 */
+	public RTStatistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		
+		// 입력값 검증
+		if(count <= 0) {
+			throw new IllegalArgumentException("count must be greater than 0:" + count); 
+		}
+		
+		//---- 데이터 개수 설정
+		this.count = count;
+		
+		//---- 통계값 계산을 위한 설정
+		this.sum = sum;
+		this.squaredSum = squaredSum;
+		this.cubedSum = cubedSum;
+		this.fourthPoweredSum = fourthPoweredSum;
+		
+		//---- 설정된 값으로 표본 통계량을 계산
+		this.calStatistic();
 	}
 
 	/**
@@ -68,9 +90,6 @@ public class RTStatistic {
 		this.variance = 0.0;
 		this.skewness = 0.0;
 		this.kurtosis = 0.0;
-		
-		this.min = Double.MAX_VALUE;
-		this.max = Double.MIN_VALUE;
 	}
 	
 	/**
@@ -110,13 +129,24 @@ public class RTStatistic {
 		
 		//---- 데이터 초기화
 		this.count++;
-		double n = (double)this.count;
 		
 		//---- 표본 통계량 계산을 위한 값 설정
 		this.sum += value;
 		this.squaredSum += squaredValue;
 		this.cubedSum += cubedValue;
 		this.fourthPoweredSum += fourthPoweredValue;
+		
+		//---- 설정된 값으로 표본 통계량을 계산
+		this.calStatistic();
+	}
+	
+	/**
+	 * 객체에 설정된 값으로 통계량 계산
+	 */
+	private void calStatistic() {
+		
+		//---- 데이터 초기화
+		double n = (double)this.count;
 		
 		//---- 표본 통계량 계산 수행
 		this.mean = this.sum/n;
@@ -125,14 +155,14 @@ public class RTStatistic {
 		double fourthPoweredMean = cubedMean * this.mean;
 
 		//---- 분산 계산
-		if(this.count < 2) {
+		if(n < 2) {
 			this.variance = 0.0;
 		} else {
 			this.variance = (this.squaredSum - (squaredMean * n)) / (n - 1);
 		}
 		
 		//---- 왜도 계산
-		if(this.count < 3) {
+		if(n < 3) {
 			this.skewness = 0.0;
 		} else {
 			
@@ -147,7 +177,7 @@ public class RTStatistic {
 		}
 		
 		//---- 첨도 계산
-		if(this.count < 4) {
+		if(n < 4) {
 			this.kurtosis = 0.0;
 		} else {
 			
@@ -163,15 +193,6 @@ public class RTStatistic {
 		  		)
 				/ (this.variance * this.variance)
 				- (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3));
-		}
-		
-		//---- 최대값, 최소값 계산
-		if(this.min > value) {
-			this.min = value;
-		}
-		
-		if(this.max < value) {
-			this.max = value;
 		}
 	}
 	
