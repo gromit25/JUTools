@@ -7,6 +7,11 @@ import org.junit.Test;
 import com.jutools.stat.RTParameter;
 import com.jutools.stat.RTStatistic;
 
+/**
+ * 통계 관련 테스트 케이스
+ * 
+ * @author jmsohn
+ */
 public class StatTest {
 
 	@Test
