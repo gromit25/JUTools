@@ -2,6 +2,7 @@ package com.jutools;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.function.Function;
 
@@ -219,7 +220,10 @@ public class TypeUtil {
 		}
 		
 		// 접근 가능하도록 수정
-		field.setAccessible(true);
+		int modifier = field.getModifiers();
+		if(Modifier.isPublic(modifier) == false || Modifier.isFinal(modifier) == true) { 
+			field.setAccessible(true);
+		}
 		
 		// 값을 설정함
 		field.set(obj, value);
