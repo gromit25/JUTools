@@ -6,8 +6,16 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
+import com.jutools.TypeUtil;
+
 import lombok.Data;
 
+/**
+ * Under Construction
+ * 
+ * @author jmsohn
+ * @param <T>
+ */
 public class BytesMapper<T> {
 	
 	private Class<T> mappingClass;
@@ -34,20 +42,13 @@ public class BytesMapper<T> {
 		Field[] fields = mappingClass.getFields();
 		for(Field field: fields) {
 			
-			MapInfo mapInfo = new MapInfo(mappingClass);
+			MapInfo mapInfo = new MapInfo(field);
 			
 			//
 			BytesMap map = field.getAnnotation(BytesMap.class);
 			if(map == null) {
 				continue;
 			}
-			
-			//
-			mapInfo.setFieldSetter(field);
-			mapInfo.setOrder(map.order());
-			mapInfo.setSize(map.size());
-			mapInfo.setSkip(map.skip());
-			mapInfo.setMethod(map.method());
 			
 			//
 			this.totalSize += mapInfo.getSkip();
@@ -69,7 +70,6 @@ public class BytesMapper<T> {
 	 * 
 	 * @param bytes
 	 * @return
-	 * @throws Exception
 	 */
 	public T mapping(byte[] bytes) throws Exception {
 		
@@ -85,31 +85,7 @@ public class BytesMapper<T> {
 		for(MapInfo mapInfo: this.maps) {
 			
 			loc += mapInfo.getSkip();
-			
-			byte[] mappedBytes = null;
-			if(mapInfo.getSize() > 0) {
-				
-				mappedBytes = new byte[mapInfo.getSize()];
-				System.arraycopy(bytes, loc, mappedBytes, 0, mappedBytes.length);
-				
-				if(mapInfo.getMethod() != null) {
-					Object result = mapInfo.getMethod().invoke(obj, mappedBytes);
-					mapInfo.getFieldSetter().invoke(obj, result);
-				}
-				
-			} else {
-				
-				Class<?> fieldType = mapInfo.getField().getType();
-				
-				if(fieldType == int.class || fieldType == Integer.class) {
-					mappedBytes = new byte[4];
-					System.arraycopy(bytes, loc, mappedBytes, 0, mappedBytes.length);
-					Integer value = ByteBuffer.wrap(bytes).getInt();
-					mapInfo.getFieldSetter().invoke(obj, value);
-				}
-			}
-			
-			loc += mappedBytes.length;
+			loc += mapInfo.setValue(obj, bytes, loc);
 		}
 		
 		//
@@ -132,9 +108,7 @@ public class BytesMapper<T> {
 @Data
 class MapInfo implements Comparable<MapInfo>{
 
-	private Class<?> mappingClass;
 	private Field field;
-	private Method fieldSetter;
 	private int order;
 	private int size;
 	private int skip;
@@ -145,42 +119,124 @@ class MapInfo implements Comparable<MapInfo>{
 	 * 
 	 * @param mappingClass
 	 */
-	MapInfo(Class<?> mappingClass) throws Exception {
-		
-		if(mappingClass == null) {
-			throw new NullPointerException("");
-		}
-		
-		this.mappingClass = mappingClass;
-	}
-	
-	/**
-	 * 
-	 */
-	public int compareTo(MapInfo o) {
-		return this.getOrder() - o.getOrder();
-	}
-	
-	/**
-	 * 
-	 * @param fieldName
-	 */
-	public void setFieldSetter(Field field) throws Exception {
+	MapInfo(Field field) throws Exception {
 		
 		if(field == null) {
 			throw new NullPointerException("");
 		}
 		
 		this.field = field;
-		String fieldName = this.field.getName();
 		
-		StringBuffer setterBuffer = new StringBuffer("set");
-		setterBuffer.append(Character.toUpperCase(fieldName.charAt(0)))
-			.append(fieldName.substring(1));
-
-		this.fieldSetter = this.mappingClass.getMethod(setterBuffer.toString(), this.field.getType());
+		BytesMap map = field.getAnnotation(BytesMap.class);
+		if(map == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		this.setOrder(map.order());
+		this.setSize(map.size());
+		this.setSkip(map.skip());
+		this.setMethod(map.method());
 	}
+	
+	/**
+	 * 
+	 * @param obj
+	 * @param bytes
+	 * @param startLoc
+	 * @return
+	 */
+	int setValue(Object obj, byte[] bytes, int startLoc) throws Exception {
+		
+		byte[] mappedBytes = null;
+		
+		if(this.getSize() > 0) {
+			
+			mappedBytes = new byte[this.getSize()];
+			System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+			
+			if(this.getMethod() != null) {
+				Object result = this.getMethod().invoke(obj, mappedBytes);
+				this.setField(obj, result);
+			} else {
+				throw new Exception("set method is not found.");
+			}
+			
+		} else {
+			
+			Class<?> fieldType = this.getField().getType();
+			
+			if(fieldType == byte.class || fieldType == Byte.class) {
+				
+				mappedBytes = new byte[1];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Byte value = mappedBytes[0];
+				this.setField(obj, value);
+				
+			} else if(fieldType == short.class || fieldType == Short.class) {
+				
+				mappedBytes = new byte[2];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Short value = ByteBuffer.wrap(bytes).getShort();
+				this.setField(obj, value);
+				
+			} else if(fieldType == int.class || fieldType == Integer.class) {
+				
+				mappedBytes = new byte[4];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Integer value = ByteBuffer.wrap(bytes).getInt();
+				this.setField(obj, value);
+				
+			} else if(fieldType == long.class || fieldType == Long.class) {
+				
+				mappedBytes = new byte[8];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Long value = ByteBuffer.wrap(bytes).getLong();
+				this.setField(obj, value);
+				
+			} else if(fieldType == float.class || fieldType == Float.class) {
+				
+				mappedBytes = new byte[4];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Float value = ByteBuffer.wrap(bytes).getFloat();
+				this.setField(obj, value);
 
+			} else if(fieldType == double.class || fieldType == Double.class) {
+				
+				mappedBytes = new byte[8];
+				System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
+				Double value = ByteBuffer.wrap(bytes).getDouble();
+				this.setField(obj, value);
+
+			} else {
+				
+				throw new Exception("type is not primitive type:" + fieldType.toString());
+			}
+		}
+		
+		return mappedBytes.length; 
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 */
+	void setField(Object obj, Object value) throws Exception {
+		
+		if(this.method == null) {
+			TypeUtil.setField(obj, this.field.getName(), value);
+		} else {
+			this.method.invoke(obj, value);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public int compareTo(MapInfo o) {
+		return this.getOrder() - o.getOrder();
+	}
+	
 	/**
 	 * 
 	 * 
@@ -194,10 +250,14 @@ class MapInfo implements Comparable<MapInfo>{
 			
 		} else {
 			
-		    this.method = mappingClass.getMethod(methodName, byte[].class);
-		    if(this.method == null) {
-		    	throw new NullPointerException("");
-		    }
+			String[] classAndMethod = methodName.split("\\.");
+			if(classAndMethod.length != 2) {
+				throw new IllegalArgumentException("");
+			}
+			
+			Class<?> clazz = Class.forName(classAndMethod[0]);
+		    this.method = clazz.getMethod(classAndMethod[1], byte[].class);
 		}
 	}
+	
 }
