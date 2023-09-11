@@ -228,4 +228,71 @@ public class TypeUtil {
 		// 값을 설정함
 		field.set(obj, value);
 	}
+	
+	/**
+	 * 자바 기본 데이터 타입 여부 반환<br>
+	 * Wrapper 클래스도 기본 데이터 타입으로 간주함<br>
+	 * ex) Integer, Boolean 등도 기본 데이터 타입으로 반환함<br>
+	 * 만일, 검사할 데이터 타입(type)이 null이면, false를 반환함
+	 * 
+	 * @param type 검사할 데이터 타입
+	 * @return 기본 데이터 타입 여부
+	 */
+	public static boolean isPrimitive(Class<?> type) {
+		
+		// 타입이 null 이면 false 반환
+		if(type == null) {
+			return false;
+		}
+		
+		// 기본 데이터 타입 여부를 검사하여 반환
+		if(type == boolean.class || type == Boolean.class
+			|| type == byte.class || type == Byte.class
+			|| type == short.class || type == Short.class
+			|| type == int.class || type == Integer.class
+			|| type == long.class || type == Long.class
+			|| type == float.class || type == Float.class
+			|| type == double.class || type == Double.class) {
+			
+			return true;
+			
+		} else {
+			
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * 자바 기본형 타입의 바이트 크기를 반환 
+	 * 
+	 * @param type 자바 기본형 타입
+	 * @return 자바 기본형 타입의 바이트 크기
+	 */
+	public static int getPrimitiveSize(Class<?> type) throws Exception {
+		
+		// 입력값이 자바 기본형인지 검사
+		if(isPrimitive(type) == false) {
+			throw new IllegalArgumentException("type is not primitive:" + type);
+		}
+		
+		// 각 타입별 크기 반환
+		if(type == byte.class || type == Byte.class) {
+			return 1;
+		} else if(type == byte.class || type == Byte.class) {
+			return 1;
+		} else if(type == short.class || type == Short.class) {
+			return 2;
+		} else if(type == int.class || type == Integer.class) {
+			return 4;
+		} else if(type == long.class || type == Long.class) {
+			return 8;
+		} else if(type == float.class || type == Float.class) {
+			return 4;
+		} else if(type == double.class || type == Double.class) {
+			return 8;
+		} else {
+			throw new Exception("type is not primitive type:" + type);
+		}
+	}
 }

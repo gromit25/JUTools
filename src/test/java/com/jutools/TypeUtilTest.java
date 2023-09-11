@@ -79,5 +79,63 @@ public class TypeUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	public void testIsPrimitive1() {
+		assertTrue(TypeUtil.isPrimitive(int.class));
+	}
+
+	@Test
+	public void testIsPrimitive2() {
+		assertTrue(TypeUtil.isPrimitive(Integer.class));
+	}
+	
+	@Test
+	public void testIsPrimitive3() {
+		assertFalse(TypeUtil.isPrimitive(String.class));
+	}
+	
+	@Test
+	public void testIsPrimitive4() {
+		assertFalse(TypeUtil.isPrimitive(null));
+	}
+	
+	@Test
+	public void testGetPrimitiveSize1() {
+		try {
+			assertEquals(1, TypeUtil.getPrimitiveSize(byte.class));
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
+	@Test
+	public void testGetPrimitiveSize2() {
+		try {
+			assertEquals(4, TypeUtil.getPrimitiveSize(Integer.class));
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetPrimitiveSize3() {
+		try {
+			TypeUtil.getPrimitiveSize(String.class);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testGetPrimitiveSize4() {
+		try {
+			TypeUtil.getPrimitiveSize(null);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
 
 }
