@@ -18,8 +18,11 @@ import lombok.Data;
  */
 public class BytesMapper<T> {
 	
+	/** 바이트 맵핑을 수행할 클래스 */
 	private Class<T> mappingClass;
+	/** 클래스에 선언된 맵의 정보 목록 */
 	private ArrayList<MapInfo> maps = new ArrayList<MapInfo>();
+	/** 클래스의 맵 정보에 선언된 바이트의 전체 크기 */
 	private long totalSize = 0;
 	
 	/**
@@ -108,10 +111,17 @@ public class BytesMapper<T> {
 @Data
 class MapInfo implements Comparable<MapInfo>{
 
+	/** */
 	private Field field;
+	/** */
+	private boolean primitive;
+	/** */
 	private int order;
+	/** */
 	private int size;
+	/** */
 	private int skip;
+	/** */
 	private Method method;
 	
 	/**
@@ -121,22 +131,42 @@ class MapInfo implements Comparable<MapInfo>{
 	 */
 	MapInfo(Field field) throws Exception {
 		
+		// 입력값 검증
 		if(field == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("field is null.");
 		}
 		
-		this.field = field;
-		
+		// BytesMap 어노테이션 
 		BytesMap map = field.getAnnotation(BytesMap.class);
 		if(map == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("BytesMap is not found:" + field.getName());
 		}
 		
+		//
+		this.field = field;
+		
 		this.setOrder(map.order());
-		this.setSize(map.size());
 		this.setSkip(map.skip());
-		this.setMethod(map.method());
+		
+		//
+		Class<?> fieldType = this.field.getDeclaringClass();
+		
+		if(TypeUtil.isPrimitive(fieldType) == true) {
+			
+			this.setSize(TypeUtil.getPrimitiveSize(fieldType));
+			this.setPrimitive(true);
+			
+		} else {
+			
+			if(map.size() < 1) {
+				throw new Exception("size in BytesMap must be greater than 0:" + map.size());
+			}
+			
+			this.setSize(map.size());
+			this.setMethod(map.method());
+		}
 	}
+
 	
 	/**
 	 * 
@@ -149,7 +179,7 @@ class MapInfo implements Comparable<MapInfo>{
 		
 		byte[] mappedBytes = null;
 		
-		if(this.getSize() > 0) {
+		if(this.isPrimitive() == false) {
 			
 			mappedBytes = new byte[this.getSize()];
 			System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
