@@ -24,7 +24,7 @@ public class TypeUtil {
 	    byte[] bytes = new byte[4];
 	    
 	    for (int i = 0; i < 4; i++) {
-	        bytes[i] = (byte) (value >> (i * 8));
+	        bytes[3 - i] = (byte) (value >> (i * 8));
 	    }
 	    
 	    return bytes;
@@ -41,7 +41,7 @@ public class TypeUtil {
 	    byte[] bytes = new byte[8];
 	    
 	    for (int i = 0; i < 8; i++) {
-	        bytes[i] = (byte) (value >> (i * 8));
+	        bytes[7 - i] = (byte) (value >> (i * 8));
 	    }
 	    
 	    return bytes;
@@ -59,7 +59,7 @@ public class TypeUtil {
 	    
 		byte[] bytes = new byte[4];
 	    for (int i = 0; i < 4; i++) {
-	        bytes[i] = (byte) (intBits >> (i * 8));
+	        bytes[3 - i] = (byte) (intBits >> (i * 8));
 	    }
 	    
 	    return bytes;
@@ -77,7 +77,7 @@ public class TypeUtil {
 	    
 	    byte[] bytes = new byte[8];
 	    for (int i = 0; i < 8; i++) {
-	        bytes[i] = (byte) (longBits >> (i * 8));
+	        bytes[7 - i] = (byte) (longBits >> (i * 8));
 	    }
 	    
 	    return bytes;
