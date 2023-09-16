@@ -192,6 +192,42 @@ public class TypeUtil {
 	}
 	
 	/**
+	 * float 값을 byte 목록(4바이트)으로 변환
+	 * 
+	 * @param value 변환할 float 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] floatToBytes(float value) {
+		
+		int intBits = Float.floatToIntBits(value);
+	    
+		byte[] bytes = new byte[4];
+	    for (int i = 0; i < 4; i++) {
+	        bytes[i] = (byte) (intBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * double 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 double 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] doubleToBytes(double value) {
+		
+	    long longBits = Double.doubleToLongBits(value);
+	    
+	    byte[] bytes = new byte[8];
+	    for (int i = 0; i < 8; i++) {
+	        bytes[i] = (byte) (longBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
 	 * 객체의 필드에 값을 설정<br>
 	 * private, protected 필드에 값을 설정할 수 있도록 함<br>
 	 * 이 메소드를 사용할 경우 illegal access warning이 발생함<br>
