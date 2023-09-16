@@ -14,6 +14,76 @@ import java.util.function.Function;
 public class TypeUtil {
 	
 	/**
+	 * int 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 int 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] intToBytes(long value) {
+		
+	    byte[] bytes = new byte[4];
+	    
+	    for (int i = 0; i < 4; i++) {
+	        bytes[i] = (byte) (value >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * long 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 long 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] longToBytes(long value) {
+		
+	    byte[] bytes = new byte[8];
+	    
+	    for (int i = 0; i < 8; i++) {
+	        bytes[i] = (byte) (value >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * float 값을 byte 목록(4바이트)으로 변환
+	 * 
+	 * @param value 변환할 float 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] floatToBytes(float value) {
+		
+		int intBits = Float.floatToIntBits(value);
+	    
+		byte[] bytes = new byte[4];
+	    for (int i = 0; i < 4; i++) {
+	        bytes[i] = (byte) (intBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * double 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 double 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] doubleToBytes(double value) {
+		
+	    long longBits = Double.doubleToLongBits(value);
+	    
+	    byte[] bytes = new byte[8];
+	    for (int i = 0; i < 8; i++) {
+	        bytes[i] = (byte) (longBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
 	 * obj의 타입에 따라 parsing 및 변환을 수행하여 반환하는 메소드
 	 * 
 	 * @param <T> 변환할 obj의 타입
@@ -189,76 +259,6 @@ public class TypeUtil {
 		
 		// 배열 반환
 		return array;
-	}
-	
-	/**
-	 * int 값을 byte 목록(8바이트)으로 변환
-	 * 
-	 * @param value 변환할 int 값
-	 * @return 변환된 byte 목록
-	 */
-	public static byte[] intToBytes(long value) {
-		
-	    byte[] bytes = new byte[4];
-	    
-	    for (int i = 0; i < 4; i++) {
-	        bytes[i] = (byte) (value >> (i * 8));
-	    }
-	    
-	    return bytes;
-	}
-	
-	/**
-	 * long 값을 byte 목록(8바이트)으로 변환
-	 * 
-	 * @param value 변환할 long 값
-	 * @return 변환된 byte 목록
-	 */
-	public static byte[] longToBytes(long value) {
-		
-	    byte[] bytes = new byte[8];
-	    
-	    for (int i = 0; i < 8; i++) {
-	        bytes[i] = (byte) (value >> (i * 8));
-	    }
-	    
-	    return bytes;
-	}
-	
-	/**
-	 * float 값을 byte 목록(4바이트)으로 변환
-	 * 
-	 * @param value 변환할 float 값
-	 * @return 변환된 byte 목록
-	 */
-	public static byte[] floatToBytes(float value) {
-		
-		int intBits = Float.floatToIntBits(value);
-	    
-		byte[] bytes = new byte[4];
-	    for (int i = 0; i < 4; i++) {
-	        bytes[i] = (byte) (intBits >> (i * 8));
-	    }
-	    
-	    return bytes;
-	}
-	
-	/**
-	 * double 값을 byte 목록(8바이트)으로 변환
-	 * 
-	 * @param value 변환할 double 값
-	 * @return 변환된 byte 목록
-	 */
-	public static byte[] doubleToBytes(double value) {
-		
-	    long longBits = Double.doubleToLongBits(value);
-	    
-	    byte[] bytes = new byte[8];
-	    for (int i = 0; i < 8; i++) {
-	        bytes[i] = (byte) (longBits >> (i * 8));
-	    }
-	    
-	    return bytes;
 	}
 	
 	/**
