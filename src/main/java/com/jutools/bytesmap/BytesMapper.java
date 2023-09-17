@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import com.jutools.BytesUtil;
+import com.jutools.StringUtil;
 import com.jutools.TypeUtil;
 import com.jutools.common.OrderType;
 
@@ -339,12 +340,7 @@ class MapInfo implements Comparable<MapInfo>{
 	 * @param value
 	 */
 	private void setFieldValue(Object obj, Object value) throws Exception {
-		
-		if(this.method == null) {
-			TypeUtil.setField(obj, this.field.getName(), value);
-		} else {
-			this.method.invoke(obj, value);
-		}
+		TypeUtil.setField(obj, this.field.getName(), value);
 	}
 	
 	/**
@@ -360,9 +356,9 @@ class MapInfo implements Comparable<MapInfo>{
 			
 		} else {
 			
-			String[] classAndMethod = methodName.split("\\.");
+			String[] classAndMethod = StringUtil.splitLast(methodName, "\\.");
 			if(classAndMethod.length != 2) {
-				throw new IllegalArgumentException("");
+				throw new IllegalArgumentException("invalid method format(className.methodName):" + methodName);
 			}
 			
 			Class<?> clazz = Class.forName(classAndMethod[0]);

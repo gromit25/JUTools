@@ -298,17 +298,22 @@ public class BytesUtilTest {
 		
 		assertEquals("1234567812345678", map.getCardNo());
 		assertEquals(1000, map.getAmt());
-		assertEquals("bracelet            ", map.getProductName());
+		assertEquals("bracelet", map.getProductName());
 	}
 	
 	@Data
 	public static class BytesMappingTest3 {
+		
 		@BytesMap(order=1, size=16, skip=6)
 		private String cardNo;
 		@BytesMap(order=2, size=10)
 		protected int amt;
-		@BytesMap(order=3, size=20) 
+		@BytesMap(order=3, size=20, method="com.jutools.BytesUtilTest$BytesMappingTest3.processProductName")
 		public String productName;
+		
+		public static String processProductName(byte[] bytes) {
+			return new String(bytes).trim();
+		}
 	}
 
 }
