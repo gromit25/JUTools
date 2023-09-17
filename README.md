@@ -22,6 +22,9 @@ StringUtil.reverse(str);               // 문자열 역전 "abc" -> "cba"
 StringUtil.split(str, ',');            // 문자로 문자열을 나눔
 StringUtil.splitFirst(str, ">");       // str: "abc>def>ghi", delimiter: ">" 일 경우,
                                        // -> {"abc", "def>ghi"} 반환
+StringUtil.splitLast(str, ">");        // str: "abc>def>ghi", delimiter: ">" 일 경우,
+                                       // -> {"abc>def", "ghi"} 반환
+
 
 // 주어진 문자열을 delimiter로 나눈 후 특정 위치들의 문자열들을 선택하여 반환
 // str: test1\ttest2\ttest3, delimiter: \t, locs: {0, 2, 1} -> {"test1", "test3", "test2"} 가 반환됨
