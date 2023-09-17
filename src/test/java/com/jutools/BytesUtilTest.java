@@ -289,17 +289,26 @@ public class BytesUtilTest {
 	@Test
 	public void testMapping3() throws Exception {
 		
-		byte[] attr1 = "Hello world!".getBytes();
+		byte[] msg = "APRV0112345678123456780000001000bracelet            ".getBytes();
+		BytesMappingTest3 map = BytesUtil.mapping(msg, BytesMappingTest3.class);
 		
-		BytesMappingTest3 map = BytesUtil.mapping(attr1, BytesMappingTest3.class);
+		System.out.println(map.getCardNo());
+		System.out.println(map.getAmt());
+		System.out.println(map.getProductName());
 		
-		assertEquals("Hello world!", map.getAttr1());
+		assertEquals("1234567812345678", map.getCardNo());
+		assertEquals(1000, map.getAmt());
+		assertEquals("bracelet            ", map.getProductName());
 	}
 	
 	@Data
 	public static class BytesMappingTest3 {
-		@BytesMap(order=1, size=12)
-		public String attr1;
+		@BytesMap(order=1, size=16, skip=6)
+		private String cardNo;
+		@BytesMap(order=2, size=10)
+		protected int amt;
+		@BytesMap(order=3, size=20) 
+		public String productName;
 	}
 
 }
