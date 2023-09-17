@@ -116,28 +116,33 @@ public class BytesMapper {
 
 }
 
+/**
+ * 
+ * 
+ * @author jmsohn
+ */
 @Data
 class MapInfo implements Comparable<MapInfo>{
 
-	/** */
+	/** BytesMap이 설정된 필드 객체 */
 	private Field field;
-	/** */
+	/** 필드의 타입이 기본형(primitive type)인지 여부 */
 	private boolean primitive;
-	/** */
+	/** 전체 map에서의 순번 */
 	private int order;
-	/** */
+	/** 사용할 byte 배열 크기 */
 	private int size;
-	/** */
+	/** 사용할 byte 크기가 BytesMap에 명시적으로 설정되었는지 여부 */
 	private boolean sizeSet;
-	/** */
+	/** byte 배열에서 스킵할 byte 수 */
 	private int skip;
-	/** */
+	/** 필드에 값을 설정하기 위한 값을 만드는 커스텀 메소드 */
 	private Method method;
 	
 	/**
+	 * 생성자
 	 * 
-	 * 
-	 * @param mappingClass
+	 * @param field BytesMap이 설정된 필드 객체
 	 */
 	MapInfo(Field field) throws Exception {
 		
@@ -152,30 +157,29 @@ class MapInfo implements Comparable<MapInfo>{
 			throw new IllegalArgumentException("BytesMap is not found:" + field.getName());
 		}
 		
-		//
+		// BytesMap 설정 정보를 현재 객체에 설정
 		this.field = field;
 		
 		this.setOrder(map.order());
 		this.setSkip(map.skip());
 		
-		//
 		Class<?> fieldType = this.field.getType();
 		this.setPrimitive(TypeUtil.isPrimitive(fieldType));
 		
-		if(map.size() < 0) {
+		if(map.size() < 0) { // map 크기(size)가 음수이면, size가 미설정된 것으로 간주함
 			
 			if(this.isPrimitive() == true) {
 				
 				this.setSize(TypeUtil.getPrimitiveSize(fieldType));
 				this.setSizeSet(false);
 				
-			} else {
+			} else { // size도 없고 기본형도 아니면, 크기를 알 수 없기 때문에 예외 발생
 				throw new Exception("size must be set:" + fieldType.getName());
 			}
 			
-		} else {
+		} else { // size가 설정된 경우
 			
-			if(map.size() < 1) {
+			if(map.size() < 1) { // size가 0이면 안됨
 				throw new Exception("size in BytesMap must be greater than 0:" + map.size());
 			}
 			
@@ -186,9 +190,6 @@ class MapInfo implements Comparable<MapInfo>{
 		}
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public int compareTo(MapInfo o) {
 		return this.getOrder() - o.getOrder();
@@ -208,7 +209,7 @@ class MapInfo implements Comparable<MapInfo>{
 		Class<?> fieldType = this.getField().getType();
 		System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
 		
-		if(this.isPrimitive() == true) {
+		if(this.isPrimitive() == true && this.getMethod() == null) {
 			
 			if(this.isSizeSet() == true) {
 				
@@ -305,14 +306,16 @@ class MapInfo implements Comparable<MapInfo>{
 				}
 				
 			}
-			
+				
 		} else {
 			
 			System.arraycopy(bytes, startLoc, mappedBytes, 0, mappedBytes.length);
 			
 			if(this.getMethod() != null) {
+				
 				Object result = this.getMethod().invoke(obj, mappedBytes);
 				this.setFieldValue(obj, result);
+				
 			} else {
 				throw new Exception("set method is not found.");
 			}
