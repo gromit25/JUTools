@@ -292,10 +292,6 @@ public class BytesUtilTest {
 		byte[] msg = "APRV0112345678123456780000001000bracelet            ".getBytes();
 		BytesMappingTest3 map = BytesUtil.mapping(msg, BytesMappingTest3.class);
 		
-		System.out.println(map.getCardNo());
-		System.out.println(map.getAmt());
-		System.out.println(map.getProductName());
-		
 		assertEquals("1234567812345678", map.getCardNo());
 		assertEquals(1000, map.getAmt());
 		assertEquals("bracelet", map.getProductName());
