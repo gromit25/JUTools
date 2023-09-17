@@ -25,10 +25,10 @@ public @interface BytesMap {
 	int skip() default 0;
 	
 	/**
-	 * 바이트 배열을 변환할 메소드 명<br>
+	 * 바이트 배열을 변환할 static 메소드 명<br>
 	 * 미설정시 문자열로 간주함, 이 경우에는 size를 필수로 설정해야 함<br>
-	 * toBoolean, toShort, toInteger, toLong, toFloat, toDouble를 지원<br>
-	 * 이 메소드들은 byte 배열을 문자열로 읽은 다음 해당 형태로 변경함 
+	 * 이 메소드들은 byte 배열을 문자열로 읽은 다음 해당 형태로 변경함<br> 
+	 * ex) public static Type process(byte[] bytes)
 	 */
 	String method() default "";
 }
