@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import com.jutools.bytesmap.BytesMapper;
+import com.jutools.common.OrderType;
+
 /**
  * byte array 처리 관련 utility 클래스
  * 
@@ -229,8 +232,8 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * 주어진 target byte array를 split 하는 메소드
-	 * target byte와 구분자의 byte를 비교하여
+	 * 주어진 target byte array를 split 하는 메소드<br>
+	 * target byte와 구분자의 byte를 비교하여<br>
 	 * 구분자가 포함 됐을 경우 분리 함
 	 *
 	 * @param target target byte array
@@ -242,7 +245,8 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * 여러 Byte array를 합침
+	 * 여러 Byte array를 합침<br>
+	 * srcs[0]: {1, 2}, srcs[1]: {3}, srcs[2]: {4, 5} -> {1, 2, 3, 4, 5}
 	 *
 	 * @param targets: 합칠 Byte array
 	 * @return 합쳐진 Byte array
@@ -251,7 +255,7 @@ public class BytesUtil {
 		
 		// parameter null 체크
 		if(srcs == null) {
-			throw new NullPointerException("source array is null");
+			throw new NullPointerException("source array is null.");
 		}
 		
 		if(srcs.length == 0) {
@@ -302,7 +306,7 @@ public class BytesUtil {
 	public static byte[] cut(byte[] array, int start, int length) throws Exception {
 		
 		if(array == null) {
-			throw new NullPointerException("array is null");
+			throw new NullPointerException("array is null.");
 		}
 		
 		if(start < 0 || start >= array.length) {
@@ -506,26 +510,34 @@ public class BytesUtil {
 	
 	/**
 	 * 문자열을 byte 배열로 변환<br>
-	 * ex) "1A03" -> byte[] {26, 3}
+	 * ex) str:"1A03", order: OrderType.ASCEND -> byte[] {26, 3}<br>
+	 *     str:"1A03", order: OrderType.DESCEND -> byte[] {3, 26}
 	 * 
 	 * @param str 문자열
+	 * @param order 순서
 	 * @return 변환된 byte 배열
 	 */
-	public static byte[] strToBytes(String str) throws Exception {
+	public static byte[] strToBytes(String str, OrderType order) throws Exception {
 		
 		// 입력값 검증
 		if(str == null) {
-			throw new NullPointerException("str is null");
+			throw new NullPointerException("str is null.");
 		}
 		
 		if(str.length() % 2 != 0) {
-			throw new Exception("str must be even");
+			throw new Exception("str must be even.");
 		}
 		
 		// 변환된 byte 배열을 담을 변수
 		byte[] bytes = new byte[str.length()/2];
 		
 		for(int index = 0; index < bytes.length; index++) {
+			
+			// 순서 설정(order)에 따른 저장 위치 변수
+			int orderedIndex = index;
+			if(order == OrderType.DESCEND) {
+				orderedIndex = bytes.length - 1 - index;
+			}
 			
 			// 상위 니블의 데이터를 가져옴
 			byte b1 = getByte(str.charAt(index * 2));
@@ -536,7 +548,7 @@ public class BytesUtil {
 			byte b2 = getByte(str.charAt(index * 2 + 1));
 
 			// 상위 니블(b1)과 하위니블(b2)를 합쳐서 저장
-			bytes[index] = (byte)(b1 + b2);
+			bytes[orderedIndex] = (byte)(b1 + b2);
 		}
 		
 		// 변환 결과를 반환
@@ -549,7 +561,7 @@ public class BytesUtil {
 	 * @param ch 문자
 	 * @return 문자를 byte로 변환한 결과
 	 */
-	private static byte getByte(char ch) throws Exception {
+	public static byte getByte(char ch) throws Exception {
 		
 		if(ch >= '0' && ch <= '9') {
 			return (byte)(ch - '0');
@@ -563,24 +575,45 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * byte 배열을 문자열로 변환
-	 * ex) byte[] {26, 3} -> "1A03" 
+	 * byte 배열을 문자열로 변환<br>
+	 * ex) byte[] {26, 3}, order: OrderType.ASCEND -> "1A03"<br>
+	 *     byte[] {26, 3}, order: OrderType.DESCEND -> "031A"<br>
 	 * 
 	 * @param bytes byte 배열
 	 * @return 변환된 문자열
 	 */
-	public static String bytesToStr(byte[] bytes) throws Exception {
+	public static String bytesToStr(byte[] bytes, OrderType order) throws Exception {
 		
 		if(bytes == null) {
-			throw new NullPointerException("bytes is null");
+			throw new NullPointerException("bytes is null.");
 		}
 		
 		StringBuilder builder = new StringBuilder("");
 		
 		for(int index = 0; index < bytes.length; index++) {
-			builder.append(String.format("%02X", bytes[index]));
+			
+			// 순서 설정(order)에 따른 참조 위치 변수
+			int orderedIndex = index;
+			if(order == OrderType.DESCEND) {
+				orderedIndex = bytes.length - 1 - index;
+			}
+			
+			// 문자열에 바이트 추가
+			builder.append(String.format("%02X", bytes[orderedIndex]));
 		}
 		
 		return builder.toString();
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param <T>
+	 * @param bytes
+	 * @param mappingClass
+	 * @return
+	 */
+	public static <T> T mapping(byte[] bytes, Class<T> mappingClass) throws Exception {
+		return BytesMapper.mapping(bytes, mappingClass);
 	}
 }

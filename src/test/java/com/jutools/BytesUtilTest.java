@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.jutools.bytesmap.BytesMap;
+
+import lombok.Data;
+
 /**
  * BytesUtil 클래스의 테스트 케이스
  * 
@@ -229,5 +233,55 @@ public class BytesUtilTest {
 		byte[] read = BytesUtil.readNBytes(testFile, 20, 10);
 		assertTrue("별 헤는 밤 - 윤".equals(new String(read)));
 	}
+	
+	@Test
+	public void testMapping1() throws Exception {
+		
+		byte[] attr1 = TypeUtil.floatToBytes((float)10.1);
+		byte[] attr2 = TypeUtil.longToBytes(123);
+		byte[] attr3 = TypeUtil.intToBytes(555);
+		
+		BytesMappingTest1 map = BytesUtil.mapping(BytesUtil.concat(attr1, attr3, attr2), BytesMappingTest1.class);
+		
+		assertEquals(10.1, map.getAttr1(), 0.1);
+		assertEquals(123, (long)map.getAttr2());
+		assertEquals(555, map.getAttr3());
+	}
+	
+	@Data
+	public static class BytesMappingTest1 {
+		@BytesMap(order=1)
+		public float attr1;
+		@BytesMap(order=3)
+		private Long attr2;
+		@BytesMap(order=2)
+		protected int attr3;
+	}
+	
+	@Test
+	public void testMapping2() throws Exception {
+		
+		byte[] attr1 = "00000010.1".getBytes();
+		byte[] attr2 = "00123".getBytes();
+		byte[] attr3 = "00555".getBytes();
+		
+		BytesMappingTest2 map = BytesUtil.mapping(BytesUtil.concat(attr1, attr2, attr3), BytesMappingTest2.class);
+		
+		assertEquals(10.1, map.getAttr1(), 0.1);
+		assertEquals(123, (long)map.getAttr2());
+		assertEquals(555, map.getAttr3());
+	}
+	
+	@Data
+	public static class BytesMappingTest2 {
+		@BytesMap(order=1, size=10)
+		public float attr1;
+		@BytesMap(order=2, size=5)
+		private Long attr2;
+		@BytesMap(order=3, size=5)
+		protected int attr3;
+	}
 
 }
+
+

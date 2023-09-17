@@ -8,6 +8,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.jutools.common.OrderType;
+
 /**
  * 암복호화 Utility 클래스
  * 
@@ -34,7 +36,7 @@ public class CipherUtil {
 		byte[] hash = digest.digest(str.getBytes());
 
 		// 문자열 변환 후 반환
-		return BytesUtil.bytesToStr(hash);
+		return BytesUtil.bytesToStr(hash, OrderType.ASCEND);
 	}
 	
 	/**
@@ -71,7 +73,7 @@ public class CipherUtil {
 
 		// 키를 문자열로 변환하여 반환
 		byte[] keyBytes = key.getEncoded();
-		return BytesUtil.bytesToStr(keyBytes);
+		return BytesUtil.bytesToStr(keyBytes, OrderType.ASCEND);
 	}
 	
 	/**
@@ -88,7 +90,7 @@ public class CipherUtil {
 
 		// 키를 문자열로 변환하여 반환
 		byte[] keyBytes = key.getEncoded();
-		return BytesUtil.bytesToStr(keyBytes);
+		return BytesUtil.bytesToStr(keyBytes, OrderType.ASCEND);
 	}
 	
 	/**
@@ -143,7 +145,7 @@ public class CipherUtil {
 		byte[] encryptedData = cipher.doFinal(str.getBytes(cs));
 		
 		// 인코딩하여 문자열로 만들어 반환
-		return BytesUtil.bytesToStr(encryptedData);
+		return BytesUtil.bytesToStr(encryptedData, OrderType.ASCEND);
 	}
 	
 	/**
@@ -176,7 +178,7 @@ public class CipherUtil {
 		Cipher cipher = makeCipher(Cipher.DECRYPT_MODE, key);
 		
 		// 복호화 수행
-		byte[] decryptedData = cipher.doFinal(BytesUtil.strToBytes(str));
+		byte[] decryptedData = cipher.doFinal(BytesUtil.strToBytes(str, OrderType.ASCEND));
 		
 		// 문자열로 만들어 반환
 		return new String(decryptedData, cs);
