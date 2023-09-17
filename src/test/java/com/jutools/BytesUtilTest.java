@@ -241,7 +241,9 @@ public class BytesUtilTest {
 		byte[] attr2 = TypeUtil.longToBytes(123);
 		byte[] attr3 = TypeUtil.intToBytes(555);
 		
-		BytesMappingTest1 map = BytesUtil.mapping(BytesUtil.concat(attr1, attr3, attr2), BytesMappingTest1.class);
+		byte[] msg = BytesUtil.concat(attr1, attr3, attr2);
+		
+		BytesMappingTest1 map = BytesUtil.mapping(msg, BytesMappingTest1.class);
 		
 		assertEquals(10.1, map.getAttr1(), 0.1);
 		assertEquals(123, (long)map.getAttr2());
@@ -265,7 +267,9 @@ public class BytesUtilTest {
 		byte[] attr2 = "00123".getBytes();
 		byte[] attr3 = "00555".getBytes();
 		
-		BytesMappingTest2 map = BytesUtil.mapping(BytesUtil.concat(attr1, attr2, attr3), BytesMappingTest2.class);
+		byte[] msg = BytesUtil.concat(attr1, attr2, attr3);
+		
+		BytesMappingTest2 map = BytesUtil.mapping(msg, BytesMappingTest2.class);
 		
 		assertEquals(10.1, map.getAttr1(), 0.1);
 		assertEquals(123, (long)map.getAttr2());
@@ -280,6 +284,22 @@ public class BytesUtilTest {
 		private Long attr2;
 		@BytesMap(order=3, size=5)
 		protected int attr3;
+	}
+	
+	@Test
+	public void testMapping3() throws Exception {
+		
+		byte[] attr1 = "Hello world!".getBytes();
+		
+		BytesMappingTest3 map = BytesUtil.mapping(attr1, BytesMappingTest3.class);
+		
+		assertEquals("Hello world!", map.getAttr1());
+	}
+	
+	@Data
+	public static class BytesMappingTest3 {
+		@BytesMap(order=1, size=12)
+		public String attr1;
 	}
 
 }

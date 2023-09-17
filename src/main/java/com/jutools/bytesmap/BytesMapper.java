@@ -29,13 +29,14 @@ public class BytesMapper {
 	private long totalSize = 0;
 	
 	/**
-	 * 
+	 * 생성자<br>
+	 * 주어진 맵핑 클래스의 필드를 확인하여 맵퍼 클래스를 생성함
 	 * 
 	 * @param mappingClass
 	 */
 	private BytesMapper(Class<?> mappingClass) throws Exception {
 		
-		//
+		// 입력값 검증
 		if(mappingClass == null) {
 			throw new NullPointerException("");
 		}
@@ -72,20 +73,20 @@ public class BytesMapper {
 	}
 	
 	/**
+	 * 주어진 바이트 배열(bytes)을 맵핑 정보를 이용하여 맵핑 작업 수행  
 	 * 
-	 * 
-	 * @param bytes
-	 * @return
+	 * @param bytes 맵핑할 바이트 배열
+	 * @return 바이트 배열의 정보를 맵핑하여 생성한 객체
 	 */
 	private Object mapping(byte[] bytes) throws Exception {
 		
-		//
+		// 입력값 검증
 		if(bytes == null) {
-			throw new NullPointerException("");
+			throw new NullPointerException("byte array(bytes) is null.");
 		}
 		
 		if(this.totalSize > bytes.length) {
-			throw new Exception("");
+			throw new Exception("mapping size is greater than byte array size:(mapping size:" + this.totalSize + ", byte array size:" + bytes.length + ")");
 		}
 		
 		//
@@ -317,7 +318,14 @@ class MapInfo implements Comparable<MapInfo>{
 				this.setFieldValue(obj, result);
 				
 			} else {
-				throw new Exception("set method is not found.");
+				
+				if(fieldType == String.class && this.isSizeSet() == true) {
+					
+					this.setFieldValue(obj, new String(mappedBytes));
+					
+				} else {
+					throw new Exception("set method is not found.");
+				}
 			}
 			
 		}
@@ -326,6 +334,7 @@ class MapInfo implements Comparable<MapInfo>{
 	}
 	
 	/**
+	 * 
 	 * 
 	 * @param value
 	 */
