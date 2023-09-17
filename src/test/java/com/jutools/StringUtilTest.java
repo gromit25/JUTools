@@ -650,4 +650,33 @@ public class StringUtilTest {
 		}
 	}
 
+	@Test
+	public void testSplitLast1() {
+		try {
+			
+			String[] splited = StringUtil.splitLast("test1> test2", "\\s*>\\s*");
+			
+			assertEquals("test1", splited[0]);
+			assertEquals("test2", splited[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testSplitLast2() {
+		try {
+			
+			String[] splited = StringUtil.splitLast("test1> test2 >test3", "\\s*>\\s*");
+			
+			assertEquals("test1> test2", splited[0]);
+			assertEquals("test3", splited[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }
