@@ -318,6 +318,7 @@ public class TypeUtil {
 		// 기본 데이터 타입 여부를 검사하여 반환
 		if(type == boolean.class || type == Boolean.class
 			|| type == byte.class || type == Byte.class
+			|| type == char.class || type == Character.class
 			|| type == short.class || type == Short.class
 			|| type == int.class || type == Integer.class
 			|| type == long.class || type == Long.class
@@ -351,6 +352,8 @@ public class TypeUtil {
 			return 1;
 		} else if(type == byte.class || type == Byte.class) {
 			return 1;
+		} else if(type == char.class || type == Character.class) {
+			return 2;
 		} else if(type == short.class || type == Short.class) {
 			return 2;
 		} else if(type == int.class || type == Integer.class) {
