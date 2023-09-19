@@ -1,7 +1,7 @@
 # JUTools(Java Utility Tools)
 Java 관련 Utility 기능 모음     
 JDK 1.8 기준으로 작성     
-주의) lombok:1.18.26 을 사용하고 있음. IDE에 설정 필요    
+주의) lombok:1.18.28 을 사용하고 있음. IDE에 설정 필요    
 
 ### StringUtil    
 ----------------------------------    
