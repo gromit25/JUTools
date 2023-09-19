@@ -30,7 +30,7 @@ public class PublishUtilTest {
 		try {
 			
 			File formatFile = new File("resources/publisher/testformat.xml");
-			PublishUtil.publishToConsole(formatFile, values);
+			PublishUtil.toConsole(formatFile, values);
 			
 			assertTrue(true);
 			
@@ -55,7 +55,7 @@ public class PublishUtilTest {
 			
 			File formatFile = new File("resources/publisher/testExcelformat.xml");
 			File outFile = new File("C:\\data\\publish\\test.xlsx");
-			PublishUtil.publishToExcel(formatFile, outFile, values);
+			PublishUtil.toExcel(formatFile, outFile, values);
 			
 			assertTrue(true);
 			
@@ -74,7 +74,7 @@ public class PublishUtilTest {
 			File formatFile = new File("resources/publisher/testExcelLineChart.xml");   
 			File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
 
-			PublishUtil.publishToExcel(formatFile, outFile);
+			PublishUtil.toExcel(formatFile, outFile);
 			
 			assertTrue(true);
 
@@ -93,7 +93,7 @@ public class PublishUtilTest {
 			File formatFile = new File("resources/publisher/testExcelPieChart.xml");   
 			File outFile = new File("C:\\data\\publish\\testPieChart.xlsx");
 
-			PublishUtil.publishToExcel(formatFile, outFile);
+			PublishUtil.toExcel(formatFile, outFile);
 			
 			assertTrue(true);
 

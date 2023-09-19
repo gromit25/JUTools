@@ -18,16 +18,16 @@ import com.jutools.publish.PublisherType;
  */
 public class PublishUtil {
 	
-	public static void publishToConsole(File formatFile) throws Exception {
-		publishToConsole(formatFile, Charset.defaultCharset(), new HashMap<String, Object>());
+	public static void toConsole(File formatFile) throws Exception {
+		toConsole(formatFile, Charset.defaultCharset(), new HashMap<String, Object>());
 	}
 	
-	public static void publishToConsole(File formatFile, Map<String, Object> values) throws Exception {
-		publishToConsole(formatFile, Charset.defaultCharset(), values);
+	public static void toConsole(File formatFile, Map<String, Object> values) throws Exception {
+		toConsole(formatFile, Charset.defaultCharset(), values);
 	}
 	
-	public static void publishToConsole(File formatFile, Charset cs) throws Exception {
-		publishToConsole(formatFile, cs, new HashMap<String, Object>());
+	public static void toConsole(File formatFile, Charset cs) throws Exception {
+		toConsole(formatFile, cs, new HashMap<String, Object>());
 	}
 
 	/**
@@ -36,23 +36,23 @@ public class PublishUtil {
 	 * @param cs
 	 * @param values
 	 */
-	public static void publishToConsole(File formatFile, Charset cs, Map<String, Object> values) throws Exception {
+	public static void toConsole(File formatFile, Charset cs, Map<String, Object> values) throws Exception {
 		Publisher publisher = PublisherFactory.create(PublisherType.CONSOLE, formatFile);
 		publisher.publish(null, cs, values);
 	}
 	
 	// ----------------------------------------------
 
-	public static void publishToTxt(File formatFile, File out) throws Exception {
-		publishToTxt(formatFile, out, Charset.defaultCharset(), new HashMap<String, Object>());
+	public static void toTxt(File formatFile, File out) throws Exception {
+		toTxt(formatFile, out, Charset.defaultCharset(), new HashMap<String, Object>());
 	}
 	
-	public static void publishToTxt(File formatFile, File out, Map<String, Object> values) throws Exception {
-		publishToTxt(formatFile, out, Charset.defaultCharset(), values);
+	public static void toTxt(File formatFile, File out, Map<String, Object> values) throws Exception {
+		toTxt(formatFile, out, Charset.defaultCharset(), values);
 	}
 	
-	public static void publishToTxt(File formatFile, File out, Charset cs) throws Exception {
-		publishToTxt(formatFile, out, cs, new HashMap<String, Object>());
+	public static void toTxt(File formatFile, File out, Charset cs) throws Exception {
+		toTxt(formatFile, out, cs, new HashMap<String, Object>());
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class PublishUtil {
 	 * @param cs
 	 * @param values
 	 */
-	public static void publishToTxt(File formatFile, File out, Charset cs, Map<String, Object> values) throws Exception {
+	public static void toTxt(File formatFile, File out, Charset cs, Map<String, Object> values) throws Exception {
 		
 		try(OutputStream outTxt = new FileOutputStream(out)) {
 			Publisher publisher = PublisherFactory.create(PublisherType.TEXT_FILE, formatFile);
@@ -72,16 +72,16 @@ public class PublishUtil {
 	
 	// ----------------------------------------------
 
-	public static void publishToExcel(File formatFile, File out) throws Exception {
-		publishToExcel(formatFile, out, Charset.defaultCharset(), new HashMap<String, Object>());
+	public static void toExcel(File formatFile, File out) throws Exception {
+		toExcel(formatFile, out, Charset.defaultCharset(), new HashMap<String, Object>());
 	}
 
-	public static void publishToExcel(File formatFile, File out, Map<String, Object> values) throws Exception {
-		publishToExcel(formatFile, out, Charset.defaultCharset(), values);
+	public static void toExcel(File formatFile, File out, Map<String, Object> values) throws Exception {
+		toExcel(formatFile, out, Charset.defaultCharset(), values);
 	}
 	
-	public static void publishToExcel(File formatFile, File out, Charset cs) throws Exception {
-		publishToExcel(formatFile, out, cs, new HashMap<String, Object>());
+	public static void toExcel(File formatFile, File out, Charset cs) throws Exception {
+		toExcel(formatFile, out, cs, new HashMap<String, Object>());
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class PublishUtil {
 	 * @param cs
 	 * @param values
 	 */
-	public static void publishToExcel(File formatFile, File out, Charset cs,  Map<String, Object> values) throws Exception {
+	public static void toExcel(File formatFile, File out, Charset cs,  Map<String, Object> values) throws Exception {
 
 		try(OutputStream outExcel = new FileOutputStream(out)) {
 			Publisher publisher = PublisherFactory.create(PublisherType.EXCEL_FILE, formatFile);
