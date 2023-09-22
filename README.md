@@ -283,7 +283,7 @@ try {
     // 출력 format file		
     File formatFile = new File("resources/publisher/testformat.xml");
     // 화면 출력 실행
-    PublishUtil.publishToConsole(formatFile, values);
+    PublishUtil.toConsole(formatFile, values);
 
 } catch(Exception ex) {
     ex.printStackTrace();
@@ -351,7 +351,7 @@ try {
     File outFile = new File("C:\\data\\publish\\test.xlsx");
     
     // 엑셀 파일 출력 실행
-    PublishUtil.publishToExcel(formatFile, outFile, values);
+    PublishUtil.toExcel(formatFile, outFile, values);
 		
 } catch(Exception ex) {
     ex.printStackTrace();
@@ -429,7 +429,7 @@ try {
     File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
 
     // 엑셀 파일 출력 실행
-    PublishUtil.publishToExcel(formatFile, outFile);
+    PublishUtil.toExcel(formatFile, outFile);
 
 } catch(Exception ex) {
     ex.printStackTrace();
@@ -489,7 +489,7 @@ try {
     File outFile = new File("C:\\data\\publish\\testPieChart.xlsx");
     
     // 엑셀 파일 출력 실행
-    PublishUtil.publishToExcel(formatFile, outFile);
+    PublishUtil.toExcel(formatFile, outFile);
     
 } catch(Exception ex) {
     ex.printStackTrace();
