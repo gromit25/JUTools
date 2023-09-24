@@ -38,6 +38,13 @@ public class RTParameter {
 	@Getter
 	private double kurtosis;
 	
+	/** 최소 값 */
+	@Getter
+	private double min;
+	/** 최대 값 */
+	@Getter
+	private double max;
+	
 	/**
 	 * 생성자
 	 */
@@ -90,6 +97,9 @@ public class RTParameter {
 		this.variance = 0.0;
 		this.skewness = 0.0;
 		this.kurtosis = 0.0;
+		
+		this.min = Double.MAX_VALUE;
+		this.max = Double.MIN_VALUE;
 	}
 	
 	/**
@@ -139,6 +149,14 @@ public class RTParameter {
 		//---- 설정된 값으로 모수를 계산
 		this.calParameter();
 		
+		//---- 최소값, 최대값 설정
+		if(this.min > value) {
+			this.min = value;
+		}
+		
+		if(this.max < value) {
+			this.max = value;
+		}
 	}
 	
 	/**
