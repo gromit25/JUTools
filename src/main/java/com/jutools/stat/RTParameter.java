@@ -217,6 +217,8 @@ public class RTParameter {
 			.append("\"std\":").append(this.getStd()).append("\r\n")
 			.append("\"skewness\":").append(this.skewness).append("\r\n")
 			.append("\"kurtosis\":").append(this.kurtosis).append("\r\n")
+			.append("\"min\":").append(this.min).append("\r\n")
+			.append("\"max\":").append(this.max).append("\r\n")
 			.append("}");
 		
 		return builder.toString();
