@@ -45,6 +45,10 @@ public class RTParameter {
 	@Getter
 	private double max;
 	
+	/** 중앙 값 */
+	@Getter
+	private double median;
+	
 	/**
 	 * 생성자
 	 */
@@ -157,6 +161,8 @@ public class RTParameter {
 		if(this.max < value) {
 			this.max = value;
 		}
+		
+		//---- 중앙값 계산
 	}
 	
 	/**
