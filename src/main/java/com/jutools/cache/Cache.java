@@ -2,7 +2,6 @@ package com.jutools.cache;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.function.Supplier;
 
 import com.jutools.CronJob;
 
@@ -22,7 +21,7 @@ public class Cache<T> {
 	private Hashtable<String, Long> valuesLastRefTime = new Hashtable<>();
 
 	/** 데이터 공급자 */
-	private Supplier<? extends T> supplier;
+	private Loader<? extends T> loader;
 
 	/** 캐시 보유기간 */
 	@Getter
@@ -38,15 +37,15 @@ public class Cache<T> {
 	/**
 	 * 생성자
 	 * 
-	 * @param supplier 캐시 데이터 공급 객체
+	 * @param loader 캐시 데이터 공급 객체
 	 * @param retainTime 캐시 보유기간, 단위: millisecond
 	 * @param cleanUpPeriod 캐시 정리 주기
 	 */
-	public Cache(Supplier<? extends T> supplier, long retainTime, String cleanUpPeriod) throws Exception {
+	public Cache(Loader<? extends T> loader, long retainTime, String cleanUpPeriod) throws Exception {
 		
 		// 입력값 검증
-		if(supplier == null) {
-			throw new NullPointerException("supplier is null.");
+		if(loader == null) {
+			throw new NullPointerException("loader is null.");
 		}
 
 		if(retainTime < 0) {
@@ -58,7 +57,7 @@ public class Cache<T> {
 		}
 
 		// 데이터 공급자 설정
-		this.supplier = supplier;
+		this.loader = loader;
 
 		// 보유기간 설정
 		this.retainTime = retainTime;
@@ -112,7 +111,7 @@ public class Cache<T> {
 		
 		// 없을 경우, 로드해 옴
 		if(this.values.containsKey(key) == false) {
-			this.put(key, this.supplier.get());
+			this.put(key, this.loader.get(key));
 		}
 		
 		// 최종 참조시간 업데이트
