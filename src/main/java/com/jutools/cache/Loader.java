@@ -4,6 +4,7 @@ package com.jutools.cache;
  * 캐시에 데이터를 제공할 인터페이스
  * 
  * @param <T> 반환 타입
+ * @author jmsohn
  */
 @FunctionalInterface
 public interface Loader<T> {
