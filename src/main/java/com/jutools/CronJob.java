@@ -139,23 +139,28 @@ public class CronJob {
 	}
 	
 	/**
-	 * 크론 표현식 클래스
+	 * 크론 표현식 클래스<br>
+	 * Linux의 크론잡 표현과 동일함</br>
+	 * 단, 초는 옵션 사항임
+	 * <pre>
+	 * ex) * * * * * *
+	 *     초 분 시 일 월 요일
+	 *     15 * * * * *
+	 *     매 분 15초 마다 실행 
+	 * </pre>
 	 * 
 	 * @author jmsohn
 	 */
 	public static class CronExp {
 		
 		/**
-		 * 크론 표현식 설정 가능한 시간의 종류 코드<br>
-		 * <pre>
-		 * ex) * * * * *
-		 *     분 시 일 월 요일
-		 * </pre>
+		 * 크론 표현식 설정 가능한 시간의 종류 코드
 		 * 
 		 * @author jmsohn
 		 */
 		private enum CronTimeUnit {
 			
+			SECOND(0, 59),
 			MIN(0, 59),
 			HOUR(0, 23),
 			DAY(1, 31),
@@ -211,7 +216,8 @@ public class CronJob {
 					return TypeUtil.toIntArray(timeList);
 				}
 				
-			},	
+			},
+			
 			RANGE("[0-9]+\\-[0-9]+") {		// 시간 범위 형태 : 0-30
 				
 				@Override
@@ -246,7 +252,8 @@ public class CronJob {
 					
 					return TypeUtil.toIntArray(timeList);
 				}
-			},			
+			},
+			
 			REPEAT("\\*(\\/[0-9]+)?") {		// 반복 형태 : */10
 				
 				@Override
@@ -353,7 +360,8 @@ public class CronJob {
 			// 클래스 로딩시 크론 표현의 정규 표현식 문자열을 만듦
 			String timePStr = "[0-9]+(\\,[0-9]+)*|[0-9]+\\-[0-9]+|\\*(\\/[0-9]+)?";
 			CronExp.cronExpPStr = 
-					"^(?<min>" + timePStr + ") "
+					"^((?<second>" + timePStr + ") )?"
+					+ "(?<min>" + timePStr + ") "
 					+ "(?<hour>" + timePStr + ") "
 					+ "(?<day>" + timePStr + ") "
 					+ "(?<month>" + timePStr + ") "
@@ -363,6 +371,8 @@ public class CronJob {
 		/** 크론 시간 표현 원본 */
 		@Getter
 		private String cronExp;
+		/** 초 목록 */
+		private int[] seconds;
 		/** 분 목록 */
 		private int[] mins;
 		/** 시간 목록 */
@@ -401,6 +411,12 @@ public class CronJob {
 			}
 
 			// 크론 표현식에 설정된 유효 시간을 설정함
+			String secondStr = cronExpM.group("second");
+			if(secondStr == null) {
+				secondStr = "0";
+			}
+			
+			this.seconds = TimeExpType.makeTimeList(secondStr, CronTimeUnit.SECOND);
 			this.mins = TimeExpType.makeTimeList(cronExpM.group("min"), CronTimeUnit.MIN);
 			this.hours = TimeExpType.makeTimeList(cronExpM.group("hour"), CronTimeUnit.HOUR);
 			this.days = TimeExpType.makeTimeList(cronExpM.group("day"), CronTimeUnit.DAY);
@@ -415,9 +431,19 @@ public class CronJob {
 		 */
 		public long getNextTimeInMillis() {
 			
-			// 현재 시간을 가져옴
+			return getNextTimeInMillis(System.currentTimeMillis());
+		}
+		
+		/**
+		 * 기준 시간(baseTime)에서 가장 가까운 다음 실행 시간 반환
+		 * 
+		 * @param baseTime 기준 시간(단위: ms)
+		 * @return 가장 가까운 다음 실행 시간(단위: ms)
+		 */
+		public long getNextTimeInMillis(long baseTime) {
+			
 			Calendar cal = new GregorianCalendar();
-			cal.setTimeInMillis(System.currentTimeMillis());
+			cal.setTimeInMillis(baseTime);
 			
 			return getNextTimeInMillis(cal);
 		}
@@ -430,25 +456,37 @@ public class CronJob {
 		 */
 		public long getNextTimeInMillis(Calendar baseTime) {
 			
-			// 시간 단위 별(분/시/일/월/년도, 요일 대신 년도) 현재 시간을 가져옴 
+			// 시간 단위 별(초/분/시/일/월/년도, 요일 대신 년도) 현재 시간을 가져옴
+			int second = baseTime.get(Calendar.SECOND);
 			int min = baseTime.get(Calendar.MINUTE);
 			int hour = baseTime.get(Calendar.HOUR_OF_DAY);
 			int day = baseTime.get(Calendar.DAY_OF_MONTH);
 			int month = baseTime.get(Calendar.MONTH) + 1;
 			int year = baseTime.get(Calendar.YEAR);
 			
+			// 초의 다음 시간을 가져옴
+			NextTime secNext = this.getNextTime(second, true, this.seconds);
+			second = secNext.getTime();
+			
 			// 분의 다음 시간을 가져옴
-			NextTime minNext = this.getNextTime(min, true, this.mins);
-			min = minNext.getTime();
+			NextTime minNext = this.getNextTime(min, secNext.isRolled(), this.mins);
+			
+			// 분이 변경되면 초는 목록의 첫번째 분으로 설정
+			if(min != minNext.getTime()) {
+				
+				min = minNext.getTime();
+				second = this.seconds[0];
+			}
 			
 			// 시의 다음 시간을 가져옴
 			NextTime hourNext = this.getNextTime(hour, minNext.isRolled(), this.hours);
 			
-			// 시가 변경되면 분은 목록의 첫번째 분으로 설정
+			// 시가 변경되면 분/초는 목록의 첫번째 분으로 설정
 			if(hour != hourNext.getTime()) {
 				
 				hour = hourNext.getTime();
 				min = this.mins[0];
+				second = this.seconds[0];
 			}
 			
 			// 날짜 및 월의 다음 시간을 가져옴
@@ -470,6 +508,7 @@ public class CronJob {
 					day = dayNext.getTime();
 					hour = this.hours[0];
 					min = this.mins[0];
+					second = this.seconds[0];
 				}
 				
 				monthNext = this.getNextTime(month, dayNext.isRolled(), this.months);
@@ -481,6 +520,7 @@ public class CronJob {
 					day = this.days[0];
 					hour = this.hours[0];
 					min = this.mins[0];
+					second = this.seconds[0];
 				}
 				
 				// 월이 한바퀴 돌아(roll) 월 목록의 처음으로 이동하면
@@ -493,6 +533,7 @@ public class CronJob {
 					day = this.days[0];
 					hour = this.hours[0];
 					min = this.mins[0];
+					second = this.seconds[0];
 				}
 				
 				// 다음 날짜가 존재하는 날짜이고 요일 목록에 있는 날짜이면 중단
@@ -512,7 +553,7 @@ public class CronJob {
 			nextTime.set(Calendar.DAY_OF_MONTH, day);
 			nextTime.set(Calendar.HOUR_OF_DAY, hour);
 			nextTime.set(Calendar.MINUTE, min);
-			nextTime.set(Calendar.SECOND, 0);
+			nextTime.set(Calendar.SECOND, second);
 			nextTime.set(Calendar.MILLISECOND, 0);
 			
 			return nextTime.getTimeInMillis();
@@ -661,6 +702,7 @@ public class CronJob {
 			
 			builder
 				.append(this.cronExp).append("\n")
+				.append(StringUtil.join(",", this.seconds)).append("\n")
 				.append(StringUtil.join(",", this.mins)).append("\n")
 				.append(StringUtil.join(",", this.hours)).append("\n")
 				.append(StringUtil.join(",", this.days)).append("\n")
@@ -669,6 +711,6 @@ public class CronJob {
 			
 			return builder.toString();
 		}
-	}
-
+		
+	} // End of CronExp Class
 }
