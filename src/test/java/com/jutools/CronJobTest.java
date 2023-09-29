@@ -39,7 +39,7 @@ public class CronJobTest {
 		
 		job.run();
 		
-		Thread.sleep(1500);	// 2초 뒤 중단
+		Thread.sleep(1500);	// 1.5초 뒤 중단
 		job.stop();
 		
 		assertTrue(true);
