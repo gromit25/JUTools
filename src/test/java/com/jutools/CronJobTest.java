@@ -18,12 +18,12 @@ import com.jutools.CronJob.CronExp;
 public class CronJobTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testCronJob1() throws Exception {
 		
 		// 테스트에 1분 10초 걸림
 		
 		CronJob job = CronJob.builder()
-			.cronExp("* * * * *")
+			.cronExp("* * * * * *")
 			.job(new Runnable() {
 				@Override
 				public void run() {
@@ -39,7 +39,7 @@ public class CronJobTest {
 		
 		job.run();
 		
-		Thread.sleep(70 * 1000);	// 1분 10초 뒤 중단
+		Thread.sleep(1500);	// 2초 뒤 중단
 		job.stop();
 		
 		assertTrue(true);
