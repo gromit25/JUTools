@@ -2,6 +2,7 @@ package com.jutools.cache;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 import com.jutools.CronJob;
 
@@ -141,6 +142,24 @@ public class Cache<T> {
 		// 데이터 저장
 		this.values.put(key, value);
 		this.valuesLastRefTime.put(key, System.currentTimeMillis());
+	}
+	
+	/**
+	 * map 데이터를 설정
+	 * 
+	 * @param map 설정할 map 데이터
+	 */
+	public void putAll(Map<String, T> map) throws Exception {
+		
+		// 입력 데이터가 null 일이거나, 엘리먼트가 없을 경우 반환
+		if(map == null || map.size() == 0) {
+			return;
+		}
+		
+		// 데이터를 모두 입력
+		for(String key: map.keySet()) {
+			this.put(key, map.get(key));
+		}
 	}
 	
 	/**
