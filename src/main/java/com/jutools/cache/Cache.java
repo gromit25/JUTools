@@ -142,4 +142,13 @@ public class Cache<T> {
 		this.values.put(key, value);
 		this.valuesLastRefTime.put(key, System.currentTimeMillis());
 	}
+	
+	/**
+	 * 캐시의 크기 반환
+	 * 
+	 * @return 캐시 크기
+	 */
+	public int size() {
+		return this.values.size();
+	}
 }
