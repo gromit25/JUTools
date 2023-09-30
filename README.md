@@ -226,7 +226,7 @@ Cache<String> cache = CacheService
             return values.get(key);  // 실제로는 키별로 DB에서 가져오는 코드 작성    
         },    
         1000,            // 유지 시간(단위:ms)    
-        "* * * * * *"    // 유지 시간이 오버된 데이터 삭제 주기(CronJob 사용)    
+        "* * * * * *"    // 유지 시간이 만료된 데이터 삭제 주기(CronJob 사용)    
     )
     .putAll(values);    
     
