@@ -127,8 +127,9 @@ public class Cache<T> {
 	 * 
 	 * @param key 캐시에 들어갈 key
 	 * @param value key에 해당되는 데이터
+	 * @return 현재 객체
 	 */
-	public void put(String key, T value) throws Exception {
+	public Cache<T> put(String key, T value) throws Exception {
 		
 		// 입력값 검증
 		if(key == null) {
@@ -142,24 +143,29 @@ public class Cache<T> {
 		// 데이터 저장
 		this.values.put(key, value);
 		this.valuesLastRefTime.put(key, System.currentTimeMillis());
+		
+		return this;
 	}
 	
 	/**
 	 * map 데이터를 설정
 	 * 
 	 * @param map 설정할 map 데이터
+	 * @return 현재 객체
 	 */
-	public void putAll(Map<String, T> map) throws Exception {
+	public Cache<T> putAll(Map<String, T> map) throws Exception {
 		
 		// 입력 데이터가 null 일이거나, 엘리먼트가 없을 경우 반환
 		if(map == null || map.size() == 0) {
-			return;
+			return this;
 		}
 		
 		// 데이터를 모두 입력
 		for(String key: map.keySet()) {
 			this.put(key, map.get(key));
 		}
+		
+		return this;
 	}
 	
 	/**
