@@ -210,6 +210,29 @@ CronJob.builder()
     .build().run();
 ```
 
+### CacheService   
+----------------------------------    
+> 캐시 서비스 Utility    
+> 자주 사용되는 코드성 데이터를 DB나 File에서 매번 읽어오지 않고, 일정기간 메모리에 저장 및 필요시 반환    
+```java
+// 데이터 - 실제는 DB나 File을 활용    
+HashMap<String, String> values = new HashMap<>();    
+values.put("test1", "test1 value");    
+values.put("test2", "test2 value");    
+		
+Cache<String> cache = CacheService    
+    .create(    
+        (key) -> {    
+            return values.get(key);  // 실제로는 키별로 DB에서 가져오는 코드 작성    
+        },    
+        1000,            // 유지 시간(단위:ms)    
+        "* * * * * *"    // 유지 시간이 오버된 데이터 삭제 주기(CronJob 사용)    
+    )
+    .putAll(values);    
+    
+System.out.println(cache.get("test1"));  // "test1 value" 가 출력됨    
+```    
+
 ### FileTracker   
 ----------------------------------    
 > 파일의 변경사항에 대해 추적(Tracking)하는 Utility     

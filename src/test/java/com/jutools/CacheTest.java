@@ -9,6 +9,11 @@ import org.junit.Test;
 import com.jutools.cache.Cache;
 import com.jutools.cache.Loader;
 
+/**
+ * 캐시 테스트 클래스
+ * 
+ * @author jmsohn
+ */
 public class CacheTest {
 
 	@Test
@@ -45,7 +50,7 @@ public class CacheTest {
 		assertEquals(2, cache.size());
 
 		// 0.8초 후 "test1"에 대해 참조후 1.6 초 후 데이터의 개수를 확인
-		// "test2"는 expire 되기 때문에 최종적으로 "test1" 만 남음
+		// "test2"는 1초 후 expire 되기 때문에 최종적으로 "test1" 만 남음
 		Thread.sleep(800);	
 		assertEquals("test1 value", cache.get("test1"));
 		Thread.sleep(800);

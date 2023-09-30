@@ -4,7 +4,8 @@ import com.jutools.cache.Cache;
 import com.jutools.cache.Loader;
 
 /**
- * 캐시 서비스 클래스
+ * 캐시 서비스 클래스<br>
+ * 자주 사용되는 코드성 데이터를 DB나 File에서 매번 읽어오지 않고, 일정기간 메모리에 저장 및 필요시 반환    
  * 
  * @author jmsohn
  */
