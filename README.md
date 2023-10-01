@@ -64,7 +64,6 @@ StringUtil.findAllVars(str);
 ----------------------------------    
 > TCP/UDP 통신, File read/write 등에서 byte 배열을 다루기 위한 Utility   
 ```java
-
 BytesUtil.compare(bytes1, bytes2);   // bytes1과 bytes2가 동일한지 여부를 반환
 BytesUtil.startsWith(bytes1, bytes2);// bytes1이 bytes2로 시작하는지 여부를 반환
 BytesUtil.endsWith(bytes1, bytes2);  // bytes1이 bytes2로 끝나는지 여부를 반환
@@ -75,12 +74,17 @@ ByteUtil.concat(bytes1, bytes2);    // bytes1, bytes2 배열을 합쳐서 바이
 ByteUtil.cut(bytes1, 10, 20);       // bytes1의 10번째 부터 20번째까지 잘라서 바이트 배열로 반환
 ByteUtil.split(bytes1, bytes2);     // bytes1을 bytes2로 나우어 바이트 배열의 Array로 반환
 
-BytesUtil.readAllBytes(new File("C:\\test.txt"));   // 파일의 모든 내용을 읽어 바이트 배열로 반환(스트림도 가능)
-BytesUtil.readNBytes(new File("C:\\test.txt"), 10); // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
-
 BytesUtil.strToBytes(str);           // "1A03" -> byte[] {26, 3}
 BytesUtil.bytesToStr(bytes1);        // byte[] {26, 3} -> "1A03"
-```
+```    
+
+### FileUtil   
+----------------------------------    
+> File 관련 Utility    
+```java
+FileUtil.readAllBytes(new File("C:\\test.txt"));    // 파일의 모든 내용을 읽어 바이트 배열로 반환(스트림도 가능)
+FileUtil.readNBytes(new File("C:\\test.txt"), 10);  // 파일의 내용 중 N 바이트까지만 읽어 반환(스트림도 가능)
+```    
 
 ### NIOBufferUtil   
 ----------------------------------    
