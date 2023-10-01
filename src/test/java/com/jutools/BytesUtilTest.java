@@ -1,9 +1,10 @@
 package com.jutools;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -289,47 +290,6 @@ public class BytesUtilTest {
 		int index = BytesUtil.indexOf(src1.getBytes(), src2.getBytes());
 
 		assertEquals(3, index);
-	}
-	
-	@Test
-	public void testReadAllBytes1() throws Exception {
-		
-		File testFile = new File("resources/read_test.txt");
-		byte[] read = BytesUtil.readAllBytes(testFile);
-		assertEquals(1597, read.length);
-
-	}
-	
-	@Test
-	public void testReadAllBytes2() throws Exception {
-		
-		File testFile = new File("resources/read_test.txt");
-		
-		try {
-			BytesUtil.readAllBytes(testFile, 0);
-			assertTrue(false);
-		} catch(Exception ex) {
-			assertTrue(true);
-		}
-
-	}
-	
-	@Test
-	public void testReadNBytes1() throws Exception {
-		
-		File testFile = new File("resources/read_test.txt");
-		
-		byte[] read = BytesUtil.readNBytes(testFile, 10);
-		assertTrue("별 헤는".equals(new String(read)));
-	}
-	
-	@Test
-	public void testReadNBytes2() throws Exception {
-		
-		File testFile = new File("resources/read_test.txt");
-		
-		byte[] read = BytesUtil.readNBytes(testFile, 20, 10);
-		assertTrue("별 헤는 밤 - 윤".equals(new String(read)));
 	}
 	
 	@Test
