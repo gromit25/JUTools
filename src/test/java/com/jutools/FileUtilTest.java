@@ -12,7 +12,7 @@ import org.junit.Test;
  * @author jmsohn
  */
 public class FileUtilTest {
-
+	
 	@Test
 	public void testReadAllBytes1() throws Exception {
 		

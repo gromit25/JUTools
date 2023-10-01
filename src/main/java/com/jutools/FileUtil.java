@@ -3,6 +3,8 @@ package com.jutools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * File 처리 관련 Utility 클래스
@@ -10,6 +12,299 @@ import java.io.InputStream;
  * @author jmsohn
  */
 public class FileUtil {
+	
+	/**
+	 * 파일 확장자별 매직넘버 맵핑 목록<br>
+	 * key - 파일확장자(ex: .pdf(점 포함))<br>
+	 * value - 매직넘버 목록, 하나의 파일 확장자에 여러 매직넘버가 있을 수 있음
+	 */
+	private static HashMap<String, ArrayList<byte[]>> magicMap;
+	
+	static {
+		
+		// 파일 확장자별 매직넘버 맵핑 목록 초기화
+		magicMap = new HashMap<>();
+		
+		// .rtf
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x7B, (byte)0x5C, (byte)0x71, (byte)0x74, (byte)0x66, (byte)0x31});
+			magics.add(new byte[]{(byte)0x7B, (byte)0x5C, (byte)0x72, (byte)0x74, (byte)0x66, (byte)0x31});
+
+			magicMap.put(".rtf", magics);
+		}
+		
+		// .xls
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".xls", magics);
+		}
+		
+		// .xlsx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+			
+			magicMap.put(".xlsx", magics);
+		}
+		
+		// .xlt
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".xlt", magics);
+		}
+		
+		// .xltx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+			
+			magicMap.put(".xltx", magics);
+		}
+		
+		// .xltm
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+			
+			magicMap.put(".xltm", magics);
+		}
+		
+		// .ppt
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".ppt", magics);
+		}
+		
+		// .pptx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+			
+			magicMap.put(".pptx", magics);
+		}
+		
+		// .doc
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".doc", magics);
+		}
+		
+		// .docx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+
+			magicMap.put(".docx", magics);
+		}
+		
+		// .docm
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+
+			magicMap.put(".docm", magics);
+		}
+		
+		// .dot
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".dot", magics);
+		}
+		
+		// .dotx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+
+			magicMap.put(".dotx", magics);
+		}
+		
+		// .dotm
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
+
+			magicMap.put(".dotx", magics);
+		}
+		
+		// .hwp
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
+
+			magicMap.put(".hwp", magics);
+		}
+		
+		// .hwpx
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x4D, (byte)0x53, (byte)0x5F, (byte)0x56});
+
+			magicMap.put(".hwp", magics);
+		}
+		
+		// .pdf
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x25, (byte)0x50, (byte)0x44, (byte)0x46, (byte)0x2D});
+
+			magicMap.put(".pdf", magics);
+		}
+		
+		// .jpg
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xFF, (byte)0xD8, (byte)0xFF, (byte)0xE1});
+
+			magicMap.put(".jpg", magics);
+		}
+		
+		// .jpeg
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0xFF, (byte)0xD8, (byte)0xFF, (byte)0xFE, (byte)0x00});
+
+			magicMap.put(".jpeg", magics);
+		}
+		
+		// .tiff
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x49, (byte)0x49, (byte)0x2A});
+			magics.add(new byte[]{(byte)0x4D, (byte)0x4D, (byte)0x2A});
+
+			magicMap.put(".tiff", magics);
+		}
+		
+		// .gif
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x47, (byte)0x49, (byte)0x46, (byte)0x38, (byte)0x37, (byte)0x61});
+			magics.add(new byte[]{(byte)0x47, (byte)0x49, (byte)0x46, (byte)0x38, (byte)0x39, (byte)0x61});
+
+			magicMap.put(".gif", magics);
+		}
+		
+		// .bmp
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x42, (byte)0x4D});
+
+			magicMap.put(".bmp", magics);
+		}
+		
+		// .png
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x89, (byte)0x50, (byte)0x4E, (byte)0x47, (byte)0x0D, (byte)0x0A, (byte)0x1A, (byte)0x0A});
+
+			magicMap.put(".png", magics);
+		}
+
+		// .mp3
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x49, (byte)0x44, (byte)0x33, (byte)0x03});
+
+			magicMap.put(".mp3", magics);
+		}
+		
+		// .mov
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x6D, (byte)0x64, (byte)0x61, (byte)0x74});
+
+			magicMap.put(".mov", magics);
+		}
+		
+		// .avi
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x41, (byte)0x56, (byte)0x49, (byte)0x20});
+			magics.add(new byte[]{(byte)0x52, (byte)0x49, (byte)0x46, (byte)0x46});
+			magics.add(new byte[]{(byte)0x52, (byte)0x49, (byte)0x46, (byte)0x46, (byte)0x6A, (byte)0x42, (byte)0x01, (byte)0x00});
+
+			magicMap.put(".avi", magics);
+		}
+		
+		// .mpeg
+		{
+			ArrayList<byte[]> magics = new ArrayList<>();
+			magics.add(new byte[]{(byte)0x00, (byte)0x00, (byte)0x01, (byte)0xB3});
+
+			magicMap.put(".mpeg", magics);
+		}
+	}
+	
+	/**
+	 * 확장자의 매직넘버를 검사할 수 있는지 여부 반환
+	 * 
+	 * @param ext 검사할 확장자("." 포함, ex: ".jpg")
+	 * @return 검사가능 여부
+	 */
+	public static boolean isMagicNumberCheckableExtension(String ext) {
+		return magicMap.containsKey(ext);
+	}
+	
+	/**
+	 * 파일의 확장자와 일치하는 매직 넘버가 있는 검사
+	 * 
+	 * @param file 검사할 파일
+	 * @return 일치하는 매직 넘버가 있는지 여부
+	 */
+	public static boolean checkMagicNumber(File file) throws Exception {
+		
+		// 입력값 검증
+		if(file == null) {
+			throw new NullPointerException("file is null.");
+		}
+		
+		if(file.canRead() == false) {
+			throw new IllegalArgumentException("can't read file:" + file.getAbsolutePath());
+		}
+		
+		// 파일 이름과 확장자 분리
+		String[] nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
+		
+		// 파일에 확장자가 없는 경우
+		if(nameAndExt.length != 2) {
+			throw new IllegalArgumentException("extension is not found:" + file.getAbsolutePath());
+		}
+		
+		// 확장자가 목록에 있는지 확인
+		String ext = "." + nameAndExt[1];
+		if(magicMap.containsKey(ext) == false) {
+			throw new IllegalArgumentException("extension is not checkable:" + file.getAbsolutePath());
+		}
+		
+		// 파일의 앞부분 중 256 바이트 만큼 읽음
+		// 파일의 크기가 256 바이트 이하이면 모두 읽음
+		byte[] head = readNBytes(file, 256);
+		
+		// 파일의 매직 넘버 검사
+		ArrayList<byte[]> magicNumbers = magicMap.get(ext);
+		for(byte[] magicNumber: magicNumbers) {
+			
+			// 일치하는 매직 넘버가 있는 경우, true를 반환
+			if(BytesUtil.startsWith(head, magicNumber) == true) {
+				return true;
+			}
+		}
+		
+		// 일치하는 매직 넘버가 하나도 없을 경우, false를 반환 
+		return false;
+	}
 	
 	/**
 	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
