@@ -185,7 +185,7 @@ public class SysUtil {
 		// 출력 결과 저장
 		String output = "";
 		try(InputStream is = process.getInputStream()) {
-			output = new String(BytesUtil.readAllBytes(is), Charset.defaultCharset());
+			output = new String(FileUtil.readAllBytes(is), Charset.defaultCharset());
 		}
 		
 		// 실행 결과 기다림
