@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.jutools.common.BoolType;
+
 /**
  * File 처리 관련 Utility 클래스
  * 
@@ -248,58 +250,12 @@ public class FileUtil {
 	}
 	
 	/**
-	 * 확장자의 매직넘버를 검사할 수 있는지 여부 반환
-	 * 
-	 * @param ext 검사할 확장자("." 포함, ex: ".jpg")
-	 * @return 검사가능 여부
-	 */
-	public static boolean isMagicNumberCheckableExtension(String ext) {
-		return magicMap.containsKey(ext);
-	}
-	
-	/**
-	 * 확장자의 매직넘버를 검사할 수 있는지 여부 반환
-	 * 
-	 * @param file 확장자 검사할 파일
-	 * @return 검사가능 여부
-	 */
-	public static boolean isMagicNumberCheckableExtension(File file) {
-		
-		// file이 null 일 경우, false 반환
-		if(file == null) {
-			return false;
-		}
-		
-		// 읽을 수 없을 경우, false 반환
-		if(file.canRead() == false) {
-			return false;
-		}
-		
-		// 파일 이름과 확장자 분리
-		String[] nameAndExt = null;
-		try {
-			nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
-		} catch(Exception ex) {
-			return false;
-		}
-		
-		// 파일에 확장자가 없는 경우
-		if(nameAndExt.length != 2) {
-			return false;
-		}
-		
-		// 확장자가 목록에 있는지 확인하여 반환
-		String ext = "." + nameAndExt[1];
-		return magicMap.containsKey(ext);
-	}
-	
-	/**
 	 * 파일의 확장자와 일치하는 매직 넘버가 있는 검사
 	 * 
 	 * @param file 검사할 파일
 	 * @return 일치하는 매직 넘버가 있는지 여부
 	 */
-	public static boolean checkMagicNumber(File file) throws Exception {
+	public static BoolType checkMagicNumber(File file) throws Exception {
 		
 		// 입력값 검증
 		if(file == null) {
@@ -310,18 +266,10 @@ public class FileUtil {
 			throw new IllegalArgumentException("can't read file:" + file.getAbsolutePath());
 		}
 		
-		// 파일 이름과 확장자 분리
-		String[] nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
-		
-		// 파일에 확장자가 없는 경우
-		if(nameAndExt.length != 2) {
-			throw new IllegalArgumentException("extension is not found:" + file.getAbsolutePath());
-		}
-		
-		// 확장자가 목록에 있는지 확인
-		String ext = "." + nameAndExt[1];
+		// 확장자가 목록에 있는지 확인, 없을 경우 unknown 반환
+		String ext = getExt(file);
 		if(magicMap.containsKey(ext) == false) {
-			throw new IllegalArgumentException("extension is not checkable:" + file.getAbsolutePath());
+			return BoolType.UNKNOWN;
 		}
 		
 		// 파일의 앞부분 중 256 바이트 만큼 읽음
@@ -334,12 +282,45 @@ public class FileUtil {
 			
 			// 일치하는 매직 넘버가 있는 경우, true를 반환
 			if(BytesUtil.startsWith(head, magicNumber) == true) {
-				return true;
+				return BoolType.TRUE;
 			}
 		}
 		
 		// 일치하는 매직 넘버가 하나도 없을 경우, false를 반환 
-		return false;
+		return BoolType.FALSE;
+	}
+	
+	/**
+	 * 파일의 확장자를 반환<br>
+	 * 반환시, "." 포함, ex) "test.jpg" -> ".jpg"<br>
+	 * file이 null이거나 확장자가 없는 경우, "" 반환
+	 * 
+	 * @param file 확장자를 가져올 파일
+	 * @return 확장자
+	 */
+	public static String getExt(File file) {
+		
+		// 입력값 검증
+		if(file == null) {
+			return "";
+		}
+		
+		try {
+			
+			// 파일 이름과 확장자 분리
+			String[] nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
+			
+			// 파일에 확장자가 없는 경우
+			if(nameAndExt.length != 2) {
+				return "";
+			}
+			
+			// 확장자를 반환
+			return "." + nameAndExt[1];
+			
+		} catch(Exception ex) {
+			return "";
+		}
 	}
 	
 	/**
