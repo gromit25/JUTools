@@ -258,6 +258,42 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 확장자의 매직넘버를 검사할 수 있는지 여부 반환
+	 * 
+	 * @param file 확장자 검사할 파일
+	 * @return 검사가능 여부
+	 */
+	public static boolean isMagicNumberCheckableExtension(File file) {
+		
+		// file이 null 일 경우, false 반환
+		if(file == null) {
+			return false;
+		}
+		
+		// 읽을 수 없을 경우, false 반환
+		if(file.canRead() == false) {
+			return false;
+		}
+		
+		// 파일 이름과 확장자 분리
+		String[] nameAndExt = null;
+		try {
+			nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
+		} catch(Exception ex) {
+			return false;
+		}
+		
+		// 파일에 확장자가 없는 경우
+		if(nameAndExt.length != 2) {
+			return false;
+		}
+		
+		// 확장자가 목록에 있는지 확인하여 반환
+		String ext = "." + nameAndExt[1];
+		return magicMap.containsKey(ext);
+	}
+	
+	/**
 	 * 파일의 확장자와 일치하는 매직 넘버가 있는 검사
 	 * 
 	 * @param file 검사할 파일
