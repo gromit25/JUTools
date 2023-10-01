@@ -16,6 +16,86 @@ import com.jutools.common.OrderType;
 public class BytesUtil {
 	
 	/**
+	 * 바이트 배열을 비교하여 반환<br>
+	 * 두 배열의 길이가 같고 요소도 동일하면 0,<br>
+	 * b1의 요소와 b2의 요소를 비교하여 b1이 크면 1, b2가 크면 -1<br>
+	 * 요소가 같으나 b1이 더 길 경우 1, b2가 더 길 경우 -1 반환 
+	 * 
+	 * @param b1 비교할 첫번째 바이트 배열
+	 * @param b2 비고할 두번째 바이트 배열
+	 * @return 비교 결과
+	 */
+	public static int compare(byte[] b1, byte[] b2) throws Exception {
+		
+		// 입력값 검증
+		if(b1 == null) {
+			throw new NullPointerException("byte array(b1) is null.");
+		}
+		
+		if(b2 == null) {
+			throw new NullPointerException("byte array(b2) is null.");
+		}
+		
+		// 비교할 byte index의 종료 위치 변수
+		// b1과 b2 중 크기가 작은 쪽까지 비교함
+		int end = (b1.length > b2.length)?b2.length:b1.length;
+		
+		// 바이트 비교
+		for(int index = 0; index < end; index++) {
+			
+			int compare = b1[index] - b2[index];
+			
+			// 같지 않으면 비교 결과를 반환
+			if(compare != 0) {
+				return MathUtil.sign(compare);
+			}
+		}
+		
+		// end 까지의 byte가 같으면 크기를 비교하여 반환
+		if(b1.length == b2.length) {
+			return 0;
+		} else if(b1.length > b2.length) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	/**
+	 * target Byte의 첫 부분과 지정한 접두사 일치 여부 반환<br>
+	 * 일치할 경우 : true, 일치하지 않을 경우 : false
+	 * 
+	 * @param target 확인 대상 byte array
+	 * @param prefix 접두사 byte array
+	 * @return target Byte의 첫 부분과 지정한 접두사 일치 여부
+	 */
+	public static boolean startsWith(byte[] target, byte[] prefix) throws Exception {
+		
+		// 입력값 검증
+		if(target == null) {
+			throw new NullPointerException("target array is null.");
+		}
+
+		if(prefix == null) {
+			throw new NullPointerException("suffix array is null.");
+		}
+		
+		// target이 접두사보다 작을 경우에는 항상 false 
+		if(prefix.length > target.length) {
+			return false;
+		}
+		
+		// 각 Byte array의 index번째에 있는 byte가 같은지 확인
+		for(int index = 0; index < prefix.length; index++) {
+			if(target[index] != prefix[index]) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * target Byte의 끝 부분과 지정한 접미사 일치 여부 반환<br>
 	 * 일치할 경우 : true, 일치하지 않을 경우 : false
 	 *
@@ -25,7 +105,7 @@ public class BytesUtil {
 	 */
 	public static boolean endsWith(byte[] target, byte[] suffix) throws Exception {
 
-		// parameter null 체크
+		// 입력값 검증
 		if(target == null) {
 			throw new NullPointerException("target array is null.");
 		}
