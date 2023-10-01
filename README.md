@@ -135,6 +135,21 @@ try(
 }
 ```
 
+### FileTracker   
+----------------------------------    
+> 파일의 변경사항에 대해 추적(Tracking)하는 Utility     
+> tail -f 와 같은 기능임, 로그 추적 등에서 활용    
+```java
+FileTracker
+    .create("C:\\test.log")
+    .tracking(
+        msg -> {
+            // 파일에 추가된 메시지 처리
+            System.out.println(msg);
+        }
+    );
+```
+
 ### EnvUtil   
 ----------------------------------
 > 환경변수를 클래스의 static 변수에 설정해 주는 Utility
@@ -255,21 +270,6 @@ Cache<String> cache = CacheService
     
 System.out.println(cache.get("test1"));  // "test1 value" 가 출력됨    
 ```    
-
-### FileTracker   
-----------------------------------    
-> 파일의 변경사항에 대해 추적(Tracking)하는 Utility     
-> tail -f 와 같은 기능임, 로그 추적 등에서 활용    
-```java
-FileTracker
-    .create("C:\\test.log")
-    .tracking(
-        msg -> {
-            // 파일에 추가된 메시지 처리
-            System.out.println(msg);
-        }
-    );
-```
 
 ### XMLUtil    
 ----------------------------------    
