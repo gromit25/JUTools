@@ -448,6 +448,17 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * 문자열을 byte 배열로 변환<br>
+	 * ex) str:"1A03", order: OrderType.ASCEND(default) -> byte[] {26, 3}
+	 * 
+	 * @param str 문자열
+	 * @return 변환된 byte 배열
+	 */
+	public static byte[] strToBytes(String str) throws Exception {
+		return strToBytes(str, OrderType.ASCEND);
+	}
+	
+	/**
 	 * 주어진 문자에 해당하는 byte를 반환하는 메소드
 	 * 
 	 * @param ch 문자
@@ -469,9 +480,10 @@ public class BytesUtil {
 	/**
 	 * byte 배열을 문자열로 변환<br>
 	 * ex) byte[] {26, 3}, order: OrderType.ASCEND -> "1A03"<br>
-	 *     byte[] {26, 3}, order: OrderType.DESCEND -> "031A"<br>
+	 *     byte[] {26, 3}, order: OrderType.DESCEND -> "031A"
 	 * 
 	 * @param bytes byte 배열
+	 * @param order 순서
 	 * @return 변환된 문자열
 	 */
 	public static String bytesToStr(byte[] bytes, OrderType order) throws Exception {
@@ -498,12 +510,23 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * byte 배열을 문자열로 변환<br>
+	 * ex) byte[] {26, 3}, order: OrderType.ASCEND(default) -> "1A03"<br>
 	 * 
+	 * @param bytes byte 배열
+	 * @return 변환된 문자열
+	 */
+	public static String bytesToStr(byte[] bytes) throws Exception {
+		return bytesToStr(bytes, OrderType.ASCEND);
+	}
+	
+	/**
+	 * byte배열을 객체로 맵핑하여 반환
 	 * 
-	 * @param <T>
-	 * @param bytes
-	 * @param mappingClass
-	 * @return
+	 * @param <T> 맵핑할 객체의 타입
+	 * @param bytes 맵핑할 byte 배열
+	 * @param mappingClass 맵핑할 객체 클래스
+	 * @return 맵핑된 객체
 	 */
 	public static <T> T mapping(byte[] bytes, Class<T> mappingClass) throws Exception {
 		return BytesMapper.mapping(bytes, mappingClass);
