@@ -1,8 +1,7 @@
 package com.jutools;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +18,105 @@ import lombok.Data;
  * @author jmsohn
  */
 public class BytesUtilTest {
+	
+	@Test
+	public void testCompare1() throws Exception {
+		
+		String test1 = "123456789";
+		String test2 = "123456789";
+		
+		int result = BytesUtil.compare(test1.getBytes(), test2.getBytes());
+
+		assertEquals(0, result);
+	}
+	
+	@Test
+	public void testCompare2() throws Exception {
+		
+		String test1 = "123456789";
+		String test2 = "123456";
+		
+		int result = BytesUtil.compare(test1.getBytes(), test2.getBytes());
+
+		assertEquals(1, result);
+	}
+
+	@Test
+	public void testCompare3() throws Exception {
+		
+		String test1 = "12345";
+		String test2 = "123456789";
+		
+		int result = BytesUtil.compare(test1.getBytes(), test2.getBytes());
+
+		assertEquals(-1, result);
+	}
+	
+	@Test
+	public void testCompare4() throws Exception {
+		
+		String test1 = "123556789";
+		String test2 = "123456789";
+		
+		int result = BytesUtil.compare(test1.getBytes(), test2.getBytes());
+
+		assertEquals(1, result);
+	}
+	
+	@Test
+	public void testCompare5() throws Exception {
+		
+		String test1 = "123456789";
+		String test2 = "123556789";
+		
+		int result = BytesUtil.compare(test1.getBytes(), test2.getBytes());
+
+		assertEquals(-1, result);
+	}
+	
+	@Test
+	public void testStartsWith1() throws Exception {
+		
+		String target = "123456789";
+		String prefix = "123";
+		
+		boolean result = BytesUtil.startsWith(target.getBytes(), prefix.getBytes());
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testStartsWith2() throws Exception {
+		
+		String target = "123456789";
+		String prefix = "125";
+		
+		boolean result = BytesUtil.startsWith(target.getBytes(), prefix.getBytes());
+
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testEndsWith1() throws Exception {
+		
+		String target = "123456789";
+		String prefix = "789";
+		
+		boolean result = BytesUtil.endsWith(target.getBytes(), prefix.getBytes());
+
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testEndsWith2() throws Exception {
+		
+		String target = "123456789";
+		String prefix = "779";
+		
+		boolean result = BytesUtil.endsWith(target.getBytes(), prefix.getBytes());
+
+		assertFalse(result);
+	}
 
 	@Test
 	public void testSplit1() throws Exception {
