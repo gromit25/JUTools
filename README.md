@@ -199,8 +199,8 @@ System.out.println(encryptedMsg);
 > 리눅스 크론잡과 동일한 형식으로 설정 가능    
 > 형식 : (*) * * * * *   
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;초 분 시 일 월 주    
-> 초 : optional   
-> 주 : 0-7까지 지정 가능, 0과 7은 일요일, 1부터 월요일, 6은 토요일
+> &nbsp;&nbsp;&nbsp;초 : optional   
+> &nbsp;&nbsp;&nbsp;주 : 0-7까지 지정 가능, 0과 7은 일요일, 1부터 월요일, 6은 토요일
 >    
 > 시간 표시 형식   
 > * 숫자    
