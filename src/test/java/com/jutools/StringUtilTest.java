@@ -610,7 +610,7 @@ public class StringUtilTest {
 			String str = "abcdefghijk";
 			String toStr = "0123456789";
 			
-			// JDK 1.8 이상일 경우 오류 발생함, 1.9
+			// JDK 1.8 이상일 경우 오류 발생함
 			StringUtil.changeStr(str, toStr);
 			
 			assertEquals("0123456789", str);
