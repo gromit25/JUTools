@@ -47,6 +47,7 @@ public class SysUtil {
 	
 	/**
 	 * 시스템의 ip 목록을 반환하는 메소드<br>
+	 * ipv4형식의 주소만 반환<br>
 	 * ex) 192.168.0.1,192.168.0.2
 	 * 
 	 * @return 시스템의 ip 목록
