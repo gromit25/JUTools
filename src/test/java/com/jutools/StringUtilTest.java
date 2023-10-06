@@ -306,7 +306,7 @@ public class StringUtilTest {
 		    String pattern = "abc*def";
 		    String input = "abc111def";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -323,7 +323,7 @@ public class StringUtilTest {
 		    String pattern = "abc?def";
 		    String input = "abc1def";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -340,7 +340,7 @@ public class StringUtilTest {
 		    String pattern = "abc?def";
 		    String input = "abc11def";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -356,7 +356,7 @@ public class StringUtilTest {
 		    String pattern = "abc";
 		    String input = "abcdef";
 
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -373,7 +373,7 @@ public class StringUtilTest {
 		    String pattern = "abc";
 		    String input = "abc";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -390,7 +390,7 @@ public class StringUtilTest {
 		    String pattern = "*";
 		    String input = "abcdef";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -406,7 +406,7 @@ public class StringUtilTest {
 			
 		    String pattern = "??";
 		    String input = "ab";
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -423,7 +423,7 @@ public class StringUtilTest {
 		    String pattern = "???";
 		    String input = "ab";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -440,7 +440,7 @@ public class StringUtilTest {
 		    String pattern = "??";
 		    String input = "abc";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -457,7 +457,7 @@ public class StringUtilTest {
 		    String pattern = "a??";
 		    String input = "abc";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -474,7 +474,7 @@ public class StringUtilTest {
 		    String pattern = "a?*";
 		    String input = "abc";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -491,7 +491,7 @@ public class StringUtilTest {
 		    String pattern = "a?*";
 		    String input = "a";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -508,7 +508,7 @@ public class StringUtilTest {
 		    String pattern = "?*a";
 		    String input = "ba";
 
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(true, result);
 			
@@ -525,7 +525,7 @@ public class StringUtilTest {
 		    String pattern = "?*a";
 		    String input = "a";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -542,7 +542,7 @@ public class StringUtilTest {
 		    String pattern = "A?*";
 		    String input = "abc";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern, true);
+		    boolean result = StringUtil.matchWildcard(pattern, true, input);
 			
 			assertEquals(true, result);
 			
@@ -559,7 +559,7 @@ public class StringUtilTest {
 		    String pattern = "A?*";
 		    String input = "abc";
 		    
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			
@@ -576,7 +576,7 @@ public class StringUtilTest {
 		    String pattern = "abc?DEF";
 		    String input = "ABC1def";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern, true);
+		    boolean result = StringUtil.matchWildcard(pattern, true, input);
 			
 			assertEquals(true, result);
 			
@@ -593,7 +593,7 @@ public class StringUtilTest {
 		    String pattern = "abc?DEF";
 		    String input = "ABC1def";
 			
-		    boolean result = StringUtil.matchWildcard(input, pattern);
+		    boolean result = StringUtil.matchWildcard(pattern, input);
 			
 			assertEquals(false, result);
 			

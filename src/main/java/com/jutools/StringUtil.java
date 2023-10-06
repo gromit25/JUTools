@@ -838,23 +838,23 @@ public class StringUtil {
 	/**
 	 * wildcard 패턴 문자열과 일치 여부 반환
 	 * 
-	 * @param str wildcard 패턴에 맞는지 검사할 문자열
 	 * @param wildcardPattern wildcard 패턴 문자열
+	 * @param str 검사할 문자열
 	 * @return wildcard 패턴 문자열과 일치 여부
 	 */
-	public static boolean matchWildcard(String str, String wildcardPattern) throws Exception {
+	public static boolean matchWildcard(String wildcardPattern, String str) throws Exception {
 		return WildcardPattern.create(wildcardPattern).match(str).isMatch();
 	}
 	
 	/**
 	 * wildcard 패턴 문자열과 일치 여부 반환
 	 * 
-	 * @param str wildcard 패턴에 맞는지 검사할 문자열
 	 * @param wildcardPattern wildcard 패턴 문자열
 	 * @param ignoreCase 대소문자 구별 여부(true-구별하지 않음, false-구별함)
+	 * @param str 검사할 문자열
 	 * @return wildcard 패턴 문자열과 일치 여부
 	 */
-	public static boolean matchWildcard(String str, String wildcardPattern, boolean ignoreCase) throws Exception {
+	public static boolean matchWildcard(String wildcardPattern, boolean ignoreCase, String str) throws Exception {
 		return WildcardPattern.create(wildcardPattern, ignoreCase).match(str).isMatch();
 	}
 	
