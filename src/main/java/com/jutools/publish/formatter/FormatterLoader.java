@@ -119,7 +119,8 @@ class FormatterLoader {
 		// Formatter의 속성 설정을 위한 Setter 클래스
 		this.attrSetterClazzes = new ArrayList<Class<?>>();
 		
-		//
+		// 공통 요소 Setter 클래스 등록
+		// String, int, long, ...
 		this.attrSetterClazzes.add(CommonAttrSetter.class);
 		
 		// Excel 관련 Setter 클래스 등록
