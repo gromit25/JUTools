@@ -3,71 +3,89 @@ package com.jutools.publish.formatter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * xml inputstream 클래스<br>
+ * -> xml의 현재 parsing 위치 확인용으로 Formatter에 위치를 설정함<br>
+ * &nbsp;&nbsp;&nbsp;FormatterException 발생시 발생위치 표시를 위함
  * 
  * @author jmsohn
  */
 public class XmlLocInputStream extends InputStream {
 	
+	/** xml 읽기 위한 버퍼의 크기 */
 	private static int BUFFER_SIZE = 1024;
 	
+	/** xml 파싱 상태 목록 */
 	private enum ParsingStatus {
+		/** xml 내부의 text 문자열 */
 		CONTENTS,
+		/** 테그 시작 */
 		TAG_START,
+		/** 테그 명 */
 		TAG_NAME,
+		/** 테그 내 tag명 이후의 속성등 */
 		TAG_CONTENTS,
+		/** 테그 종료 */
 		TAG_END,
+		/** 싱글 쿼터(') 문자열 시작 */
 		QUOTO_STRING,
+		/** 싱글 쿼터(') 이스케이프 */
 		QUOTO_ESCAPE,
+		/** 더블 쿼터(") 문자열 시작 */
 		D_QUOTO_STRING,
+		/** 더블 쿼터(") 이스케이프 */
 		D_QUOTO_ESCAPE
 	}
 	
+	/** 테그 시작 위치 */
 	@Getter
 	@Setter(AccessLevel.PRIVATE)
 	private Loc startTagLoc;
 	
+	/** 라인 번호 */
 	@Getter
 	@Setter(AccessLevel.PRIVATE)
 	private int lineNum;
 	
+	/** xml의 input stream */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
 	private InputStream orgInputStream;
 
+	/** 라인의 컬럼을 읽는 버퍼 */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
 	private ByteBuffer columnBuffer;
 	
+	/** 테그명 버퍼 */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
 	private ByteBuffer tagNameBuffer;
 
+	/** 현재 파싱 상태 */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
 	private ParsingStatus status;
 
 	/**
-	 * 
-	 * getter는 실제 구현함
+	 * 테그별 위치정보(Loc)<br>
+	 * ex) "PrintFomatter" -> {Loc-1, Loc-2, Loc-3}<br>
+	 * getter는 실제 구현함(lombok 사용안함)
 	 */
-	private Hashtable<String, ArrayList<Loc>> tagMap;
-	
-	/**
-	 * 
-	 * getter는 실제 구현함
-	 */
-	private Hashtable<String, Integer> tagSearchBaseMap;
+	private Map<String, Queue<Loc>> tagMap;
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param is
 	 */
 	public XmlLocInputStream(InputStream is) {
@@ -116,66 +134,19 @@ public class XmlLocInputStream extends InputStream {
 	/**
 	 * 
 	 * @param tagName
-	 * @param tagEnd
 	 * @return
 	 */
-	public Loc findTagStartLoc(String tagName, Loc tagEndLoc) throws Exception {
+	Loc getTagStartLoc(String tagName) throws Exception {
 		
-		if(null == tagName) {
-			throw new Exception("tagName param is null.");
+		// 입력값 검증
+		if(tagName == null) {
+			throw new Exception("tagName is null.");
 		}
 		
-		if(null == tagEndLoc) {
-			throw new Exception("tagEndLoc param is null.");
-		}
-		
-		// 1. 기준위치(search base)의 loc와 다음 tag의 시작 위치 loc를 가져옴
-		int tagSearchBase = this.getTagSearchBase(tagName);
-		
-		ArrayList<Loc> tagStartLocList = this.getTagStartLocList(tagName);
-		Loc baseStartLoc = tagStartLocList.get(tagSearchBase);
-		Loc nextStartLoc = null;
-		
-		// 기준위치(search base)가 가장 마지막이 아니면
-		// 다음 tag 위치를 가져옴
-		// 기준위치가 마지막이면, nextStartLoc는 null임
-		if(tagSearchBase + 1 < this.getTagStartLocList(tagName).size()) {
-			nextStartLoc = tagStartLocList.get(tagSearchBase + 1);
-		}
-		
-		// 2.
-		
-		// 기준위치(search base)와 tag 종료 위치가 동일할 수 없음
-		if(0 == baseStartLoc.compareTo(tagEndLoc)) {
-			throw new Exception("tag start loc equals tag end loc.");
-		}
-		
-		// 기준위치(search base)가 가장 마지막인 경우
-		// 무조건 가장 마지막 위치를 반환함
-		// -> 순서대로 검색하기 때문에 앞으로 가지 않고 반환함
-		if(null == nextStartLoc) {
-			return baseStartLoc;
-		}
-
-		// 기준위치(search base)가 마지막이 아닌 경우
-		
-		// tag 종료 위치가 다음 tag 시작위치 보다 뒤쪽에 있으면,
-		// 기준위치를 다음 tag 시작위치로 변경하여 검색함
-		if(0 > nextStartLoc.compareTo(tagEndLoc)) {
-			this.setTagSearchBase(tagName, tagSearchBase + 1);
-			return this.findTagStartLoc(tagName, tagEndLoc);
-		}
-		
-		// 순서대로 검색하기 때문에,
-		// tag 종료 위치가 tag 시작위치 보다 앞쪽에 있을 수 없음
-		if(0 < baseStartLoc.compareTo(tagEndLoc)) {
-			throw new Exception("tag start loc is not greater then tag end loc.");
-		}
-
-		// 마지막까지 오면,
-		// tag 종료 위치가 tag의 시작 위치와 다음 tag 시작위치 사이에 있는 경우이므로
-		// 현재 위치를 반환함
-		return baseStartLoc;
+		//
+		Loc tagStartLoc = this.getTagStartLocQueue(tagName).poll();
+		 
+		return tagStartLoc;
 	}
 	
 	/**
@@ -189,7 +160,8 @@ public class XmlLocInputStream extends InputStream {
 		switch(this.getStatus()) {
 		case CONTENTS:
 			if(ch == '<') {
-				// 현재 위치(line/column number)를 Tag시작지점으로 설정
+				// 현재 위치(line/column number)를 테그 시작지점으로 설정
+				// -> 테그 명이 확정 되는 시점에 사용하기 위해 임시 설정
 				this.setStartTagLoc(this.getLineNum(), this.getColumnNumInBuffer());
 				this.setStatus(ParsingStatus.TAG_START);
 			}
@@ -288,6 +260,7 @@ public class XmlLocInputStream extends InputStream {
 	
 	/**
 	 * buffer 내의 컬럼의 길이를 산출하여 반환
+	 * 
 	 * @return buffer 내의 컬럼의 길이
 	 */
 	private int getColumnNumInBuffer() {
@@ -358,25 +331,17 @@ public class XmlLocInputStream extends InputStream {
 	 * @param loc
 	 */
 	private void addTagMap(String tagName, Loc loc) {
-		
-		ArrayList<Loc> map = this.getTagMap().get(tagName);
-		
-		if(null == map) {
-			map = new ArrayList<Loc>();
-			this.getTagMap().put(tagName, map);
-		}
-		
-		map.add(loc);
+		this.getTagStartLocQueue(tagName).add(loc);
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	private Hashtable<String, ArrayList<Loc>> getTagMap() {
+	private Map<String, Queue<Loc>> getTagMap() {
 		
 		if(null == this.tagMap) {
-			this.tagMap = new Hashtable<String, ArrayList<Loc>>();
+			this.tagMap = new ConcurrentHashMap<String, Queue<Loc>>();
 		}
 		
 		return this.tagMap;
@@ -387,64 +352,15 @@ public class XmlLocInputStream extends InputStream {
 	 * @param tagName
 	 * @return
 	 */
-	private ArrayList<Loc> getTagStartLocList(String tagName) {
+	private Queue<Loc> getTagStartLocQueue(String tagName) {
 		
-		ArrayList<Loc> tagStartLocList = this.getTagMap().get(tagName);
+		Queue<Loc> tagStartLocQueue = this.getTagMap().get(tagName);
 		
-		if(null == tagStartLocList) {
-			tagStartLocList = new ArrayList<Loc>();
-			this.getTagMap().put(tagName, tagStartLocList);
+		if(tagStartLocQueue == null) {
+			tagStartLocQueue = new ConcurrentLinkedQueue<Loc>();
+			this.getTagMap().put(tagName, tagStartLocQueue);
 		}
 		
-		return tagStartLocList;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	private Hashtable<String, Integer> getTagSearchBaseMap() {
-		
-		if(null == this.tagSearchBaseMap) {
-			this.tagSearchBaseMap = new Hashtable<String, Integer>();
-		}
-		
-		return this.tagSearchBaseMap;
-	}
-	
-	/**
-	 * 
-	 * @param tagName
-	 * @return
-	 */
-	private int getTagSearchBase(String tagName) {
-		
-		Integer tagSearchBase = this.getTagSearchBaseMap().get(tagName);
-		
-		if(null == tagSearchBase) {
-			tagSearchBase = 0;
-			this.getTagSearchBaseMap().put(tagName, tagSearchBase);
-		}
-		
-		return tagSearchBase;
-	}
-	
-	/**
-	 * 
-	 * @param tagName
-	 * @param newBase
-	 */
-	private void setTagSearchBase(String tagName, int newBase) throws Exception {
-		
-		int listSize = 0;
-		if(this.getTagStartLocList(tagName) != null) {
-			listSize = this.getTagStartLocList(tagName).size();
-		}
-		
-		if(listSize <= newBase || newBase < 0) {
-			throw new Exception(String.format("Out of range(%s:0~%d):%d", tagName, listSize, newBase));
-		}
-		
-		this.getTagSearchBaseMap().put(tagName, newBase);
+		return tagStartLocQueue;
 	}
 }

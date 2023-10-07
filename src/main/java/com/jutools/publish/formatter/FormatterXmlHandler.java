@@ -58,12 +58,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	@Setter(AccessLevel.PROTECTED)
 	private Formatter formatter;
 	
-	/**
-	 * xml inputstream 객체
-	 * -> xml의 현재 parsing 위치 확인용으로
-	 *    Formatter에 위치를 설정함
-	 *    FormatterException 발생시 발생위치 표시를 위함
-	 */
+	/** xml inputstream 객체 */
 	@Getter
 	@Setter
 	private XmlLocInputStream locInputStream;
@@ -226,10 +221,11 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			// formatter 테그명
 			this.getFormatter().setTagName(qName);
 			
-			// formatter에 테그 종료 위치 설정
-			// locator의 line/column number는 tag의 종료 line/column 위치를 반환함 
-			Loc tagEndLoc = new Loc(this.getLocator().getLineNumber(), this.getLocator().getColumnNumber());
-			Loc tagStartLoc = this.getLocInputStream().findTagStartLoc(qName, tagEndLoc);
+			// formatter에 테그 시작 위치 설정
+			// 현 테그명에 해당하는 위치 정보 획득
+			Loc tagStartLoc = this.getLocInputStream().getTagStartLoc(qName);
+			
+			// 테그 시작 위치 정보를 설정
 			this.getFormatter().setLineNumber(tagStartLoc.getLineNum());
 			this.getFormatter().setColumnNumber(tagStartLoc.getColumnNum());
 			
@@ -246,7 +242,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	}
 	
 	@Override
-    public void endElement (String uri, String localName, String qName) throws SAXException {
+    public void endElement(String uri, String localName, String qName) throws SAXException {
 		
 		try {
 			
