@@ -75,6 +75,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	
 	/**
 	 * 사용할 Formatter 그룹명을 반환
+	 * 
 	 * @return 사용할 Formatter 그룹명
 	 */
 	protected abstract Set<String> getFormatterGroupNames();
@@ -288,6 +289,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	
 	/**
 	 * tag 이름(qName)에 따라 Formatter를 생성하여 반환 
+	 * 
 	 * @param qName tag 이름(qName)
 	 * @return 생성된 Formatter
 	 */
