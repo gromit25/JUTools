@@ -79,7 +79,10 @@ public class XmlLocInputStream extends InputStream {
 	/**
 	 * 테그별 위치정보(Loc)<br>
 	 * ex) "PrintFomatter" -> {Loc-1, Loc-2, Loc-3}<br>
-	 * getter는 실제 구현함(lombok 사용안함)
+	 * <br>
+	 * 테그별 위치정보를 저장하는 이유는 SAX 파서 파싱 후 callback되는 시점과<br>
+	 * InputStream에서 읽어가는 시점이 달라서, 테그별로 위치를 임시 저장함<br>
+	 * 다만, 호출순서는 먼저 나온것이 먼저 호출되는 구조라 Queue 형태로 만듦
 	 */
 	private Map<String, Queue<Loc>> tagMap;
 	
@@ -132,26 +135,9 @@ public class XmlLocInputStream extends InputStream {
 	}
 	
 	/**
+	 * xml 파싱시 상태 업데이트
 	 * 
-	 * @param tagName
-	 * @return
-	 */
-	Loc getTagStartLoc(String tagName) throws Exception {
-		
-		// 입력값 검증
-		if(tagName == null) {
-			throw new Exception("tagName is null.");
-		}
-		
-		//
-		Loc tagStartLoc = this.getTagStartLocQueue(tagName).poll();
-		 
-		return tagStartLoc;
-	}
-	
-	/**
-	 * 
-	 * @param read
+	 * @param read 현재 읽은 바이트
 	 */
 	private void updateParsingStatus(int read) {
 		
@@ -275,8 +261,9 @@ public class XmlLocInputStream extends InputStream {
 	}
 	
 	/**
+	 * 컬럼 버퍼에 읽은 바이트 추가
 	 * 
-	 * @param b
+	 * @param b 읽은 바이트
 	 */
 	private void putToColumnBuffer(byte b) {
 		
@@ -296,8 +283,9 @@ public class XmlLocInputStream extends InputStream {
 	}
 	
 	/**
+	 * 테그명 버퍼에 읽은 바이트 추가
 	 * 
-	 * @param b
+	 * @param b 읽은 바이트
 	 */
 	private void putToTagNameBuffer(byte b) {
 		
@@ -317,40 +305,50 @@ public class XmlLocInputStream extends InputStream {
 	}
 	
 	/**
+	 * 테그 시작 위치 저장(임시 저장임)
 	 * 
-	 * @param lineNum
-	 * @param columnNum
+	 * @param lineNum 라인 번호
+	 * @param columnNum 컬럼 번호
 	 */
 	private void setStartTagLoc(int lineNum, int columnNum) {
 		this.setStartTagLoc(new Loc(lineNum, columnNum));
 	}
 
 	/**
+	 * 테그별 위치정보에 위치정보 추가
 	 * 
-	 * @param tagName
-	 * @param loc
+	 * @param tagName 테그명
+	 * @param loc 위치정보
 	 */
 	private void addTagMap(String tagName, Loc loc) {
 		this.getTagStartLocQueue(tagName).add(loc);
 	}
 	
 	/**
+	 * 테그명에 해당하는 위치 정보를 반환<br>
+	 * 큐에서 순서대로 앞쪽 부터 빼서 반환함
 	 * 
-	 * @return
+	 * @param tagName 테그명
+	 * @return 테그명에 해당하는 위치 정보
 	 */
-	private Map<String, Queue<Loc>> getTagMap() {
+	Loc getTagStartLoc(String tagName) throws Exception {
 		
-		if(null == this.tagMap) {
-			this.tagMap = new ConcurrentHashMap<String, Queue<Loc>>();
+		// 입력값 검증
+		if(tagName == null) {
+			throw new Exception("tagName is null.");
 		}
 		
-		return this.tagMap;
+		//
+		Loc tagStartLoc = this.getTagStartLocQueue(tagName).poll();
+		 
+		return tagStartLoc;
 	}
 	
 	/**
+	 * 테그별 위치 정보에서 테그명에 해당하는 위치 정보 큐를 반환
 	 * 
-	 * @param tagName
-	 * @return
+	 * @param tagName 테그명
+	 * @return 테그명에 해당하는 위치 정보 큐
 	 */
 	private Queue<Loc> getTagStartLocQueue(String tagName) {
 		
@@ -362,5 +360,20 @@ public class XmlLocInputStream extends InputStream {
 		}
 		
 		return tagStartLocQueue;
+	}
+	
+	/**
+	 * 테그별 위치 정보 객체 반환
+	 * 
+	 * @return 테그별 위치 정보 객체
+	 */
+	private Map<String, Queue<Loc>> getTagMap() {
+		
+		// null 일 경우, 생성하여 반환
+		if(this.tagMap == null) {
+			this.tagMap = new ConcurrentHashMap<String, Queue<Loc>>();
+		}
+		
+		return this.tagMap;
 	}
 }
