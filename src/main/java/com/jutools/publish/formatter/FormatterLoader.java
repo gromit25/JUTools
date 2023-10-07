@@ -51,6 +51,8 @@ class FormatterLoader {
 	
 	/** Formatter 클래스 목록*/
 	private ArrayList<Class<?>> formatterClazzes;
+	
+	/** Formatter 클래스의 속성 설정 클래스 목록*/
 	private ArrayList<Class<?>> attrSetterClazzes;
 	
 	/**
