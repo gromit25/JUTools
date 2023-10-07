@@ -44,6 +44,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	@Setter(AccessLevel.PRIVATE)
 	private HashMap<String, Class<?>> formatterTypes = new HashMap<String, Class<?>>();
 
+	/** formatter의 속성 설정자 */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
 	private HashMap<Class<?>, Method> attrSetters = new HashMap<Class<?>, Method>();
