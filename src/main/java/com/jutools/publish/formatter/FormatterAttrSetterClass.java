@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * FormatterAttrSetter 메소드를 가진 type(class)을 지정시 사용
- * -> FormatterAttrSetter기능은 {@link FormatterAttrSetter} 참조
- * -> FormatterAttrSetter를 찾을때, 모든 클래스의 메소드를 검사하는 것 보다
- *    FormatterAttrSetterClass 어노테이션이 지정된 클래스의 메소드만 찾는 것이 빠르기 때문에 사용 
+ * FormatterAttrSetter 메소드를 가진 type(class)을 지정시 사용<br>
+ * -> FormatterAttrSetter기능은 {@link FormatterAttrSetter} 참조<br>
+ * -> FormatterAttrSetter를 찾을때, 모든 클래스의 메소드를 검사하는 것 보다<br>
+ * &nbsp;&nbsp;&nbsp;FormatterAttrSetterClass 어노테이션이 지정된 클래스의 메소드만 찾는 것이 빠르기 때문에 사용 
  * 
  * @author jmsohn
  */
