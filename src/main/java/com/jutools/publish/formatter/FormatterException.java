@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Formatter에서 발생한 예외
- * - 예외가 발생한 Formatter 객체 보유
- * - 예외가 발생한 attribute의 이름 보유
- * 
- * 용도)
- * 예외 발생시, Publisher Xml의 어느 부분인지 확인이 곤란하여 추가함
+ * Formatter에서 발생한 예외<br>
+ * - 예외가 발생한 Formatter 객체 보유<br>
+ * - 예외가 발생한 attribute의 이름 보유<br>
+ * <br>
+ * 용도)<br>
+ * 예외 발생시, Publisher Xml의 어느 부분인지 확인이 곤란하여 추가함<br>
  * 
  * @author jmsohn
  */
@@ -30,6 +30,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param formatter 예외가 발생한 formatter 객체
 	 * @param attributeName 예외가 발생한 attribute 명
 	 * @param ex 발생 예외
@@ -42,6 +43,7 @@ public class FormatterException extends Exception {
 
 	/**
 	 * 생성자
+	 * 
 	 * @param formatter 예외가 발생한 formatter 객체
 	 * @param attributeName 예외가 발생한 attribute 명
 	 * @param msg 발생 예외 메시지
@@ -52,6 +54,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param formatter 예외가 발생한 formatter 객체
 	 * @param ex 발생 예외
 	 */
@@ -61,6 +64,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * 생성자
+	 * 
 	 * @param formatter 예외가 발생한 formatter 객체
 	 * @param msg 발생 예외 메시지
 	 */
@@ -78,6 +82,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * Exception이 발생한 Formatter의 Line 번호를 반환
+	 * 
 	 * @return Exception이 발생한 Formatter의 Line 번호
 	 */
 	public int getLineNumber() {
@@ -86,6 +91,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * Exception이 발생한 Formatter의 Column 번호를 반환
+	 * 
 	 * @return Exception이 발생한 Formatter의 Column 번호
 	 */
 	public int getColumnNumber() {
@@ -94,6 +100,7 @@ public class FormatterException extends Exception {
 	
 	/**
 	 * 예외 발생 위치를 문자열로 변환하여 반환
+	 * 
 	 * @return 예외 발생 위치 문자열
 	 */
 	public String getLocMessage() {
