@@ -13,8 +13,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface FormatterSpec {
+	
 	/** Formatter가 속한 Group 명 */
 	public String group();
+	
 	/** 처리할 Tag 명 */
 	public String tag();
 }
