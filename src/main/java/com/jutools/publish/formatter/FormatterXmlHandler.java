@@ -67,6 +67,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	@Setter
 	private XmlLocInputStream locInputStream;
 	
+	/** XML 위치 정보 객체 */
 	@Getter
 	@Setter(AccessLevel.PRIVATE)
 	private Locator locator;
@@ -96,12 +97,10 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	public FormatterXmlHandler() throws Exception {
 		
 		// 초기화 수행
-		//
-		Reflections reflect = new Reflections("com.jutools.publish.formatter");
+		FormatterLoader loader = new FormatterLoader();
 		
-		this.loadFormatterTypes(reflect);
-		this.loadFormatterAttrSetter(reflect);
-
+		this.loadFormatterTypes(loader);
+		this.loadFormatterAttrSetter(loader);
 	}
 	
 	/**
@@ -109,13 +108,9 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	 *   사용할 그룹명(getFormatterGroupNames())에 해당하는
 	 *   생성 가능한 formatter를 가져와 목록(formatterTypes)에 추가함
 	 *   
-	 * @param reflect 
+	 * @param loader formatter 정보 클래스 
 	 */
-	private void loadFormatterTypes(Reflections reflect) throws Exception {
-		
-		if(null == reflect) {
-			throw new Exception("reflect is null.");
-		}
+	private void loadFormatterTypes(FormatterLoader loader) throws Exception {
 		
 		// 현재 출력에서 사용할 group 목록
 		Set<String> groupSet = this.getFormatterGroupNames();
@@ -123,9 +118,9 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			return;
 		}
 		
-		//
-		reflect
-			.getTypesAnnotatedWith(FormatterSpec.class)
+		// FormatterSpec 어노테이션 정보를 이용하여 formatter 클래스를 추가
+		loader
+			.streamOfFormatter()
 			.forEach(clazz -> {
 				
 				// 현재 클래스의 spec을 가져옴
@@ -154,16 +149,13 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 	/**
 	 * Formatter의 속성(Attr) 설정을 위한 Setter 메소드를 로딩(type(class), method)
 	 * 
-	 * @param reflect
+	 * @param loader formatter 정보 클래스(속성 설정 Setter 클래스 정보도 포함됨)
 	 */
-	private void loadFormatterAttrSetter(Reflections reflect) throws Exception {
+	private void loadFormatterAttrSetter(FormatterLoader loader) throws Exception {
 		
-		if(null == reflect) {
-			throw new Exception("reflect is null.");
-		}
-		
-		reflect
-			.getTypesAnnotatedWith(FormatterAttrSetterClass.class)
+		// FormatterAttrSetter 어노테이션 정보를 이용하여 formatter 클래스를 추가
+		loader
+			.streamOfAttrSetter()
 			.forEach(setterClass -> {
 				
 				Method[] methods = setterClass.getDeclaredMethods();
@@ -363,22 +355,8 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			// 5. setter 메소드를 호출하여 formatter에 속성을 설정함
 			//    setter 메소드는 필드의 type(class)에 따라 속성 값을 변환하여,
 			//    formatter 객체의 setter 메소드를 호출함
-			//
-			//    만일, "=" 으로 시작하면, 수식으로 추후에 실행시 계산하는 값임
-			//    Formatter.format 함수 수행시 계산됨
-			//    -> 추후 계산을 위해, formatter 객체에 수식 설정자(FormulaSetter)를 설정함
 			try {
-				
-				if(true == attrValue.startsWith("=")) {
-					// "=" 제거함
-					attrValue = attrValue.substring(1);
-					// 수식 설정자(FormulaSetter) 추가
-					formatter.getFormulaSetters()
-						.add(new FormulaSetter(attrValue, setterMethod, pd.getWriteMethod()));
-				} else {
-					setterMethod.invoke(null, formatter, pd.getWriteMethod(), attrValue);
-				}
-				
+				setterMethod.invoke(null, formatter, pd.getWriteMethod(), attrValue);
 			} catch(Exception ex) {
 				throw new FormatterException(formatter, attrAnnotation.name(), ex);
 			}

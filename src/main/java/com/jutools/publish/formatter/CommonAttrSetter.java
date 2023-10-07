@@ -104,7 +104,7 @@ public class CommonAttrSetter {
 	}
 	
 	/**
-	 * Evaluator type의 속성 설정 메서드<br>
+	 * OLExp(One Line Expression) type의 속성 설정 메서드<br>
 	 *   FormatterAttrSetter 어노테이션 주석 참조
 	 *   
 	 * @param formatter 속성을 지정할 formatter 객체
@@ -112,7 +112,7 @@ public class CommonAttrSetter {
 	 * @param attrValue formatter에 설정할 속성의 문자열값
 	 */
 	@FormatterAttrSetter(OLExp.class)
-	public static void setEvaluator(Formatter formatter, Method setMethod, String attrValue) throws Exception {
+	public static void setOLExp(Formatter formatter, Method setMethod, String attrValue) throws Exception {
 		setMethod.invoke(formatter, OLExp.compile(attrValue));
 	}
 	

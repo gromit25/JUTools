@@ -3,7 +3,6 @@ package com.jutools.publish.formatter;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
@@ -39,9 +38,9 @@ public abstract class Formatter {
 	@Setter(AccessLevel.PACKAGE)
 	private Formatter parent;
 	
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private Vector<FormulaSetter> formulaSetters = new Vector<FormulaSetter>();
+	//@Getter(AccessLevel.PACKAGE)
+	//@Setter(AccessLevel.PACKAGE)
+	//private Vector<FormulaSetter> formulaSetters = new Vector<FormulaSetter>();
 	
 	// xml에서 Formatter 생성시, callback되는 메소드 목록
 	
@@ -98,15 +97,6 @@ public abstract class Formatter {
 		
 		if(values == null) {
 			throw new FormatterException(this, "value container is null.");
-		}
-		
-		//
-		for(FormulaSetter attrSetter: this.getFormulaSetters()) {
-			try {
-				attrSetter.setData(this, values);
-			} catch(Exception ex) {
-				throw new FormatterException(this, ex);
-			}
 		}
 		
 		//
