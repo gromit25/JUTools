@@ -92,12 +92,6 @@ public abstract class AbstractExp {
 				throw new Exception(methodClass.getCanonicalName() + "." + method.getName() + " method is not public");
 			}
 			
-			// 메소드의 return type은 double/Double 형이어야 함
-			Class<?> returnType = method.getReturnType();
-			if(returnType != double.class && returnType != Double.class) {
-				throw new Exception(methodClass.getCanonicalName() + "." + method.getName() + " method return type is not double or Double");
-			}
-			
 			// 메소드 추가
 			this.methods.put(methodMap.alias(), method);
 		}
