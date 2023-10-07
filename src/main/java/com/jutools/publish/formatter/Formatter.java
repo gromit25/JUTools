@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 추상화된 formatter 클래스
+ * 추상화된 formatter 클래스<br>
  * format 파일의 xml에 정의된 tag 들을 수행하기 위한 최상위 추상 객체
  * 
  * @author jmsohn
