@@ -317,11 +317,62 @@ public class StringUtilTest {
 	}
 	
 	@Test
-	public void testMatchWildcard2() {
+	public void testMatchWildcard2_1() {
 		try {
 			
 		    String pattern = "abc?def";
 		    String input = "abc1def";
+			
+		    boolean result = StringUtil.matchWildcard(pattern, input);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMatchWildcard2_2() {
+		try {
+			
+		    String pattern = "test?1";
+		    String input = "test11";
+			
+		    boolean result = StringUtil.matchWildcard(pattern, input);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMatchWildcard2_3() {
+		try {
+			
+		    String pattern = "test*1";
+		    String input = "test11";
+			
+		    boolean result = StringUtil.matchWildcard(pattern, input);
+			
+			assertEquals(true, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMatchWildcard2_4() {
+		try {
+			
+		    String pattern = "test?*1";
+		    String input = "test11";
 			
 		    boolean result = StringUtil.matchWildcard(pattern, input);
 			

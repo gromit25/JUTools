@@ -428,5 +428,40 @@ public class OLExpTest {
 			fail("exception is occured");
 		}
 	}
-
+	
+	@Test
+	public void testMethodCall2_1() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			boolean result = OLExp.compile("matchW('test?1', 'test11')")
+				.execute(values).pop(Boolean.class);
+			
+			assertTrue(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMethodCall3_1() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			boolean result = OLExp.compile("matchR('test.1', 'test11')")
+				.execute(values).pop(Boolean.class);
+			
+			assertTrue(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 }

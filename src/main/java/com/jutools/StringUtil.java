@@ -940,11 +940,11 @@ public class StringUtil {
 		 * 매치된 문자열 목록(groups), 시작 위치 목록(starts), 길이 목록(lengths)를 설정함
 		 * 
 		 * @param str 문자열
-		 * @param strStart 문자열의 읽기 시작 위치
 		 * @param wStart wildcard pattern 문자열의 시작 위치
+		 * @param strStart 문자열의 읽기 시작 위치
 		 * @return 매치 여부
 		 */
-		private boolean match(String str, int strStart, int wStart) {
+		private boolean match(String str, int wStart, int strStart) {
 			
 			// 입력값 검증
 			if(str == null) {
@@ -959,7 +959,7 @@ public class StringUtil {
 			// ex) wildcardPattern="abc*xyz?def", wStart=3 이면
 			//     "*" 수량자(lowerSize, upperSize)와 "xyz"(패턴문자열)를 분리해냄
 			
-			// 패턴을 문자열을 저장하기 위한 변수
+			// 고정 문자열 패턴(상기 예에서 "abc")을 저장하기 위한 변수
 			StringBuilder patternBuilder = new StringBuilder();
 			// wildcard 패턴 문자열 내에서의 위치 변수
 			int wPos = wStart;
@@ -1028,10 +1028,9 @@ public class StringUtil {
 			if(pattern.length() != 0) {
 				
 				// 수량자가 있고 뒤에 패턴 문자열이 있는 경우
+				int index = strStart + lowerSize;
 				
-				int index = strStart;
-				
-				while(index < str.length()) {
+				for(;index < str.length();index++) {
 					
 					char ch = str.charAt(index);
 					
@@ -1065,8 +1064,6 @@ public class StringUtil {
 						
 						pos = 0;
 					}
-					
-					index++;
 				}
 				
 				// 패턴 문자열 이전의 문자의 수 계산
@@ -1091,7 +1088,7 @@ public class StringUtil {
 				}
 				
 				// 다음 문자열 매치 검사를 위한 재귀 호출
-				return match(str, index+1, wPos);
+				return match(str, wPos, index+1);
 				
 			} else {
 				
