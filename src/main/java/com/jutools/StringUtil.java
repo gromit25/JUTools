@@ -1028,6 +1028,8 @@ public class StringUtil {
 			if(pattern.length() != 0) {
 				
 				// 수량자가 있고 뒤에 패턴 문자열이 있는 경우
+				
+				// 남은 대상 문자열에서 검색을 시작할 위치 변수
 				int index = strStart + lowerSize;
 				
 				for(;index < str.length();index++) {
