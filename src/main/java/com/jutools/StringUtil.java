@@ -1040,7 +1040,7 @@ public class StringUtil {
 					if(StringUtil.isEqualChar(ch, pattern.charAt(pos), this.ignoreCase) == true) {
 						// 패턴 문자열의 문자와 일치하는 경우
 						
-						// 첫번재 패턴 문자열과 일치하는 경우
+						// 패턴의 첫번재 문자가 일치하는 경우
 						// 현재 위치를 mark에 저장
 						if(pos == 0) {
 							mark = index;
