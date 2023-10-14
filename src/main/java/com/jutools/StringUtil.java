@@ -965,10 +965,12 @@ public class StringUtil {
 			int wPos = wStart;
 			// 상태 변수 - 0: 수량자 상태, 1: 패턴 문자열
 			int status = 0;
-			// 수량자의 최소 크기
+			// 수량자의 최소 크기 변수
 			int lowerSize = 0;
-			// 수량자의 최대 크기
+			// 수량자의 최대 크기 변수
 			int upperSize = 0;
+			// 마지막 패턴 여부 변수
+			boolean isLastPattern = false;
 			
 			while(wPos < this.pattern.length()) {
 				
@@ -992,7 +994,7 @@ public class StringUtil {
 					
 				} else {
 					
-					if(ch == '*' || ch == '?') {
+					if(ch == '*' || ch == '?') { // 새로운 패턴이 뒤에 있으면 중단
 						break;
 					} else {
 						patternBuilder.append(ch);
@@ -1000,6 +1002,11 @@ public class StringUtil {
 				}
 				
 				wPos++;
+			}
+			
+			// 마지막 패턴 여부 설정
+			if(wPos >= this.pattern.length()) {
+				isLastPattern = true;
 			}
 			
 			// 최소 크기(lowerSize)가 최대 크기(upperSize) 보다 크면
@@ -1025,9 +1032,14 @@ public class StringUtil {
 			// ex) 상기 예의 "defxyz"에서 "def"의 개수 즉 3을 저장
 			int count = 0;
 			
-			if(pattern.length() != 0) {
+			if(pattern.length() != 0 && isLastPattern == false) {
 				
-				// 수량자가 있고 뒤에 패턴 문자열이 있는 경우
+				// 수량자가 있고 뒤에 패턴 문자열이 있고
+				// 마지막 패턴이 아닌 경우
+				// -> "*abc?def"에서 "*abc" 인 경우임
+				//    "abc" 부분이 매칭되는 경우를 먼저 찾아
+				//    검색 시작 지점에서 "abc" 매칭 위치를 뺀 결과가
+				//    수량자 설정에 맞는 지 확인 -> 안맞으면 false로 반환
 				
 				// 남은 대상 문자열에서 검색 위치 변수
 				int index = strStart + lowerSize;
@@ -1092,11 +1104,42 @@ public class StringUtil {
 				// 다음 문자열 매치 검사를 위한 재귀 호출
 				return match(str, wPos, index+1);
 				
+			} else if(pattern.length() != 0 && isLastPattern == true) {
+				
+				// 수량자가 있고 뒤에 패턴 문자열이 있고
+				// 마지막 패턴인 경우
+				// -> "*abc?def"에서 "?def" 인 경우임
+				//    뒤에서 부터 일치하는지 확인
+				//    만일 일치하지 않으면 false를 반환
+				//    일치하는 경우, 수량자 확인하여 반환
+				
+				// 패턴의 뒤쪽 부터 매칭 수행
+				int index = 0;
+				for(;index < pattern.length(); index++) {
+					
+					// 현재 위치의 패턴 문자 
+					char patternCh = pattern.charAt(pattern.length() - 1 - index);
+					// 현재 위치의 대상 문자열 문자
+					char strCh = str.charAt(str.length() - 1 - index);
+					
+					// 패턴 문자와 대상 문자열 문자가 일치하지 않으면 false를 반환
+					if(StringUtil.isEqualChar(patternCh, strCh, this.ignoreCase) == false) {
+						return false;
+					}
+				}
+				
+				// 문자 개수 계산
+				count = str.length() - index - strStart;
+				
+				// 수량자가 적합한지 확인하여 반환
+				return count >= lowerSize && count <= upperSize;
+				
 			} else {
 				
 				// 수량자만 있는 경우
 				// 이 경우는 패턴의 마지막에서만 발생함
-				// ex) wildcardPattern = "abc*" 일 경우 "*"
+				// -> "abc*" 일 경우 "*"
+				//    뒤에 수량자가 맞는지만 확인하여 반환
 				
 				// 문자의 수 계산
 				count = str.length() - strStart;
@@ -1117,8 +1160,7 @@ public class StringUtil {
 					return true;
 				}
 			}
-		}
-		
+		} // End of match method
 	}
 	
 	/**
