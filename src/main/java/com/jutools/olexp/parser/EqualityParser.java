@@ -74,6 +74,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		this.putEndStatus("COMPARISON_1");
 		this.putEndStatus("COMPARISON_2");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("ERROR", EndStatusType.ERROR);
 		
 	}
 	

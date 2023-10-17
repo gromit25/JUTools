@@ -21,7 +21,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	/** +,- 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
 	/** +,- 연산 */
-	private Instruction operation;
+	private Instruction op;
 
 	/**
 	 * 생성자
@@ -47,7 +47,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		// 속성 변수 초기화
 		this.p1 = null;
 		this.p2 = null;
-		this.operation = null;
+		this.op = null;
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
@@ -66,16 +66,10 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 				.add("^ \t", "TERM_2", -1)
 				.build());
 		
-		this.putTransferMap("TERM_2", new TransferBuilder()
-				.add(" \t", "TERM_2")
-				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "END", -1)
-				.build());
-		
 		// 종료 상태 추가
 		this.putEndStatus("TERM_1");
-		this.putEndStatus("TERM_2");
-		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("TERM_2", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 	}
 
 	/**
@@ -84,7 +78,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"START", "TERM_1"},
+			source={"START"},
 			target={"TERM_1"}
 	)
 	public void handleP1(Event event) throws Exception {
@@ -106,9 +100,9 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	public void handleOp(Event event) throws Exception {
 		
 		if(event.getCh() == '+') {
-			this.operation = new ADD();
+			this.op = new ADD();
 		} else if(event.getCh() == '-') {
-			this.operation = new MINUS();
+			this.op = new MINUS();
 		} else {
 			throw new Exception("Unexpected operation:" + event.getCh());
 		}
@@ -126,61 +120,20 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	)
 	public void handleP2(Event event) throws Exception {
 		//
-		TermParser parser = new TermParser();
+		ArithmaticParser parser = new ArithmaticParser();
 		this.p2 = parser.parse(event.getReader());
 	}
 	
-	/**
-	 * 삼항 이상 연산 처리<br>
-	 * <pre>
-	 * ex) 2 +    3           -       4
-	 *        (TERM_2 -> OPERATION)
-	 * </pre>
-	 *   
-	 * @param event
-	 */
-	@TransferEventHandler(
-			source={"TERM_2"},
-			target={"OPERATION"}
-	)
-	public void handleNewOp(Event event) throws Exception {
-		
-		if(this.operation == null) {
-			throw new Exception("operation is null");
-		}
-		
-		if(this.p1 == null) {
-			throw new Exception("p1 is null");
-		}
-		
-		if(this.p2 == null) {
-			throw new Exception("p2 is null");
-		}
-		
-		// 삼항 이상 연산시 현재까지 설정된 설정된 연산은 p1 으로 할당
-		// ex) 1 + 2 - 3 일 경우
-		//     1 + 2는 새로운 p1 으로 설정되고
-		//     3은 p2가 됨
-		//     operation은 '-'가 됨
-		TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.operation);
-		newP1.addChild(this.p1);
-		newP1.addChild(this.p2);
-
-		this.handleOp(event); // this.operation 설정
-		this.p1 = newP1;
-		this.p2 = null;
-	}
-
 	/**
 	 * 파싱 종료 처리
 	 */
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.operation != null && this.p2 != null) {
+		if(this.op != null && this.p2 != null) {
 		
 			// +,- 연산이 존재하는 경우
-			this.setNodeData(this.operation);
+			this.setNodeData(this.op);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			

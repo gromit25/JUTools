@@ -25,7 +25,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	/** 비교 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
 	/** 비교 연산 */
-	private Instruction operation;
+	private Instruction op;
 	/** 비교 연산 버퍼 */
 	private StringBuffer opBuffer;
 
@@ -47,7 +47,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		// 속성 변수 초기화
 		this.p1 = null;
 		this.p2 = null;
-		this.operation = null;
+		this.op = null;
 		
 		this.opBuffer = new StringBuffer("");
 		
@@ -129,16 +129,16 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		String compareOp = this.opBuffer.toString();
 		switch(compareOp) {
 		case ">":
-			this.operation = new GREATER_THAN();
+			this.op = new GREATER_THAN();
 			break;
 		case ">=":
-			this.operation = new GREATER_EQUAL();
+			this.op = new GREATER_EQUAL();
 			break;
 		case "<":
-			this.operation = new LESS_THAN();
+			this.op = new LESS_THAN();
 			break;
 		case "<=":
-			this.operation = new LESS_EQUAL();
+			this.op = new LESS_EQUAL();
 			break;
 		default:
 			throw new Exception("Unexpected operation: " + compareOp);	
@@ -155,10 +155,10 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.operation != null && this.p2 != null) {
+		if(this.op != null && this.p2 != null) {
 		
 			// 비교 연산이 존재하는 경우
-			this.setNodeData(this.operation);
+			this.setNodeData(this.op);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			

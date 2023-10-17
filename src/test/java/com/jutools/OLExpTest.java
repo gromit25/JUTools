@@ -51,6 +51,54 @@ public class OLExpTest {
 	}
 	
 	@Test
+	public void testCalculate1_3() {
+		try {
+
+			Double result = OLExp.compile("10 + 3 - 1")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(12.0, result, 0.1);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testCalculate1_4() {
+		try {
+
+			Double result = OLExp.compile("10 + (3 - 1.2)+2*2")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(15.8, result, 0.01);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testCalculate1_5() {
+		try {
+
+			Double result = OLExp.compile("2*4*3 / (2*2) + 1")
+								.execute()
+								.pop(Double.class);
+			
+			assertEquals(7.0, result, 0.01);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	public void testString1_1() {
 		try {
 
