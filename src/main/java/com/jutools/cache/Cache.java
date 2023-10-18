@@ -3,6 +3,7 @@ package com.jutools.cache;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.jutools.CronJob;
 
@@ -16,10 +17,10 @@ import lombok.Getter;
 public class Cache<T> {
 	
 	/** 캐시 데이터 저장 객체 */
-	private Hashtable<String, T> values = new Hashtable<>();
+	private Map<String, T> values = new ConcurrentHashMap<>();
 	
 	/** 캐시 저장 데이터의 최종 참조 시간 */
-	private Hashtable<String, Long> valuesLastRefTime = new Hashtable<>();
+	private Map<String, Long> valuesLastRefTime = new ConcurrentHashMap<>();
 
 	/** 데이터 공급자 */
 	private Loader<? extends T> loader;
