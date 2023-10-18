@@ -52,24 +52,24 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("^ \t", "TERM_1", -1)
+				.add("^ \t", "TERM", -1)
 				.build());
 		
-		this.putTransferMap("TERM_1", new TransferBuilder()
-				.add(" \t", "TERM_1")
+		this.putTransferMap("TERM", new TransferBuilder()
+				.add(" \t", "TERM")
 				.add("\\+\\-", "OPERATION")
 				.add("^ \t\\+\\-", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
 				.add(" \t", "OPERATION")
-				.add("^ \t", "TERM_2", -1)
+				.add("^ \t", "ARITHMATIC", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("TERM_1");
-		this.putEndStatus("TERM_2", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("TERM");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("ARITHMATIC", EndStatusType.IMMEDIATELY_END);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"TERM_1"}
+			target={"TERM"}
 	)
 	public void handleP1(Event event) throws Exception {
 		
@@ -94,7 +94,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"TERM_1"},
+			source={"TERM"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
@@ -116,7 +116,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"OPERATION"},
-			target={"TERM_2"}
+			target={"ARITHMATIC"}
 	)
 	public void handleP2(Event event) throws Exception {
 		//
