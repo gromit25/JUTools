@@ -1,7 +1,6 @@
 package com.jutools.cache;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
