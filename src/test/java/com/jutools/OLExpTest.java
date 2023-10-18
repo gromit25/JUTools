@@ -371,6 +371,40 @@ public class OLExpTest {
 	}
 	
 	@Test
+	public void testBoolean1_1() {
+		try {
+
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			Boolean result = OLExp.compile("1 == 1 and 1 != 1")
+					.execute(values).pop(Boolean.class);
+			
+			assertFalse(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("an exception is occured");
+		}
+	}
+	
+	@Test
+	public void testBoolean1_2() {
+		try {
+
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			Boolean result = OLExp.compile("1 == 1 and 2 == 2")
+					.execute(values).pop(Boolean.class);
+			
+			assertTrue(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("an exception is occured");
+		}
+	}
+	
+	@Test
 	public void testStore1_1() {
 		
 		try {

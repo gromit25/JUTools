@@ -21,7 +21,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	/** 동일 여부 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
 	/** 동일 여부 연산 */
-	private Instruction operation;
+	private Instruction op;
 	/** 동일 여부 연산 버퍼 */
 	private StringBuffer opBuffer;
 
@@ -43,7 +43,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		// 속성 변수 초기화
 		this.p1 = null;
 		this.p2 = null;
-		this.operation = null;
+		this.op = null;
 		
 		this.opBuffer = new StringBuffer("");
 		
@@ -119,9 +119,9 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	public void handleOp2(Event event) throws Exception {
 		
 		//
-		if(this.operation != null && this.p2 != null) {
+		if(this.op != null && this.p2 != null) {
 			
-			TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.operation);
+			TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.op);
 			newP1.addChild(this.p1);
 			newP1.addChild(this.p2);
 			
@@ -131,13 +131,12 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		//
 		this.opBuffer.append(event.getCh());
 		
-		String op = this.opBuffer.toString();
-		switch(op) {
+		switch(this.opBuffer.toString()) {
 		case "==":
-			this.operation = new EQUAL();
+			this.op = new EQUAL();
 			break;
 		case "!=":
-			this.operation = new NOT_EQUAL();
+			this.op = new NOT_EQUAL();
 			break;
 		default:
 			throw new Exception("Unexpected operation:" + op);
@@ -158,10 +157,10 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.operation != null && this.p2 != null) {
+		if(this.op != null && this.p2 != null) {
 		
 			// 동일 여부 연산이 존재하는 경우
-			this.setNodeData(this.operation);
+			this.setNodeData(this.op);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			

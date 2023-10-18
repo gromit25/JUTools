@@ -11,17 +11,17 @@ import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
 
 /**
- * *,/ 연산 파싱 수행
+ * *,/,% 연산 파싱 수행
  * 
  * @author jmsohn
  */
 public class TermParser extends AbstractParser<Instruction> {
 	
-	/** *,/ 연산의 첫번째 파라미터의 tree node */
+	/** *,/,% 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
-	/** *,/ 연산의 두번째 파라미터의 tree node */
+	/** *,/,% 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
-	/** *,/ 연산 */
+	/** *,/,% 연산 */
 	private Instruction op;
 
 	/**
@@ -54,34 +54,34 @@ public class TermParser extends AbstractParser<Instruction> {
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
 				.add("\\*\\/\\%", "OPERATION")
-				.add("^ \t\\*\\/", "FACTOR_1", -1)
+				.add("^ \t\\*\\/", "FACTOR", -1)
 				.build());
 		
-		this.putTransferMap("FACTOR_1", new TransferBuilder()
-				.add(" \t", "FACTOR_1")
+		this.putTransferMap("FACTOR", new TransferBuilder()
+				.add(" \t", "FACTOR")
 				.add("\\*\\/\\%", "OPERATION")
 				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
 				.add(" \t", "OPERATION")
-				.add("^ \t", "FACTOR_2", -1)
+				.add("^ \t", "TERM", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("FACTOR_1");
-		this.putEndStatus("FACTOR_2", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("FACTOR");
+		this.putEndStatus("TERM", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 	}
 	
 	/**
-	 * *,/의 첫번째 파라미터 상태로 전이시 핸들러 메소드
+	 * *,/,% 의 첫번째 파라미터 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"FACTOR_1"}
+			target={"FACTOR"}
 	)
 	public void handleP1(Event event) throws Exception {
 		FactorParser parser = new FactorParser();
@@ -94,7 +94,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"FACTOR_1"},
+			source={"FACTOR"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
@@ -118,10 +118,10 @@ public class TermParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"OPERATION"},
-			target={"FACTOR_2"}
+			target={"TERM"}
 	)
 	public void handleP2(Event event) throws Exception {
-		//
+		
 		TermParser parser = new TermParser();
 		this.p2 = parser.parse(event.getReader());
 	}

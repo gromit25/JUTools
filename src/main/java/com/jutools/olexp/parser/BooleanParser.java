@@ -1,6 +1,8 @@
 package com.jutools.olexp.parser;
 
+import com.jutools.instructions.AND;
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.OR;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
@@ -50,11 +52,11 @@ public class BooleanParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("^ \t", "EQUALITY_1", -1)
+				.add("^ \t", "EQUALITY", -1)
 				.build());
 		
-		this.putTransferMap("EQUALITY_1", new TransferBuilder()
-				.add(" \t", "EQUALITY_1")
+		this.putTransferMap("EQUALITY", new TransferBuilder()
+				.add(" \t", "EQUALITY")
 				.add("aA", "AND_OP_1")
 				.add("oO", "OR_OP_1")
 				.add("^ \tao", "END", -1)
@@ -71,8 +73,8 @@ public class BooleanParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("AND_OP_3", new TransferBuilder()
-				.add(" \t", "EQUALITY_2")
-				.add("(", "EQUALITY_2", -1)
+				.add(" \t", "BOOLEAN")
+				.add("(", "BOOLEAN", -1)
 				.add("^ \t(", "ERROR", -1)
 				.build());
 		
@@ -82,18 +84,15 @@ public class BooleanParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("OR_OP_2", new TransferBuilder()
-				.add(" \t", "EQUALITY_2")
-				.add("(", "EQUALITY_2", -1)
+				.add(" \t", "BOOLEAN")
+				.add("(", "BOOLEAN", -1)
 				.add("^ \t(", "ERROR", -1)
 				.build());
 		
-		this.putTransferMap("EQUALITY_2", new TransferBuilder()
-				.build());
-		
 		// 종료 상태 추가
-		this.putEndStatus("EQUALITY_1");
-		this.putEndStatus("EQUALITY_2");
-		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
+		this.putEndStatus("EQUALITY");
+		this.putEndStatus("BOOLEAN", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 	
@@ -104,12 +103,66 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"EQUALITY_1"}
+			target={"EQUALITY"}
 	)
 	public void handleP1(Event event) throws Exception {
 		
-		TermParser parser = new TermParser();
+		EqualityParser parser = new EqualityParser();
 		this.p1 = parser.parse(event.getReader());
 
+	}
+	
+	/**
+	 * and의 연산자 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"AND_OP_3"},
+			target={"BOOLEAN"}
+	)
+	public void handleAndOp(Event event) throws Exception {
+		
+		this.op = new AND();
+		
+		BooleanParser parser = new BooleanParser();
+		this.p2 = parser.parse(event.getReader());
+	}
+	
+	/**
+	 * or의 연산자 상태로 전이시 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"OR_OP_2"},
+			target={"BOOLEAN"}
+	)
+	public void handleOrOp(Event event) throws Exception {
+		
+		this.op = new OR();
+		
+		BooleanParser parser = new BooleanParser();
+		this.p2 = parser.parse(event.getReader());
+	}
+	
+	/**
+	 * 파싱 종료 처리
+	 */
+	@Override
+	protected void exit() throws Exception {
+		
+		if(this.op != null && this.p2 != null) {
+		
+			// and,or 연산이 존재하는 경우
+			this.setNodeData(this.op);
+			this.addChild(this.p1);
+			this.addChild(this.p2);
+			
+		} else {
+			
+			// and,or 연산이 존재하지 않는 경우
+			this.setNode(this.p1);
+		}
 	}
 }

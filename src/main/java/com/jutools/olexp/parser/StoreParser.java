@@ -95,7 +95,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 		);
 		
 		this.addChild(
-			new EqualityParser().parse(event.getReader())
+			new BooleanParser().parse(event.getReader())
 		);
 	}
 	
@@ -110,7 +110,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	)
 	public void handleNotStoreOp(Event event) throws Exception {
 		this.setNode(
-			new EqualityParser().parse(event.getReader())
+			new BooleanParser().parse(event.getReader())
 		);
 	}
 	

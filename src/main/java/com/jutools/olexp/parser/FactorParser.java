@@ -43,12 +43,12 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
-				.add("^)", "EQUALITY", -1)  //TODO 계속 변경해야 함
+				.add("^)", "BOOLEAN", -1)  //TODO 계속 변경해야 함
 				.add(")", "ERROR")
 				.build());
 		
-		this.putTransferMap("EQUALITY", new TransferBuilder()  //TODO
-				.add(" \t", "EQUALITY")
+		this.putTransferMap("BOOLEAN", new TransferBuilder()  //TODO
+				.add(" \t", "BOOLEAN")
 				.add(")", "END")
 				.build());
 		
@@ -109,10 +109,10 @@ public class FactorParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"EXPRESSION"},
-			target={"EQUALITY"}
+			target={"BOOLEAN"}
 	)
 	public void handleExp(Event event) throws Exception {
-		EqualityParser parser = new EqualityParser();
+		BooleanParser parser = new BooleanParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
 
