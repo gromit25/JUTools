@@ -169,6 +169,14 @@ public class Cache<T> {
 	}
 	
 	/**
+	 * 캐시의 모든 데이터 삭제
+	 */
+	public void clear() throws Exception {
+		this.values.clear();
+		this.valuesLastRefTime.clear();
+	}
+	
+	/**
 	 * 캐시의 크기 반환
 	 * 
 	 * @return 캐시 크기
