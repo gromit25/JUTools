@@ -2,10 +2,14 @@ package com.jutools;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import org.junit.Test;
+
+import lombok.Data;
+import lombok.Getter;
 
 /**
  * TypeUtil 클래스의 테스트 케이스
@@ -138,4 +142,64 @@ public class TypeUtilTest {
 		}
 	}
 
+	public static class GetterTest {
+		@Getter
+		private int field1;
+		@Getter
+		private String field2;
+		@Getter
+		private boolean field3;
+		private String field4;
+	}
+
+	@Test
+	public void testGetGetter1() {
+		try {
+			
+			Method method = TypeUtil.getGetter(GetterTest.class, "field1");
+			assertEquals("getField1", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetGetter2() {
+		try {
+			
+			Method method = TypeUtil.getGetter(GetterTest.class, "field2");
+			assertEquals("getField2", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetGetter3() {
+		try {
+			
+			Method method = TypeUtil.getGetter(GetterTest.class, "field3");
+			assertEquals("isField3", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetGetter4() {
+		try {
+			
+			TypeUtil.getGetter(GetterTest.class, "field4");
+			assertTrue(false);
+			
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
 }

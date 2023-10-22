@@ -371,14 +371,13 @@ public class TypeUtil {
 	}
 	
 	/**
-	 * 클래스 속성의 public getter 메소드 반환<br>
-	 * 없을 경우 null 을 반환
+	 * 클래스 속성의 public getter 메소드 반환
 	 * 
 	 * @param clazz 클래스
 	 * @param fieldName 속성명
 	 * @return getter 메소드 객체
 	 */
-	public Method getGetter(Class<?> clazz, String fieldName) throws Exception {
+	public static Method getGetter(Class<?> clazz, String fieldName) throws Exception {
 		
 		// 입력값 검사
 		if(clazz == null) {
@@ -414,14 +413,13 @@ public class TypeUtil {
 	}
 	
 	/**
-	 * 클래스 속성의 public setter 메소드 반환<br>
-	 * 없을 경우 null 을 반환
+	 * 클래스 속성의 public setter 메소드 반환
 	 * 
 	 * @param clazz 클래스
 	 * @param fieldName 속성명
 	 * @return setter 메소드 객체
 	 */
-	public Method getSetter(Class<?> clazz, String fieldName) throws Exception {
+	public static Method getSetter(Class<?> clazz, String fieldName) throws Exception {
 		
 		// 입력값 검사
 		if(clazz == null) {
