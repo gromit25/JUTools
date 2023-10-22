@@ -1,6 +1,5 @@
 package com.jutools.publish.formatter;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.jutools.TypeUtil;
 import com.jutools.publish.formatter.flow.AbstractFlowComponentFormatter;
 
 import lombok.AccessLevel;
@@ -334,9 +334,8 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 				throw new FormatterException(formatter, "setter method is not found.:" + field.getType());
 			}
 			
-			// 3. Formatter 객체의 필드 setter 메소드를 가져오기 위해,
-			//    PropertyDescriptor를 생성함
-			PropertyDescriptor pd = new PropertyDescriptor(field.getName(), formatter.getClass());
+			// 3. Formatter 객체의 필드 setter 메소드를 가져옴
+			Method writeMethod = TypeUtil.getSetter(formatter.getClass(), field.getName());
 			
 			// 4. FormatterAttr 어노테이션에 지정된 xml tag의 속성(attr)을 가져옴
 			String attrValue = attributes.getValue(attrAnnotation.name());
@@ -355,7 +354,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			//    setter 메소드는 필드의 type(class)에 따라 속성 값을 변환하여,
 			//    formatter 객체의 setter 메소드를 호출함
 			try {
-				setterMethod.invoke(null, formatter, pd.getWriteMethod(), attrValue);
+				setterMethod.invoke(null, formatter, writeMethod, attrValue);
 			} catch(Exception ex) {
 				throw new FormatterException(formatter, attrAnnotation.name(), ex);
 			}
