@@ -2,6 +2,7 @@ package com.jutools;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.function.Function;
@@ -367,5 +368,88 @@ public class TypeUtil {
 		} else {
 			throw new Exception("type is not primitive type:" + type);
 		}
+	}
+	
+	/**
+	 * 클래스 속성의 public getter 메소드 반환<br>
+	 * 없을 경우 null 을 반환
+	 * 
+	 * @param clazz 클래스
+	 * @param fieldName 속성명
+	 * @return getter 메소드 객체
+	 */
+	public Method getGetter(Class<?> clazz, String fieldName) throws Exception {
+		
+		// 입력값 검사
+		if(clazz == null) {
+			throw new NullPointerException("class is null.");
+		}
+		
+		if(StringUtil.isEmpty(fieldName) == true) {
+			throw new IllegalArgumentException("field name is empty:" + fieldName);
+		}
+		
+		// 클래스에 속성 정보 획득
+		// 주의) getField 메소드를 사용하면 안됨
+		//      getField 메소드는 public만 가져옴
+		Field field = clazz.getDeclaredField(fieldName);
+		if(field == null) {
+			throw new IllegalArgumentException(fieldName + " is not found in " + clazz.getCanonicalName());
+		}
+		
+		// field의 타입이 boolean 이면 prefix가 "is", 아닐 경우 "get"
+		String prefix = (field.getType() == Boolean.class || field.getType() == boolean.class)?"is":"get";
+		
+		// getter 메소드 명 생성
+		String getterName = prefix + Character.toUpperCase(fieldName.charAt(0));
+		if(fieldName.length() > 1) {
+			getterName += fieldName.substring(1, fieldName.length());
+		}
+		
+		// 클래스에서 public getter 메소드 획득
+		Method getter = clazz.getMethod(getterName);
+		
+		// public getter 메소드 반환
+		return getter;
+	}
+	
+	/**
+	 * 클래스 속성의 public setter 메소드 반환<br>
+	 * 없을 경우 null 을 반환
+	 * 
+	 * @param clazz 클래스
+	 * @param fieldName 속성명
+	 * @return setter 메소드 객체
+	 */
+	public Method getSetter(Class<?> clazz, String fieldName) throws Exception {
+		
+		// 입력값 검사
+		if(clazz == null) {
+			throw new NullPointerException("class is null.");
+		}
+		
+		if(StringUtil.isEmpty(fieldName) == true) {
+			throw new IllegalArgumentException("field name is empty:" + fieldName);
+		}
+		
+		// 클래스에 속성 정보 획득
+		// 주의) getField 메소드를 사용하면 안됨
+		//      getField 메소드는 public만 가져옴
+		Field field = clazz.getDeclaredField(fieldName);
+		if(field == null) {
+			throw new IllegalArgumentException(fieldName + " is not found in " + clazz.getCanonicalName());
+		}
+		
+		// setter 메소드 명 생성
+		String setterName = "set" + Character.toUpperCase(fieldName.charAt(0));
+		if(fieldName.length() > 1) {
+			setterName += fieldName.substring(1, fieldName.length());
+		}
+		
+		// 클래스에서 public setter 메소드 획득
+		Method setter = clazz.getMethod(setterName, field.getClass());
+		
+		// public setter 메소드 반환
+		return setter;
 	}
 }
