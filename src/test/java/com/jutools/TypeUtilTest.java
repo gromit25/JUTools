@@ -12,6 +12,7 @@ import java.util.Vector;
 import org.junit.Test;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * TypeUtil 클래스의 테스트 케이스
@@ -198,6 +199,67 @@ public class TypeUtilTest {
 		try {
 			
 			TypeUtil.getGetter(GetterTest.class, "field4");
+			assertTrue(false);
+			
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	public static class SetterTest {
+		@Setter
+		private int field1;
+		@Setter
+		private String field2;
+		@Setter
+		private boolean field3;
+		private String field4;
+	}
+
+	@Test
+	public void testGetSetter1() {
+		try {
+			
+			Method method = TypeUtil.getSetter(SetterTest.class, "field1");
+			assertEquals("setField1", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetSetter2() {
+		try {
+			
+			Method method = TypeUtil.getSetter(SetterTest.class, "field2");
+			assertEquals("setField2", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetSetter3() {
+		try {
+			
+			Method method = TypeUtil.getSetter(SetterTest.class, "field3");
+			assertEquals("setField3", method.getName());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testGetSetter4() {
+		try {
+			
+			TypeUtil.getSetter(SetterTest.class, "field4");
 			assertTrue(false);
 			
 		} catch(Exception ex) {

@@ -445,7 +445,7 @@ public class TypeUtil {
 		}
 		
 		// 클래스에서 public setter 메소드 획득
-		Method setter = clazz.getMethod(setterName, field.getClass());
+		Method setter = clazz.getMethod(setterName, field.getType());
 		
 		// public setter 메소드 반환
 		return setter;
