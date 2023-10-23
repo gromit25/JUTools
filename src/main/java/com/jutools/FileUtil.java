@@ -291,6 +291,87 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 파일명과 확장자를 분리하여 반환함<br>
+	 * ex) C:\data\test.txt -> {"C:\data\test", "txt"}
+	 * 
+	 * @param fileName 전체 파일명
+	 * @return 파일명, 확장자
+	 */
+	public String[] splitFileNameAndExt(String fileName) {
+		
+		// 입력값 검증
+		if(StringUtil.isEmpty(fileName) == true) {
+			return new String[] {"", ""};
+		}
+		
+		try {
+			
+			// 파일 이름과 확장자 분리
+			String[] nameAndExt = StringUtil.splitLast(fileName, "\\.");
+			
+			// 파일에 확장자가 없는 경우
+			if(nameAndExt.length == 2) {
+				return nameAndExt;
+			} else {
+				return new String[] {fileName, ""};
+			}
+			
+		} catch(Exception ex) {
+			return new String[] {"", ""};
+		}
+	}
+	
+	/**
+	 * 파일명과 확장자를 분리하여 반환함<br>
+	 * ex) C:\data\test.txt -> {"C:\data\test", "txt"}
+	 * 
+	 * @param file 파일
+	 * @return 파일명, 확장자
+	 */
+	public String[] splitFileNameAndExt(File file) {
+		
+		// 입력값 검증
+		if(file == null) {
+			return new String[] {"", ""};
+		}
+		
+		return splitFileNameAndExt(file.getAbsolutePath());
+	}
+	
+	/**
+	 * 파일명의 확장자를 반환<br>
+	 * 반환시, "." 포함, ex) "test.jpg" -> ".jpg"<br>
+	 * file이 null이거나 확장자가 없는 경우, "" 반환
+	 * 
+	 * @param fileName 파일명
+	 * @return 확장자
+	 */
+	public static String getExt(String fileName) {
+		
+		// 입력값 검증
+		if(StringUtil.isEmpty(fileName) == true) {
+			return "";
+		}
+		
+		try {
+			
+			// 파일 이름과 확장자 분리
+			String[] nameAndExt = StringUtil.splitLast(fileName, "\\.");
+			
+			// 파일에 확장자가 없는 경우
+			if(nameAndExt.length != 2) {
+				return "";
+			}
+			
+			// 확장자를 반환
+			return "." + nameAndExt[1];
+			
+		} catch(Exception ex) {
+			return "";
+		}
+	}
+	
+	/**
 	 * 파일의 확장자를 반환<br>
 	 * 반환시, "." 포함, ex) "test.jpg" -> ".jpg"<br>
 	 * file이 null이거나 확장자가 없는 경우, "" 반환
@@ -305,22 +386,7 @@ public class FileUtil {
 			return "";
 		}
 		
-		try {
-			
-			// 파일 이름과 확장자 분리
-			String[] nameAndExt = StringUtil.splitLast(file.getName(), "\\.");
-			
-			// 파일에 확장자가 없는 경우
-			if(nameAndExt.length != 2) {
-				return "";
-			}
-			
-			// 확장자를 반환
-			return "." + nameAndExt[1];
-			
-		} catch(Exception ex) {
-			return "";
-		}
+		return getExt(file.getName()); 
 	}
 	
 	/**
