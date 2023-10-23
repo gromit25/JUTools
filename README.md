@@ -78,6 +78,24 @@ BytesUtil.strToBytes(str);           // "1A03" -> byte[] {26, 3}
 BytesUtil.bytesToStr(bytes1);        // byte[] {26, 3} -> "1A03"
 ```    
 
+### TypeUtil   
+----------------------------------    
+> Java Class, Method 및 Primitive Type에 대한 Utility   
+```java
+String[] strArray = TypeUtil.toArray(strList, String.class);  // List<T> -> T[] 로 변환
+
+int[] iArray = TypeUtil.toIntArray(iList);         // List<Integer> -> int[] 로 변환
+long[] lArray = TypeUtil.toLong(lList);            // List<Long> -> long[] 로 변환
+float[] fArray = TypeUtil.toFloatArray(fList);     // List<Float> -> flaot[] 로 변환
+double[] dArray = TypeUtil.toDoubleArray(dList);   // List<Double> -> double[] 로 변환
+
+boolean isPrimitive = TypeUtil.isPrimitive(int.class);  // 주어진 클래스가 primitive type 여부 반환
+int size = TypeUtil.getPrimitiveSize(int.class);        // 주어진 primitive type의 크기를 반환
+
+Method getter = TypeUtil.getGetter(Test.class, "field");  // Test 클래스의 "field" 속성의 getter 메소드를 반환(getField)
+Method setter = TypeUtil.getSetter(Test.class, "field");  // Test 클래스의 "field" 속성의 setter 메소드를 반환(setField)
+```    
+
 ### FileUtil   
 ----------------------------------    
 > File 관련 Utility    
