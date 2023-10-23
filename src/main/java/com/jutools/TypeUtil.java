@@ -131,7 +131,26 @@ public class TypeUtil {
 		}
 		
 		return intArray;
+	}
+	
+	/**
+	 * Long List를 long 배열로 변환함 
+	 * 
+	 * @param arrayList Long 타입의 List
+	 * @return 변환된 long 배열
+	 */
+	public static long[] toLongArray(List<Long> arrayList) {
 		
+		if(arrayList == null) {
+			return new long[0];
+		}
+		
+		long[] longArray = new long[arrayList.size()];
+		for(int index = 0; index < longArray.length; index++) {
+			longArray[index] = arrayList.get(index);
+		}
+		
+		return longArray;
 	}
 	
 	/**
@@ -152,7 +171,26 @@ public class TypeUtil {
 		}
 		
 		return floatArray;
+	}
+	
+	/**
+	 * Double List를 float 배열로 변환함 
+	 * 
+	 * @param arrayList Double 타입의 List
+	 * @return 변환된 double 배열
+	 */
+	public static double[] toDoubleArray(List<Double> arrayList) {
 		
+		if(arrayList == null) {
+			return new double[0];
+		}
+		
+		double[] doubleArray = new double[arrayList.size()];
+		for(int index = 0; index < doubleArray.length; index++) {
+			doubleArray[index] = arrayList.get(index);
+		}
+		
+		return doubleArray;
 	}
 	
 	/**
