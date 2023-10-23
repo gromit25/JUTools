@@ -295,9 +295,9 @@ public class BytesUtilTest {
 	@Test
 	public void testMapping1() throws Exception {
 		
-		byte[] attr1 = TypeUtil.floatToBytes((float)10.1);
-		byte[] attr2 = TypeUtil.longToBytes(123);
-		byte[] attr3 = TypeUtil.intToBytes(555);
+		byte[] attr1 = BytesUtil.floatToBytes((float)10.1);
+		byte[] attr2 = BytesUtil.longToBytes(123);
+		byte[] attr3 = BytesUtil.intToBytes(555);
 		
 		byte[] msg = BytesUtil.concat(attr1, attr3, attr2);
 		

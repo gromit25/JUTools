@@ -13,6 +13,76 @@ import com.jutools.common.OrderType;
 public class BytesUtil {
 	
 	/**
+	 * int 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 int 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] intToBytes(int value) {
+		
+	    byte[] bytes = new byte[4];
+	    
+	    for (int i = 0; i < 4; i++) {
+	        bytes[3 - i] = (byte) (value >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * long 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 long 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] longToBytes(long value) {
+		
+	    byte[] bytes = new byte[8];
+	    
+	    for (int i = 0; i < 8; i++) {
+	        bytes[7 - i] = (byte) (value >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * float 값을 byte 목록(4바이트)으로 변환
+	 * 
+	 * @param value 변환할 float 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] floatToBytes(float value) {
+		
+		int intBits = Float.floatToIntBits(value);
+	    
+		byte[] bytes = new byte[4];
+	    for (int i = 0; i < 4; i++) {
+	        bytes[3 - i] = (byte) (intBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
+	 * double 값을 byte 목록(8바이트)으로 변환
+	 * 
+	 * @param value 변환할 double 값
+	 * @return 변환된 byte 목록
+	 */
+	public static byte[] doubleToBytes(double value) {
+		
+	    long longBits = Double.doubleToLongBits(value);
+	    
+	    byte[] bytes = new byte[8];
+	    for (int i = 0; i < 8; i++) {
+	        bytes[7 - i] = (byte) (longBits >> (i * 8));
+	    }
+	    
+	    return bytes;
+	}
+	
+	/**
 	 * 바이트 배열을 비교하여 반환<br>
 	 * 두 배열의 길이가 같고 요소도 동일하면 0,<br>
 	 * b1의 요소와 b2의 요소를 비교하여 b1이 크면 1, b2가 크면 -1<br>
