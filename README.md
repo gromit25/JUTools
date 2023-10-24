@@ -60,10 +60,10 @@ StringUtil.findAllVars(str);
 ----------------------------------    
 > WAS 등 Web Application에서 사용할 수 있는 Utility   
 ```java
-StringUtil.replaceHtmlEntity(str);     // 문자열의 html 엔터티(<>& 등 -> &amp;lt;&amp;gt;&amp;amp; 등)를 변경, XSS 해결용
-StringUtil.replaceEnterToBr(str);      // 문자열(contents) 내에 "(\r)\n" -> "<br>\r\n"로 변경
-StringUtil.isValidFileName(fileName);  // 파일명이 유효한지 검증하는 메소드
-StringUtil.parseHostPort("192.168.0.1:8080");  // "192.168.0.1:8080" -> { "192.168.0.1", "8080" }
+WebUtil.replaceHtmlEntity(str);     // 문자열의 html 엔터티(<>& 등 -> &amp;lt;&amp;gt;&amp;amp; 등)를 변경, XSS 해결용
+WebUtil.replaceEnterToBr(str);      // 문자열(contents) 내에 "(\r)\n" -> "<br>\r\n"로 변경
+WebUtil.isValidFileName(fileName);  // 파일명이 유효한지 검증하는 메소드
+WebUtil.parseHostPort("192.168.0.1:8080");  // "192.168.0.1:8080" -> { "192.168.0.1", "8080" }
 ```
 
 ### BytesUtil   
