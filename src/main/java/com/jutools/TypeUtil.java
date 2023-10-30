@@ -239,7 +239,7 @@ public class TypeUtil {
 	 * @param splitCnt 나누는 수(몇개의 묶음으로 나누는지)
 	 * @return 나누어진 목록
 	 */
-	public static <T> List<List<T>> splitList(List<T> list, int splitCnt) throws Exception {
+	public static List<List<?>> splitList(List<?> list, int splitCnt) throws Exception {
 		
 		// 입력값 검증
 		if(list == null) {
@@ -251,7 +251,7 @@ public class TypeUtil {
 		}
 		
 		// 묶음 목록 변수
-		List<List<T>> splitedList = new ArrayList<>();
+		List<List<?>> splitedList = new ArrayList<>();
 		
 		if(list.size() <= 1) {
 			splitedList.add(list);
