@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.junit.Test;
@@ -264,6 +265,70 @@ public class TypeUtilTest {
 			
 		} catch(Exception ex) {
 			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testSplitList1() {
+		
+		try {
+			
+			ArrayList<String> target = new ArrayList<>();
+			for(int index = 0; index < 30; index++) {
+				target.add("hello:" + index);
+			}
+		
+			List<List<String>> splitedList = TypeUtil.splitList(target, 10);
+			
+			assertEquals(10, splitedList.size());
+			assertEquals("hello:27", splitedList.get(9).get(0));
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testSplitList2() {
+		
+		try {
+			
+			ArrayList<String> target = new ArrayList<>();
+			for(int index = 0; index < 15; index++) {
+				target.add("hello:" + index);
+			}
+		
+			List<List<String>> splitedList = TypeUtil.splitList(target, 2);
+			
+			assertEquals(2, splitedList.size());
+			assertEquals(8, splitedList.get(0).size());
+			assertEquals(7, splitedList.get(1).size());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testSplitList3() {
+		
+		try {
+			
+			ArrayList<String> target = new ArrayList<>();
+			for(int index = 0; index < 15; index++) {
+				target.add("hello:" + index);
+			}
+		
+			List<List<String>> splitedList = TypeUtil.splitList(target, 1);
+			
+			assertEquals(1, splitedList.size());
+			assertEquals(15, splitedList.get(0).size());
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
 		}
 	}
 }

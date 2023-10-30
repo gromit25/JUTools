@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -228,6 +229,58 @@ public class TypeUtil {
 		
 		// 배열 반환
 		return array;
+	}
+	
+	/**
+	 * 목록(List)를 주어진 개수(splitCnt)로 나누어 반환<br>
+	 * 스레드에 목록을 분배할 때 사용
+	 * 
+	 * @param list 나눌 목록 
+	 * @param splitCnt 나누는 수(몇개의 묶음으로 나누는지)
+	 * @return 나누어진 목록
+	 */
+	public static <T> List<List<T>> splitList(List<T> list, int splitCnt) throws Exception {
+		
+		// 입력값 검증
+		if(list == null) {
+			throw new NullPointerException("list is null.");
+		}
+		
+		if(splitCnt < 1) {
+			throw new IllegalArgumentException("invalid split count(splitCnt):" + splitCnt);
+		}
+		
+		// 묶음 목록 변수
+		List<List<T>> splitedList = new ArrayList<>();
+		
+		if(list.size() <= 1) {
+			splitedList.add(list);
+			return splitedList;
+		}
+		
+		// 묶음의 크기 계산
+		int bundleSize = (int)Math.ceil((double)list.size()/(double)splitCnt);
+		if(bundleSize == 0) {
+			bundleSize = 1;
+		}
+		
+		// 묶음을 잘라내어 묶음 목록에 추가
+		for(int index = 0; index < splitCnt; index++) {
+		
+			// 묶음 시작 위치
+			int startLoc = index * bundleSize;
+			if(startLoc >= list.size()) {
+				break;
+			}
+			
+			// 묶음 크기
+			int copySize = (list.size() - startLoc >= bundleSize)?bundleSize:list.size() - startLoc;
+			
+			// 시작 위치와 종료 위치를 기준으로 묶음을 잘라내어 묶음 목록에 추가
+			splitedList.add(new ArrayList<>(list.subList(startLoc, startLoc + copySize)));
+		}
+		
+		return splitedList;
 	}
 	
 	/**
