@@ -95,6 +95,8 @@ long[] lArray = TypeUtil.toLong(lList);            // List<Long> -> long[] 로 �
 float[] fArray = TypeUtil.toFloatArray(fList);     // List<Float> -> flaot[] 로 변환
 double[] dArray = TypeUtil.toDoubleArray(dList);   // List<Double> -> double[] 로 변환
 
+List<List<String>> splitedList = TypeUtil.splitList(list, 3); // 리스트를 3개의 묶음으로 분리
+
 boolean isPrimitive = TypeUtil.isPrimitive(int.class);  // 주어진 클래스가 primitive type 여부 반환
 int size = TypeUtil.getPrimitiveSize(int.class);        // 주어진 primitive type의 크기를 반환
 
