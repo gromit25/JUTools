@@ -278,7 +278,7 @@ public class TypeUtilTest {
 				target.add("hello:" + index);
 			}
 		
-			List<List<String>> splitedList = TypeUtil.splitList(target, 10);
+			List<List<?>> splitedList = TypeUtil.splitList(target, 10);
 			
 			assertEquals(10, splitedList.size());
 			assertEquals("hello:27", splitedList.get(9).get(0));
@@ -299,7 +299,7 @@ public class TypeUtilTest {
 				target.add("hello:" + index);
 			}
 		
-			List<List<String>> splitedList = TypeUtil.splitList(target, 2);
+			List<List<?>> splitedList = TypeUtil.splitList(target, 2);
 			
 			assertEquals(2, splitedList.size());
 			assertEquals(8, splitedList.get(0).size());
@@ -321,7 +321,7 @@ public class TypeUtilTest {
 				target.add("hello:" + index);
 			}
 		
-			List<List<String>> splitedList = TypeUtil.splitList(target, 1);
+			List<List<?>> splitedList = TypeUtil.splitList(target, 1);
 			
 			assertEquals(1, splitedList.size());
 			assertEquals(15, splitedList.get(0).size());
