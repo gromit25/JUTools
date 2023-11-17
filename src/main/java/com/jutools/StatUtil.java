@@ -1,5 +1,7 @@
 package com.jutools;
 
+import java.util.Random;
+
 import com.jutools.stat.RTParameter;
 import com.jutools.stat.RTStatistic;
 import com.jutools.stat.nelsonrule.NelsonRule;
@@ -10,6 +12,24 @@ import com.jutools.stat.nelsonrule.NelsonRule;
  * @author jmsohn
  */
 public class StatUtil {
+	
+	/** 
+	 * 평균과 표준편차에 따른 랜덤값 생성
+	 * 
+	 * @param mean 평균
+	 * @param std 표준 편차
+	 */
+	public static double genNormalDistribution(double mean, double std) {
+
+	    Random random = new Random();
+
+	    double u1 = random.nextDouble();
+	    double u2 = random.nextDouble();
+
+	    double z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+
+	    return mean + (z * std);
+	}
 	
 	/**
 	 * 실시간 모수(parameter) 계산 객체 반환
