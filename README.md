@@ -597,6 +597,9 @@ System.out.println(result.getBaseUnit());   // "B" 출력
 >   [Nelson rules](https://en.wikipedia.org/wiki/Nelson_rules) 참고
 
 ```java
+// 평균과 표준편차에 따른 랜덤값 생성(정규분포를 따름)
+double value = StatUtil.genNormalDistribution()
+
 // 모수 계산 객체 생성
 RTParameter rtparam = StatUtil.createRTParameter();
 // 통계량 계산 객체 생성
