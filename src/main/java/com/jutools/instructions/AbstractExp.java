@@ -176,5 +176,4 @@ public abstract class AbstractExp {
 			return type.cast(obj);
 		}
 	}
-	
 }
