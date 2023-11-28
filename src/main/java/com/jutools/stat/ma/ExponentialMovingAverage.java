@@ -33,5 +33,4 @@ public class ExponentialMovingAverage extends AbstractMovingAverage {
 			return (2 / (n + 1)) * in + ((n - 1) / (n + 1)) * this.getAverage();
 		}
 	}
-
 }
