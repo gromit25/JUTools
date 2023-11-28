@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 파싱 트리의 노드 클래스
  * 
  * @author jmsohn
  */
