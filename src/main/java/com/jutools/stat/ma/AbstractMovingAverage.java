@@ -72,5 +72,4 @@ public abstract class AbstractMovingAverage {
 			this.queue.clear();
 		}
 	}
-
 }
