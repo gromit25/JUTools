@@ -104,7 +104,7 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"PARAM"}
 	)
 	public void handleParam(Event event) throws Exception {
-		ArithmaticParser parser = new ArithmaticParser();
+		BooleanParser parser = new BooleanParser();
 		this.params.add(parser.parse(event.getReader()));
 	}
 	
