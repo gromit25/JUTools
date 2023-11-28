@@ -6,27 +6,28 @@ import java.util.Queue;
 import lombok.Getter;
 
 /**
- * 
+ * Moving Average 추상 클래스
  * 
  * @author jmsohn
  */
 public abstract class AbstractMovingAverage {
 	
-	/** */
+	/** Moving Average 구간 */
 	@Getter
 	private int windowSize;
 	
-	/** */
+	/** Moving Average */
 	@Getter
 	private double average;
 	
-	/** */
+	/** 구간 데이터 저장소 */
 	@Getter
 	private Queue<Double> queue = new LinkedList<Double>();
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param windowSize
+	 * @param windowSize Moving Average 구간
 	 */
 	public AbstractMovingAverage(int windowSize) throws Exception {
 		
@@ -38,8 +39,9 @@ public abstract class AbstractMovingAverage {
 	}
 	
 	/**
+	 * 데이터 추가 및 Moving Average 실시간 계산
 	 * 
-	 * @param value
+	 * @param value 추가할 데이터
 	 */
 	public void add(double value) {
 		
@@ -54,14 +56,16 @@ public abstract class AbstractMovingAverage {
 	}
 	
 	/**
+	 * Moving Average 계산
 	 * 
-	 * @param out
-	 * @return
+	 * @param in 구간 데이터에 신규 입력되는 값
+	 * @param out 구간 데이터에서 삭제되는 값
+	 * @return Moving Average 값
 	 */
 	protected abstract double calculate(double in, double out);
 	
 	/**
-	 * 
+	 * 구간 데이터 삭제 
 	 */
 	public void clear() {
 		if(this.queue != null) {
