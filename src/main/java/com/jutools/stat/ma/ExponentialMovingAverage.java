@@ -1,9 +1,20 @@
 package com.jutools.stat.ma;
 
+/**
+ * 지수이동평균(Exponential Moving Average:EMA) 계산 클래스
+ * 
+ * @author jmsohn
+ */
 public class ExponentialMovingAverage extends AbstractMovingAverage {
 	
+	/** 데이터 수 */
 	private double n;
 
+	/**
+	 * 생성자
+	 * 
+	 * @param windowSize Moving Average 구간
+	 */
 	public ExponentialMovingAverage(int windowSize) throws Exception {
 		super(windowSize);
 		this.n = 0.0;
