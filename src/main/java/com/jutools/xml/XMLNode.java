@@ -198,7 +198,7 @@ public class XMLNode {
 	static class TagMatcher {
 		
 		/** 테그명 쿼리의 패턴 문자열 */
-		private static String TAG_P = "[a-zA-Z_\\*\\?][a-zA-Z0-9_\\-\\*\\?]*";
+		private static String TAG_P = "[a-zA-Z_\\:\\*\\?][a-zA-Z0-9_\\:\\-\\*\\?]*";
 
 		/** 테그 쿼리 전체 패턴 문자열 */
 		private static String QUERY_P = "(?<tag>" + TAG_P + ")"
@@ -492,5 +492,4 @@ public class XMLNode {
 		}
 		
 	} // End of AttrMatcher
-
 }

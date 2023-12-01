@@ -70,6 +70,24 @@ public class XMLUtilTest {
 			+ "  </book>\r\n"
 			+ "</bookstore>";
 	
+	private static final String XML_NAMESPACE_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+			+ "<bookstore>\r\n"
+			+ "  <ns:book category=\"역사\">\r\n"
+			+ "    <isbn>0001</isbn>\r\n"
+			+ "    <title lang=\"en\">Historiae</title>\r\n"
+			+ "    <author>Author 1</author>\r\n"
+			+ "    <year>2001</year>\r\n"
+			+ "    <price>29.99</price>\r\n"
+			+ "  </ns:book>\r\n"
+			+ "  <ns:book category=\"역사\">\r\n"
+			+ "    <isbn>0002</isbn>\r\n"
+			+ "    <title lang=\"kr\">삼국사기</title>\r\n"
+			+ "    <author>김부식</author>\r\n"
+			+ "    <year>1145</year>\r\n"
+			+ "    <price>39.95</price>\r\n"
+			+ "  </ns:book>\r\n"
+			+ "</bookstore>";
+	
 	/**
 	 *
 	 * 
@@ -161,6 +179,14 @@ public class XMLUtilTest {
 
 		System.out.println(rootNode.getText());
 	}
+	
+	@Test
+	public void testNamespace1() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.getRootNode(new ByteArrayInputStream(XML_NAMESPACE_TEXT.getBytes()))
+				.select("ns:book");
 
-
+		System.out.println(books.getFirst());
+	}
 }
