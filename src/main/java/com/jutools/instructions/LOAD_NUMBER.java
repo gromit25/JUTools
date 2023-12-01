@@ -11,7 +11,7 @@ import java.util.Stack;
 public class LOAD_NUMBER extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		double value = Double.parseDouble(this.getParam(0));
 		stack.push(value);
 	}

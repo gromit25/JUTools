@@ -19,7 +19,7 @@ public class INVOKE extends Instruction {
 	private Method method;
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		if(this.method == null) {
 			throw new NullPointerException("method is null(check link process)");

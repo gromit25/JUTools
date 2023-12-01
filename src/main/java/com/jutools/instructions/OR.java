@@ -11,7 +11,7 @@ import java.util.Stack;
 public class OR extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 파라미터를 스택에서 꺼내옴
 		Object p2 = stack.pop();

@@ -11,7 +11,7 @@ import java.util.Stack;
 public class NOT extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		Object p1 = stack.pop();
 		

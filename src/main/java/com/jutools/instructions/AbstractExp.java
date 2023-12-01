@@ -149,7 +149,7 @@ public abstract class AbstractExp {
 	 * @param values 
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public AbstractExp execute(Map<String, Object> values) throws Exception {
+	public AbstractExp execute(Map<String, ?> values) throws Exception {
 		
 		for(Instruction inst: insts) {
 			inst.execute(this.stack, values);

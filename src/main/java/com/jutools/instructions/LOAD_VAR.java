@@ -11,7 +11,7 @@ import java.util.Stack;
 public class LOAD_VAR extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		Object value = values.get(this.getParam(0));
 		Class<?> valueClass = value.getClass();

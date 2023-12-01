@@ -11,7 +11,7 @@ import java.util.Stack;
 public class NOP extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		// Do nothing
 	}
 

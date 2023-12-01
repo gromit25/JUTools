@@ -18,8 +18,9 @@ import java.util.Stack;
  */
 public class STORE extends Instruction {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void execute(Stack<Object> stack, Map<String, Object> values) throws Exception {
+	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 설정된 모든 파라미터에 대해
 		// 스택의 값을 values에 모두 저장
@@ -35,7 +36,7 @@ public class STORE extends Instruction {
 			// 스택의 경우 처음 입력된 것이 나중에 나오게 되어
 			// 뒤에 설정된 파라미터 부터 values에 넣음
 			String name = this.getParam(this.getParamCount() - 1 - index);
-			values.put(name, p1);
+			((Map<String, Object>)values).put(name, p1);
 		}
 	}
 

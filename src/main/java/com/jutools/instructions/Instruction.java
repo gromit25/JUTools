@@ -20,7 +20,7 @@ public abstract class Instruction {
 	 * @param stack 스택
 	 * @param values 메모리
 	 */
-	public abstract void execute(Stack<Object> stack, Map<String, Object> values) throws Exception;
+	public abstract void execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
 	
 	/**
 	 * 파라미터의 개수 반환
