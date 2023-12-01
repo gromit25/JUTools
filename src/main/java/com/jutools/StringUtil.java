@@ -927,6 +927,11 @@ public class StringUtil {
 				// 패턴의 뒤쪽 부터 매칭 수행
 				int index = 0;
 				for(;index < pattern.length(); index++) {
+
+					// 만일, 대상 문자열 보다 패턴 문자열이 크면 false를 반환
+					if(str.length() - 1 - index == -1) {
+						return false;
+					}
 					
 					// 현재 위치의 패턴 문자 
 					char patternCh = pattern.charAt(pattern.length() - 1 - index);

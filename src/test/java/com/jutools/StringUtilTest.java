@@ -520,6 +520,23 @@ public class StringUtilTest {
 	}
 	
 	@Test
+	public void testMatchWildcard19() {
+		try {
+			
+		    String pattern = "abcdef";
+		    String input = "def";
+			
+		    boolean result = StringUtil.matchWildcard(pattern, input);
+			
+			assertEquals(false, result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	public void testChangeStr1() {
 		try {
 			
