@@ -4,12 +4,9 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import com.jutools.TextGen;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterException;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Text Formatter
@@ -23,9 +20,7 @@ import lombok.Setter;
 public class TextFormatter extends AbstractTextFormatter {
 	
 	/** 출력할 텍스트 메시지 */
-	@Getter
-	@Setter(value=AccessLevel.PACKAGE)
-	private String message;
+	private TextGen generator;
 	
 	/**
 	 * 생성자
@@ -34,8 +29,12 @@ public class TextFormatter extends AbstractTextFormatter {
 	 * 
 	 * @param message 출력할 텍스트 메시지
 	 */
-	public TextFormatter(String message) {
-		this.setMessage(message);
+	public TextFormatter(String message) throws FormatterException {
+		try {
+			this.generator = TextGen.compile(message);
+		} catch(Exception ex) {
+			throw new FormatterException(this, ex);
+		}
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class TextFormatter extends AbstractTextFormatter {
 		
 		try {
 			// Output stream에 출력 수행
-			out.write(this.getMessage().getBytes(charset));
+			out.write(this.generator.gen(values).getBytes(charset));
 			out.flush();
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
