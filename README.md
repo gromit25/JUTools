@@ -56,6 +56,23 @@ StringUtil.findAllVars(str);
 
 ```
 
+### TextGen    
+----------------------------------    
+> 표현식을 포함한 텍스트 형식 문자열과 변수 목록으로 텍스트를 생성하는 Utility   
+> ex) 텍스트 형식: "severity: ${if(severity == 'fatal', 'red', 'yellow')}", 변수 목록: {"severity":"fatal"}<br>
+>     -> "severity: red"
+```java
+// 변수 목록 생성
+HashMap<String, Object> values = new HashMap<>();
+values.put("severity", "fatal");
+
+// 형식 문자열 
+String formatText = "severity: ${if(severity == 'fatal', 'red', 'yellow')}";
+
+// 문자열 생성: "severity: red"
+System.out.println(TextGen.compile(formatText).gen(values));
+```
+
 ### WebUtil   
 ----------------------------------    
 > WAS 등 Web Application에서 사용할 수 있는 Utility   
