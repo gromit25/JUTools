@@ -10,28 +10,34 @@ import com.jutools.olexp.parser.BooleanParser;
 import com.jutools.parserfw.AbstractParser;
 
 /**
+ * 표현식을 포함한 텍스트 형식 문자열과 변수 목록으로 텍스트를 생성하는 클래스<br>
+ * ex) 텍스트 형식: "severity: ${if(severity == 'fatal', 'red', 'yellow')} ", 변수 목록: {"severity":"fatal"}<br>
+ *     -> "severity: red "
  * 
  * @author jmsohn
  */
 public class TextGen {
 	
 	/**
+	 * 텍스트 요소 인터페이스<br>
+	 * 텍스트와 표현식 모두 이 인터페이스를 구현함
 	 * 
 	 * @author jmsohn
 	 */
 	private static interface TextElement {
 		
 		/**
+		 * 변수 목록을 이용하여 텍스트를 생성하여 반환
 		 * 
-		 * @param values
-		 * @return
+		 * @param values 변수 목록
+		 * @return 생성된 텍스트
 		 */
 		public String getText(Map<String, ?> values) throws Exception;
 	}
 	
 	/**
-	 * Text 내의 표현식 처리를 위한 클래스
-	 * ex) Hello, ${name} 에서 ${name}에 대한 처리
+	 * 텍스트 내의 표현식 처리를 위한 텍스트 요소 클래스<br>
+	 * ex) "severity: ${if(severity == 'fatal', 'red', 'yellow')}" 에서 ${if(severity == 'fatal', 'red', 'yellow')}에 대한 처리
 	 * 
 	 * @author jmsohn
 	 */
@@ -66,12 +72,13 @@ public class TextGen {
 	}
 	
 	/**
+	 * 일반 문자열 처리를 위한 텍스트 요소 클래스
 	 * 
 	 * @author jmsohn
 	 */
 	private static class StringElement implements TextElement {
 		
-		/** */
+		/** 문자열 */
 		private String textStr;
 		
 		/**
@@ -89,35 +96,37 @@ public class TextGen {
 		}
 	}
 	
-	/** */
+	/** 텍스트 요소 목록 변수 - parse 메소드에 의해 생성됨 */
 	private List<TextElement> elements;
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param formatText
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
 	 */
 	private TextGen(String formatText) throws Exception {
 		this.parse(formatText);
 	}
 	
 	/**
+	 * 주어진 텍스트 형식 문자열을 컴파일하여 TextGen 객체를 생성하고 반환
 	 * 
-	 * 
-	 * @param formatText
-	 * @return
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @return 생성된 TextGen 객체
 	 */
 	public static TextGen compile(String formatText) throws Exception {
 		return new TextGen(formatText);
 	}
 	
 	/**
+	 * 주어진 텍스트 형식 문자열을 파싱함<br>
+	 * 파싱 결과는 멤버 변수 elements에 저장됨 
 	 * 
-	 * 
-	 * @param formatText
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
 	 */
 	private void parse(String formatText) throws Exception {
 		
-		// 
+		// 텍스트 요소 목록 생성
 		this.elements = new ArrayList<>();
 		
 		// ${표현식}의 표현식을 담을 임시 변수
@@ -183,14 +192,15 @@ public class TextGen {
 	}
 	
 	/**
-	 *
+	 * 이미 파싱된 텍스트 형식 문자열(elements)와 변수 목록을 사용하여 문자열을 생성하고 반환함
 	 * 
-	 * @param values
-	 * @return
+	 * @param values 변수 목록
+	 * @return 생성된 문자열
 	 */
 	public String gen(Map<String, ?> values) throws Exception {
 		
 		StringBuilder text = new StringBuilder("");
+		
 		for(TextElement element: this.elements) {
 			text.append(element.getText(values));
 		}
