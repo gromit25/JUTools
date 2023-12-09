@@ -55,4 +55,22 @@ public class BuiltInMethods {
 	public static boolean matchRegExp(String pattern, String target) throws Exception {
 		return target.matches(pattern);
 	}
+	
+	/**
+	 * if 메소드
+	 * 
+	 * @param condition if 조건
+	 * @param trueValue if 조건이 true 일때, 반환할 값
+	 * @param falseValue if 조건이 false 일때, 반환할 값
+	 * @return if 조건에 따라 반환 값(trueValue or falseValue)
+	 */
+	@MethodAlias(alias = "if")
+	public static Object ifMethod(Boolean condition, Object trueValue, Object falseValue) throws Exception {
+		
+		if(condition == true) {
+			return trueValue;
+		} else {
+			return falseValue;
+		}
+	}
 }
