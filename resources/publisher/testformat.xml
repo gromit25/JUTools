@@ -5,7 +5,7 @@
 	|   --------------------------------------------------------------------------
 	<foreach element="message" listExp="messages">
 	|      <style type="FG_WHITE_BRIGHT"><print exp="message"/></style>
-	|      ${message + ' - test'}
+	|      <style type="FG_WHITE_BRIGHT">${message}</style>
 	</foreach>
 	|   --------------------------------------------------------------------------
 	
