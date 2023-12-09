@@ -13,6 +13,7 @@ StringUtil.escape(str);                // str="test\t입니다." -> "test	입니
 StringUtil.hasNull(str);               // 문자열 내에 null(\0)가 포함 여부 반환
 StringUtil.length(str);                // 문자열 길이 반환, null일 경우 0 반환
 StringUtil.isEmpty(str);               // 문자열이 null 이거나 "" 일 경우 true 반환
+StringUtil.isBlank(str);               // 문자열이 null 이거나 빈문자만으로 채워진 경우 일 경우 true 반환
 
 StringUtil.join("hello", " ", "world");// 문자열 결합 "hello world"
 StringUtil.reverse(str);               // 문자열 역전 "abc" -> "cba"
