@@ -1216,6 +1216,35 @@ public class StringUtil {
 	 * @return 분리된 문자열 배열
 	 */
 	public static String[] splitFirst(String target, String pattern) throws Exception {
+		return splitFirstN(target, pattern, 1);
+	} // End of splitFirst
+	
+	
+	/**
+	 * target 문자열 내에 처음부터 n회 패턴(pattern)으로 나누어 반환<br>
+	 * 만일, target 문자열 내에 패턴이 나타나지 않으면 target 문자열만 반환함<br>
+	 * <pre>
+	 * ex) target: "test1 > test2> test3",
+	 *     pattern: "\\s>\\s",
+	 *     n: 1이면
+	 *     결과: {"test1", "test2> test3"}
+	 *     
+	 *     target: "test1 > test2> test3 > test4",
+	 *     pattern: "\\s>\\s",
+	 *     n: 2이면
+	 *     결과: {"test1", "test2", "test3 > test4"}
+	 *     
+	 *     taget: "test1 > test2"
+	 *     pattern: "\\sA\\s" 이면
+	 *     결과: {"test1 > test2"}
+	 * </pre>
+	 * 
+	 * @param target 대상 문자열
+	 * @param pattern 나눌 패턴
+	 * @param n 나눌 횟수
+	 * @return 분리된 문자열 배열
+	 */
+	public static String[] splitFirstN(String target, String pattern, int n) throws Exception {
 		
 		// 입력값 검증
 		if(target == null) {
@@ -1226,28 +1255,46 @@ public class StringUtil {
 			throw new NullPointerException("pattern is null");
 		}
 		
+		if(n < 1) {
+			throw new IllegalArgumentException("n must be greater than 0:" + n);
+		}
+		
+		// 분리된 문자열을 저장할 변수
+		ArrayList<String> splited = new ArrayList<String>();
+		
 		// target 문자열에 패턴 적용
 		Pattern patternP = Pattern.compile(pattern);
 		Matcher patternM = patternP.matcher(target);
+
+		// 패턴 검사 시작 위치 변수
+		int start = 0;
 		
-		// 만일 패턴을 찾지 못했을 경우,
-		// target 문자열을 배열에 담아 반환
-		if(patternM.find() == false) {
-			return new String[] {target};
+		// 패턴이 존재하는지 검사
+		while(patternM.find(start) == true && n > 0) {
+			
+			// 패턴 검사 시작 위치(start)에서 패턴이 발견된 위치(pStart)
+			// 문자열을 잘라서 splited 배열에 추가
+			int pStart = patternM.start();
+			splited.add(target.substring(start, pStart));
+			
+			// 매치된 마지막 위치에서 다음 패턴 검사를 수행할 수 있도록
+			// 패턴 검사 시작 위치(start)를 설정
+			start = patternM.end();
+			
+			// 나누는 횟수를 하나 줄임
+			n--;
 		}
 		
-		// 패턴이 target 문자열 내에 있는 경우
-		// target 문자열에서 처음부터 패턴이 나타나는 곳까지 문자열과
-		// 패턴이 나타난 이후 부터 문자열의 끝까지 나눈 문자열을 반환함
-		int start = patternM.start();
-		int end = patternM.end();
+		// start가 0이 아닌 경우는 마지막 남은 문자열을 추가함
+		// start가 0인 경우는 매치되는 패턴이 없는 경우임
+		if(start != 0) {
+			splited.add(target.substring(start, target.length()));
+		}
 		
-		return new String[] {
-				target.substring(0, start),
-				target.substring(end, target.length())
-			};
+		// 분리된 문자열 목록을 반환
+		return TypeUtil.toArray(splited, String.class);
 		
-	} // End of splitFirst
+	} // End of splitFirstN
 	
 	/**
 	 * target 문자열 내에 패턴(pattern)이 마지막 나타난 곳까지의 문자열과<br>
