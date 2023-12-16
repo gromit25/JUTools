@@ -583,6 +583,36 @@ public class StringUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	public void testSplitFirstN1() {
+		try {
+			
+			String[] splited = StringUtil.splitFirstN("test1> test2 >test3 > test4", "\\s*>\\s*", 2);
+			
+			assertEquals("test1", splited[0]);
+			assertEquals("test2", splited[1]);
+			assertEquals("test3 > test4", splited[2]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testSplitFirstN2() {
+		try {
+			
+			String[] splited = StringUtil.splitFirstN("test1", "\\s*>\\s*", 2);
+			
+			assertEquals("test1", splited[0]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
 
 	@Test
 	public void testSplitLast1() {

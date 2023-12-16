@@ -1287,9 +1287,7 @@ public class StringUtil {
 		
 		// start가 0이 아닌 경우는 마지막 남은 문자열을 추가함
 		// start가 0인 경우는 매치되는 패턴이 없는 경우임
-		if(start != 0) {
-			splited.add(target.substring(start, target.length()));
-		}
+		splited.add(target.substring(start, target.length()));
 		
 		// 분리된 문자열 목록을 반환
 		return TypeUtil.toArray(splited, String.class);
