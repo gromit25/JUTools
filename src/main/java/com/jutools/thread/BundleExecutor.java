@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class BundleExecutor {
 	
-	/** 스레드 */
+	/** 분할 처리할 스레드 목록 */
 	private Thread[] workers;
 	
 	/** 분할된 List 처리 객체 */
 	private BundleTask task;
 	
-	/** */
+	/** 스레드의 daemon 설정 여부 */
 	private boolean isDaemon = true;
 	
 	/**
@@ -44,13 +44,13 @@ public class BundleExecutor {
 	}
 
 	/**
+	 * 주어진 목록을 분할된 스레드로 실행
 	 * 
-	 * 
-	 * @param list
+	 * @param list 분할 실행할 목록
 	 */
 	public BundleExecutor run(List<?> list) throws Exception {
 		
-		//
+		// 목록이 null 이거나 데이터가 없는 경우 즉시 반환
 		if(list == null || list.size() == 0) {
 			return this;
 		}
@@ -86,11 +86,13 @@ public class BundleExecutor {
 		}
 		
 		return this;
+		
 	} // end of run
 	
 	/**
+	 * 모든 분할 스레드가 완료될 때까지 대기 
 	 * 
-	 * @return
+	 * @return 현재 객체
 	 */
 	public BundleExecutor join() throws Exception {
 		
@@ -106,9 +108,10 @@ public class BundleExecutor {
 	}
 	
 	/**
+	 * 분할된 스레드에 Daemon 여부 설정
 	 * 
-	 * @param on
-	 * @return
+	 * @param on Daemon 여부
+	 * @return 현재 객체
 	 */
 	public BundleExecutor setDaemon(boolean on) throws Exception {
 		
