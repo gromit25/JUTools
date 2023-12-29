@@ -23,7 +23,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({"deprecation", "restriction"})
 public class SysUtil {
 	
 	/** 시스템 정보를 얻기 위한 OperationSystemMXBean */
