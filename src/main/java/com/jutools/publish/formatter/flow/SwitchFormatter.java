@@ -17,9 +17,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * switch formatter
- * switch 분기 수행,
- * 자식 formatter로는 case formatter와 default formatter가 있음
+ * switch formatter<br>
+ * switch 분기 수행,<br>
+ * case formatter와 default formatter를 같이 사용함<br>
+ * <pre>
+ * ex)
+ * &lt;switch exp="severity"&gt;
+ *   &lt;case value="info"&gt;|green&lt;/case&gt;
+ *   &lt;case value="warn"&gt;|yellow&lt;/case&gt;
+ *   &lt;case value="fatal"&gt;|red&lt;/case&gt;
+ *   &lt;default&gt;|black&lt;/default&gt;
+ * &lt;/switch&gt;
+ * </pre>
  * 
  * @author jmsohn
  */
