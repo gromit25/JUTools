@@ -13,14 +13,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * if formatter
- * if formatter는 판별식(exp)의 참/거짓을 판별하여, 
- * 참일 경우에만 if tag 내부의 명령어를 수행함
- * 
- * exp 속성 : 판별식
- *
+ * if formatter<br>
+ * if formatter는 판별식(exp)의 참/거짓을 판별하여,<br> 
+ * 참일 경우에만 if tag 내부의 명령어를 수행함<br>
+ * <br>
+ * exp 속성 : 판별식<br>
+ * <pre>
  * ex)
- * <if exp="expression"></if>
+ * &lt;if exp="expression"&gt;
+ * |  hello world!
+ * &lt;/if&gt;
+ * </pre>
  * 
  * @author jmsohn
  */
