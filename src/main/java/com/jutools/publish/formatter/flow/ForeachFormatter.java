@@ -16,18 +16,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * foreach formatter
- * foreach formatter는 List를 반복수행 함, alt테그를 포함할 수 있으며, List가 비어있을때,
- * alt테그 내부에 메시지를 출력함
- * foreach formatter는 하나의 FlowFormatter를
- * 여러번 실행시키는 개념임
- * "_index_[element명]"으로 현재 foreach loop의 index를 알 수 있음
- * 
- * list 속성 : 반복 수행할 List, java.lang.List type이어야함
- * element 속성 : foreach 문 내에서 사용할 list의 각 요소 이름을 지정
- *
+ * foreach formatter<br>
+ * foreach formatter는 List를 반복수행 함, alt테그를 포함할 수 있으며, List가 비어있을때,<br>
+ * alt테그 내부에 메시지를 출력함<br>
+ * foreach formatter는 하나의 FlowFormatter를<br>
+ * 여러번 실행시키는 개념임<br>
+ * "_index_[element명]"으로 현재 foreach loop의 index를 알 수 있음<br>
+ * <br>
+ * list 속성 : 반복 수행할 List, java.lang.List type이어야함<br>
+ * element 속성 : foreach 문 내에서 사용할 list의 각 요소 이름을 지정<br>
+ * <pre>
  * ex)
- * <foreach element="info" list="infos"></foreach>
+ * &lt;foreach element="info" list="infos"&gt;
+ * |   ${info}
+ * &lt;/foreach&gt;
+ * </pre>
  * 
  * @author jmsohn
  */
