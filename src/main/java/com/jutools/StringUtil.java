@@ -1368,7 +1368,7 @@ public class StringUtil {
 	 * @param charset 문자열의 character set
 	 * @return 생성된 Reader 객체
 	 */
-	public Reader newReader(String str, Charset charset) throws Exception {
+	public static Reader newReader(String str, Charset charset) throws Exception {
 		
 		if(str == null) {
 			throw new IllegalArgumentException("str is null.");
@@ -1387,7 +1387,7 @@ public class StringUtil {
 	 * @param str 대상 문자열
 	 * @return 생성된 Reader 객체
 	 */
-	public Reader newReader(String str) throws Exception {
+	public static Reader newReader(String str) throws Exception {
 		
 		if(str == null) {
 			throw new IllegalArgumentException("str is null.");
