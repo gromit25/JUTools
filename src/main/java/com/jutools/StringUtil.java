@@ -1,5 +1,9 @@
 package com.jutools;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1356,4 +1360,39 @@ public class StringUtil {
 		}
 		
 	} // End of splitLast
+	
+	/**
+	 * 문자열에 대한 Reader 객체를 생성
+	 * 
+	 * @param str 대상 문자열
+	 * @param charset 문자열의 character set
+	 * @return 생성된 Reader 객체
+	 */
+	public Reader newReader(String str, Charset charset) throws Exception {
+		
+		if(str == null) {
+			throw new IllegalArgumentException("str is null.");
+		}
+		
+		if(charset == null) {
+			throw new IllegalArgumentException("charset is null.");
+		}
+		
+		return new InputStreamReader(new ByteArrayInputStream(str.getBytes(charset)));
+	}
+	
+	/**
+	 * 문자열에 대한 Reader 객체를 생성
+	 * 
+	 * @param str 대상 문자열
+	 * @return 생성된 Reader 객체
+	 */
+	public Reader newReader(String str) throws Exception {
+		
+		if(str == null) {
+			throw new IllegalArgumentException("str is null.");
+		}
+		
+		return new InputStreamReader(new ByteArrayInputStream(str.getBytes()));
+	}
 }
