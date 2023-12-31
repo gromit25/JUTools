@@ -252,9 +252,6 @@ public abstract class AbstractParser<T> {
 					// 유효한 전이함수(transfer function)이 매치되었을 경우 true로 설정함
 					isMatched = true;
 					
-					// 이벤트 생성
-					Event event = new Event(ch, in);
-					
 					// pushback 수행
 					if(transferFunction.getPushback() < 0) {
 						
@@ -291,8 +288,13 @@ public abstract class AbstractParser<T> {
 						pushbackBuffer.clear();
 					}
 					
-					// 이벤트 처리함수 호출
+					// 다음 상태명 변수
  					String nextStatus = transferFunction.getNextStatus();
+ 					
+					// 이벤트 생성
+					Event event = new Event(ch, in, this.status, nextStatus);
+
+					// 이벤트 처리함수 호출
 					ArrayList<Method> handlers = this.getHandlers(this.status, nextStatus);
 					for(Method handler: handlers) {
 						handler.invoke(this, event);
@@ -408,15 +410,28 @@ public abstract class AbstractParser<T> {
 		@Getter
 		private PushbackReader reader;
 		
+		/** source 상태명 */
+		@Getter
+		private String source;
+		
+		/** target 상태명 */
+		@Getter
+		private String target;
+		
 		/**
 		 * 생성자
 		 * 
 		 * @param ch Event 발생시 입력된 문자
 		 * @param reader 입력 스트림
+		 * @param source source 상태명
+		 * @param target target 상태명
 		 */
-		public Event(char ch, PushbackReader reader) {
+		public Event(char ch, PushbackReader reader, String source, String target) {
+			
 			this.ch = ch;
 			this.reader = reader;
+			this.source = source;
+			this.target = target;
 		}
 	}
 }
