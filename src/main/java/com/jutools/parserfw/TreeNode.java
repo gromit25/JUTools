@@ -20,7 +20,7 @@ public class TreeNode<T> {
 	
 	/** 자식 노드 목록 */
 	@Getter
-	private ArrayList<TreeNode<T>> childs;
+	private List<TreeNode<T>> childs;
 	
 	/**
 	 * 생성자
