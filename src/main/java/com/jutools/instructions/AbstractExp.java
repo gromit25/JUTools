@@ -2,8 +2,8 @@ package com.jutools.instructions;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -22,7 +22,7 @@ public abstract class AbstractExp {
 	@Getter
 	protected String exp;
 	/** Expression 명령어 목록 */
-	protected ArrayList<Instruction> insts;
+	protected List<Instruction> insts;
 	/** Expression 처리시 사용할 Stack */
 	@Getter
 	protected Stack<Object> stack = new Stack<Object>();
