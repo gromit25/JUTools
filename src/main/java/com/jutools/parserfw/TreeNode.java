@@ -1,6 +1,7 @@
 package com.jutools.parserfw;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -72,10 +73,10 @@ public class TreeNode<T> {
 	 * 
 	 * @return post order로 방문한 목록
 	 */
-	public ArrayList<T> travelPostOrder() {
+	public List<T> travelPostOrder() {
 		
 		// post order로 방문한 목록 변수
-		ArrayList<T> list = new ArrayList<T>();
+		List<T> list = new ArrayList<T>();
 		
 		// 자식 노드 방문
 		for(TreeNode<T> child: this.childs) {
