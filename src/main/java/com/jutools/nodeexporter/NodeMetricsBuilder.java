@@ -8,7 +8,7 @@ import com.jutools.nodeexporter.instructions.NodeMetricInstruction;
 import com.jutools.nodeexporter.parser.TypeParser;
 
 /**
- * 
+ * Node Exporter의 Metrics을 생성하는 Builder 클래스
  * 
  * @author jmsohn
  */
@@ -50,7 +50,7 @@ public class NodeMetricsBuilder {
 	 * @param metricStr metric 정보 문자열
 	 * @return 생성된 metric 정보 객체
 	 */
-	public static NodeMetric makeMetric(String metricStr) throws Exception {
+	private static NodeMetric makeMetric(String metricStr) throws Exception {
 		
 		NodeMetric metric = null;
 		
