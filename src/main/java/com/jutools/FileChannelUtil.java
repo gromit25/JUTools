@@ -121,14 +121,6 @@ public class FileChannelUtil extends ChannelUtil {
 		this(FileChannel.open(file.toPath(), options));
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	private FileChannel getChannel() {
-		return (FileChannel)this.getChnl();
-	}
-
 	@Override
 	protected int write(ByteBuffer src) throws IOException {
 		return this.getChannel().write(src);
@@ -137,5 +129,13 @@ public class FileChannelUtil extends ChannelUtil {
 	@Override
 	protected int read(ByteBuffer dst) throws IOException {
 		return this.getChannel().read(dst);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private FileChannel getChannel() {
+		return (FileChannel)this.getChnl();
 	}
 }
