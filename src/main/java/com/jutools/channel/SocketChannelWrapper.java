@@ -6,7 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
 /**
- * 
+ * socket channel 처리 wrapper 클래스
  * 
  * @author jmsohn
  */
@@ -74,8 +74,9 @@ public class SocketChannelWrapper extends ChannelWrapper {
 	}
 
 	/**
+	 * 설정된 Socket Channel을 반환
 	 * 
-	 * @return
+	 * @return 설정된 Socket Channel
 	 */
 	private SocketChannel getChannel() {
 		return (SocketChannel)this.getChnl();

@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.nio.file.OpenOption;
 
 /**
- * file channel 처리 관련 utility 클래스
+ * file channel 처리 wrapper 클래스
  * 
  * @author jmsohn
  */
@@ -132,8 +132,9 @@ public class FileChannelWrapper extends ChannelWrapper {
 	}
 	
 	/**
+	 * 설정된 File Channel을 반환
 	 * 
-	 * @return
+	 * @return 설정된 File Channel
 	 */
 	private FileChannel getChannel() {
 		return (FileChannel)this.getChnl();

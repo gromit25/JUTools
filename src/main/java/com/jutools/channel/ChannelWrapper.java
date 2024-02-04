@@ -17,7 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
- * 
+ * Channel Wrapper의 추상 클래스
  * 
  * @author jmsohn
  */
@@ -40,16 +40,18 @@ public abstract class ChannelWrapper implements Closeable {
 	private boolean isReadEnd;
 	
 	/**
+	 * Channel에 주어진 Buffer(src)의 데이터를 씀
 	 * 
-	 * @param src
-	 * @return
+	 * @param src Channel에 쓸 데이터가 담긴 Buffer
+	 * @return Buffer에서 쓴 데이터의 수
 	 */
 	protected abstract int write(ByteBuffer src)  throws IOException;
 	
 	/**
+	 * Channel에서 데이터를 읽어 Buffer(dst)에 넣음
 	 * 
-	 * @param dst
-	 * @return
+	 * @param dst 읽은 데이터를 담을 Buffer
+	 * @return Channel에서 읽은 데이터의 수
 	 */
 	protected abstract int read(ByteBuffer dst) throws IOException;
 	
