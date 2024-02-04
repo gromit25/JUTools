@@ -21,7 +21,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public abstract class ChannelUtil implements Closeable {
+public abstract class ChannelWrapper implements Closeable {
 	
 	/** 입출력을 위한 file channel */
 	@Getter(value = AccessLevel.PROTECTED)
@@ -61,7 +61,7 @@ public abstract class ChannelUtil implements Closeable {
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 */
-	protected ChannelUtil(Channel chnl, ByteBuffer buffer, Charset charset) throws Exception {
+	protected ChannelWrapper(Channel chnl, ByteBuffer buffer, Charset charset) throws Exception {
 		
 		if(chnl == null) {
 			throw new NullPointerException("file channel is null");

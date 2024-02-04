@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
  * 
  * @author jmsohn
  */
-public class SocketChannelUtil extends ChannelUtil {
+public class SocketChannelWrapper extends ChannelWrapper {
 	
 	/**
 	 * 생성자
@@ -19,7 +19,7 @@ public class SocketChannelUtil extends ChannelUtil {
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 */
-	public SocketChannelUtil(SocketChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
+	public SocketChannelWrapper(SocketChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
 		super(chnl, buffer, charset);
 	}
 	
@@ -30,7 +30,7 @@ public class SocketChannelUtil extends ChannelUtil {
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param charset 입출력에 사용할 character set
 	 */
-	public SocketChannelUtil(SocketChannel chnl, int capacity, Charset charset) throws Exception {
+	public SocketChannelWrapper(SocketChannel chnl, int capacity, Charset charset) throws Exception {
 		this(chnl, ByteBuffer.allocateDirect(capacity), charset);
 	}
 	
@@ -40,7 +40,7 @@ public class SocketChannelUtil extends ChannelUtil {
 	 * @param chnl 입출력을 위한 file channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 */
-	public SocketChannelUtil(SocketChannel chnl, ByteBuffer buffer) throws Exception {
+	public SocketChannelWrapper(SocketChannel chnl, ByteBuffer buffer) throws Exception {
 		this(chnl, buffer, Charset.defaultCharset());
 	}
 	
@@ -50,7 +50,7 @@ public class SocketChannelUtil extends ChannelUtil {
 	 * @param chnl 입출력을 위한 file channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 */
-	public SocketChannelUtil(SocketChannel chnl, int capacity) throws Exception {
+	public SocketChannelWrapper(SocketChannel chnl, int capacity) throws Exception {
 		this(chnl, capacity, Charset.defaultCharset());
 	}
 	
@@ -59,7 +59,7 @@ public class SocketChannelUtil extends ChannelUtil {
 	 * 
 	 * @param chnl 입출력을 위한 file channel
 	 */
-	public SocketChannelUtil(SocketChannel chnl) throws Exception {
+	public SocketChannelWrapper(SocketChannel chnl) throws Exception {
 		this(chnl, 1024 * 1024);
 	}
 

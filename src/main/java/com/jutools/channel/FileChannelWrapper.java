@@ -12,7 +12,7 @@ import java.nio.file.OpenOption;
  * 
  * @author jmsohn
  */
-public class FileChannelUtil extends ChannelUtil {
+public class FileChannelWrapper extends ChannelWrapper {
 	
 	/**
 	 * 생성자
@@ -21,7 +21,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 */
-	public FileChannelUtil(FileChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
+	public FileChannelWrapper(FileChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
 		super(chnl, buffer, charset);
 	}
 	
@@ -32,7 +32,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param charset 입출력에 사용할 character set
 	 */
-	public FileChannelUtil(FileChannel chnl, int capacity, Charset charset) throws Exception {
+	public FileChannelWrapper(FileChannel chnl, int capacity, Charset charset) throws Exception {
 		this(chnl, ByteBuffer.allocateDirect(capacity), charset);
 	}
 	
@@ -42,7 +42,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param chnl 입출력을 위한 file channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 */
-	public FileChannelUtil(FileChannel chnl, ByteBuffer buffer) throws Exception {
+	public FileChannelWrapper(FileChannel chnl, ByteBuffer buffer) throws Exception {
 		this(chnl, buffer, Charset.defaultCharset());
 	}
 	
@@ -52,7 +52,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param chnl 입출력을 위한 file channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 */
-	public FileChannelUtil(FileChannel chnl, int capacity) throws Exception {
+	public FileChannelWrapper(FileChannel chnl, int capacity) throws Exception {
 		this(chnl, capacity, Charset.defaultCharset());
 	}
 	
@@ -61,7 +61,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * 
 	 * @param chnl 입출력을 위한 file channel
 	 */
-	public FileChannelUtil(FileChannel chnl) throws Exception {
+	public FileChannelWrapper(FileChannel chnl) throws Exception {
 		this(chnl, 1024 * 1024);
 	}
 	
@@ -73,7 +73,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param charset 입출력에 사용할 character set
 	 * @param options channel open options
 	 */
-	public FileChannelUtil(File file, ByteBuffer buffer, Charset charset, OpenOption... options) throws Exception {
+	public FileChannelWrapper(File file, ByteBuffer buffer, Charset charset, OpenOption... options) throws Exception {
 		this(FileChannel.open(file.toPath(), options), buffer, charset);
 	}
 
@@ -85,7 +85,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param charset 입출력에 사용할 character set
 	 * @param options channel open options
 	 */
-	public FileChannelUtil(File file, int capacity, Charset charset, OpenOption... options) throws Exception {
+	public FileChannelWrapper(File file, int capacity, Charset charset, OpenOption... options) throws Exception {
 		this(FileChannel.open(file.toPath(), options), capacity, charset);
 	}
 	
@@ -96,7 +96,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param options channel open options
 	 */
-	public FileChannelUtil(File file, ByteBuffer buffer, OpenOption... options) throws Exception {
+	public FileChannelWrapper(File file, ByteBuffer buffer, OpenOption... options) throws Exception {
 		this(FileChannel.open(file.toPath(), options), buffer);
 	}
 	
@@ -107,7 +107,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param options channel open options
 	 */
-	public FileChannelUtil(File file, int capacity, OpenOption... options) throws Exception {
+	public FileChannelWrapper(File file, int capacity, OpenOption... options) throws Exception {
 		this(FileChannel.open(file.toPath(), options), capacity);
 	}
 	
@@ -117,7 +117,7 @@ public class FileChannelUtil extends ChannelUtil {
 	 * @param file 입출력 file
 	 * @param options channel open options
 	 */
-	public FileChannelUtil(File file, OpenOption... options) throws Exception {
+	public FileChannelWrapper(File file, OpenOption... options) throws Exception {
 		this(FileChannel.open(file.toPath(), options));
 	}
 	
