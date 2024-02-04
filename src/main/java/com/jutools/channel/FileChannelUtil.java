@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.channel;
 
 import java.io.File;
 import java.io.IOException;

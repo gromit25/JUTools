@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.channel;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Consumer;
+
+import com.jutools.BytesUtil;
+import com.jutools.NIOBufferUtil;
 
 import lombok.AccessLevel;
 import lombok.Getter;
