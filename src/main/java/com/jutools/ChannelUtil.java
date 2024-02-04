@@ -11,7 +11,7 @@ import com.jutools.channel.FileChannelWrapper;
 import com.jutools.channel.SocketChannelWrapper;
 
 /**
- * 
+ * Channel 관련 Utility 클래스
  * 
  * @author jmsohn
  */
