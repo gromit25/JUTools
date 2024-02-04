@@ -1,6 +1,7 @@
 package com.jutools;
 
 import java.io.File;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
@@ -137,7 +138,7 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param chnl 입출력을 위한 socket channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 * @return socket channel 처리 wrapper 객체
@@ -149,7 +150,7 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param chnl 입출력을 위한 socket channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param charset 입출력에 사용할 character set
 	 * @return socket channel 처리 wrapper 객체
@@ -161,7 +162,7 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param chnl 입출력을 위한 socket channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @return socket channel 처리 wrapper 객체
 	 */
@@ -172,7 +173,7 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param chnl 입출력을 위한 socket channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @return socket channel 처리 wrapper 객체
 	 */
@@ -183,10 +184,75 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param chnl 입출력을 위한 socket channel
 	 * @return socket channel 처리 wrapper 객체
 	 */
 	public static SocketChannelWrapper create(SocketChannel chnl) throws Exception {
 		return create(chnl, 1024 * 1024);
+	}
+	
+	/**
+	 * socket channel 처리 wrapper 객체 생성
+	 * 
+	 * @param hostname 연결할 hostname
+	 * @param port 연결할 port 번호
+	 * @param buffer 입출력에 사용할 byte buffer
+	 * @param charset 입출력에 사용할 character set
+	 * @return socket channel 처리 wrapper 객체
+	 */
+	public static SocketChannelWrapper create(String hostname, int port, ByteBuffer buffer, Charset charset) throws Exception {
+		
+        SocketChannel chnl = SocketChannel.open();
+        chnl.connect(new InetSocketAddress(hostname, port));
+        
+        return create(chnl, buffer, charset);
+	}
+	
+	/**
+	 * socket channel 처리 wrapper 객체 생성
+	 * 
+	 * @param hostname 연결할 hostname
+	 * @param port 연결할 port 번호
+	 * @param capacity 입출력에 사용할 byte buffer의 크기
+	 * @param charset 입출력에 사용할 character set
+	 * @return socket channel 처리 wrapper 객체
+	 */
+	public static SocketChannelWrapper create(String hostname, int port, int capacity, Charset charset) throws Exception {
+        return create(hostname, port, ByteBuffer.allocateDirect(capacity), charset);
+	}
+	
+	/**
+	 * socket channel 처리 wrapper 객체 생성
+	 * 
+	 * @param hostname 연결할 hostname
+	 * @param port 연결할 port 번호
+	 * @param buffer 입출력에 사용할 byte buffer
+	 * @return socket channel 처리 wrapper 객체
+	 */
+	public static SocketChannelWrapper create(String hostname, int port, ByteBuffer buffer) throws Exception {
+        return create(hostname, port, buffer, Charset.defaultCharset());
+	}
+	
+	/**
+	 * socket channel 처리 wrapper 객체 생성
+	 * 
+	 * @param hostname 연결할 hostname
+	 * @param port 연결할 port 번호
+	 * @param capacity 입출력에 사용할 byte buffer의 크기
+	 * @return socket channel 처리 wrapper 객체
+	 */
+	public static SocketChannelWrapper create(String hostname, int port, int capacity) throws Exception {
+        return create(hostname, port, ByteBuffer.allocateDirect(capacity));
+	}
+	
+	/**
+	 * socket channel 처리 wrapper 객체 생성
+	 * 
+	 * @param hostname 연결할 hostname
+	 * @param port 연결할 port 번호
+	 * @return socket channel 처리 wrapper 객체
+	 */
+	public static SocketChannelWrapper create(String hostname, int port) throws Exception {
+        return create(hostname, port, 1024 * 1024);
 	}
 }
