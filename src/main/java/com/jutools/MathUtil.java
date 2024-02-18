@@ -13,6 +13,9 @@ import com.jutools.mathexp.MathResult;
  */
 public class MathUtil {
 	
+	private static String[] enlargePrefixList = {"", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"};
+	private static String[] reducePrefixList  = {"", "m", "μ", "n", "p", "f", "a", "z", "y", "r", "q"};
+	
 	/** 단위 접두사(unit prefix) 목록 */
 	private static HashMap<String, Double> unitPrefixMap;
 	
@@ -131,6 +134,57 @@ public class MathUtil {
 		} else {
 			throw new Exception("requested unit prefix(" + unitPrefix + ") is not found");
 		}
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param decimalPlaces
+	 */
+	public static String toUnitExp(double value, int decimalPlaces) throws Exception {
+		
+		// 입력값 검증
+		if(decimalPlaces < 0) {
+			throw new IllegalArgumentException("decimal place must be greater than 0:" + decimalPlaces);
+		}
+		
+		//
+		String prefix = null;
+		
+		// 값의 자리수 계산
+		int valueDigit = (int)(Math.floor(Math.log10(Math.abs(value))/3.0));
+		
+		if(valueDigit >= 0) {
+			
+			if(valueDigit > enlargePrefixList.length - 1) {
+				valueDigit = enlargePrefixList.length - 1;
+			}
+			
+			prefix = enlargePrefixList[valueDigit];
+			
+		} else {
+			
+			if(-valueDigit > reducePrefixList.length - 1) {
+				valueDigit = (-reducePrefixList.length) + 1;
+			}
+			
+			prefix = reducePrefixList[-valueDigit];
+		}
+		
+		//
+		String valueStr = "";
+		
+		//
+		double factor = unitPrefixToFactor(prefix);
+		if(factor != 0) {
+			valueStr = String.format("%." + decimalPlaces + "f", value/factor);
+		}
+		
+		return valueStr + " " + prefix;
+	}
+	
+	public static String toUnitExp(double value) throws Exception {
+		return toUnitExp(value, 2);
 	}
 	
 	/**

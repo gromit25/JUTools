@@ -481,5 +481,29 @@ public class MathUtilTest {
 		String value = MathUtil.toThousandCommaStr(Double.MAX_VALUE * -1);
 		assertEquals("-179,769,313,486,231,570,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000", value);
 	}
+	
+	@Test
+	public void testToUnitExp1() throws Exception {
+		String unitPrefixExp = MathUtil.toUnitExp(1234567.0);
+		assertEquals("1.23 M", unitPrefixExp);
+	}
+
+	@Test
+	public void testToUnitExp2() throws Exception {
+		String unitPrefixExp = MathUtil.toUnitExp(0.01234);
+		assertEquals("12.34 m", unitPrefixExp);
+	}
+	
+	@Test
+	public void testToUnitExp3() throws Exception {
+		String unitPrefixExp = MathUtil.toUnitExp(123.0);
+		assertEquals("123.00 ", unitPrefixExp);
+	}
+	
+	@Test
+	public void testToUnitExp4() throws Exception {
+		String unitPrefixExp = MathUtil.toUnitExp(-1234567.0);
+		assertEquals("-1.23 M", unitPrefixExp);
+	}
 
 }
