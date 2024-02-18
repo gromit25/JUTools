@@ -16,6 +16,8 @@ public class MathUtil {
 	private static String[] enlargePrefixList = {"", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"};
 	private static String[] reducePrefixList  = {"", "m", "μ", "n", "p", "f", "a", "z", "y", "r", "q"};
 	
+	private static String[] bitPrefixList = {"", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"};
+	
 	/** 단위 접두사(unit prefix) 목록 */
 	private static HashMap<String, Double> unitPrefixMap;
 	
@@ -184,7 +186,56 @@ public class MathUtil {
 	}
 	
 	public static String toUnitExp(double value) throws Exception {
-		return toUnitExp(value, 2);
+		return toUnitExp(value, 3);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param decimalPlaces
+	 */
+	public static String toBitUnitExp(double value, int decimalPlaces) throws Exception {
+		
+		// 입력값 검증
+		if(decimalPlaces < 0) {
+			throw new IllegalArgumentException("decimal place must be greater than 0:" + decimalPlaces);
+		}
+		
+		if(value < 0) {
+			throw new IllegalArgumentException("value must be greater than 0:" + value);
+		}
+		
+		//
+		String prefix = null;
+		
+		// 값의 자리수 계산
+		int valueDigit = (int)(Math.floor(Math.log10(value)/3.010299956639812));
+		System.out.println(value);
+		System.out.println(Math.log10(value));
+		System.out.println(valueDigit);
+		
+		if(valueDigit > bitPrefixList.length - 1) {
+			valueDigit = bitPrefixList.length - 1;
+		}
+		
+		prefix = bitPrefixList[valueDigit];
+		
+		//
+		String valueStr = "";
+		
+		//
+		double factor = unitPrefixToFactor(prefix);
+		System.out.println(value / factor);
+		if(factor != 0) {
+			valueStr = String.format("%." + decimalPlaces + "f", value/factor);
+		}
+		
+		return valueStr + " " + prefix;
+	}
+	
+	public static String toBitUnitExp(double value) throws Exception {
+		System.out.println(value);
+		return toBitUnitExp(value, 3);
 	}
 	
 	/**
