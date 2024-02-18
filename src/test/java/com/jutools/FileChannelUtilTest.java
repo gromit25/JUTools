@@ -11,6 +11,8 @@ import java.nio.file.StandardOpenOption;
 
 import org.junit.Test;
 
+import com.jutools.channel.FileChannelWrapper;
+
 /**
  * FileChannelUtil 클래스의 테스트 케이스
  * 
@@ -38,7 +40,7 @@ public class FileChannelUtilTest {
 		OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE};
 		
 		try(
-			FileChannelUtil util = new FileChannelUtil(file, options);
+			FileChannelWrapper util = ChannelUtil.create(file, options);
 		) {
 			util.write("Hello World!");
 			assertTrue(true);
@@ -55,7 +57,7 @@ public class FileChannelUtilTest {
 		OpenOption[] options = {StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE};
 		
 		try(
-			FileChannelUtil util = new FileChannelUtil(file, options);
+			FileChannelWrapper util = ChannelUtil.create(file, options);
 		) {
 			util.write("안녕하세요.");
 			assertTrue(true);
@@ -72,7 +74,7 @@ public class FileChannelUtilTest {
 		
 		try(
 			FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ);
-			FileChannelUtil util = new FileChannelUtil(chnl);
+			FileChannelWrapper util = ChannelUtil.create(chnl);
 		) {
 			
 			int readCnt = 0;
@@ -94,7 +96,7 @@ public class FileChannelUtilTest {
 		
 		try(
 			FileChannel chnl = FileChannel.open(file.toPath(), StandardOpenOption.READ);
-			FileChannelUtil util = new FileChannelUtil(chnl, 10);
+			FileChannelWrapper util = ChannelUtil.create(chnl, 10);
 		) {
 			
 			int readCnt = 0;
@@ -115,7 +117,7 @@ public class FileChannelUtilTest {
 		File file = new File("resources/read_test.txt");
 		
 		try(
-			FileChannelUtil util = new FileChannelUtil(file, StandardOpenOption.READ);
+			FileChannelWrapper util = ChannelUtil.create(file, StandardOpenOption.READ);
 		) {
 			
 			int readCnt = 0;
@@ -136,7 +138,7 @@ public class FileChannelUtilTest {
 		File file = new File("resources/read_test.txt");
 		
 		try(
-			FileChannelUtil util = new FileChannelUtil(file, 10, StandardOpenOption.READ);
+			FileChannelWrapper util = ChannelUtil.create(file, 10, StandardOpenOption.READ);
 		) {
 			
 			int readCnt = 0;
@@ -157,7 +159,7 @@ public class FileChannelUtilTest {
 		File file = new File("resources/read_test.txt");
 		
 		try(
-			FileChannelUtil util = new FileChannelUtil(file, StandardOpenOption.READ);
+			FileChannelWrapper util = ChannelUtil.create(file, StandardOpenOption.READ);
 		) {
 			
 			ReadCnt readCnt = new ReadCnt();
