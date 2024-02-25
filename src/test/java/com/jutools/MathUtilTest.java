@@ -484,26 +484,133 @@ public class MathUtilTest {
 	
 	@Test
 	public void testToUnitExp1() throws Exception {
-		String unitPrefixExp = MathUtil.toUnitExp(1234567.0);
-		assertEquals("1.23 M", unitPrefixExp);
+		String unitExp = MathUtil.toUnitExp(1234567.0).toString();
+		assertEquals("1.23M", unitExp);
 	}
 
 	@Test
 	public void testToUnitExp2() throws Exception {
-		String unitPrefixExp = MathUtil.toUnitExp(0.01234);
-		assertEquals("12.34 m", unitPrefixExp);
+		String unitExp = MathUtil.toUnitExp(0.01234).toString(2);
+		assertEquals("12.33m", unitExp);
 	}
 	
 	@Test
 	public void testToUnitExp3() throws Exception {
-		String unitPrefixExp = MathUtil.toUnitExp(123.0);
-		assertEquals("123.00 ", unitPrefixExp);
+		String unitExp = MathUtil.toUnitExp(123.0).toString();
+		assertEquals("123.00", unitExp);
 	}
 	
 	@Test
 	public void testToUnitExp4() throws Exception {
-		String unitPrefixExp = MathUtil.toUnitExp(-1234567.0);
-		assertEquals("-1.23 M", unitPrefixExp);
+		String unitExp = MathUtil.toUnitExp(-1234567.0).toString();
+		assertEquals("-1.23M", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(123456).toString();
+		assertEquals("120.56Ki", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp2_1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1024.0).toString();
+		assertEquals("1.00Ki", unitExp);
 	}
 
+	@Test
+	public void testToBitUnitExp2_2() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1023.0).toString();
+		assertEquals("1023.00", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp3_1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1048576.0).toString();
+		assertEquals("1.00Mi", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp3_2() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1048576.0 - 1).toString();
+		assertEquals("1023.99Ki", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp4_1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1073741824.0).toString();
+		assertEquals("1.00Gi", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp4_2() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1073741824.0 - 1).toString();
+		assertEquals("1023.99Mi", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp5_1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1099511627776.0).toString();
+		assertEquals("1.00Ti", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp5_2() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1099511627776.0 - 1).toString();
+		assertEquals("1023.99Gi", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp6_1() throws Exception {
+		String unitExp = MathUtil.toBitUnitExp(1125899906842624.0).toString();
+		assertEquals("1.00Pi", unitExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp6_2() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1125899906842624.0 - 1).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp7_1() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1152921504606846976.0).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp7_2() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1152921504606846976.0 - 1).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp8_1() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1180591620717411303424.0).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp8_2() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1180591620717411303424.0 - 1).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp9_1() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1208925819614629174706176.0).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp9_2() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1208925819614629174706176.0 - 1).toString();
+		System.out.println(unitPrefixExp);
+	}
+	
+	@Test
+	public void testToBitUnitExp9_3() throws Exception {
+		String unitPrefixExp = MathUtil.toBitUnitExp(1237940039285380274899124224.0).toString();
+		System.out.println(unitPrefixExp);
+	}
 }

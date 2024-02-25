@@ -1,10 +1,15 @@
 package com.jutools;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
 import com.jutools.mathexp.MathExp;
 import com.jutools.mathexp.MathResult;
+
+import lombok.Getter;
 
 /**
  * 산술 처리 관련 Utility 클래스
@@ -140,15 +145,67 @@ public class MathUtil {
 	
 	/**
 	 * 
-	 * @param value
-	 * @param decimalPlaces
+	 * @author jmsohn 
 	 */
-	public static String toUnitExp(double value, int decimalPlaces) throws Exception {
+	public static class UnitExp {
 		
-		// 입력값 검증
-		if(decimalPlaces < 0) {
-			throw new IllegalArgumentException("decimal place must be greater than 0:" + decimalPlaces);
+		/** */
+		@Getter
+		private double value;
+		
+		/** */
+		@Getter
+		private String prefix;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param value
+		 * @param prefix
+		 */
+		UnitExp(double value, String prefix) {
+			this.value = value;
+			this.prefix = prefix;
 		}
+		
+		/**
+		 * 
+		 * @param decimalPlaces
+		 * @return
+		 */
+		public String toString(int decimalPlaces) throws Exception {
+			
+			// 입력값 검증
+			if(decimalPlaces < 0) {
+				throw new IllegalArgumentException("decimal place must be greater than 0:" + decimalPlaces);
+			}
+			
+			//
+			String formatStr = "%." + decimalPlaces + "f" + this.prefix;
+			
+			//
+			BigDecimal bdValue = new BigDecimal(this.value)
+									.setScale(decimalPlaces, RoundingMode.DOWN);
+			
+			//
+			return String.format(formatStr, bdValue);
+		}
+		
+		@Override
+		public String toString() {
+			try {
+				return this.toString(2);
+			} catch(Exception ex) {
+				return "";
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 */
+	public static UnitExp toUnitExp(double value) throws Exception {
 		
 		//
 		String prefix = null;
@@ -174,68 +231,58 @@ public class MathUtil {
 		}
 		
 		//
-		String valueStr = "";
+		double factor = unitPrefixToFactor(prefix);
 		
 		//
-		double factor = unitPrefixToFactor(prefix);
 		if(factor != 0) {
-			valueStr = String.format("%." + decimalPlaces + "f", value/factor);
+			return new UnitExp(value / factor, prefix);
+		} else {
+			return new UnitExp(value, prefix);
 		}
-		
-		return valueStr + " " + prefix;
-	}
-	
-	public static String toUnitExp(double value) throws Exception {
-		return toUnitExp(value, 3);
 	}
 	
 	/**
 	 * 
 	 * @param value
-	 * @param decimalPlaces
 	 */
-	public static String toBitUnitExp(double value, int decimalPlaces) throws Exception {
+	public static UnitExp toBitUnitExp(double value) throws Exception {
 		
 		// 입력값 검증
-		if(decimalPlaces < 0) {
-			throw new IllegalArgumentException("decimal place must be greater than 0:" + decimalPlaces);
-		}
-		
 		if(value < 0) {
 			throw new IllegalArgumentException("value must be greater than 0:" + value);
 		}
 		
-		//
-		String prefix = null;
-		
 		// 값의 자리수 계산
-		int valueDigit = (int)(Math.floor(Math.log10(value)/3.010299956639812));
-		System.out.println(value);
-		System.out.println(Math.log10(value));
-		System.out.println(valueDigit);
+		int valueDigit = (int)(Math.floor(Math.log10(value)/3.0102999566398119521373889472449));
+		//int valueDigit = (int)(Math.floor(Math.log10(value)/Math.log10(1024.0)));
+		
+		BigDecimal t1 = new BigDecimal(Math.log10(value));
+		BigDecimal t2 = new BigDecimal(3.010299956639812091196972687612287700176239013671875);
+		
+		//MathContext mc = new MathContext(100);
+		//BigDecimal t3 = t1.divide(t2, mc);
+		BigDecimal t3 = t2.multiply(new BigDecimal(8));
+		
+		System.out.println("DEBUG 101:" + t1);
+		System.out.println("DEBUG 102:" + t2);
+		System.out.println("DEBUG 103:" + t3);
 		
 		if(valueDigit > bitPrefixList.length - 1) {
 			valueDigit = bitPrefixList.length - 1;
 		}
 		
-		prefix = bitPrefixList[valueDigit];
-		
 		//
-		String valueStr = "";
+		String prefix = bitPrefixList[valueDigit];
 		
 		//
 		double factor = unitPrefixToFactor(prefix);
-		System.out.println(value / factor);
-		if(factor != 0) {
-			valueStr = String.format("%." + decimalPlaces + "f", value/factor);
-		}
 		
-		return valueStr + " " + prefix;
-	}
-	
-	public static String toBitUnitExp(double value) throws Exception {
-		System.out.println(value);
-		return toBitUnitExp(value, 3);
+		//
+		if(factor != 0) {
+			return new UnitExp(value / factor, prefix);
+		} else {
+			return new UnitExp(value, prefix);
+		}
 	}
 	
 	/**
