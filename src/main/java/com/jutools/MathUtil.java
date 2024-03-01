@@ -195,7 +195,7 @@ public class MathUtil {
 			try {
 				return this.toString(2);
 			} catch(Exception ex) {
-				return "";
+				return ex.toString();
 			}
 		}
 	}
@@ -239,7 +239,7 @@ public class MathUtil {
 			return new UnitExp(value, prefix);
 		}
 	}
-	
+	 
 	/**
 	 * 
 	 * @param value
