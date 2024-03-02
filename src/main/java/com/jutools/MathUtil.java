@@ -196,9 +196,10 @@ public class MathUtil {
 	}
 
 	/**
+	 * 주어진 값에 적합한 byte 단위 접두어를 반환
 	 * 
-	 * @param value
-	 * @return
+	 * @param value 주어진 값
+	 * @return 단위 접두어
 	 */
 	private static String getUnitPrefix(BigDecimal value) {
 		
@@ -274,8 +275,11 @@ public class MathUtil {
 	}
 	
 	/**
+	 * 주어진 값에 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
+	 * ex) 1234 -> 1.23M
 	 * 
-	 * @param value
+	 * @param value 변환할 값
+	 * @return 단위 접두어 표현식 객체
 	 */
 	public static UnitExp toUnitExp(BigDecimal value) throws Exception {
 		
@@ -284,29 +288,24 @@ public class MathUtil {
 			throw new NullPointerException("value is null.");
 		}
 		
-		//
+		// 값에 적합한 단위 접두어를 가져옴
 		String prefix = getUnitPrefix(value);
 		
-		//
+		// 단위 접두어에 해당하는 factor 값을 가져옴
 		double factor = unitPrefixToFactor(prefix);
 		
-		//
-		if(factor != 0) {
-			
-			// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
-			// 이를 문자열로 변경후 나누면 문제가 없음
-			// 이유는 정확히 모름
-			return new UnitExp(value.divide(new BigDecimal(Double.toString(factor))).doubleValue(), prefix);
-			
-		} else {
-			return new UnitExp(value.doubleValue(), prefix);
-		}
+		// 단위 표현식 객체를 생성하여 반환
+		// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
+		// 이를 문자열로 변경후 나누면 문제가 없음
+		// 이유는 정확히 모름
+		return new UnitExp(value.divide(new BigDecimal(Double.toString(factor))).doubleValue(), prefix);
 	}
 	
 	/**
+	 * 주어진 값에 적합한 byte 단위 접두어를 반환
 	 * 
-	 * @param value
-	 * @return
+	 * @param value 주어진 값
+	 * @return byte 단위 접두어
 	 */
 	private static String getByteUnitPrefix(BigDecimal value) {
 		
@@ -346,8 +345,11 @@ public class MathUtil {
 	}
 	
 	/**
+	 * 주어진 값에 byte 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
+	 * ex) 1024 -> 1.00Mi
 	 * 
-	 * @param value
+	 * @param value 주어진 값
+	 * @return 단위 접두어 표현식 객체
 	 */
 	public static UnitExp toByteUnitExp(BigDecimal value) throws Exception {
 		
@@ -356,23 +358,21 @@ public class MathUtil {
 			throw new NullPointerException("value is null.");
 		}
 		
-		//
+		// 값에 적합한 byte 단위 접두어를 가져옴
 		String prefix = getByteUnitPrefix(value);
 		
-		//
+		// byte 단위 접두어에 해당하는 factor 값을 가져옴
 		double factor = unitPrefixToFactor(prefix);
 		
-		//
-		if(factor != 0) {
-			return new UnitExp(value.divide(new BigDecimal(factor)).doubleValue(), prefix);
-		} else {
-			return new UnitExp(value.doubleValue(), prefix);
-		}
+		// 단위 표현식 객체를 생성하여 반환
+		return new UnitExp(value.divide(new BigDecimal(factor)).doubleValue(), prefix);
 	}
 	
 	/**
+	 * 주어진 값(long 형)에 byte 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
+	 * ex) 1024 -> 1.00Mi
 	 * 
-	 * @param value
+	 * @param value 주어진 값(long 형)
 	 */
 	public static UnitExp toByteUnitExp(long value) throws Exception {
 		return toByteUnitExp(new BigDecimal(value));
