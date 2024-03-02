@@ -17,11 +17,6 @@ import lombok.Getter;
  */
 public class MathUtil {
 	
-	private static String[] enlargePrefixList = {"", "k", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q"};
-	private static String[] reducePrefixList  = {"", "m", "μ", "n", "p", "f", "a", "z", "y", "r", "q"};
-	
-	private static String[] bitPrefixList = {"", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"};
-	
 	/** 단위 접두사(unit prefix) 목록 */
 	private static HashMap<String, Double> unitPrefixMap;
 	
@@ -199,89 +194,188 @@ public class MathUtil {
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private static String getUnitPrefix(BigDecimal value) {
+		
+		// 입력값 검증
+		if(value == null) {
+			throw new NullPointerException("value is null.");
+		}
+		
+		value = value.abs();
+		
+		if(value.compareTo(new BigDecimal(0.000000000000000000000000001)) < 0) {
+			return "q";
+		}
+		if(value.compareTo(new BigDecimal(0.000000000000000000000001)) < 0) {
+			return "r";
+		}
+		if(value.compareTo(new BigDecimal(0.000000000000000000001)) < 0) {
+			return "y";
+		}
+		if(value.compareTo(new BigDecimal(0.000000000000000001)) < 0) {
+			return "z";
+		}
+		if(value.compareTo(new BigDecimal(0.000000000000001)) < 0) {
+			return "a";
+		}
+		if(value.compareTo(new BigDecimal(0.000000000001)) < 0) {
+			return "f";
+		}
+		if(value.compareTo(new BigDecimal(0.000000001)) < 0) {
+			return "p";
+		}
+		if(value.compareTo(new BigDecimal(0.000001)) < 0) {
+			return "n";
+		}
+		if(value.compareTo(new BigDecimal(0.001)) < 0) {
+			return "μ";
+		}
+		if(value.compareTo(new BigDecimal(1.0)) < 0) {
+			return "m";
+		}
+		if(value.compareTo(new BigDecimal(1000.0)) < 0) {
+			return "";
+		}
+		if(value.compareTo(new BigDecimal(1000000.0)) < 0) {
+			return "k";
+		}
+		if(value.compareTo(new BigDecimal(1000000000.0)) < 0) {
+			return "M";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000.0)) < 0) {
+			return "G";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000.0)) < 0) {
+			return "T";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000000.0)) < 0) {
+			return "P";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000000000.0)) < 0) {
+			return "E";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000000000000.0)) < 0) {
+			return "Z";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000000000000000.0)) < 0) {
+			return "Y";
+		}
+		if(value.compareTo(new BigDecimal(1000000000000000000000000000000.0)) < 0) {
+			return "R";
+		}
+		
+		return "Q";
+	}
 	
 	/**
 	 * 
 	 * @param value
 	 */
-	public static UnitExp toUnitExp(double value) throws Exception {
+	public static UnitExp toUnitExp(BigDecimal value) throws Exception {
+		
+		// 입력값 검증
+		if(value == null) {
+			throw new NullPointerException("value is null.");
+		}
 		
 		//
-		String prefix = null;
-		
-		// 값의 자리수 계산
-		int valueDigit = (int)(Math.floor(Math.log10(Math.abs(value))/3.0));
-		
-		if(valueDigit >= 0) {
-			
-			if(valueDigit > enlargePrefixList.length - 1) {
-				valueDigit = enlargePrefixList.length - 1;
-			}
-			
-			prefix = enlargePrefixList[valueDigit];
-			
-		} else {
-			
-			if(-valueDigit > reducePrefixList.length - 1) {
-				valueDigit = (-reducePrefixList.length) + 1;
-			}
-			
-			prefix = reducePrefixList[-valueDigit];
-		}
+		String prefix = getUnitPrefix(value);
 		
 		//
 		double factor = unitPrefixToFactor(prefix);
 		
 		//
 		if(factor != 0) {
-			return new UnitExp(value / factor, prefix);
+			
+			// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
+			// 이를 문자열로 변경후 나누면 문제가 없음
+			// 이유는 정확히 모름
+			return new UnitExp(value.divide(new BigDecimal(Double.toString(factor))).doubleValue(), prefix);
+			
 		} else {
-			return new UnitExp(value, prefix);
+			return new UnitExp(value.doubleValue(), prefix);
 		}
 	}
-	 
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private static String getByteUnitPrefix(BigDecimal value) {
+		
+		// 입력값 검증
+		if(value == null) {
+			throw new NullPointerException("value is null.");
+		}
+		
+		value = value.abs();
+		
+		if(value.compareTo(new BigDecimal(1024.0)) < 0) {
+			return "";
+		}
+		if(value.compareTo(new BigDecimal(1048576.0)) < 0) {
+			return "Ki";
+		}
+		if(value.compareTo(new BigDecimal(1073741824.0)) < 0) {
+			return "Mi";
+		}
+		if(value.compareTo(new BigDecimal(1099511627776.0)) < 0) {
+			return "Gi";
+		}
+		if(value.compareTo(new BigDecimal(1125899906842624.0)) < 0) {
+			return "Ti";
+		}
+		if(value.compareTo(new BigDecimal(1152921504606846976.0)) < 0) {
+			return "Pi";
+		}
+		if(value.compareTo(new BigDecimal(1180591620717411303424.0)) < 0) {
+			return "Ei";
+		}
+		if(value.compareTo(new BigDecimal(1208925819614629174706176.0)) < 0) {
+			return "Zi";
+		}
+		
+		return "Yi";
+	}
+	
 	/**
 	 * 
 	 * @param value
 	 */
-	public static UnitExp toBitUnitExp(double value) throws Exception {
+	public static UnitExp toByteUnitExp(BigDecimal value) throws Exception {
 		
 		// 입력값 검증
-		if(value < 0) {
-			throw new IllegalArgumentException("value must be greater than 0:" + value);
-		}
-		
-		// 값의 자리수 계산
-		int valueDigit = (int)(Math.floor(Math.log10(value)/3.0102999566398119521373889472449));
-		//int valueDigit = (int)(Math.floor(Math.log10(value)/Math.log10(1024.0)));
-		
-		BigDecimal t1 = new BigDecimal(Math.log10(value));
-		BigDecimal t2 = new BigDecimal(3.010299956639812091196972687612287700176239013671875);
-		
-		//MathContext mc = new MathContext(100);
-		//BigDecimal t3 = t1.divide(t2, mc);
-		BigDecimal t3 = t2.multiply(new BigDecimal(8));
-		
-		System.out.println("DEBUG 101:" + t1);
-		System.out.println("DEBUG 102:" + t2);
-		System.out.println("DEBUG 103:" + t3);
-		
-		if(valueDigit > bitPrefixList.length - 1) {
-			valueDigit = bitPrefixList.length - 1;
+		if(value == null) {
+			throw new NullPointerException("value is null.");
 		}
 		
 		//
-		String prefix = bitPrefixList[valueDigit];
+		String prefix = getByteUnitPrefix(value);
 		
 		//
 		double factor = unitPrefixToFactor(prefix);
 		
 		//
 		if(factor != 0) {
-			return new UnitExp(value / factor, prefix);
+			return new UnitExp(value.divide(new BigDecimal(factor)).doubleValue(), prefix);
 		} else {
-			return new UnitExp(value, prefix);
+			return new UnitExp(value.doubleValue(), prefix);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 */
+	public static UnitExp toByteUnitExp(long value) throws Exception {
+		return toByteUnitExp(new BigDecimal(value));
 	}
 	
 	/**
