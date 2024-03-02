@@ -276,7 +276,7 @@ public class MathUtil {
 	
 	/**
 	 * 주어진 값에 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
-	 * ex) 1234 -> 1.23M
+	 * ex) 1234 -> 1.23k
 	 * 
 	 * @param value 변환할 값
 	 * @return 단위 접두어 표현식 객체
@@ -346,7 +346,7 @@ public class MathUtil {
 	
 	/**
 	 * 주어진 값에 byte 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
-	 * ex) 1024 -> 1.00Mi
+	 * ex) 1024 -> 1.00Ki
 	 * 
 	 * @param value 주어진 값
 	 * @return 단위 접두어 표현식 객체
@@ -370,7 +370,7 @@ public class MathUtil {
 	
 	/**
 	 * 주어진 값(long 형)에 byte 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
-	 * ex) 1024 -> 1.00Mi
+	 * ex) 1024 -> 1.00Ki
 	 * 
 	 * @param value 주어진 값(long 형)
 	 */

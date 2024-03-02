@@ -591,15 +591,28 @@ try {
 
 ### MathUtil
 ----------------------------------    
-> 수학식 관련 Utility    
+> 수식 관련 Utility    
 > 주요 기능   
-> * 설정 파일등에 수학식을 이용하여 값을 설정할 수 있도록 지원하기 위함    
+> * 설정 파일등에 수식을 이용하여 값을 설정할 수 있도록 지원하기 위함    
 > 예를 들어, 로그 파일 최대 사이즈 : 5 * 1024 KiB -> 5242880, "B" 로 분리   
+> * 단위 추가 기능 추가
+> 예를 들어, 1234 를 1.23k로 변환
 ```java
+
+// 수식을 통해 단위 계산
 MathResult result = MathUtil.calculateWithUnit("3*4/ 2 + -2 * 2.5 MiB");
 
 System.out.println(result.getValue());      // "1048576" 출력
 System.out.println(result.getBaseUnit());   // "B" 출력
+
+// byte 단위를 추가하는 기능
+UnitExp result = MathUtil.toByteUnitExp(1024);
+System.out.println(result.toString());      // "1.00Ki" 출력
+
+// 일반 단위를 추가하는 기능
+UnitExp result = MathUtil.toUnitExp(1024);
+System.out.println(result.toString());      // "1.02k" 출력
+
 ```
 
 ### StatUtil
