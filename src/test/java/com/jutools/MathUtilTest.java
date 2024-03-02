@@ -508,7 +508,13 @@ public class MathUtilTest {
 	}
 	
 	@Test
-	public void testToByteUnitExp1() throws Exception {
+	public void testToByteUnitExp1_1() throws Exception {
+		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(123)).toString();
+		assertEquals("123.00", unitExp);
+	}
+	
+	@Test
+	public void testToByteUnitExp1_2() throws Exception {
 		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(123456)).toString();
 		assertEquals("120.56Ki", unitExp);
 	}
