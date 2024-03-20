@@ -61,7 +61,7 @@ StringUtil.findAllVars(str);
 ----------------------------------    
 > 표현식을 포함한 텍스트 형식 문자열과 변수 목록으로 텍스트를 생성하는 Utility   
 > ex) 텍스트 형식: "severity: ${if(severity == 'fatal', 'red', 'yellow')}", 변수 목록: {"severity":"fatal"}<br>
->     -> "severity: red"
+>     -> 출력: "severity: red"
 ```java
 // 변수 목록 생성
 HashMap<String, Object> values = new HashMap<>();
@@ -109,7 +109,7 @@ BytesUtil.bytesToStr(bytes1);        // byte[] {26, 3} -> "1A03"
 String[] strArray = TypeUtil.toArray(strList, String.class);  // List<T> -> T[] 로 변환
 
 int[] iArray = TypeUtil.toIntArray(iList);         // List<Integer> -> int[] 로 변환
-long[] lArray = TypeUtil.toLong(lList);            // List<Long> -> long[] 로 변환
+long[] lArray = TypeUtil.toLongArray(lList);       // List<Long> -> long[] 로 변환
 float[] fArray = TypeUtil.toFloatArray(fList);     // List<Float> -> flaot[] 로 변환
 double[] dArray = TypeUtil.toDoubleArray(dList);   // List<Double> -> double[] 로 변환
 
