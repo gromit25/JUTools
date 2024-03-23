@@ -1,6 +1,7 @@
 package com.jutools;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jutools.bytesmap.BytesMapper;
 import com.jutools.common.OrderType;
@@ -600,5 +601,92 @@ public class BytesUtil {
 	 */
 	public static <T> T mapping(byte[] bytes, Class<T> mappingClass) throws Exception {
 		return BytesMapper.mapping(bytes, mappingClass);
+	}
+	
+	/**
+	 * Byte 배열을 끊어읽기 위한 Reader 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	public static class ByteChunkReader {
+		
+		/** byte 배열 */
+		private byte[] bytes;
+		/** 현재까지 읽은 위치 */
+		private int pos;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param bytes 읽을 byte 배열
+		 */
+		private ByteChunkReader(byte[] bytes) throws Exception {
+			
+			if(bytes == null) {
+				throw new NullPointerException("bytes is null.");
+			}
+			
+			this.bytes = bytes;
+			this.pos = 0;
+		}
+		
+		/**
+		 * 특정 크기 만큼 읽어 반환
+		 * 
+		 * @param readSize 읽을 크기
+		 * @return 읽은 byte 배열
+		 */
+		public byte[] read(int readSize) throws Exception {
+
+			// 입력값 검증
+			if(readSize <= 0) {
+				throw new IllegalArgumentException("read size must be greater than 0:" + readSize);
+			}
+			
+			if(this.pos + readSize > this.bytes.length) {
+				throw new Exception("length is exceeded: position:" + this.pos + ", read size:" + readSize + ", byte array length:" + this.bytes.length);
+			}
+			
+			// byte 배열에서 현재 위치(pos)를 기준으로 readSize 만큼 읽음
+			byte[] read = BytesUtil.cut(this.bytes, this.pos, readSize);
+			// 현재 위치를 readSize 만큼 이동
+			this.pos += readSize;
+			
+			// 결과 반환
+			return read;
+		}
+		
+		/**
+		 * 끊어 읽을 크기 목록 만큼 읽어 반환
+		 * ex) bytes = {0x1,0x2,0x3}, chunkSizes = {2, 1}
+		 *     --> {0x1,0x2}, {0x3}을 반환
+		 * 
+		 * @param chunkSizes 끊어 읽을 크기 목록
+		 * @return 끊어 읽은 byte 배열의 배열
+		 */
+		public List<byte[]> read(int[] chunkSizes) throws Exception {
+			
+			if(chunkSizes == null) {
+				throw new NullPointerException("chunkSizes is null.");
+			}
+			
+			List<byte[]> chunkList = new ArrayList<>();
+			
+			for(int chunkSize: chunkSizes) {
+				chunkList.add(this.read(chunkSize));
+			}
+			
+			return chunkList;
+		}
+	}
+	
+	/**
+	 * byte 배열 끊어 읽기 객체 생성 
+	 * 
+	 * @param bytes 읽을 byte 배열
+	 * @return byte 배열 끊어 읽기 객체
+	 */
+	public static ByteChunkReader buildByteChunkReader(byte[] bytes) throws Exception {
+		return new ByteChunkReader(bytes);
 	}
 }

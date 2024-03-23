@@ -6,9 +6,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.jutools.BytesUtil.ByteChunkReader;
 import com.jutools.bytesmap.BytesMap;
 
 import lombok.Data;
@@ -369,7 +371,99 @@ public class BytesUtilTest {
 			return new String(bytes).trim();
 		}
 	}
+	
+	@Test
+	public void testByteChunkReader0_1() throws Exception {
+		
+		try {
+			
+			BytesUtil.buildByteChunkReader(null);			
+			assertTrue(false);
+			
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testByteChunkReader1_1() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		
+		String read = new String(BytesUtil.buildByteChunkReader(msg).read(5));
+		assertEquals("12345", read);
+	}
+	
+	@Test
+	public void testByteChunkReader1_2() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		ByteChunkReader reader = BytesUtil.buildByteChunkReader(msg);
+		
+		try {
+			
+			reader.read(5);
+			reader.read(6);  // expect exception
+			
+			assertTrue(false);
+			
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testByteChunkReader1_3() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		ByteChunkReader reader = BytesUtil.buildByteChunkReader(msg);
+		
+		try {
+			reader.read(-1);
+			assertTrue(false);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testByteChunkReader2_1() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		int[] chunkSizes = new int[] {1, 3, 2};
+		
+		List<byte[]> chunks = BytesUtil.buildByteChunkReader(msg).read(chunkSizes);
 
+		assertEquals(3, chunks.size());
+		assertEquals("1", new String(chunks.get(0)));
+		assertEquals("234", new String(chunks.get(1)));
+		assertEquals("56", new String(chunks.get(2)));
+	}
+	
+	@Test
+	public void testByteChunkReader2_2() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		int[] chunkSizes = new int[] {1, 3, 10};
+
+		try {
+			BytesUtil.buildByteChunkReader(msg).read(chunkSizes);
+			assertTrue(false);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testByteChunkReader2_3() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+
+		try {
+			BytesUtil.buildByteChunkReader(msg).read(null);
+			assertTrue(false);
+		} catch(Exception ex) {
+			assertTrue(true);
+		}
+	}
 }
-
-
