@@ -646,7 +646,7 @@ public class BytesUtil {
 		 * @param readSize 읽을 크기
 		 * @return 읽은 byte 배열
 		 */
-		public byte[] read(int readSize) throws Exception {
+		public byte[] readNByte(int readSize) throws Exception {
 
 			// 입력값 검증
 			if(readSize <= 0) {
@@ -674,7 +674,7 @@ public class BytesUtil {
 		 * @param chunkSizes 끊어 읽을 크기 목록
 		 * @return 끊어 읽은 byte 배열의 배열
 		 */
-		public List<byte[]> read(int[] chunkSizes) throws Exception {
+		public List<byte[]> readNByte(int[] chunkSizes) throws Exception {
 			
 			if(chunkSizes == null) {
 				throw new NullPointerException("chunkSizes is null.");
@@ -683,7 +683,7 @@ public class BytesUtil {
 			List<byte[]> chunkList = new ArrayList<>();
 			
 			for(int chunkSize: chunkSizes) {
-				chunkList.add(this.read(chunkSize));
+				chunkList.add(this.readNByte(chunkSize));
 			}
 			
 			return chunkList;
@@ -697,7 +697,7 @@ public class BytesUtil {
 		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] read(byte[] pattern, boolean isInclude) throws Exception {
+		public byte[] readUtilMatch(byte[] pattern, boolean isInclude) throws Exception {
 			
 			// 입력값 검증
 			if(pattern == null) {
@@ -742,8 +742,8 @@ public class BytesUtil {
 		 * @param pattern 찾을 바이트 패턴
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] read(byte[] pattern) throws Exception {
-			return this.read(pattern, false);
+		public byte[] readUtilMatch(byte[] pattern) throws Exception {
+			return this.readUtilMatch(pattern, false);
 		}
 		
 		/**
@@ -754,8 +754,8 @@ public class BytesUtil {
 		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] read(byte pattern, boolean isInclude) throws Exception {
-			return this.read(new byte[] { pattern }, isInclude);
+		public byte[] readUtilMatch(byte pattern, boolean isInclude) throws Exception {
+			return this.readUtilMatch(new byte[] { pattern }, isInclude);
 		}
 		
 		/**
@@ -766,8 +766,8 @@ public class BytesUtil {
 		 * @param pattern 찾을 바이트 패턴
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] read(byte pattern) throws Exception {
-			return this.read(new byte[] { pattern }, false);
+		public byte[] readUtilMatch(byte pattern) throws Exception {
+			return this.readUtilMatch(new byte[] { pattern }, false);
 		}
 	}
 }
