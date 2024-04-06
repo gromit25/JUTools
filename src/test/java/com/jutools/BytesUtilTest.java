@@ -390,7 +390,7 @@ public class BytesUtilTest {
 		
 		byte[] msg = "1234567890".getBytes();
 		
-		String read = new String(BytesUtil.buildByteChunkReader(msg).read(5));
+		String read = new String(BytesUtil.buildByteChunkReader(msg).readNByte(5));
 		assertEquals("12345", read);
 	}
 	
@@ -402,8 +402,8 @@ public class BytesUtilTest {
 		
 		try {
 			
-			reader.read(5);
-			reader.read(6);  // expect exception
+			reader.readNByte(5);
+			reader.readNByte(6);  // expect exception
 			
 			assertTrue(false);
 			
@@ -419,7 +419,7 @@ public class BytesUtilTest {
 		ByteChunkReader reader = BytesUtil.buildByteChunkReader(msg);
 		
 		try {
-			reader.read(-1);
+			reader.readNByte(-1);
 			assertTrue(false);
 		} catch(Exception ex) {
 			assertTrue(true);
@@ -432,7 +432,7 @@ public class BytesUtilTest {
 		byte[] msg = "1234567890".getBytes();
 		int[] chunkSizes = new int[] {1, 3, 2};
 		
-		List<byte[]> chunks = BytesUtil.buildByteChunkReader(msg).read(chunkSizes);
+		List<byte[]> chunks = BytesUtil.buildByteChunkReader(msg).readNByte(chunkSizes);
 
 		assertEquals(3, chunks.size());
 		assertEquals("1", new String(chunks.get(0)));
@@ -447,7 +447,7 @@ public class BytesUtilTest {
 		int[] chunkSizes = new int[] {1, 3, 10};
 
 		try {
-			BytesUtil.buildByteChunkReader(msg).read(chunkSizes);
+			BytesUtil.buildByteChunkReader(msg).readNByte(chunkSizes);
 			assertTrue(false);
 		} catch(Exception ex) {
 			assertTrue(true);
@@ -460,7 +460,7 @@ public class BytesUtilTest {
 		byte[] msg = "1234567890".getBytes();
 
 		try {
-			BytesUtil.buildByteChunkReader(msg).read(null);
+			BytesUtil.buildByteChunkReader(msg).readNByte(null);
 			assertTrue(false);
 		} catch(Exception ex) {
 			assertTrue(true);
