@@ -202,7 +202,7 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * 목표 배열(target) 내에 찾을 배열(lookup)의 첫번째 일치하는 위치를 반환<br>
+	 * 목표 배열(target) 내에 찾을 배열(lookup)의 첫번째 일치하는 시작 위치를 반환<br>
 	 * 만일 찾지 못하면 -1을 반환함
 	 * 
 	 * @param target 목표 배열
@@ -678,13 +678,94 @@ public class BytesUtil {
 			
 			return chunkList;
 		}
+		
+		/**
+		 * 특정 바이트 패턴이 나오기 전까지의 바이트 배열 반환<br>
+		 * - 못찾을 경우 null을 반환함
+		 * 
+		 * @param pattern 찾을 바이트 패턴
+		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
+		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
+		 */
+		public byte[] read(byte[] pattern, boolean isInclude) throws Exception {
+			
+			// 입력값 검증
+			if(pattern == null) {
+				throw new NullPointerException("pattern is null.");
+			}
+			
+			if(pattern.length == 0) {
+				throw new IllegalArgumentException("pattern lenth is 0.");
+			}
+			
+			// 패턴의 위치를 찾음
+			int patternPos = BytesUtil.indexOf(this.bytes, this.pos, pattern);
+			
+			// 못찾은 경우, null을 반환
+			if(patternPos < 0) {
+				return null;
+			}
+			
+			// 복사할 바이트 배열 길이 변수
+			int length = patternPos - this.pos;
+			
+			// 바이트 패턴이 포함되어야 할 경우 패턴 길이를 추가
+			if(isInclude == true) {
+				length += pattern.length;
+			} 
+			
+			// 복사할 바이트 배열 변수
+			byte[] read = new byte[length];
+			
+			// 패턴까지의 바이트 배열을 복사
+			System.arraycopy(this.bytes, this.pos, read, 0, length);
+			
+			// 복사한 바이트 배열을 반환
+			return read;
+		}
+		
+		/**
+		 * 특정 바이트 패턴이 나오기 전까지의 바이트 배열 반환<br>
+		 * - 바이트 패턴은 포함하지 않음<br>
+		 * - 못찾을 경우 null을 반환함
+		 * 
+		 * @param pattern 찾을 바이트 패턴
+		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
+		 */
+		public byte[] read(byte[] pattern) throws Exception {
+			return this.read(pattern, false);
+		}
+		
+		/**
+		 * 특정 바이트 패턴이 나오기 전까지의 바이트 배열 반환<br>
+		 * - 못찾을 경우 null을 반환함
+		 * 
+		 * @param pattern 찾을 바이트 패턴
+		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
+		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
+		 */
+		public byte[] read(byte pattern, boolean isInclude) throws Exception {
+			return this.read(new byte[] { pattern }, isInclude);
+		}
+		
+		/**
+		 * 특정 바이트 패턴이 나오기 전까지의 바이트 배열 반환<br>
+		 * - 바이트 패턴은 포함하지 않음<br>
+		 * - 못찾을 경우 null을 반환함
+		 * 
+		 * @param pattern 찾을 바이트 패턴
+		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
+		 */
+		public byte[] read(byte pattern) throws Exception {
+			return this.read(new byte[] { pattern }, false);
+		}
 	}
 	
 	/**
 	 * byte 배열 끊어 읽기 객체 생성 
 	 * 
 	 * @param bytes 읽을 byte 배열
-	 * @return byte 배열 끊어 읽기 객체
+	 * @return byte 배열 끊어 읽기 객체 
 	 */
 	public static ByteChunkReader buildByteChunkReader(byte[] bytes) throws Exception {
 		return new ByteChunkReader(bytes);
