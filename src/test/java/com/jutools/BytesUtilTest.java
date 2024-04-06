@@ -373,7 +373,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader0_1() throws Exception {
+	public void testByteChunkReader_readNBytes0_1() throws Exception {
 		
 		try {
 			
@@ -386,7 +386,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader1_1() throws Exception {
+	public void testByteChunkReader_readNBytes1_1() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 		
@@ -395,7 +395,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader1_2() throws Exception {
+	public void testByteChunkReader_readNBytes1_2() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 		ByteChunkReader reader = BytesUtil.buildByteChunkReader(msg);
@@ -413,7 +413,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader1_3() throws Exception {
+	public void testByteChunkReader_readNBytes1_3() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 		ByteChunkReader reader = BytesUtil.buildByteChunkReader(msg);
@@ -427,7 +427,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader2_1() throws Exception {
+	public void testByteChunkReader_readNBytes2_1() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 		int[] chunkSizes = new int[] {1, 3, 2};
@@ -441,7 +441,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader2_2() throws Exception {
+	public void testByteChunkReader_readNBytes2_2() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 		int[] chunkSizes = new int[] {1, 3, 10};
@@ -455,7 +455,7 @@ public class BytesUtilTest {
 	}
 	
 	@Test
-	public void testByteChunkReader2_3() throws Exception {
+	public void testByteChunkReader_readNBytes2_3() throws Exception {
 		
 		byte[] msg = "1234567890".getBytes();
 
