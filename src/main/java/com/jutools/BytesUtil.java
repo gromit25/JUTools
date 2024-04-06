@@ -697,7 +697,7 @@ public class BytesUtil {
 		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] readUtilMatch(byte[] pattern, boolean isInclude) throws Exception {
+		public byte[] readUntilMatch(byte[] pattern, boolean isInclude) throws Exception {
 			
 			// 입력값 검증
 			if(pattern == null) {
@@ -742,8 +742,8 @@ public class BytesUtil {
 		 * @param pattern 찾을 바이트 패턴
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] readUtilMatch(byte[] pattern) throws Exception {
-			return this.readUtilMatch(pattern, false);
+		public byte[] readUntilMatch(byte[] pattern) throws Exception {
+			return this.readUntilMatch(pattern, false);
 		}
 		
 		/**
@@ -754,8 +754,8 @@ public class BytesUtil {
 		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] readUtilMatch(byte pattern, boolean isInclude) throws Exception {
-			return this.readUtilMatch(new byte[] { pattern }, isInclude);
+		public byte[] readUntilMatch(byte pattern, boolean isInclude) throws Exception {
+			return this.readUntilMatch(new byte[] { pattern }, isInclude);
 		}
 		
 		/**
@@ -766,8 +766,8 @@ public class BytesUtil {
 		 * @param pattern 찾을 바이트 패턴
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] readUtilMatch(byte pattern) throws Exception {
-			return this.readUtilMatch(new byte[] { pattern }, false);
+		public byte[] readUntilMatch(byte pattern) throws Exception {
+			return this.readUntilMatch(new byte[] { pattern }, false);
 		}
 	}
 }

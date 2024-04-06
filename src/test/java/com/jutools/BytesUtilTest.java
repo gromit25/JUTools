@@ -466,4 +466,25 @@ public class BytesUtilTest {
 			assertTrue(true);
 		}
 	}
+	
+	@Test
+	public void testByteChunkReader_readUntilMatch1_1() throws Exception {
+		
+		byte[] msg = "1234567890".getBytes();
+		byte[] pattern = "78".getBytes();
+
+		byte[] read = BytesUtil.buildByteChunkReader(msg).readUntilMatch(pattern);
+		assertEquals("123456", new String(read));
+	}
+	
+	@Test
+	public void testByteChunkReader_readUntilMatch1_2() throws Exception {
+		
+		byte[] msg = "12345677890".getBytes();
+		byte[] pattern = "78".getBytes();
+
+		byte[] read = BytesUtil.buildByteChunkReader(msg).readUntilMatch(pattern);
+		assertEquals("1234567", new String(read));
+	}
+
 }
