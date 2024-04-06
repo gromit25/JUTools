@@ -604,6 +604,16 @@ public class BytesUtil {
 	}
 	
 	/**
+	 * byte 배열 끊어 읽기 객체 생성 
+	 * 
+	 * @param bytes 읽을 byte 배열
+	 * @return byte 배열 끊어 읽기 객체 
+	 */
+	public static ByteChunkReader buildByteChunkReader(byte[] bytes) throws Exception {
+		return new ByteChunkReader(bytes);
+	}
+	
+	/**
 	 * Byte 배열을 끊어읽기 위한 Reader 클래스
 	 * 
 	 * @author jmsohn
@@ -759,15 +769,5 @@ public class BytesUtil {
 		public byte[] read(byte pattern) throws Exception {
 			return this.read(new byte[] { pattern }, false);
 		}
-	}
-	
-	/**
-	 * byte 배열 끊어 읽기 객체 생성 
-	 * 
-	 * @param bytes 읽을 byte 배열
-	 * @return byte 배열 끊어 읽기 객체 
-	 */
-	public static ByteChunkReader buildByteChunkReader(byte[] bytes) throws Exception {
-		return new ByteChunkReader(bytes);
 	}
 }
