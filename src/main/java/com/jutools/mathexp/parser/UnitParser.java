@@ -104,7 +104,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 		
 		// 단위(unit)를 접두사(unit prefix)와 기본단위(base unit)로 분리함
 		String unit = this.unitBuffer.toString();
-		String[] unitPrefixAndBase = MathUtil.devideUnitToPrefixAndBase(unit);
+		String[] unitPrefixAndBase = MathUtil.splitUnitToPrefixAndBase(unit);
 		String unitPrefix = unitPrefixAndBase[0];
 		String baseUnit = unitPrefixAndBase[1];
 

@@ -17,50 +17,283 @@ import lombok.Getter;
  */
 public class MathUtil {
 	
-	/** 단위 접두사(unit prefix) 목록 */
-	private static HashMap<String, Double> unitPrefixMap;
+	/**
+	 * 
+	 * ※ https://en.wikipedia.org/wiki/Metric_prefix 참고
+	 * 
+	 * @author jmsohn
+	 */
+	private enum UnitPrefix {
+		
+		q(0.000000000000000000000000000001),
+		r(0.000000000000000000000000001),
+		y(0.000000000000000000000001),
+		z(0.000000000000000000001),
+		a(0.000000000000000001),
+		f(0.000000000000001),
+		p(0.000000000001),
+		n(0.000000001),
+		μ(0.000001),
+		m(0.001),
+		c(0.01),
+		d(0.1),
+		none(1.0),
+		da(10.0),
+		h(100.0),
+		k(1000.0),
+		M(1000000.0),
+		G(1000000000.0),
+		T(1000000000000.0),
+		P(1000000000000000.0),
+		E(1000000000000000000.0),
+		Z(1000000000000000000000.0),
+		Y(1000000000000000000000000.0),
+		R(1000000000000000000000000000.0),
+		Q(1000000000000000000000000000000.0);
+		
+		// -----------
+		
+		/** */
+		@Getter
+		private double factor;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param scale
+		 */
+		UnitPrefix(double factor) {
+			this.factor = factor;
+		}
+		
+		/**
+		 * 
+		 * @param prefixStr
+		 * @return
+		 */
+		static UnitPrefix get(String prefixStr) {
+			
+			try {
+				
+				if(StringUtil.isBlank(prefixStr) == true) {
+					return UnitPrefix.none;
+				} else {
+					return UnitPrefix.valueOf(prefixStr);
+				}
+				
+			} catch(Exception ex) {
+				return null;
+			}
+		}
+		
+		/**
+		 * 
+		 * @param index
+		 * @return
+		 */
+		static UnitPrefix get(int index) {
+			if(UnitPrefix.values().length < index) {
+				return null;
+			} else {
+				return UnitPrefix.values()[index];
+			}
+		}
+		
+		/**
+		 * 
+		 * @param prefixStr
+		 * @return
+		 */
+		static boolean contains(String prefix) {
+			if(UnitPrefix.get(prefix) == null) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * ※ https://en.wikipedia.org/wiki/Binary_prefix 참조
+	 * 
+	 * @author jmsohn
+	 */
+	private enum BytePrefix {
+		
+		none(1.0),
+		Ki(1024.0),
+		Mi(1048576.0),
+		Gi(1073741824.0),
+		Ti(1099511627776.0),
+		Pi(1125899906842624.0),
+		Ei(1152921504606846976.0),
+		Zi(1180591620717411303424.0),
+		Yi(1208925819614629174706176.0);
+		
+		// -----------
+		/** */
+		@Getter
+		private double factor;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param factor
+		 */
+		BytePrefix(double factor) {
+			this.factor = factor;
+		}
+		
+		/**
+		 * 
+		 * @param prefixStr
+		 * @return
+		 */
+		static BytePrefix get(String prefixStr) {
+			
+			try {
+				
+				if(StringUtil.isBlank(prefixStr) == true) {
+					return BytePrefix.none;
+				} else {
+					return BytePrefix.valueOf(prefixStr);
+				}
+				
+			} catch(Exception ex) {
+				return null;
+			}
+		}
+		
+		/**
+		 * 
+		 * @param index
+		 * @return
+		 */
+		static BytePrefix get(int index) {
+			if(BytePrefix.values().length < index) {
+				return null;
+			} else {
+				return BytePrefix.values()[index];
+			}
+		}
+		
+		/**
+		 * 
+		 * @param prefixStr
+		 * @return
+		 */
+		static boolean contains(String prefix) {
+			if(BytePrefix.get(prefix) == null) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
 	
-	static {
+	/**
+	 * 
+	 * 
+	 * @author jmsohn
+	 */
+	private enum KoreanPrefix {
 		
-		// 단위 접두사(unit prefix) 목록 초기화
-		unitPrefixMap = new HashMap<String, Double>();
+		만(10000.0),
+		억(10000.0 * 10000.0),
+		조(10000.0 * 10000.0 * 10000.0),
+		경(10000.0 * 10000.0 * 10000.0 * 10000.0),
+		해(10000.0 * 10000.0 * 10000.0 * 10000.0 * 10000.0);
 		
-		// https://en.wikipedia.org/wiki/Metric_prefix
-		unitPrefixMap.put("Q", 1000000000000000000000000000000.0);
-		unitPrefixMap.put("R", 1000000000000000000000000000.0);
-		unitPrefixMap.put("Y", 1000000000000000000000000.0);
-		unitPrefixMap.put("Z", 1000000000000000000000.0);
-		unitPrefixMap.put("E", 1000000000000000000.0);
-		unitPrefixMap.put("P", 1000000000000000.0);
-		unitPrefixMap.put("T", 1000000000000.0);
-		unitPrefixMap.put("G", 1000000000.0);
-		unitPrefixMap.put("M", 1000000.0);
-		unitPrefixMap.put("k", 1000.0);
-		unitPrefixMap.put("h", 100.0);
-		unitPrefixMap.put("da", 10.0);
-		unitPrefixMap.put("d", 0.1);
-		unitPrefixMap.put("c", 0.01);
-		unitPrefixMap.put("m", 0.001);
-		unitPrefixMap.put("μ", 0.000001);
-		unitPrefixMap.put("n", 0.000000001);
-		unitPrefixMap.put("p", 0.000000000001);
-		unitPrefixMap.put("f", 0.000000000000001);
-		unitPrefixMap.put("a", 0.000000000000000001);
-		unitPrefixMap.put("z", 0.000000000000000000001);
-		unitPrefixMap.put("y", 0.000000000000000000000001);
-		unitPrefixMap.put("r", 0.000000000000000000000000001);
-		unitPrefixMap.put("q", 0.000000000000000000000000000001);
+		// -----------
+		/** */
+		@Getter
+		private double factor;
 		
-		// https://en.wikipedia.org/wiki/Binary_prefix
-		unitPrefixMap.put("Ki", 1024.0);
-		unitPrefixMap.put("Mi", 1048576.0);
-		unitPrefixMap.put("Gi", 1073741824.0);
-		unitPrefixMap.put("Ti", 1099511627776.0);
-		unitPrefixMap.put("Pi", 1125899906842624.0);
-		unitPrefixMap.put("Ei", 1152921504606846976.0);
-		unitPrefixMap.put("Zi", 1180591620717411303424.0);
-		unitPrefixMap.put("Yi", 1208925819614629174706176.0);
+		/**
+		 * 생성자
+		 * 
+		 * @param factor
+		 */
+		KoreanPrefix(double factor) {
+			this.factor = factor;
+		}		
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @author jmsohn
+	 */
+	private enum KoreanSubPrefix {
 		
+		십(10.0),
+		백(100.0),
+		천(1000.0);
+		
+		// -----------
+		/** */
+		@Getter
+		private double factor;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param factor
+		 */
+		KoreanSubPrefix(double factor) {
+			this.factor = factor;
+		}		
+
+	}
+	
+	/**
+	 * 
+	 * @author jmsohn
+	 */
+	private enum KoreanNum {
+		
+		일(1.0),
+		이(2.0),
+		삼(3.0),
+		사(4.0),
+		오(5.0),
+		육(6.0),
+		칠(7.0),
+		팔(8.0),
+		구(9.0);
+		
+		// -----------
+		/** */
+		@Getter
+		private double value;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param factor
+		 */
+		KoreanNum(double value) {
+			this.value = value;
+		}		
+	}
+	
+	/**
+	 * 단위 접두사(unitPrefix)에 해당하는 factor 값을 반환하는 메소드<br>
+	 * 참조)<br>
+	 * https://en.wikipedia.org/wiki/Metric_prefix<br>
+	 * https://en.wikipedia.org/wiki/Binary_prefix
+	 * 
+	 * @param unitPrefix 단위 접두사
+	 * @return 단위 접두사의 factor 값
+	 */
+	public static double unitPrefixToFactor(String prefix) throws Exception {
+		
+		if(BytePrefix.contains(prefix) == true) {
+			return BytePrefix.get(prefix).getFactor();
+		}
+		
+		return UnitPrefix.get(prefix).getFactor();
 	}
 	
 	/**
@@ -71,7 +304,7 @@ public class MathUtil {
 	 *         배열의 0은 접두사(prefix), prefix가 없을 경우 ""<br>
 	 *         배열의 1은 기본 단위(base)<br>
 	 */
-	public static String[] devideUnitToPrefixAndBase(String unit) throws Exception {
+	public static String[] splitUnitToPrefixAndBase(String unit) throws Exception {
 		
 		if(unit == null) {
 			throw new NullPointerException("unit is null");
@@ -109,7 +342,7 @@ public class MathUtil {
 		
 		// 접두사가 등록되어 있는 것이 없는 경우
 		// 단위(unit) 문자열에 접두사가 없는 것으로 간주함
-		if(unitPrefix.isEmpty() == false && unitPrefixMap.containsKey(unitPrefix) == false) {
+		if(unitPrefix.isEmpty() == false && containsInUnitPrefix(unitPrefix) == false) {
 			unitPrefix = "";
 			baseUnit = unit;
 		}
@@ -118,22 +351,15 @@ public class MathUtil {
 	}
 	
 	/**
-	 * 단위 접두사(unitPrefix)에 해당하는 factor 값을 반환하는 메소드<br>
-	 * 참조)<br>
-	 * https://en.wikipedia.org/wiki/Metric_prefix<br>
-	 * https://en.wikipedia.org/wiki/Binary_prefix
 	 * 
-	 * @param unitPrefix 단위 접두사
-	 * @return 단위 접두사의 factor 값
+	 * @param prefix
+	 * @return
 	 */
-	public static double unitPrefixToFactor(String unitPrefix) throws Exception {
-		
-		if(unitPrefixMap != null && unitPrefixMap.containsKey(unitPrefix) == true) {
-			return unitPrefixMap.get(unitPrefix);
-		} else if(unitPrefix != null && unitPrefix.trim().equals("") == true) {
-			return 1;
+	private static boolean containsInUnitPrefix(String prefix) {
+		if(UnitPrefix.contains(prefix) == true) {
+			return true;
 		} else {
-			throw new Exception("requested unit prefix(" + unitPrefix + ") is not found");
+			return BytePrefix.contains(prefix);
 		}
 	}
 	
@@ -292,7 +518,7 @@ public class MathUtil {
 		String prefix = getUnitPrefix(value);
 		
 		// 단위 접두어에 해당하는 factor 값을 가져옴
-		double factor = unitPrefixToFactor(prefix);
+		double factor = UnitPrefix.get(prefix).getFactor();
 		
 		// 단위 표현식 객체를 생성하여 반환
 		// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
@@ -362,7 +588,7 @@ public class MathUtil {
 		String prefix = getByteUnitPrefix(value);
 		
 		// byte 단위 접두어에 해당하는 factor 값을 가져옴
-		double factor = unitPrefixToFactor(prefix);
+		double factor = BytePrefix.get(prefix).getFactor();
 		
 		// 단위 표현식 객체를 생성하여 반환
 		return new UnitExp(value.divide(new BigDecimal(factor)).doubleValue(), prefix);
