@@ -641,12 +641,38 @@ public class BytesUtil {
 		}
 		
 		/**
+		 * 주어진 바이트 수(n) 만큼 스킵하여 이동<br>
+		 * 주어진 바이트 수에 마이너스(-) 값이 가능하지만,<br>
+		 * 만일 최종 위치가 0 미만이면 최종 위치를 0으로 고정함
+		 * 
+		 * @param n 스킵할 바이트 수
+		 */
+		public synchronized void skip(int n) {
+			
+			this.pos += n;
+			
+			if(this.pos < 0) {
+				this.pos = 0;
+			}
+		}
+		
+		/**
+		 * 바이트 배열을 다 읽었는지 여부 반환<br>
+		 * 바이트 배열을 다 읽지 않았을 경우 true 반환
+		 * 
+		 * @return 바이트 배열을 다 읽었는지 여부
+		 */
+		public boolean hasRemains() {
+			return this.pos < this.bytes.length;
+		}
+		
+		/**
 		 * 특정 크기 만큼 읽어 반환
 		 * 
 		 * @param readSize 읽을 크기
 		 * @return 읽은 byte 배열
 		 */
-		public byte[] readNByte(int readSize) throws Exception {
+		public synchronized byte[] readNByte(int readSize) throws Exception {
 
 			// 입력값 검증
 			if(readSize <= 0) {
@@ -659,6 +685,7 @@ public class BytesUtil {
 			
 			// byte 배열에서 현재 위치(pos)를 기준으로 readSize 만큼 읽음
 			byte[] read = BytesUtil.cut(this.bytes, this.pos, readSize);
+			
 			// 현재 위치를 readSize 만큼 이동
 			this.pos += readSize;
 			
@@ -697,7 +724,7 @@ public class BytesUtil {
 		 * @param isInclude 바이트 패턴 포함 여부 true이면, 바이트 패턴 포함하여 반환
 		 * @return 바이트 패턴이 나오기 전까지 바이트 배열
 		 */
-		public byte[] readUntilMatch(byte[] pattern, boolean isInclude) throws Exception {
+		public synchronized byte[] readUntilMatch(byte[] pattern, boolean isInclude) throws Exception {
 			
 			// 입력값 검증
 			if(pattern == null) {
@@ -730,6 +757,9 @@ public class BytesUtil {
 			// 패턴까지의 바이트 배열을 복사
 			System.arraycopy(this.bytes, this.pos, read, 0, length);
 			
+			// 다음 읽을 위치로 이동
+			this.pos = patternPos + 1; 
+					
 			// 복사한 바이트 배열을 반환
 			return read;
 		}
