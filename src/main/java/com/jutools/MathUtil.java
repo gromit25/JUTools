@@ -18,7 +18,7 @@ import lombok.Getter;
 public class MathUtil {
 	
 	/**
-	 * 
+	 * 표준 단위 접두사<br>
 	 * ※ https://en.wikipedia.org/wiki/Metric_prefix 참고
 	 * 
 	 * @author jmsohn
@@ -53,26 +53,40 @@ public class MathUtil {
 		
 		// -----------
 		
-		/** */
+		/** 인수 */
 		@Getter
 		private double factor;
 		
 		/**
 		 * 생성자
 		 * 
-		 * @param scale
+		 * @param factor 인수
 		 */
 		UnitPrefix(double factor) {
 			this.factor = factor;
 		}
 		
 		/**
+		 * 접두사의 이름을 반환
 		 * 
-		 * @param prefixStr
-		 * @return
+		 * @return 접두사의 이름
+		 */
+		String getName() {
+			if(this == none) {
+				return "";
+			} else {
+				return name();
+			}
+		}
+		
+		/**
+		 * 단위 접두사 문자열에 해당하는 단위 접두사를 반환
+		 * 
+		 * @param prefixStr 단위 접두사 문자열
+		 * @return 단위 접두사
 		 */
 		static UnitPrefix get(String prefixStr) {
-			
+
 			try {
 				
 				if(StringUtil.isBlank(prefixStr) == true) {
@@ -87,9 +101,10 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 특정 index의 단위 접두사 반환
 		 * 
-		 * @param index
-		 * @return
+		 * @param index 가져올 index
+		 * @return 단위 접두사 
 		 */
 		static UnitPrefix get(int index) {
 			if(UnitPrefix.values().length < index) {
@@ -100,9 +115,10 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 단위 접두사 문자열이 존재하는지 여부 반환
 		 * 
-		 * @param prefixStr
-		 * @return
+		 * @param prefixStr 단뮈 접두사 문자열
+		 * @return 단위 접두사 문자열 존재 여부, 존재할 경우 true
 		 */
 		static boolean contains(String prefix) {
 			if(UnitPrefix.get(prefix) == null) {
@@ -111,10 +127,50 @@ public class MathUtil {
 				return true;
 			}
 		}
+		
+		/**
+		 * unit prefix의 개수 반환
+		 * 
+		 * @return unit prefix의 개수
+		 */
+		static int size() {
+			return UnitPrefix.values().length;
+		}
+		
+		/**
+		 * 주어진 값에 적합한 단위 접두어를 반환<br>
+		 * 천단위 접두어만 반환
+		 * 
+		 * @param value 주어진 값
+		 * @return 단위 접두어
+		 */
+		static UnitPrefix getUnitPrefix(double value) {
+			
+			// 
+			value = Math.abs(value);
+			
+			// 천의 자리수 계산
+			int index = (int)Math.floor(Math.log10(value)/3);
+			
+			// 접두사 c(0.01), d(0.1)를 제외
+			index += (index < 0)?-2:0;
+			
+			// 접두사 da(10), h(100)를 제외
+			index += (index > 0)?2:0;
+			
+			// index를 가장 작은 접두사 위치인 
+			index += UnitPrefix.none.ordinal();
+			
+			//
+			index = (index < 0)?0:index;
+			index = (index > UnitPrefix.size())?UnitPrefix.size():index;
+			
+			return UnitPrefix.get(index);
+		}
 	}
 
 	/**
-	 * 
+	 * Byte 단위 접두사<br>
 	 * ※ https://en.wikipedia.org/wiki/Binary_prefix 참조
 	 * 
 	 * @author jmsohn
@@ -132,23 +188,24 @@ public class MathUtil {
 		Yi(1208925819614629174706176.0);
 		
 		// -----------
-		/** */
+		/** 인수 */
 		@Getter
 		private double factor;
 		
 		/**
 		 * 생성자
 		 * 
-		 * @param factor
+		 * @param factor 인수
 		 */
 		BytePrefix(double factor) {
 			this.factor = factor;
 		}
 		
 		/**
+		 * 단위 접두사 문자열에 해당하는 단위 접두사를 반환
 		 * 
-		 * @param prefixStr
-		 * @return
+		 * @param prefixStr 단위 접두사 문자열
+		 * @return 단위 접두사
 		 */
 		static BytePrefix get(String prefixStr) {
 			
@@ -166,9 +223,10 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 특정 index의 단위 접두사 반환
 		 * 
-		 * @param index
-		 * @return
+		 * @param index 가져올 index
+		 * @return 단위 접두사 
 		 */
 		static BytePrefix get(int index) {
 			if(BytePrefix.values().length < index) {
@@ -179,9 +237,10 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 단위 접두사 문자열이 존재하는지 여부 반환
 		 * 
-		 * @param prefixStr
-		 * @return
+		 * @param prefixStr 단뮈 접두사 문자열
+		 * @return 단위 접두사 문자열 존재 여부, 존재할 경우 true
 		 */
 		static boolean contains(String prefix) {
 			if(BytePrefix.get(prefix) == null) {
@@ -297,7 +356,8 @@ public class MathUtil {
 	}
 	
 	/**
-	 * 단위(unit)을 접두사(prefix)와 기본 단위(base)로 분리하는 메소드
+	 * 단위(unit)을 접두사(prefix)와 기본 단위(base)로 분리하는 메소드<br>
+	 * ex) "kg" -> {"k", "g"}
 	 * 
 	 * @param unit 분리할 단위
 	 * @return 나누어진 접두사(prefix)와 기본 단위(base)<br>
@@ -342,7 +402,10 @@ public class MathUtil {
 		
 		// 접두사가 등록되어 있는 것이 없는 경우
 		// 단위(unit) 문자열에 접두사가 없는 것으로 간주함
-		if(unitPrefix.isEmpty() == false && containsInUnitPrefix(unitPrefix) == false) {
+		if(unitPrefix.isEmpty() == false
+				&& UnitPrefix.contains(unitPrefix) == false
+				&& BytePrefix.contains(unitPrefix) == false) {
+			
 			unitPrefix = "";
 			baseUnit = unit;
 		}
@@ -352,28 +415,15 @@ public class MathUtil {
 	
 	/**
 	 * 
-	 * @param prefix
-	 * @return
-	 */
-	private static boolean containsInUnitPrefix(String prefix) {
-		if(UnitPrefix.contains(prefix) == true) {
-			return true;
-		} else {
-			return BytePrefix.contains(prefix);
-		}
-	}
-	
-	/**
-	 * 
 	 * @author jmsohn 
 	 */
 	public static class UnitExp {
 		
-		/** */
+		/** 값 */
 		@Getter
 		private double value;
 		
-		/** */
+		/** 접두사 */
 		@Getter
 		private String prefix;
 		
@@ -389,9 +439,10 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 지정된 소수점 이하 자리수(decimalPlaces)에 따라 문자열 변환하여 반환
 		 * 
-		 * @param decimalPlaces
-		 * @return
+		 * @param decimalPlaces 소수점 이하 자리수
+		 * @return 변환된 문자열
 		 */
 		public String toString(int decimalPlaces) throws Exception {
 			
@@ -422,109 +473,22 @@ public class MathUtil {
 	}
 
 	/**
-	 * 주어진 값에 적합한 byte 단위 접두어를 반환
-	 * 
-	 * @param value 주어진 값
-	 * @return 단위 접두어
-	 */
-	private static String getUnitPrefix(BigDecimal value) {
-		
-		// 입력값 검증
-		if(value == null) {
-			throw new NullPointerException("value is null.");
-		}
-		
-		value = value.abs();
-		
-		if(value.compareTo(new BigDecimal(0.000000000000000000000000001)) < 0) {
-			return "q";
-		}
-		if(value.compareTo(new BigDecimal(0.000000000000000000000001)) < 0) {
-			return "r";
-		}
-		if(value.compareTo(new BigDecimal(0.000000000000000000001)) < 0) {
-			return "y";
-		}
-		if(value.compareTo(new BigDecimal(0.000000000000000001)) < 0) {
-			return "z";
-		}
-		if(value.compareTo(new BigDecimal(0.000000000000001)) < 0) {
-			return "a";
-		}
-		if(value.compareTo(new BigDecimal(0.000000000001)) < 0) {
-			return "f";
-		}
-		if(value.compareTo(new BigDecimal(0.000000001)) < 0) {
-			return "p";
-		}
-		if(value.compareTo(new BigDecimal(0.000001)) < 0) {
-			return "n";
-		}
-		if(value.compareTo(new BigDecimal(0.001)) < 0) {
-			return "μ";
-		}
-		if(value.compareTo(new BigDecimal(1.0)) < 0) {
-			return "m";
-		}
-		if(value.compareTo(new BigDecimal(1000.0)) < 0) {
-			return "";
-		}
-		if(value.compareTo(new BigDecimal(1000000.0)) < 0) {
-			return "k";
-		}
-		if(value.compareTo(new BigDecimal(1000000000.0)) < 0) {
-			return "M";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000.0)) < 0) {
-			return "G";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000.0)) < 0) {
-			return "T";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000000.0)) < 0) {
-			return "P";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000000000.0)) < 0) {
-			return "E";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000000000000.0)) < 0) {
-			return "Z";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000000000000000.0)) < 0) {
-			return "Y";
-		}
-		if(value.compareTo(new BigDecimal(1000000000000000000000000000000.0)) < 0) {
-			return "R";
-		}
-		
-		return "Q";
-	}
-	
-	/**
 	 * 주어진 값에 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
 	 * ex) 1234 -> 1.23k
 	 * 
 	 * @param value 변환할 값
 	 * @return 단위 접두어 표현식 객체
 	 */
-	public static UnitExp toUnitExp(BigDecimal value) throws Exception {
-		
-		// 입력값 검증
-		if(value == null) {
-			throw new NullPointerException("value is null.");
-		}
+	public static UnitExp toUnitExp(double value) throws Exception {
 		
 		// 값에 적합한 단위 접두어를 가져옴
-		String prefix = getUnitPrefix(value);
-		
-		// 단위 접두어에 해당하는 factor 값을 가져옴
-		double factor = UnitPrefix.get(prefix).getFactor();
+		UnitPrefix prefix = UnitPrefix.getUnitPrefix(value);
 		
 		// 단위 표현식 객체를 생성하여 반환
 		// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
 		// 이를 문자열로 변경후 나누면 문제가 없음
 		// 이유는 정확히 모름
-		return new UnitExp(value.divide(new BigDecimal(Double.toString(factor))).doubleValue(), prefix);
+		return new UnitExp(value/prefix.getFactor(), prefix.getName());
 	}
 	
 	/**

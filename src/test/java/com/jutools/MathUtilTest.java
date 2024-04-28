@@ -485,25 +485,25 @@ public class MathUtilTest {
 	
 	@Test
 	public void testToUnitExp1() throws Exception {
-		String unitExp = MathUtil.toUnitExp(new BigDecimal(1234567.0)).toString();
+		String unitExp = MathUtil.toUnitExp(1234567.0).toString();
 		assertEquals("1.23M", unitExp);
 	}
 
 	@Test
 	public void testToUnitExp2() throws Exception {
-		String unitExp = MathUtil.toUnitExp(new BigDecimal(0.01234)).toString(2);
+		String unitExp = MathUtil.toUnitExp(0.01234).toString(2);
 		assertEquals("12.33m", unitExp);
 	}
 	
 	@Test
 	public void testToUnitExp3() throws Exception {
-		String unitExp = MathUtil.toUnitExp(new BigDecimal(123.0)).toString();
+		String unitExp = MathUtil.toUnitExp(123.0).toString();
 		assertEquals("123.00", unitExp);
 	}
 	
 	@Test
 	public void testToUnitExp4() throws Exception {
-		String unitExp = MathUtil.toUnitExp(new BigDecimal(-1234567.0)).toString();
+		String unitExp = MathUtil.toUnitExp(-1234567.0).toString();
 		assertEquals("-1.23M", unitExp);
 	}
 	
