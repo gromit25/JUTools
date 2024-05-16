@@ -114,28 +114,6 @@ public class MathUtil {
 			}
 		}
 		
-		/**
-		 * 단위 접두사 문자열이 존재하는지 여부 반환
-		 * 
-		 * @param prefixStr 단뮈 접두사 문자열
-		 * @return 단위 접두사 문자열 존재 여부, 존재할 경우 true
-		 */
-		static boolean contains(String prefix) {
-			if(UnitPrefix.get(prefix) == null) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		
-		/**
-		 * unit prefix의 개수 반환
-		 * 
-		 * @return unit prefix의 개수
-		 */
-		static int size() {
-			return UnitPrefix.values().length;
-		}
 		
 		/**
 		 * 주어진 값에 적합한 단위 접두어를 반환<br>
@@ -144,7 +122,7 @@ public class MathUtil {
 		 * @param value 주어진 값
 		 * @return 단위 접두어
 		 */
-		static UnitPrefix getUnitPrefix(double value) {
+		static UnitPrefix getPrefix(double value) {
 			
 			// 
 			value = Math.abs(value);
@@ -166,6 +144,29 @@ public class MathUtil {
 			index = (index > UnitPrefix.size())?UnitPrefix.size():index;
 			
 			return UnitPrefix.get(index);
+		}
+		
+		/**
+		 * 단위 접두사 문자열이 존재하는지 여부 반환
+		 * 
+		 * @param prefixStr 단뮈 접두사 문자열
+		 * @return 단위 접두사 문자열 존재 여부, 존재할 경우 true
+		 */
+		static boolean contains(String prefix) {
+			if(UnitPrefix.get(prefix) == null) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+		/**
+		 * unit prefix의 개수 반환
+		 * 
+		 * @return unit prefix의 개수
+		 */
+		static int size() {
+			return UnitPrefix.values().length;
 		}
 	}
 
@@ -199,6 +200,19 @@ public class MathUtil {
 		 */
 		BytePrefix(double factor) {
 			this.factor = factor;
+		}
+		
+		/**
+		 * 접두사의 이름을 반환
+		 * 
+		 * @return 접두사의 이름
+		 */
+		String getName() {
+			if(this == none) {
+				return "";
+			} else {
+				return name();
+			}
 		}
 		
 		/**
@@ -237,6 +251,28 @@ public class MathUtil {
 		}
 		
 		/**
+		 * 주어진 값에 적합한 단위 접두어를 반환<br>
+		 * 천단위 접두어만 반환
+		 * 
+		 * @param value 주어진 값
+		 * @return 단위 접두어
+		 */
+		static BytePrefix getPrefix(double value) {
+			
+			// 
+			value = Math.abs(value);
+			
+			// 천의 자리수 계산
+			int index = (int)Math.floor(Math.log10(value)/Math.log10(1024));
+			
+			//
+			index = (index < 0)?0:index;
+			index = (index > BytePrefix.size())?BytePrefix.size():index;
+			
+			return BytePrefix.get(index);
+		}
+		
+		/**
 		 * 단위 접두사 문자열이 존재하는지 여부 반환
 		 * 
 		 * @param prefixStr 단뮈 접두사 문자열
@@ -248,6 +284,15 @@ public class MathUtil {
 			} else {
 				return true;
 			}
+		}
+		
+		/**
+		 * unit prefix의 개수 반환
+		 * 
+		 * @return unit prefix의 개수
+		 */
+		static int size() {
+			return BytePrefix.values().length;
 		}
 	}
 	
@@ -482,7 +527,7 @@ public class MathUtil {
 	public static UnitExp toUnitExp(double value) throws Exception {
 		
 		// 값에 적합한 단위 접두어를 가져옴
-		UnitPrefix prefix = UnitPrefix.getUnitPrefix(value);
+		UnitPrefix prefix = UnitPrefix.getPrefix(value);
 		
 		// 단위 표현식 객체를 생성하여 반환
 		// BigDecimal 값을 소수점 이하(ex. 0.001)로 나누려고 하면 오류가 발생함
@@ -497,42 +542,42 @@ public class MathUtil {
 	 * @param value 주어진 값
 	 * @return byte 단위 접두어
 	 */
-	private static String getByteUnitPrefix(BigDecimal value) {
-		
-		// 입력값 검증
-		if(value == null) {
-			throw new NullPointerException("value is null.");
-		}
-		
-		value = value.abs();
-		
-		if(value.compareTo(new BigDecimal(1024.0)) < 0) {
-			return "";
-		}
-		if(value.compareTo(new BigDecimal(1048576.0)) < 0) {
-			return "Ki";
-		}
-		if(value.compareTo(new BigDecimal(1073741824.0)) < 0) {
-			return "Mi";
-		}
-		if(value.compareTo(new BigDecimal(1099511627776.0)) < 0) {
-			return "Gi";
-		}
-		if(value.compareTo(new BigDecimal(1125899906842624.0)) < 0) {
-			return "Ti";
-		}
-		if(value.compareTo(new BigDecimal(1152921504606846976.0)) < 0) {
-			return "Pi";
-		}
-		if(value.compareTo(new BigDecimal(1180591620717411303424.0)) < 0) {
-			return "Ei";
-		}
-		if(value.compareTo(new BigDecimal(1208925819614629174706176.0)) < 0) {
-			return "Zi";
-		}
-		
-		return "Yi";
-	}
+//	private static String getByteUnitPrefix(BigDecimal value) {
+//		
+//		// 입력값 검증
+//		if(value == null) {
+//			throw new NullPointerException("value is null.");
+//		}
+//		
+//		value = value.abs();
+//		
+//		if(value.compareTo(new BigDecimal(1024.0)) < 0) {
+//			return "";
+//		}
+//		if(value.compareTo(new BigDecimal(1048576.0)) < 0) {
+//			return "Ki";
+//		}
+//		if(value.compareTo(new BigDecimal(1073741824.0)) < 0) {
+//			return "Mi";
+//		}
+//		if(value.compareTo(new BigDecimal(1099511627776.0)) < 0) {
+//			return "Gi";
+//		}
+//		if(value.compareTo(new BigDecimal(1125899906842624.0)) < 0) {
+//			return "Ti";
+//		}
+//		if(value.compareTo(new BigDecimal(1152921504606846976.0)) < 0) {
+//			return "Pi";
+//		}
+//		if(value.compareTo(new BigDecimal(1180591620717411303424.0)) < 0) {
+//			return "Ei";
+//		}
+//		if(value.compareTo(new BigDecimal(1208925819614629174706176.0)) < 0) {
+//			return "Zi";
+//		}
+//		
+//		return "Yi";
+//	}
 	
 	/**
 	 * 주어진 값에 byte 단위 접두어를 추가한 표현식으로 변환하는 메소드<br>
@@ -541,21 +586,13 @@ public class MathUtil {
 	 * @param value 주어진 값
 	 * @return 단위 접두어 표현식 객체
 	 */
-	public static UnitExp toByteUnitExp(BigDecimal value) throws Exception {
-		
-		// 입력값 검증
-		if(value == null) {
-			throw new NullPointerException("value is null.");
-		}
+	public static UnitExp toByteUnitExp(double value) throws Exception {
 		
 		// 값에 적합한 byte 단위 접두어를 가져옴
-		String prefix = getByteUnitPrefix(value);
-		
-		// byte 단위 접두어에 해당하는 factor 값을 가져옴
-		double factor = BytePrefix.get(prefix).getFactor();
+		BytePrefix prefix = BytePrefix.getPrefix(value);
 		
 		// 단위 표현식 객체를 생성하여 반환
-		return new UnitExp(value.divide(new BigDecimal(factor)).doubleValue(), prefix);
+		return new UnitExp(value/prefix.getFactor(), prefix.getName());
 	}
 	
 	/**
@@ -565,7 +602,7 @@ public class MathUtil {
 	 * @param value 주어진 값(long 형)
 	 */
 	public static UnitExp toByteUnitExp(long value) throws Exception {
-		return toByteUnitExp(new BigDecimal(value));
+		return toByteUnitExp((double)value);
 	}
 	
 	/**
@@ -681,6 +718,28 @@ public class MathUtil {
 	}
 	
 	/**
+	 * 주어진 숫자(float)가 양,음,0 부호 반환<br>
+	 * 양수 이면, 1<br>
+	 * 음수 이면, -1<br>
+	 * 0 이면, 0
+	 * 
+	 * @param value 검사할 숫자
+	 * @return 부호
+	 */
+	public static int sign(float value) {
+		
+		int sign = 0;
+		
+		if(value > 0) {
+			sign = 1;
+		} else if(value < 0) {
+			sign = -1;
+		}
+		
+		return sign;
+	}
+	
+	/**
 	 * 주어진 숫자(int)가 양,음,0 부호 반환<br>
 	 * 양수 이면, 1<br>
 	 * 음수 이면, -1<br>
@@ -702,4 +761,79 @@ public class MathUtil {
 		return sign;
 	}
 
+	/**
+	 * 주어진 숫자(long)가 양,음,0 부호 반환<br>
+	 * 양수 이면, 1<br>
+	 * 음수 이면, -1<br>
+	 * 0 이면, 0
+	 * 
+	 * @param value 검사할 숫자
+	 * @return 부호
+	 */
+	public static int sign(long value) {
+		
+		int sign = 0;
+		
+		if(value > 0) {
+			sign = 1;
+		} else if(value < 0) {
+			sign = -1;
+		}
+		
+		return sign;
+	}
+	
+	/**
+	 * n 팩토리얼(n!) 반환
+	 * 
+	 * @param n 팩토리얼 계산할 자연수
+	 * @return 팩토리얼 결과
+	 */
+	public static BigDecimal factorial(int n) throws Exception {
+		
+		if(n <= 0) {
+			throw new IllegalArgumentException("n must be greater than 0:" + n);
+		}
+		
+		if(n == 1) {
+			return new BigDecimal(1);
+		} else {
+			return factorial(n-1).multiply(new BigDecimal(n));
+		}
+	}
+	
+	/**
+	 * 순열 경우의 수(nPr)
+	 * 
+	 * @param n 총 개수
+	 * @param r 뽑는 수
+	 * @return 순열 경우의 수
+	 */
+	public static BigDecimal permutation(int n, int r) throws Exception {
+		
+		if(n <= 0) {
+			throw new IllegalArgumentException("n must be greater than 0:" + n);
+		}
+		
+		if(r <= 0) {
+			throw new IllegalArgumentException("r must be greater than 0:" + r);
+		}
+		
+		if(n < r) {
+			throw new IllegalArgumentException("n(" + n +") must be greater than r(" + r + ")");
+		}
+		
+		return factorial(n).divide(factorial(n - r));
+	}
+	
+	/**
+	 * 조합 경우의 수(nCr)
+	 * 
+	 * @param n 총 개수
+	 * @param r 뽑는 수
+	 * @return 조합 경우의 수
+	 */
+	public static BigDecimal combination(int n, int r) throws Exception {
+		return permutation(n, r).divide(factorial(r));
+	}
 }
