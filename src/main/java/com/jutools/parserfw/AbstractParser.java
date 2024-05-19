@@ -1,6 +1,5 @@
 package com.jutools.parserfw;
 
-import java.io.PushbackReader;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -199,7 +198,7 @@ public abstract class AbstractParser<T> {
 	 */
 	public TreeNode<T> parse(String script) throws Exception {
 		
-		PushbackReader in = new PushbackReader(new StringReader(script), 1024);
+		ExpReader in = new ExpReader(new StringReader(script), 1024);
 		return this.parse(in);
 		
 	}
@@ -210,7 +209,7 @@ public abstract class AbstractParser<T> {
 	 * @param in 파싱할 문장의 Reader
 	 * @return 파싱 트리의 루트 노드
 	 */
-	public TreeNode<T> parse(PushbackReader in) throws Exception {
+	public TreeNode<T> parse(ExpReader in) throws Exception {
 		
 		// 최초 시작시 실행
 		this.init();
@@ -310,13 +309,13 @@ public abstract class AbstractParser<T> {
 			
 			// 매치되는 전이함수가 없을 경우 예외 발생
 			if(isMatched == false) {
-				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
+				throw new Exception("Unexpected char: " + ch + ", status:" + this.status + " at " + in.getPos());
 			}
 			
 			// 상태가 ERROR 상태일 경우 예외 발생 시킴
 			if(this.endStatus.containsKey(this.status) == true
 				&& this.endStatus.get(this.status) == EndStatusType.ERROR) {
-				throw new Exception("Unexpected char: " + ch + ", status:" + this.status);
+				throw new Exception("Unexpected char: " + ch + ", status:" + this.status + " at " + in.getPos());
 			}
 			
 			// 종료 상태의 종류가 IMMEDIATELY_END이면 parsing 종료 처리함
@@ -333,7 +332,7 @@ public abstract class AbstractParser<T> {
 		
 		// parsing 종료가 되었으나 종료 상태가 아닌 경우 예외 발생
 		if(this.endStatus.containsKey(this.status) == false) {
-			throw new Exception("Unexpected end status: " + this.status);
+			throw new Exception("Unexpected end status: " + this.status + " at " + in.getPos());
 		}
 		
 		// 파싱 종료 시 호출
@@ -408,7 +407,7 @@ public abstract class AbstractParser<T> {
 		
 		/** 입력 스트림 */
 		@Getter
-		private PushbackReader reader;
+		private ExpReader reader;
 		
 		/** source 상태명 */
 		@Getter
@@ -426,7 +425,7 @@ public abstract class AbstractParser<T> {
 		 * @param source source 상태명
 		 * @param target target 상태명
 		 */
-		public Event(char ch, PushbackReader reader, String source, String target) {
+		public Event(char ch, ExpReader reader, String source, String target) {
 			
 			this.ch = ch;
 			this.reader = reader;
