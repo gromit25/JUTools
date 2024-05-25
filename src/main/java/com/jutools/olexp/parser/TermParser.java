@@ -53,8 +53,7 @@ public class TermParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("\\*\\/\\%", "OPERATION")
-				.add("^ \t\\*\\/", "FACTOR", -1)
+				.add("^ \t", "FACTOR", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR", new TransferBuilder()
