@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import com.jutools.olexp.OLExp;
+import com.jutools.parserfw.exception.ParseException;
 
 /**
  * OLExp 클래스의 테스트 케이스
@@ -544,6 +545,70 @@ public class OLExpTest {
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testUngrammar1() {
+		try {
+			OLExp.compile("* 12");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUngrammar2() {
+		try {
+			OLExp.compile("2 * 10 + +");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUngrammar3() {
+		try {
+			OLExp.compile("2 * (10 +) +");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUngrammar4() {
+		try {
+			OLExp.compile("2 * (10 + var1) *");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUngrammar5() {
+		try {
+			OLExp.compile("2 * (10 + 1var1) *");
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testUngrammar6() {
+		
+		try {
+			
+			OLExp.compile("()");
+			fail();
+			
+		} catch(ParseException pex) {
+			
+			assertEquals(2, pex.getPos());
+			
+		} catch(Exception ex) {
+			
+			fail();
+			
 		}
 	}
 }

@@ -52,8 +52,20 @@ public abstract class AbstractExp {
 		this.setMethod(BuiltInMethods.class);
 		
 		// Expression 파싱
-		AbstractParser<Instruction> parser = this.getRootParser();
-		this.insts = parser.parse(exp).travelPostOrder();
+		try {
+			
+			AbstractParser<Instruction> parser = this.getRootParser();
+			this.insts = parser.parse(exp).travelPostOrder();
+			
+		} catch(Exception ex) {
+			
+			Throwable t = ex;
+			while(t.getCause() != null) {
+				t = t.getCause();
+			}
+			
+			throw (Exception)t;
+		}
 		
 		// 메소드 링킹
 		this.linkMethod();

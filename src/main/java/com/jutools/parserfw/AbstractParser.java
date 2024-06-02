@@ -7,6 +7,8 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import com.jutools.parserfw.exception.ParseException;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -196,7 +198,7 @@ public abstract class AbstractParser<T> {
 	 * @param script 파싱할 문자열
 	 * @return 파싱 트리의 루트 노드
 	 */
-	public TreeNode<T> parse(String script) throws Exception {
+	public TreeNode<T> parse(String script) throws ParseException, Exception {
 		
 		ExpReader in = new ExpReader(new StringReader(script), 1024);
 		return this.parse(in);
@@ -209,7 +211,7 @@ public abstract class AbstractParser<T> {
 	 * @param in 파싱할 문장의 Reader
 	 * @return 파싱 트리의 루트 노드
 	 */
-	public TreeNode<T> parse(ExpReader in) throws Exception {
+	public TreeNode<T> parse(ExpReader in) throws ParseException, Exception {
 		
 		// 최초 시작시 실행
 		this.init();
@@ -309,13 +311,13 @@ public abstract class AbstractParser<T> {
 			
 			// 매치되는 전이함수가 없을 경우 예외 발생
 			if(isMatched == false) {
-				throw new Exception("Unexpected char: " + ch + ", status:" + this.status + " at " + in.getPos());
+				throw new ParseException(in.getPos(), ch, this.status);
 			}
 			
 			// 상태가 ERROR 상태일 경우 예외 발생 시킴
 			if(this.endStatus.containsKey(this.status) == true
 				&& this.endStatus.get(this.status) == EndStatusType.ERROR) {
-				throw new Exception("Unexpected char: " + ch + ", status:" + this.status + " at " + in.getPos());
+				throw new ParseException(in.getPos(), ch, this.status);
 			}
 			
 			// 종료 상태의 종류가 IMMEDIATELY_END이면 parsing 종료 처리함

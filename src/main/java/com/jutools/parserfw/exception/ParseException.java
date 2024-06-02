@@ -45,7 +45,7 @@ public class ParseException extends Exception {
 	 * @param status
 	 * @return
 	 */
-	private static String toString(int pos, int ch, String status) {
+	private static String toString(int pos, char ch, String status) {
 		return "Unexpected char: " + ch + ", status:" + status + " at " + pos;
 	}
 	
