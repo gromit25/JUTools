@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.jutools.olexp.OLExp;
 import com.jutools.parserfw.exception.ParseException;
+import com.jutools.parserfw.exception.UnexpectedEndException;
 
 /**
  * OLExp 클래스의 테스트 케이스
@@ -579,8 +580,11 @@ public class OLExpTest {
 	public void testUngrammar4() {
 		try {
 			OLExp.compile("2 * (10 + var1) *");
+			fail();
+		} catch(UnexpectedEndException uex) {
+			assertEquals(18, uex.getPos());
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -588,8 +592,12 @@ public class OLExpTest {
 	public void testUngrammar5() {
 		try {
 			OLExp.compile("2 * (10 + 1var1) *");
+			fail();
+		} catch(ParseException pex) {
+			pex.printStackTrace();
+			assertEquals(12, pex.getPos());
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -597,18 +605,12 @@ public class OLExpTest {
 	public void testUngrammar6() {
 		
 		try {
-			
 			OLExp.compile("()");
 			fail();
-			
 		} catch(ParseException pex) {
-			
 			assertEquals(2, pex.getPos());
-			
 		} catch(Exception ex) {
-			
 			fail();
-			
 		}
 	}
 }

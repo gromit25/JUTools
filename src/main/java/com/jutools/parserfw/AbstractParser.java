@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import com.jutools.parserfw.exception.ParseException;
+import com.jutools.parserfw.exception.UnexpectedEndException;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -334,7 +335,7 @@ public abstract class AbstractParser<T> {
 		
 		// parsing 종료가 되었으나 종료 상태가 아닌 경우 예외 발생
 		if(this.endStatus.containsKey(this.status) == false) {
-			throw new Exception("Unexpected end status: " + this.status + " at " + in.getPos());
+			throw new UnexpectedEndException(in.getPos(), this.status);
 		}
 		
 		// 파싱 종료 시 호출
