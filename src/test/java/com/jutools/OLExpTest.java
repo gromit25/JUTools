@@ -553,8 +553,10 @@ public class OLExpTest {
 	public void testUngrammar1() {
 		try {
 			OLExp.compile("* 12");
+		} catch(ParseException pex) {
+			assertEquals(1, pex.getPos());
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -562,8 +564,10 @@ public class OLExpTest {
 	public void testUngrammar2() {
 		try {
 			OLExp.compile("2 * 10 + +");
+		} catch(ParseException pex) {
+			assertEquals(10, pex.getPos());
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -571,8 +575,10 @@ public class OLExpTest {
 	public void testUngrammar3() {
 		try {
 			OLExp.compile("2 * (10 +) +");
+		} catch(ParseException pex) {
+			assertEquals(10, pex.getPos());
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			fail();
 		}
 	}
 	
@@ -594,7 +600,6 @@ public class OLExpTest {
 			OLExp.compile("2 * (10 + 1var1) *");
 			fail();
 		} catch(ParseException pex) {
-			pex.printStackTrace();
 			assertEquals(12, pex.getPos());
 		} catch(Exception ex) {
 			fail();
