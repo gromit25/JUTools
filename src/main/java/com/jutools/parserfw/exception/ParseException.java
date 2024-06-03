@@ -3,31 +3,33 @@ package com.jutools.parserfw.exception;
 import lombok.Getter;
 
 /**
+ * 파싱 수행시 예외 클래스
  * 
  * @author jmsohn
  */
 public class ParseException extends Exception {
 
-	/** */
+	/** Serializable GUID */
 	private static final long serialVersionUID = -5962084713002262234L;
 	
 	/** 예외 발생 위치 */
 	@Getter
 	private int pos;
 	
-	/** 예외 발생시 문자 */
+	/** 예외 발생 문자 */
 	@Getter
 	private char ch;
 	
-	/** 예외 발생시 상태 */
+	/** 예외 발생 상태 */
 	@Getter
 	private String status;
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param pos
-	 * @param ch
-	 * @param status
+	 * @param pos 예외 발생 위치
+	 * @param ch 예외 발생 문자
+	 * @param status 예외 발생 상태
 	 */
 	public ParseException(int pos, char ch, String status) {
 		
@@ -39,11 +41,12 @@ public class ParseException extends Exception {
 	}
 	
 	/**
+	 * 예외 정보에 대해 문자열로 변환
 	 * 
-	 * @param pos
-	 * @param ch
-	 * @param status
-	 * @return
+	 * @param pos 예외 발생 위치
+	 * @param ch 예외 발생 문자
+	 * @param status 예외 발생 상태
+	 * @return 변환된 문자열
 	 */
 	private static String toString(int pos, char ch, String status) {
 		return "Unexpected char: " + ch + ", status:" + status + " at " + pos;
