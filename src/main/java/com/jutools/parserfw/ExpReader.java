@@ -7,18 +7,21 @@ import java.io.Reader;
 import lombok.Getter;
 
 /**
- * 
+ * 파싱 수행시 문자열을 읽기 위한 Reader 클래스
+ * -> 위치 정보를 획득하기 위한 용도
  * 
  * @author jmsohn
  */
 class ExpReader extends PushbackReader {
 	
+	/** 현재 읽고 있는 위치 */
 	@Getter
 	private int pos;
 
 	/**
+	 * 생성자
 	 * 
-	 * @param in
+	 * @param in 입력 스트림
 	 */
 	public ExpReader(Reader in) {
 		super(in);
@@ -26,9 +29,10 @@ class ExpReader extends PushbackReader {
 	}
 	
 	/**
+	 * 생성자
 	 * 
-	 * @param in
-	 * @param size
+	 * @param in 입력 스트림
+	 * @param size 읽을 크기
 	 */
 	public ExpReader(Reader in, int size) {
 		super(in, size);
