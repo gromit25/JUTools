@@ -784,22 +784,42 @@ public class MathUtil {
 	}
 	
 	/**
+	 * n*(n-1)*...*(n-r) 결과 반환
+	 * 
+	 * @param n 시작 수
+	 * @param r 종료 수
+	 * @return 팩토리얼 결과
+	 */
+	public static BigDecimal factorial(int n, int r) throws Exception {
+		
+		if(n <= 0) {
+			throw new IllegalArgumentException("n must be greater than 0:" + n);
+		}
+		
+		if(r <= 0) {
+			throw new IllegalArgumentException("r must be greater than 0:" + n);
+		}
+		
+		if(n < r) {
+			throw new IllegalArgumentException("n(" + n + ") must be equal or greater than r(" + r + ")");
+		}
+		
+		if(n == r) {
+			return new BigDecimal(r);
+		} else {
+			return factorial(n - 1, r).multiply(new BigDecimal(n));
+		}
+	}
+
+	/**
 	 * n 팩토리얼(n!) 반환
 	 * 
 	 * @param n 팩토리얼 계산할 자연수
 	 * @return 팩토리얼 결과
 	 */
 	public static BigDecimal factorial(int n) throws Exception {
-		
-		if(n <= 0) {
-			throw new IllegalArgumentException("n must be greater than 0:" + n);
-		}
-		
-		if(n == 1) {
-			return new BigDecimal(1);
-		} else {
-			return factorial(n-1).multiply(new BigDecimal(n));
-		}
+
+		return factorial(n, 1);
 	}
 	
 	/**
@@ -823,7 +843,7 @@ public class MathUtil {
 			throw new IllegalArgumentException("n(" + n +") must be greater than r(" + r + ")");
 		}
 		
-		return factorial(n).divide(factorial(n - r));
+		return factorial(n, n - r + 1);
 	}
 	
 	/**
