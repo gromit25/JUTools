@@ -509,118 +509,138 @@ public class MathUtilTest {
 	
 	@Test
 	public void testToByteUnitExp1_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(123)).toString();
+		String unitExp = MathUtil.toByteUnitExp(123).toString();
 		assertEquals("123.00", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp1_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(123456)).toString();
+		String unitExp = MathUtil.toByteUnitExp(123456).toString();
 		assertEquals("120.56Ki", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp2_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1024.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1024.0).toString();
 		assertEquals("1.00Ki", unitExp);
 	}
 
 	@Test
 	public void testToByteUnitExp2_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1023.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1023.0).toString();
 		assertEquals("1023.00", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp3_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1048576.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1048576.0).toString();
 		assertEquals("1.00Mi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp3_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1048576.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp(1048576.0 - 1.0).toString();
 		assertEquals("1023.99Ki", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp4_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1073741824.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1073741824.0).toString();
 		assertEquals("1.00Gi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp4_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1073741824.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp(1073741824.0 - 1.0).toString();
 		assertEquals("1023.99Mi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp5_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1099511627776.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1099511627776.0).toString();
 		assertEquals("1.00Ti", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp5_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1099511627776.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp((double)(1099511627776.0 - 1.0)).toString();
 		assertEquals("1023.99Gi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp6_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1125899906842624.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1125899906842624.0).toString();
 		assertEquals("1.00Pi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp6_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1125899906842624.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp((double)(1125899906842624.0 - 1.0)).toString();
 		assertEquals("1023.99Ti", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp7_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1152921504606846976.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1152921504606846976.0).toString();
 		assertEquals("1.00Ei", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp7_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1152921504606846976.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp((double)(1152921504606846976.0 - 1.0)).toString();
 		// 원래 1023.99Pi 가 출력되어야 하나 너무 큰 숫자를 나누어서 반올림 되어 표시됨 
 		assertEquals("1024.00Pi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp8_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1180591620717411303424.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1180591620717411303424.0).toString();
 		assertEquals("1.00Zi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp8_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1180591620717411303424.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp((double)(1180591620717411303424.0 - 1.0)).toString();
 		// 원래 1023.99Ei 가 출력되어야 하나 너무 큰 숫자를 나누어서 반올림 되어 표시됨 
 		assertEquals("1024.00Ei", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp9_1() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1208925819614629174706176.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1208925819614629174706176.0).toString();
 		assertEquals("1.00Yi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp9_2() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1208925819614629174706176.0).add(new BigDecimal(-1))).toString();
+		String unitExp = MathUtil.toByteUnitExp((double)(1208925819614629174706176.0 - 1.0)).toString();
 		// 원래 1023.99Zi 가 출력되어야 하나 너무 큰 숫자를 나누어서 반올림 되어 표시됨 
 		assertEquals("1024.00Zi", unitExp);
 	}
 	
 	@Test
 	public void testToByteUnitExp9_3() throws Exception {
-		String unitExp = MathUtil.toByteUnitExp(new BigDecimal(1237940039285380274899124224.0)).toString();
+		String unitExp = MathUtil.toByteUnitExp(1237940039285380274899124224.0).toString();
 		assertEquals("1024.00Yi", unitExp);
+	}
+	
+	@Test
+	public void testFactorial1() throws Exception {
+		assertEquals("2", MathUtil.factorial(2).toString());
+	}
+	
+	@Test
+	public void testFactorial2() throws Exception {
+		assertEquals("6", MathUtil.factorial(3).toString());
+	}
+	
+	@Test
+	public void testFactorial3() throws Exception {
+		assertEquals("3628800", MathUtil.factorial(10).toString());
+	}
+	
+	@Test
+	public void testFactorial4() throws Exception {
+		assertEquals("10333147966386144929666651337523200000000", MathUtil.factorial(35).toString());
 	}
 }
