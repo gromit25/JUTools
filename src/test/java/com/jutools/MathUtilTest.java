@@ -1,8 +1,9 @@
 package com.jutools;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import org.junit.Test;
