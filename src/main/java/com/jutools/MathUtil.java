@@ -818,7 +818,6 @@ public class MathUtil {
 	 * @return 팩토리얼 결과
 	 */
 	public static BigDecimal factorial(int n) throws Exception {
-
 		return factorial(n, 1);
 	}
 	
@@ -830,19 +829,6 @@ public class MathUtil {
 	 * @return 순열 경우의 수
 	 */
 	public static BigDecimal permutation(int n, int r) throws Exception {
-		
-		if(n <= 0) {
-			throw new IllegalArgumentException("n must be greater than 0:" + n);
-		}
-		
-		if(r <= 0) {
-			throw new IllegalArgumentException("r must be greater than 0:" + r);
-		}
-		
-		if(n < r) {
-			throw new IllegalArgumentException("n(" + n +") must be greater than r(" + r + ")");
-		}
-		
 		return factorial(n, n - r + 1);
 	}
 	
