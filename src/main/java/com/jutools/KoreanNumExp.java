@@ -7,7 +7,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public class KoreanUnit {
+public class KoreanNumExp {
 	
 	/**
 	 * 
