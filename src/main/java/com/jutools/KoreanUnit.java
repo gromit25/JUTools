@@ -94,5 +94,22 @@ public class KoreanUnit {
 			this.value = value;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public static String toKorean(int n) throws Exception {
+		
+		// 주어진 숫자의 부호
+		// 숫자를 한글로 변환 후 부호표시를 위함 
+		int sign = MathUtil.sign(n);
+		
+		// 양수로 변환, 음수라면 sign이 -1 이 되기 때문에 음수 * -1 이 되어 양수가 됨
+		// 한글로 변환하기 위함
+		n = sign * n;
+		
+		return null;
+	}
 }
