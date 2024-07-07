@@ -315,7 +315,7 @@ public class KoreanNumExp {
 	 * ex) n: "오만육천칠백팔십구", space: "" -> 56789<br>
 	 *     n: "백오십만 십", space: " " -> 1500010 
 	 * 
-	 * @param koreanExp 변환할 숫자
+	 * @param koreanExp 변환할 숫자 한글 표현
 	 * @param space 만단위 띄어쓴 문자열 
 	 * @return 변환된 숫자
 	 */
@@ -339,10 +339,10 @@ public class KoreanNumExp {
 			return 0L;
 		}
 		
-		//
+		// 변환할 숫자 한글 표현에서 파싱 트리를 생성
 		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp);
 		
-		//
+		// 파싱 트리의 내용을 가져와 실행
 		List<AbstractNode> nodes =  root.travelPostOrder();
 		Stack<Long> stack = new Stack<>();
 		
@@ -350,6 +350,7 @@ public class KoreanNumExp {
 			node.execute(stack);
 		}
 		
+		// 파싱 트리 실행 결과 반환
 		return stack.pop();
 	}
 	
