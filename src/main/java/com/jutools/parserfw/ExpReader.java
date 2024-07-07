@@ -52,11 +52,12 @@ public class ExpReader extends PushbackReader {
 	@Override
 	public int read() throws IOException {
 		
-		this.pos++;
-		
 		try {
 			
-			return super.read();
+			int read = super.read();
+			if(read != -1) this.pos++;
+			
+			return read;
 			
 		} catch(IOException ioex) {
 			
