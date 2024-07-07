@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import com.jutools.parserfw.ExpReader;
 import com.jutools.parserfw.TreeNode;
+import com.jutools.parserfw.exception.ParseException;
 
 import lombok.Getter;
 
@@ -473,7 +474,14 @@ public class KoreanNumExp {
 	 */
 	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader) throws Exception {
 		
-		//
+		// 천단위 파싱트리 생성 이후, 만단위 파싱트리를 추가함
+		// ex) "삼백이십만" -> "삼백이십" 파싱트리 생성 후, "만"에 대한 파싱트리를 추가함
+		
+		// 천단위 파싱트리 생성
+		// ex) "삼백이십" -> "삼백"에 대한 파싱 트리 생성, "이십"에 대한 파싱 트리 생성
+		//                 두 파싱 트리를 ADD의 자식 트리로 만듦
+		
+		// 상기 예에서 "삼백" 에 대한 파싱 트리 생성
 		TreeNode<AbstractNode> root = parseThousand(reader);
 		
 		int read = -1;
@@ -481,14 +489,15 @@ public class KoreanNumExp {
 			
 			reader.unread(read);
 			
-			//
+			// 상기 예에서 "이십"에 대한 파싱 트리 생성
 			TreeNode<AbstractNode> node = parseThousand(reader);
-			//
+			// 파싱 트리가 없는 경우, 만단위 문자일 수 있으니 종료
 			if(node == null) {
 				break;
 			}
 			
-			//
+			// 상기 예에서 "삼백" 파싱 트리와 "이십" 파싱 트리를 ADD의 자식 노드로 만들고,
+			// root 노드는 최상위 root인 ADD node를 보도록 함
 			TreeNode<AbstractNode> add = new TreeNode<>(new ADD());
 			
 			add.addChild(root);
@@ -497,7 +506,18 @@ public class KoreanNumExp {
 			root = add;
 		}
 		
-		//
+		// 만단위는 숫자 없이 존재할 수 없음
+		// 예를 들어) 만이천오백(X), 일만이천오백(O)
+		//         억이천(X), 일억이천(O)
+		//         조삼백억(X), 일조삼백억(O)
+		if(root == null) {
+			read = reader.read();
+			throw new ParseException(reader.getPos(), (char)read, "NONE");
+		}
+		
+		// 만단위 파싱 트리 추가
+		// MUL 노드 이하에 천단위 파싱 트리에 만단위 파싱 트리를 추가함
+		// ex) "삼백이십만" = "삼백이십" * "만" 임
 		read = reader.read();
 		if(read != -1) {
 			

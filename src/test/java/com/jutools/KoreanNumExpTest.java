@@ -84,44 +84,54 @@ public class KoreanNumExpTest {
 	}
 	
 	@Test
-	public void testToLong1() throws Exception {
+	public void testToLong1_1() throws Exception {
 		long result = KoreanNumExp.toLong("십이", "");
 		assertEquals(12, result);
 	}
 	
 	@Test
-	public void testToLong2() throws Exception {
+	public void testToLong1_2() throws Exception {
 		long result = KoreanNumExp.toLong("삼백이십일", "");
 		assertEquals(321, result);
 	}
 	
 	@Test
-	public void testToLong3() throws Exception {
+	public void testToLong1_3() throws Exception {
 		long result = KoreanNumExp.toLong("천이백삼십사", "");
 		assertEquals(1234, result);
 	}
 	
 	@Test
-	public void testToLong4() throws Exception {
+	public void testToLong1_4() throws Exception {
 		long result = KoreanNumExp.toLong("오만육천칠백팔십구", "");
 		assertEquals(56789, result);
 	}
 	
 	@Test
-	public void testToLong5() throws Exception {
+	public void testToLong1_5() throws Exception {
 		long result = KoreanNumExp.toLong("오십만", "");
 		assertEquals(500000, result);
 	}
 	
 	@Test
-	public void testToLong6() throws Exception {
+	public void testToLong1_6() throws Exception {
 		long result = KoreanNumExp.toLong("십일만천백십일", "");
 		assertEquals(111111, result);
 	}
 	
 	@Test
-	public void testToLong10() throws Exception {
+	public void testToLong1_10() throws Exception {
 		long result = KoreanNumExp.toLong("구백이십이경삼천삼백칠십이조삼백육십팔억오천사백칠십칠만오천팔백칠", "");
 		assertEquals(9223372036854775807L, result);
+	}
+	
+	@Test
+	public void testToLong2_1() throws Exception {
+		KoreanNumExp.toLong("테스트", "");
+	}
+	
+	@Test
+	public void testToLong2_2() throws Exception {
+		KoreanNumExp.toLong("십이테스트", "");
 	}
 }
