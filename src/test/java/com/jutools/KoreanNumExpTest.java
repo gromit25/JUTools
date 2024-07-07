@@ -121,8 +121,8 @@ public class KoreanNumExpTest {
 	
 	@Test
 	public void testToLong1_10() throws Exception {
-		long result = KoreanNumExp.toLong("구백이십이경삼천삼백칠십이조삼백육십팔억오천사백칠십칠만오천팔백칠", "");
-		assertEquals(9223372036854775807L, result);
+		long result = KoreanNumExp.toLong("마이너스 구백이십이경삼천삼백칠십이조삼백육십팔억오천사백칠십칠만오천팔백칠", "");
+		assertEquals(-9223372036854775807L, result);
 	}
 	
 	@Test
