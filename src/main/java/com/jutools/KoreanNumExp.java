@@ -348,7 +348,7 @@ public class KoreanNumExp {
 		}
 		
 		// 변환할 숫자 한글 표현에서 파싱 트리를 생성
-		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp);
+		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp, space);
 		
 		// 파싱 트리의 내용을 가져와 실행
 		List<AbstractNode> nodes =  root.travelPostOrder();
@@ -360,6 +360,18 @@ public class KoreanNumExp {
 		
 		// 파싱 트리 실행 결과 반환
 		return stack.pop() * sign;
+	}
+	
+	/**
+	 * 주어진 문자열을 숫자로 변환
+	 * ex) n: "오만육천칠백팔십구" -> 56789<br>
+	 *     n: "백오십만십" -> 1500010 
+	 * 
+	 * @param koreanExp 변환할 숫자 한글 표현 
+	 * @return 변환된 숫자
+	 */
+	public static long toLong(String koreanExp) throws Exception {
+		return toLong(koreanExp, "");
 	}
 	
 	//---------------------------
@@ -451,13 +463,13 @@ public class KoreanNumExp {
 	 * @param koreanExp
 	 * @return
 	 */
-	private static TreeNode<AbstractNode> parseKoreanExp(String koreanExp) throws Exception {
+	private static TreeNode<AbstractNode> parseKoreanExp(String koreanExp, String space) throws Exception {
 		
 		//
 		ExpReader reader = new ExpReader(koreanExp);
 		
 		//
-		TreeNode<AbstractNode> root = parseTenThousand(reader);
+		TreeNode<AbstractNode> root = parseTenThousand(reader, space);
 		
 		int read = -1;
 		while((read = reader.read()) != -1) {
@@ -468,7 +480,7 @@ public class KoreanNumExp {
 			TreeNode<AbstractNode> add = new TreeNode<>(new ADD());
 			
 			add.addChild(root);
-			add.addChild(parseTenThousand(reader));
+			add.addChild(parseTenThousand(reader, space));
 			
 			root = add;
 		}
@@ -481,7 +493,7 @@ public class KoreanNumExp {
 	 * @param reader
 	 * @return
 	 */
-	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader) throws Exception {
+	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader, String space) throws Exception {
 		
 		// 천단위 파싱트리 생성 이후, 만단위 파싱트리를 추가함
 		// ex) "삼백이십만" -> "삼백이십" 파싱트리 생성 후, "만"에 대한 파싱트리를 추가함
@@ -541,6 +553,37 @@ public class KoreanNumExp {
 				mul.addChild(new TreeNode<>(new LOAD(tenThousandUnit.getFactor())));
 				
 				root = mul;
+			}
+		}
+		
+		//
+		if(StringUtil.isEmpty(space) == false) {
+			
+			boolean matched = true;
+			
+			int index = 0;
+			while((read = reader.read()) != -1) {
+				
+				//
+				if(index >= space.length()) {
+					
+					reader.unread(read);
+					
+					matched = true;
+					break;
+				}
+				
+				//
+				if((char)read != space.charAt(index)) {
+					matched = false;
+					break;
+				}
+				
+				index++;
+			}
+			
+			if(matched == false) {
+				throw new ParseException(reader.getPos(), (char)read, "NONE");
 			}
 		}
 		
