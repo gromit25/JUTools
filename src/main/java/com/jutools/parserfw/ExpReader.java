@@ -3,6 +3,7 @@ package com.jutools.parserfw;
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.Reader;
+import java.io.StringReader;
 
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-class ExpReader extends PushbackReader {
+public class ExpReader extends PushbackReader {
 	
 	/** 현재 읽고 있는 위치 */
 	@Getter
@@ -26,6 +27,15 @@ class ExpReader extends PushbackReader {
 	public ExpReader(Reader in) {
 		super(in);
 		this.pos = 0;
+	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param in 입력 문자열
+	 */
+	public ExpReader(String in) {
+		this(new StringReader(in));
 	}
 	
 	/**
