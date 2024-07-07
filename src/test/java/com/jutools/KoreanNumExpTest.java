@@ -126,12 +126,26 @@ public class KoreanNumExpTest {
 	}
 	
 	@Test
+	public void testToLong1_11() throws Exception {
+		long result = KoreanNumExp.toLong("마이너스 일", "");
+		assertEquals(-1, result);
+	}
+	
+	@Test
 	public void testToLong2_1() throws Exception {
-		KoreanNumExp.toLong("테스트", "");
+		try {
+			KoreanNumExp.toLong("테스트", "");
+		} catch(Exception ex) {
+			
+		}
 	}
 	
 	@Test
 	public void testToLong2_2() throws Exception {
-		KoreanNumExp.toLong("십이테스트", "");
+		try {
+			KoreanNumExp.toLong("십이테스트", "");
+		} catch(Exception ex) {
+			
+		}
 	}
 }

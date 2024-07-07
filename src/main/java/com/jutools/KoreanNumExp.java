@@ -339,6 +339,14 @@ public class KoreanNumExp {
 			return 0L;
 		}
 		
+		// 부호 변수
+		int sign = 1;
+		if(koreanExp.startsWith(MINUS_KOREAN_EXP) == true) {
+			sign = -1;
+			// 부호 문자열 삭제
+			koreanExp = koreanExp.substring(MINUS_KOREAN_EXP.length(), koreanExp.length());
+		}
+		
 		// 변환할 숫자 한글 표현에서 파싱 트리를 생성
 		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp);
 		
@@ -351,7 +359,7 @@ public class KoreanNumExp {
 		}
 		
 		// 파싱 트리 실행 결과 반환
-		return stack.pop();
+		return stack.pop() * sign;
 	}
 	
 	//---------------------------
