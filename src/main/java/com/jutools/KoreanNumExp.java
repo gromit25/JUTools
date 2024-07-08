@@ -379,7 +379,7 @@ public class KoreanNumExp {
 	/* 파싱 트리 관련 클래스 선언               */
 	
 	/**
-	 * 
+	 * 파싱 트리의 추상 연산자 노드 
 	 * 
 	 * @author jmsohn
 	 */
@@ -388,12 +388,13 @@ public class KoreanNumExp {
 	}
 
 	/**
+	 * 설정된 값(value)를 스택으로 로딩하는 연산자 클래스
 	 * 
 	 * @author jmsohn
 	 */
 	static class LOAD extends AbstractNode {
 		
-		/** */
+		/** 스택에 로드할 값 */
 		private long value;
 		
 		/**
@@ -407,6 +408,7 @@ public class KoreanNumExp {
 		
 		@Override
 		void execute(Stack<Long> stack) {
+			// 스택에 로드
 			stack.push(this.value);
 		}
 		
@@ -417,7 +419,7 @@ public class KoreanNumExp {
 	}
 	
 	/**
-	 * 
+	 * 스택의 두 값을 더하여 결과를 스택에 넣는 연산자 클래스 
 	 * 
 	 * @author jmsohn
 	 */
@@ -425,9 +427,12 @@ public class KoreanNumExp {
 
 		@Override
 		void execute(Stack<Long> stack) {
+			
+			// 스택에서 두값을 인출함
 			long p1 = stack.pop();
 			long p2 = stack.pop();
 			
+			// 인출한 두값을 더하여 다시 스택에 넣음
 			stack.push(p1 + p2);
 		}
 		
@@ -438,6 +443,7 @@ public class KoreanNumExp {
 	}
 	
 	/**
+	 * 스택의 두 값을 곱하여 결과를 스택에 넣는 연산자 클래스 
 	 * 
 	 * @author jmsohn
 	 */
@@ -445,9 +451,12 @@ public class KoreanNumExp {
 
 		@Override
 		void execute(Stack<Long> stack) {
+			
+			// 스택에서 두값을 인출함
 			long p1 = stack.pop();
 			long p2 = stack.pop();
 			
+			// 인출한 두값을 곱하여 다시 스택에 넣음
 			stack.push(p1 * p2);
 		}
 		
