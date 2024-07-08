@@ -467,25 +467,30 @@ public class KoreanNumExp {
 	}
 	
 	/**
-	 *
+	 * 숫자 한글 표현식을 숫자로 변환
 	 * 
-	 * @param koreanExp
-	 * @return
+	 * @param koreanExp 숫자로 변환할 숫자 한글 표현식
+	 * @return 변환된 숫자
 	 */
 	private static TreeNode<AbstractNode> parseKoreanExp(String koreanExp, String space) throws Exception {
 		
-		//
+		// 숫자 한글 표현식의 Reader 객체 생성
 		ExpReader reader = new ExpReader(koreanExp);
 		
-		//
+		// 만단위 파싱 트리 생성
+		// -> "십만천" 이면, "십만"을 먼저 파싱함
 		TreeNode<AbstractNode> root = parseTenThousand(reader, space);
-		
+
+		// 다음 만단위 트리 파싱
+		// -> "십만천" = "십만" + "천" 이기 때문에
+		//    이전에 root 노드는 "십만"의 root 노드 임
+		//    따라서, "천"에 대한 파싱 트리를 생성 후 
+		//    기존 root 노드에 "천"의 파싱 트리를 더하면 됨
 		int read = -1;
 		while((read = reader.read()) != -1) {
 			
 			reader.unread(read);
 			
-			//
 			TreeNode<AbstractNode> add = new TreeNode<>(new ADD());
 			
 			add.addChild(root);
@@ -494,10 +499,13 @@ public class KoreanNumExp {
 			root = add;
 		}
 		
+		// 최종 파싱 트리를 반환
 		return root;
 	}
 	
 	/**
+	 * 만단위 파싱 트리 생성
+	 * 
 	 * 
 	 * @param reader
 	 * @return
