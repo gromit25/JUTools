@@ -316,7 +316,7 @@ public class KoreanNumExp {
 	 *     n: "백오십만 십", space: " " -> 1500010 
 	 * 
 	 * @param koreanExp 변환할 숫자 한글 표현
-	 * @param space 만단위 띄어쓴 문자열 
+	 * @param space 만단위 띄어쓰기 문자열 
 	 * @return 변환된 숫자
 	 */
 	public static long toLong(String koreanExp, String space) throws Exception {
@@ -508,6 +508,7 @@ public class KoreanNumExp {
 	 * 
 	 * 
 	 * @param reader
+	 * @param space 만단위 띄어쓰기 문자열
 	 * @return
 	 */
 	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader, String space) throws Exception {
@@ -573,7 +574,7 @@ public class KoreanNumExp {
 			}
 		}
 		
-		//
+		// 만단위 띄어쓰기 문자열 검사
 		if(StringUtil.isEmpty(space) == false) {
 			
 			boolean matched = true;
@@ -581,7 +582,7 @@ public class KoreanNumExp {
 			int index = 0;
 			while((read = reader.read()) != -1) {
 				
-				//
+				// 모든 만단위 띄어쓰기가 만족하는 경우
 				if(index >= space.length()) {
 					
 					reader.unread(read);
@@ -590,7 +591,7 @@ public class KoreanNumExp {
 					break;
 				}
 				
-				//
+				// 만일, 현재 읽은 문자와 만단위 띄어쓰기 문자가 일치 하지 않는 경우
 				if((char)read != space.charAt(index)) {
 					matched = false;
 					break;
@@ -599,11 +600,13 @@ public class KoreanNumExp {
 				index++;
 			}
 			
+			// 만단위 띄어쓰기 문자열과 입력된 문자열이 일치 하지 않는 경우 예외 발생 시킴
 			if(matched == false) {
 				throw new ParseException(reader.getPos(), (char)read, "NONE");
 			}
 		}
 		
+		// 모든 검사가 이상없으며, 파싱트리가 정상적으로 생성된 경우 파싱 트리의 root node를 반환함
 		return root;
 	}
 	
