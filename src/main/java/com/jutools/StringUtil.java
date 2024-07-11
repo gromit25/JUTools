@@ -24,7 +24,8 @@ import lombok.Getter;
 public class StringUtil {
 	
 	/**
-	 * 주어진 문자열에 대한 이스케이프 처리
+	 * 주어진 문자열에 대한 이스케이프 처리<br>
+	 * ex) "ab\\tc" -> "ab\tc"
 	 * 
 	 * @param str 주어진 문자열
 	 * @return 이스케이프 처리된 문자열
@@ -132,7 +133,8 @@ public class StringUtil {
 	
 	/**
 	 * 문자열 내에 null(\0)가 포함 여부 반환<br>
-	 * 포함되어 있을 경우 true
+	 * 포함되어 있을 경우 true<br>
+	 * ex) "test.jsp\0.doc" 일 경우 true
 	 * 
 	 * @param contents 문자열
 	 * @return null(\0) 포함 여부
@@ -184,11 +186,11 @@ public class StringUtil {
 		
 		// 입력값 검증
 		if(contents == null) {
-			throw new NullPointerException("contents is null");
+			throw new NullPointerException("contents is null.");
 		}
 		
 		if(findStrs == null) {
-			throw new NullPointerException("findStrs is null");
+			throw new NullPointerException("findStrs is null.");
 		}
 		
 		if(findStrs.length == 0) {
@@ -262,7 +264,7 @@ public class StringUtil {
 		}
 		
 		/**
-		 * 입력된 문자에 대해 검색 수행
+		 * 입력된 문자에 대해 검색 수행<br>
 		 * -> 한문자씩 확인 작업 수행
 		 * 
 		 * @param index 검색 대상 문자열내에 현재 위치
@@ -321,7 +323,9 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 문자열 내에 검색할 문자열이 하나라도 있는지 확인하는 메소드
+	 * 문자열 내에 검색할 문자열이 하나라도 있는지 확인하는 메소드<br>
+	 * ex) contents: "Hello, world", findStrs: {"abc", "world"} 일 경우<br>
+	 *     "world"가 포함되어 있으므로 true를 반환
 	 * 
 	 * @param contents 문자열
 	 * @param ignoreCase 대소문자 구분 여부(true - 구분하지 않음, false - 구분함)
@@ -345,7 +349,8 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 여러 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드
+	 * 여러 문자열을 구분자(delimiter)를 넣어 이어 붙히는 메소드<br>
+	 * ex) delimiter: ",", strs: {"abc", "def"} -> "abc,def"
 	 * 
 	 * @param delimiter 문자열 목록 사이에 추가할 구분자(null 일경우 "")
 	 * @param strs 문자열들
@@ -403,7 +408,8 @@ public class StringUtil {
 	}
 	
 	/**
-	 * int 배열을 구분자(delimiter)를 넣어 문자열로 만드는 메소드
+	 * int 배열을 구분자(delimiter)를 넣어 문자열로 만드는 메소드<br>
+	 * delimiter: ",", array: {1,2,3} -> "1,2,3"
 	 * 
 	 * @param delimiter int 목록 사이에 추가할 구분자(null 일경우 "")
 	 * @param array 문자열로 변환할 int 배열
@@ -435,7 +441,9 @@ public class StringUtil {
 	
 	/**
 	 * 문자열의 길이를 반환하는 메소드<br>
-	 * -> 주어진 문자열이 null 일 경우 0을 반환함
+	 * -> 주어진 문자열이 null 일 경우 0을 반환함<br>
+	 * ex) "abc" 일 경우, 3을 반환<br>
+	 *     "" 일 경우, 0을 반환
 	 * 
 	 * @param str 문자열
 	 * @return 문자열의 길이
@@ -467,7 +475,7 @@ public class StringUtil {
 	
 	/**
 	 * 문자열이 공란으로 이루어져 있는지 반환하는 메소드<br>
-	 * -> 주어진 문자열이 null 일 경우 true를 반환함
+	 * -> 주어진 문자열이 null이거나 "", "   ", "\t  " 등은 true를 반환함
 	 * 
 	 * @param str 문자열
 	 * @return 문자열이 공란으로 이루어져 있는지 여부
