@@ -2,9 +2,6 @@ package com.jutools;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
 import org.junit.Test;
 
 import com.jutools.xml.XMLArray;
@@ -97,7 +94,7 @@ public class XMLUtilTest {
 		
 		for(String isbn: isbns) {
 			
-			int count = books.select("isbn(#text='" + isbn + "')").size();
+			int count = books.select("book>isbn(#text='" + isbn + "')").size();
 			
 			if(count == 0) {
 				return false;
@@ -111,7 +108,7 @@ public class XMLUtilTest {
 	public void testSelect1() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_TEXT.getBytes()))
+				.fromString(XML_TEXT)
 				.select("book");
 		
 		assertTrue(checkISBNs(books, "0001", "0002", "0003", "0004", "0005", "0006", "0007"));
@@ -121,7 +118,7 @@ public class XMLUtilTest {
 	public void testSelect2() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_TEXT.getBytes()))
+				.fromString(XML_TEXT)
 				.select("book(category='역사')");
 		
 		assertTrue(checkISBNs(books, "0001", "0002", "0007"));
@@ -131,7 +128,7 @@ public class XMLUtilTest {
 	public void testSelect3() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_TEXT.getBytes()))
+				.fromString(XML_TEXT)
 				.select("book(category=w'역?')");
 		
 		assertTrue(checkISBNs(books, "0001", "0002", "0007"));
@@ -141,7 +138,7 @@ public class XMLUtilTest {
 	public void testSelect4() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_TEXT.getBytes()))
+				.fromString(XML_TEXT)
 				.select("book(category=p'컴.{4}')");
 		
 		assertTrue(checkISBNs(books, "0006"));
@@ -152,7 +149,7 @@ public class XMLUtilTest {
 	public void testSelect999() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_TEXT.getBytes()))
+				.fromString(XML_TEXT)
 				.select("book > author(#text='일\\'연')")
 				.getParents();
 		
@@ -163,7 +160,7 @@ public class XMLUtilTest {
 	public void test() throws Exception {
 		
 		XMLArray printNodes = XMLUtil
-					.getRootNode(new File("resources/publisher/testformat.xml"))
+					.fromFile("resources/publisher/testformat.xml")
 					.select("foreach>style>print");
 		
 		for(XMLNode node: printNodes) {
@@ -175,7 +172,7 @@ public class XMLUtilTest {
 	public void test1() throws Exception {
 		
 		XMLNode rootNode = XMLUtil
-					.getRootNode(new File("resources/publisher/testformat.xml"));
+					.fromFile("resources/publisher/testformat.xml");
 
 		System.out.println(rootNode.getText());
 	}
@@ -184,7 +181,7 @@ public class XMLUtilTest {
 	public void testNamespace1() throws Exception {
 		
 		XMLArray books = XMLUtil
-				.getRootNode(new ByteArrayInputStream(XML_NAMESPACE_TEXT.getBytes()))
+				.fromString(XML_NAMESPACE_TEXT)
 				.select("ns:book");
 
 		System.out.println(books.getFirst());

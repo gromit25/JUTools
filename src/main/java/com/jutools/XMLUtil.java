@@ -1,9 +1,11 @@
 package com.jutools;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,18 +26,51 @@ import com.jutools.xml.XMLNode;
 public class XMLUtil {
 	
 	/**
+	 * xml 문자열에서 root node를 읽어옴
+	 * 
+	 * @param xmlStr xml 문자열
+	 * @param charSet xml 문자열의 character set
+	 * @return root node 객체
+	 */
+	public static XMLNode fromString(String xmlStr, Charset charSet) throws Exception {
+		
+		// 입력값 검증
+		if(StringUtil.isBlank(xmlStr) == true) {
+			throw new IllegalArgumentException("xml string is blank.");
+		}
+		
+		if(charSet == null) {
+			throw new IllegalArgumentException("character set is null.");
+		}
+		
+		// xml 문자열을 InputStream으로 변환 및 파싱하여 root node를 반환 
+		return fromInputStream(new ByteArrayInputStream(xmlStr.getBytes(charSet)));
+	}
+	
+	/**
+	 * xml 문자열에서 root node를 읽어옴
+	 * 
+	 * @param xmlStr xml 문자열
+	 * @return root node 객체
+	 */
+	public static XMLNode fromString(String xmlStr) throws Exception {
+		
+		return fromString(xmlStr, Charset.defaultCharset());
+	}
+	
+	/**
 	 * xml 파일에서 root node를 읽어옴
 	 * 
 	 * @param fileName xml 파일명
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(String fileName) throws Exception {
+	public static XMLNode fromFile(String fileName) throws Exception {
 		
-		if(StringUtil.isEmpty(fileName) == true) {
-			throw new IllegalArgumentException("file name is empty.");
+		if(StringUtil.isBlank(fileName) == true) {
+			throw new IllegalArgumentException("file name is blank.");
 		}
 		
-		return getRootNode(new File(fileName));
+		return fromFile(new File(fileName));
 	}
 	
 	/**
@@ -44,7 +79,7 @@ public class XMLUtil {
 	 * @param file xml 파일 객체
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(File file) throws Exception {
+	public static XMLNode fromFile(File file) throws Exception {
 		
 		if(file == null) {
 			throw new NullPointerException("file is null.");
@@ -54,7 +89,7 @@ public class XMLUtil {
 			throw new Exception("can't read file:" + file.getAbsolutePath());
 		}
 		
-		return getRootNode(new FileInputStream(file));
+		return fromInputStream(new FileInputStream(file));
 	}
 	
 	/**
@@ -63,8 +98,8 @@ public class XMLUtil {
 	 * @param conn HTTPS 연결
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(HttpsURLConnection conn) throws Exception {
-		return getRootNode((HttpURLConnection)conn);
+	public static XMLNode fromHTTPS(HttpsURLConnection conn) throws Exception {
+		return fromHTTP((HttpURLConnection)conn);
 	}
 	
 	/**
@@ -73,7 +108,7 @@ public class XMLUtil {
 	 * @param conn HTTP 연결
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(HttpURLConnection conn) throws Exception {
+	public static XMLNode fromHTTP(HttpURLConnection conn) throws Exception {
 		
 		if(conn == null) {
 			throw new NullPointerException("http connection is null");
@@ -84,7 +119,7 @@ public class XMLUtil {
 			throw new Exception("http response code is not valid: " + responseCode);
 		}
 		
-		return getRootNode(conn.getInputStream());
+		return fromInputStream(conn.getInputStream());
 	}
 	
 	/**
@@ -93,7 +128,7 @@ public class XMLUtil {
 	 * @param is xml 입력스트림
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(InputStream is) throws Exception {
+	public static XMLNode fromInputStream(InputStream is) throws Exception {
 		
 		if(is == null) {
 			throw new NullPointerException("input stream is null.");
@@ -103,7 +138,7 @@ public class XMLUtil {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(is);
 		
-		return getRootNode(doc);
+		return fromXMLDocument(doc);
 	}
 	
 	/**
@@ -112,7 +147,7 @@ public class XMLUtil {
 	 * @param doc xml dom의 document 객체
 	 * @return root node 객체
 	 */
-	public static XMLNode getRootNode(Document doc) throws Exception {
+	public static XMLNode fromXMLDocument(Document doc) throws Exception {
 		
 		if(doc == null) {
 			throw new NullPointerException("document obj is null.");
@@ -130,7 +165,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(String fileName, String query) throws Exception {
-		return getRootNode(new File(fileName)).select(query);  
+		return fromFile(new File(fileName)).select(query);  
 	}
 	
 	/**
@@ -141,7 +176,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(File file, String query) throws Exception {
-		return getRootNode(file).select(query);
+		return fromFile(file).select(query);
 	}
 	
 	/**
@@ -152,7 +187,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(HttpsURLConnection conn, String query) throws Exception {
-		return getRootNode(conn).select(query);
+		return fromHTTPS(conn).select(query);
 	}
 	
 	/**
@@ -163,7 +198,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(HttpURLConnection conn, String query) throws Exception {
-		return getRootNode(conn).select(query);
+		return fromHTTP(conn).select(query);
 	}
 	
 	/**
@@ -174,7 +209,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(InputStream is, String query) throws Exception {
-		return getRootNode(is).select(query);
+		return fromInputStream(is).select(query);
 	}
 	
 	/**
@@ -185,7 +220,7 @@ public class XMLUtil {
 	 * @return query 조회 결과
 	 */
 	public static XMLArray select(Document doc, String query) throws Exception {
-		return getRootNode(doc).select(query);
+		return fromXMLDocument(doc).select(query);
 	}
 	
 	/**
