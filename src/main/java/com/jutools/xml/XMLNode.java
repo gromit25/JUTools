@@ -135,7 +135,7 @@ public class XMLNode {
 	 * @param attrName 속성 명
 	 * @return 속성 값
 	 */
-	public String getAttribute(String attrName) throws Exception {
+	public String getAttributeValue(String attrName) throws Exception {
 		return this.node.getAttribute(attrName);
 	}
 	
@@ -194,5 +194,41 @@ public class XMLNode {
 	 */
 	public XMLArray getChilds() throws Exception {
 		return this.select("*");
+	}
+	
+	/**
+	 * XML 노드 객체의 정보를 문자열로 변환 
+	 * 
+	 * @return XML 노드 객체 문자열
+	 */
+	@Override
+	public String toString() {
+		
+		// 객체 정보를 문자열로 변환을 위한 임시 버퍼 변수
+		StringBuilder builder = new StringBuilder();
+		
+		try {
+			
+			// 테그명 출력
+			builder.append("TAG: ").append(this.getTagName());
+			
+			// 각 속성 출력
+			for(String attrName: this.getAttributeNames()) {
+				
+				// 속성별 속성값 가져옴
+				String attrValue = this.getAttributeValue(attrName);
+				
+				// 속성 출력
+				builder.append("\t").append(attrName).append(": ").append(attrValue).append("\n");
+			}
+			
+		} catch(Exception ex) {
+			
+			// 예외 발생시 오류 메시지 반환
+			return "Exception Occured:" + ex.getMessage();
+		}
+		
+		// 변환된 문자열 반환
+		return builder.toString();
 	}
 }

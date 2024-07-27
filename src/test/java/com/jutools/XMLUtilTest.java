@@ -144,6 +144,15 @@ public class XMLUtilTest {
 		assertTrue(checkISBNs(books, "0006"));
 	}
 
+	@Test
+	public void testToString1() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book(category=p'컴.{4}')");
+		
+		System.out.println(books.getFirst());
+	}
 
 	@Test
 	public void testSelect999() throws Exception {
@@ -164,7 +173,7 @@ public class XMLUtilTest {
 					.select("foreach>style>print");
 		
 		for(XMLNode node: printNodes) {
-			System.out.println(node.getAttribute("exp"));
+			System.out.println(node.getAttributeValue("exp"));
 		}
 	}
 	
