@@ -331,8 +331,7 @@ System.out.println(cache.get("test1"));  // "test1 value" 가 출력됨
 ```java
 XMLArray books = XMLUtil
     .fromFile("C:\\test.xml")
-    .select("book > auth*(#text='일연')") // book 테그 이하에 author 테그 중 "일연"을 찾아 반환   
-    .getParents(); 
+    .select("book > auth*(#text='일연')"); // book 테그 이하에 author 테그 중 "일연"을 찾아 반환    
 
 // book 테그의 title에 설정된 text 출력
 for(XMLNode book: books) {
