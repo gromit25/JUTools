@@ -330,7 +330,7 @@ System.out.println(cache.get("test1"));  // "test1 value" 가 출력됨
 
 ```java
 XMLArray books = XMLUtil
-    .getRootNode("C:\\test.xml")
+    .fromFile("C:\\test.xml")
     .select("book > auth*(#text='일연')") // book 테그 이하에 author 테그 중 "일연"을 찾아 반환   
     .getParents(); 
 
