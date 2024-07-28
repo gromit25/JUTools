@@ -17,12 +17,20 @@ import com.jutools.StringUtil;
  */
 class NodeMatcher {
 	
+	// --------- 상수 선언 ---------------
+	
 	/** 테그명 쿼리의 패턴 문자열 */
 	private static String TAG_P = "[a-zA-Z_\\:\\*\\?][a-zA-Z0-9_\\:\\-\\*\\?]*";
+	
+	/** 배열 패턴 문자열 */
+	private static String ARRAY_P = "\\[[0-9]+(\\-[0-9]+)\\]";
 
 	/** 테그 쿼리 전체 패턴 문자열 */
 	private static String QUERY_P = "(?<tag>" + TAG_P + ")"
+			+ "(?<array>" + ARRAY_P + ")?"
 			+ "\\s*(?<attrs>\\(\\s*" + AttrMatcher.ATTR_P + "\\s*(\\,\\s*" + AttrMatcher.ATTR_P + ")*\\))?\\s*";
+	
+	// --------- 멤버 변수 선언 ---------------
 	
 	/** 테그명 query */
 	private String tagNameQuery;
@@ -65,7 +73,7 @@ class NodeMatcher {
 	 */
 	boolean match(Element node) throws Exception {
 		
-		// 테그명이 매치되는지 검사
+		// ------ 테그명 매치 검사 ---------
 		String tagName = node.getNodeName();
 		boolean isTagMatched = StringUtil.matchWildcard(tagName, this.tagNameQuery);
 		
@@ -73,7 +81,8 @@ class NodeMatcher {
 			return false;
 		}
 		
-		// 속성이 매치되는지 검사
+		// ------ 속성 매치 검사 ---------
+		// 각 속성 별 매치 여부 검사 - 전체 속성이 매치되어야 함
 		boolean isAttrMatched = true;
 		for(AttrMatcher attrMatcher: this.attrMatchers) {
 			
