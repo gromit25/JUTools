@@ -1,5 +1,6 @@
 package com.jutools;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -90,18 +91,15 @@ public class XMLUtilTest {
 	 * 
 	 * @param books
 	 */
-	private static boolean checkISBNs(XMLArray books, String... isbns) throws Exception {
+	private static String makeISBNs(XMLArray books) throws Exception {
 		
-		for(String isbn: isbns) {
-			
-			int count = books.select("book>isbn(#text='" + isbn + "')").size();
-			
-			if(count == 0) {
-				return false;
-			}
+		StringBuilder isbns = new StringBuilder("");
+		
+		for(XMLNode isbnNode: books.select("book>isbn")) {
+			isbns.append(isbnNode.getText()).append(",");
 		}
-
-		return true;
+		
+		return isbns.toString();
 	}
 	
 	@Test
@@ -111,7 +109,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.select("book");
 		
-		assertTrue(checkISBNs(books, "0001", "0002", "0003", "0004", "0005", "0006", "0007"));
+		assertEquals("0001,0002,0003,0004,0005,0006,0007,", makeISBNs(books));
 	}
 
 	@Test
@@ -121,7 +119,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.select("book(category='역사')");
 		
-		assertTrue(checkISBNs(books, "0001", "0002", "0007"));
+		assertEquals("0001,0002,0007,", makeISBNs(books));
 	}
 	
 	@Test
@@ -130,8 +128,8 @@ public class XMLUtilTest {
 		XMLArray books = XMLUtil
 				.fromString(XML_TEXT)
 				.select("book(category=w'역?')");
-		
-		assertTrue(checkISBNs(books, "0001", "0002", "0007"));
+
+		assertEquals("0001,0002,0007,", makeISBNs(books));
 	}
 	
 	@Test
@@ -140,8 +138,58 @@ public class XMLUtilTest {
 		XMLArray books = XMLUtil
 				.fromString(XML_TEXT)
 				.select("book(category=p'컴.{4}')");
+
+		assertEquals("0006,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testSelectArray1() throws Exception {
 		
-		assertTrue(checkISBNs(books, "0006"));
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book[0-2]");
+
+		assertEquals("0001,0002,0003,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testSelectArray2() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book[2-5]");
+
+		assertEquals("0003,0004,0005,0006,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testSelectArray3() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book[6-30]");
+
+		assertEquals("0007,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testSelectArray4() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book[0-2](category='역사')");
+		
+		assertEquals("0001,0002,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testSelectArray5() throws Exception {
+		
+		XMLArray books = XMLUtil
+				.fromString(XML_TEXT)
+				.select("book[1](category='역사')");
+
+		assertEquals("0002,", makeISBNs(books));
 	}
 
 	@Test
@@ -161,8 +209,8 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.select("book > author(#text='일\\'연')")
 				.getParents();
-		
-		assertTrue(checkISBNs(books, "0007"));
+
+		assertEquals("0007,", makeISBNs(books));
 	}
 	
 	@Test

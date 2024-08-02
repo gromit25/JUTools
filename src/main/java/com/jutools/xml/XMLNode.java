@@ -55,6 +55,8 @@ public class XMLNode {
 		// 조회 결과를 담는 XML 목록 변수
 		XMLArray nodes = new XMLArray();
 		
+		// ------------- 1. query의 node matcher 객체 생성 ----------------
+		
 		// 쿼리를 나눔
 		// ex) query : "test1 > test2 > test3(attr1='what')"
 		//     -> "test1", "test2 > test3(attr1='what')"
@@ -67,8 +69,26 @@ public class XMLNode {
 		// 노드가 query에 적합한지 검사하는 객체 생성
 		NodeMatcher matcher = new NodeMatcher(splited[0]);
 		
-		// 현재 노드의 하위 노드 중 query에 일치하는 노드를 검색
+		// ------------- 2. 목록에서 검색할 범위의 시작점과 종료점 추출 ----------------
+		
+		// child node의 목록을 가져옴
 		NodeList childs = this.node.getChildNodes();
+		
+		// 범위 시작점 - query에 설정된 시작점을 가져옴
+		int start = matcher.getStart();
+		
+		// 범위 종료점 - query에 설정된 종료점을 가져옴
+		// 종료점이 현재 배열 보다 클 경우 배열의 끝을 종료점으로 설정함
+		int end = matcher.getEnd();
+		
+		if(end > childs.getLength()) {
+			end = childs.getLength();
+		}
+		
+		// ------------- 3. 주어진 query에 따라 노드 추출 ----------------
+		
+		// 현재 노드의 하위 노드 중 query에 일치하는 노드를 검색
+		int elementIndex = 0;
 		for(int index = 0; index < childs.getLength(); index++) {
 			
 			// 하위 노드를 가져옴
@@ -76,6 +96,24 @@ public class XMLNode {
 			if(childNode.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
 			}
+			
+			// element 노드의 index가 범위 내에 있는지 검사
+			if(elementIndex < start) {
+				
+				// element 노드 index를 하나 올림
+				elementIndex++;
+
+				// 범위가 시작 되지 않으면 다음 child 노드를 검색
+				continue;
+			}
+			
+			if(elementIndex > end) {
+				// 범위 바깥으로 나가면 for 문 종료함
+				break;
+			}
+			
+			// element 노드 index를 하나 올림
+			elementIndex++;
 			
 			// query와 일치하는지 확인
 			// 일치하지 않으면 다음 하위노드 검색
@@ -96,7 +134,6 @@ public class XMLNode {
 			} else {
 				nodes.addAll(xmlChildNode.select(splited[1]));
 			}
-			
 		}
 		
 		// query에 적합한 node 목록 반환

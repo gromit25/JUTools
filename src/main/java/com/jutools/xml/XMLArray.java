@@ -47,57 +47,24 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
-	 * XML 목록에서 주어진 범위와 조회 query 에 적합한 결과를 반환
+	 * XML 목록에서 주어진 조회 query 에 적합한 결과를 반환
 	 * 
-	 * @param start 점위의 시작점
-	 * @param end 범위의 끝점, 만일 end 값이 배열의 크기를 넘을 경우 배열의 크기까지만 자동 지정됨
 	 * @param query 조회 query
 	 * @return query에 적합한 노드 목록 
 	 */
-	public XMLArray select(int start, int end, String query) throws Exception {
+	public XMLArray select(String query) throws Exception {
 		
 		// 입력값 검증
-		if(start < 0) {
-			throw new IllegalArgumentException("start index must be greater equal than 0:" + start);
-		}
-		
-		if(start > end) {
-			throw new IllegalArgumentException("end index must be greater equal than start index(start, end):(" + start + "," + end + ")");
-		}
-		
 		if(query == null) {
 			throw new IllegalArgumentException("query is null.");
 		}
 		
-		// ------------- 1. 시작점과 종료점에 따라 대상 범위 노드 추출 ----------------
-		
-		// 선택된 노드를 담을 변수
-		XMLArray rangeNodes = new XMLArray();
-		
 		// 만일, 노드 목록 객체가 null 이거나 크기가 0이면, 빈 결과를 반환함
 		if(this.nodes == null || this.nodes.size() == 0) {
-			return rangeNodes;
+			return new XMLArray();
 		}
 		
-		// 주어진 범위(start, end)에 대해 대상을 추출함
-		if(start == 0 && end >= this.nodes.size()) {
-			
-			// 시작이 0 이고 끝이 현재 node 목록의 크기보다 크면
-			// 전체 목록이 대상이 됨
-			rangeNodes = this;
-			
-		} else {
-			
-			// 전체 목록에서 주어진 범위만 추출함
-			for(int index = start; index < end; index++) {
-				rangeNodes.add(this.nodes.get(index));
-			}
-		}
-		
-		// ------------- 2. 주어진 query에 따라 노드 추출 ----------------
-		
-		// query에 의해 선택된 노드 목록
-		XMLArray selectedNodes = new XMLArray();
+		// ------------- 1. query의 node matcher 객체 생성 ----------------
 		
 		// 쿼리를 나눔
 		// ex) query : "test1 > test2 > test3(attr1='what')"
@@ -111,8 +78,30 @@ public class XMLArray implements Iterable<XMLNode> {
 		// 노드가 query에 적합한지 검사하는 객체 생성
 		NodeMatcher matcher = new NodeMatcher(splited[0]);
 		
+		// ------------- 2. 목록에서 검색할 범위의 시작점과 종료점 추출 ----------------
+		
+		// 범위 시작점 - query에 설정된 시작점을 가져옴
+
+		int start = matcher.getStart();
+		
+		// 범위 종료점 - query에 설정된 종료점을 가져옴
+		// 종료점이 현재 배열 보다 클 경우 배열의 끝을 종료점으로 설정함
+		int end = matcher.getEnd();
+		
+		if(end > this.nodes.size()) {
+			end = this.nodes.size();
+		}
+		
+		// ------------- 3. 주어진 query에 따라 노드 추출 ----------------
+		
+		// query에 의해 선택된 노드 목록
+		XMLArray selectedNodes = new XMLArray();
+		
 		// 범위 추출된 노드 목록 별로 query에 적합한 노드를 추가
-		for(XMLNode node: rangeNodes) {
+		for(int index = start; index < end; index++) {
+			
+			// 특정 인덱스의 노드 정보를 획득
+			XMLNode node = this.nodes.get(index);
 			
 			// query와 일치하는지 확인
 			// 일치하지 않으면 다음 하위노드 검색
@@ -134,28 +123,6 @@ public class XMLArray implements Iterable<XMLNode> {
 		
 		// 선택된 노드를 반환
 		return selectedNodes;
-	}
-	
-	/**
-	 * XML 목록에서 조회 query 에 적합한 결과를 반환
-	 * 
-	 * @param query 조회 query
-	 * @return query에 적합한 노드 목록 
-	 */
-	public XMLArray select(String query) throws Exception {
-		
-		return this.select(0, this.nodes.size(), query);
-	}
-	
-	/**
-	 * XML 목록에서 범위에 적합한 결과를 반환
-	 * 
-	 * @param query 조회 query
-	 * @return query에 적합한 노드 목록 
-	 */
-	public XMLArray select(int start, int end) throws Exception {
-		
-		return this.select(start, end, "*");
 	}
 	
 	/**

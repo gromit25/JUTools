@@ -8,10 +8,15 @@ import org.w3c.dom.Node;
 
 import com.jutools.StringUtil;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 /**
  * XML Node Matcher 클래스<br>
  * XMLNode가 주어진 query에 적합한지 검사하여 반환<br>
- * 테그 명과 속성 명/값을 검사하여 반환함
+ * 테그 명과 속성 명/값을 검사하여 반환함<br>
+ * 주의) 시작점(start)과 종료점(end)는 여기에서 사용하지 않고<br>
+ *      단순 파싱만을 수행하고 실제 사용은 XMLArray와 XMLNode에서 사용함
  * 
  * @author jmsohn
  */
@@ -23,11 +28,11 @@ class NodeMatcher {
 	private static String TAG_P = "[a-zA-Z_\\:\\*\\?][a-zA-Z0-9_\\:\\-\\*\\?]*";
 	
 	/** 배열 패턴 문자열 */
-	private static String ARRAY_P = "\\[[0-9]+(\\-[0-9]+)\\]";
+	private static String ARRAY_P = "\\[(?<start>[0-9]+)(\\-(?<end>[0-9]+))?\\]";
 
 	/** 테그 쿼리 전체 패턴 문자열 */
 	private static String QUERY_P = "(?<tag>" + TAG_P + ")"
-			+ "(?<array>" + ARRAY_P + ")?"
+			+ "(" + ARRAY_P + ")?"
 			+ "\\s*(?<attrs>\\(\\s*" + AttrMatcher.ATTR_P + "\\s*(\\,\\s*" + AttrMatcher.ATTR_P + ")*\\))?\\s*";
 	
 	// --------- 멤버 변수 선언 ---------------
@@ -35,33 +40,66 @@ class NodeMatcher {
 	/** 테그명 query */
 	private String tagNameQuery;
 	
+	/** 노드 목록의 시작점 - NodeMatcher 클래스 주의 설명 참조 */
+	@Getter(AccessLevel.PACKAGE)
+	private int start = 0;
+	
+	/** 노드 목록의 종료점 - NodeMatcher 클래스 주의 설명 참조 */
+	@Getter(AccessLevel.PACKAGE)
+	private int end = Integer.MAX_VALUE;
+	
 	/** 속성 Matcher 목록 */
 	private AttrMatcher[] attrMatchers;
 	
 	/**
 	 * 생성자
 	 * 
-	 * @param tagQuery
+	 * @param query
 	 */
-	NodeMatcher(String tagQuery) throws Exception {
+	NodeMatcher(String query) throws Exception {
 		
 		// 입력값 검증
-		if(tagQuery == null) {
-			throw new NullPointerException("tag query is null.");
+		if(query == null) {
+			throw new NullPointerException("query is null.");
 		}
+		
+		// ---- 테그명 Matcher 객체 생성 -----
 		
 		// 주어진 쿼리(tagQuery)가 쿼리형식에 맞는지 검증
-		Pattern tagQueryP = Pattern.compile(QUERY_P);
-		Matcher tagQueryM = tagQueryP.matcher(tagQuery);
+		Pattern queryP = Pattern.compile(QUERY_P);
+		Matcher queryM = queryP.matcher(query);
 		
-		if(tagQueryM.matches() == false) {
-			throw new IllegalArgumentException("tag query is not valid:" + tagQuery);
+		if(queryM.matches() == false) {
+			throw new IllegalArgumentException("query is not valid:" + query);
 		}
 		
-		// 쿼리에서 테그명 Matcher와 속성 Matcher 객체 생성
-		this.tagNameQuery = tagQueryM.group("tag");
-		this.attrMatchers = AttrMatcher.create(tagQueryM.group("attrs"));
+		this.tagNameQuery = queryM.group("tag");
 		
+		// ---- 노드 배열 대상 시작점과 종료점 설정  -----
+		
+		String startStr = queryM.group("start");
+		if(startStr != null) {
+			
+			this.start = Integer.parseInt(startStr);
+
+			// 종료점 설정
+			// 만일, 종료점이 설정되어 있지 않으면 시작점과 동일하게 설정
+			String endStr = queryM.group("end");
+			if(endStr != null) {
+				this.end = Integer.parseInt(endStr); 
+			} else {
+				this.end = this.start + 1;
+			}
+			
+			// 종료점은 시작점 보다 같거나 커야함
+			if(start > end) {
+				throw new IllegalArgumentException("end index must be greater equal than start index(start, end):(" + start + "," + end + ")");
+			}
+		}
+		
+		// ---- 속성 Matcher 객체 생성 -----
+		
+		this.attrMatchers = AttrMatcher.create(queryM.group("attrs"));
 	}
 	
 	/**
