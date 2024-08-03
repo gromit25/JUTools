@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.jutools.xml.TypeShift;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
 
@@ -244,8 +245,13 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.selectFirst("book");
 
-		Map<String, Object> map = book.toMap("isbn~isbn@Int=-1");
+		Map<String, Object> map = book.toMap(
+			"isbn~isbn@Int=-1"
+			, "title~title" 
+		);
+		
 		assertEquals(1, map.get("isbn"));
+		assertEquals("Historiae", map.get("title"));
 	}
 
 	@Test
@@ -257,6 +263,26 @@ public class XMLUtilTest {
 
 		Map<String, Object> map = book.toMap("isbn_t~isbn@Int=-1");
 		assertEquals(-1, map.get("isbn"));
+	}
+	
+	@Test
+	public void testToMap7() throws Exception {
+		
+		XMLUtil.registTypeShift("IsRecent", (map, name, value) -> {
+			int year = Integer.parseInt(value);
+			if(year > 2000) {
+				map.put(name, "Y");
+			} else {
+				map.put(name, "N");
+			}
+		});
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("year~recent_yn@IsRecent=Y");
+		assertEquals("Y", map.get("recent_yn"));
 	}
 
 	@Test

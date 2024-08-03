@@ -15,6 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.jutools.xml.TypeShift;
+import com.jutools.xml.TypeShiftManager;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
 
@@ -243,5 +245,14 @@ public class XMLUtil {
 	 */
 	public static XMLArray select(XMLNode node, String query) throws Exception {
 		return node.select(query);
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param typeShift
+	 */
+	public static void registTypeShift(String name, TypeShift typeShift) throws Exception {
+		TypeShiftManager.registTypeShift(name, typeShift);
 	}
 }

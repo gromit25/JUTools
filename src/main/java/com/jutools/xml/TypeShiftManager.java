@@ -29,7 +29,7 @@ public class TypeShiftManager {
 	 * @param name
 	 * @param typeShift
 	 */
-	public static void putTypeShift(String name, TypeShift typeShift) throws Exception {
+	public static void registTypeShift(String name, TypeShift typeShift) throws Exception {
 		
 		// 입력값 검증
 		if(StringUtil.isBlank(name) == true) {
