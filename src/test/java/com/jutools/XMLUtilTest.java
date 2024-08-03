@@ -2,6 +2,8 @@ package com.jutools;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Map;
+
 import org.junit.Test;
 
 import com.jutools.xml.XMLArray;
@@ -189,6 +191,72 @@ public class XMLUtilTest {
 				.select("book[1](category='역사')");
 
 		assertEquals("0002,", makeISBNs(books));
+	}
+	
+	@Test
+	public void testToMap1() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn");
+		assertEquals("0001", map.get("isbn.#text"));
+	}
+	
+	@Test
+	public void testToMap2() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn~isbn_num");
+		assertEquals("0001", map.get("isbn_num"));
+	}
+	
+	@Test
+	public void testToMap3() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn@Double");
+		assertEquals(1.0, map.get("isbn.#text"));
+	}
+
+	@Test
+	public void testToMap4() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn_t=0003");
+		assertEquals("0003", map.get("isbn_t.#text"));
+	}
+	
+	@Test
+	public void testToMap5() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn~isbn@Int=-1");
+		assertEquals(1, map.get("isbn"));
+	}
+
+	@Test
+	public void testToMap6() throws Exception {
+		
+		XMLNode book = XMLUtil
+				.fromString(XML_TEXT)
+				.selectFirst("book");
+
+		Map<String, Object> map = book.toMap("isbn_t~isbn@Int=-1");
+		assertEquals(-1, map.get("isbn"));
 	}
 
 	@Test

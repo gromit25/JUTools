@@ -305,7 +305,7 @@ public class XMLNode {
 			
 			// mapping 명
 			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\~");
-			String mappingName = (specAndType.length == 2)?specAndMappingName[1].trim():null;
+			String mappingName = (specAndMappingName.length == 2)?specAndMappingName[1].trim():null;
 			
 			//
 			String[] tagAndAttr = StringUtil.splitLast(specAndMappingName[0], "\\.");
