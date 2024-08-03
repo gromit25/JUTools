@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.jutools.xml.TypeShift;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
 
@@ -281,7 +280,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.selectFirst("book");
 
-		Map<String, Object> map = book.toMap("year~recent_yn@IsRecent=Y");
+		Map<String, Object> map = book.toMap("year~recent_yn@IsRecent=N");
 		assertEquals("Y", map.get("recent_yn"));
 	}
 
