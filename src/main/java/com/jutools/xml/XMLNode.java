@@ -1,5 +1,8 @@
 package com.jutools.xml;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -267,5 +270,81 @@ public class XMLNode {
 		
 		// 변환된 문자열 반환
 		return builder.toString();
+	}
+	
+	/**
+	 * "tagname.attr~mappingname@type=default"
+	 * 
+	 * @param mappingSpecs
+	 * @return
+	 */
+	public Map<String, Object> toMap(String... mappingSpecs) throws Exception {
+		
+		// mapping한 데이터가 들어갈 map 변수
+		Map<String, Object> map = new HashMap<>();
+		
+		// 각 mapping spec 별로 처리 수행
+		for(String mappingSpec: mappingSpecs) {
+			
+			// mapping spec 이 비어 있는 경우 다음 것을 처리함
+			if(StringUtil.isBlank(mappingSpec) == true) {
+				continue;
+			}
+			
+			// -------- spec 파싱 --------
+			// 뒤에서 부터 파싱을함
+			
+			// default 값 설정
+			String[] specAndDefault = StringUtil.splitLast(mappingSpec, "\\=");
+			String defaultValue = (specAndDefault.length == 2)?specAndDefault[1]:null;
+			
+			// type 설정
+			String[] specAndType = StringUtil.splitLast(specAndDefault[0], "\\@");
+			String typeName = (specAndType.length == 2)?specAndType[1].trim():"String";
+			TypeShift typeShift = TypeShiftManager.getTypeShift(typeName);
+			
+			// mapping 명
+			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\~");
+			String mappingName = (specAndType.length == 2)?specAndMappingName[1].trim():null;
+			
+			//
+			String[] tagAndAttr = StringUtil.splitLast(specAndMappingName[0], "\\.");
+			String attrName = (tagAndAttr.length == 2)?tagAndAttr[1].trim():"#text";
+			String tagName = tagAndAttr[0].trim();
+			
+			// mapping 명이 null 일 경우 디폴트 값 설정
+			if(mappingName == null) {
+				mappingName = tagName + "." + attrName;
+			}
+			
+			// -------- map에 데이터 추가 --------
+			
+			// 데이터를 읽어옴
+			String value = null;
+			
+			XMLNode selectedNode = this.selectFirst(tagName);
+			if(selectedNode != null) {
+				if(attrName.equalsIgnoreCase("#text") == true) {
+					value = selectedNode.getText();
+				} else {
+					value = selectedNode.getAttributeValue(attrName);
+				}
+			}
+			
+			// 디폴트 값 설정
+			if(value == null && defaultValue != null) {
+				value = defaultValue;
+			}
+			
+			// 데이터 변환 및 저장
+			if(value != null) {
+				typeShift.setValue(map, mappingName, value);
+			} else {
+				map.put(mappingName, null);
+			}
+			
+		} // End of mappingSpecs
+		
+		return map;
 	}
 }
