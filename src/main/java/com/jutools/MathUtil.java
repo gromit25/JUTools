@@ -700,8 +700,8 @@ public class MathUtil {
 	/**
 	 * n*(n-1)*...*(n-r) 결과 반환
 	 * 
-	 * @param n 시작 수
-	 * @param r 종료 수
+	 * @param n n 값
+	 * @param r r 값
 	 * @return 팩토리얼 결과
 	 */
 	public static BigDecimal factorial(int n, int r) throws Exception {
