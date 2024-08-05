@@ -14,7 +14,8 @@ import com.jutools.stat.nelsonrule.NelsonRule;
 public class StatUtil {
 	
 	/** 
-	 * 평균과 표준편차에 따른 랜덤값 생성
+	 * 평균과 표준편차에 따른 랜덤값 생성<br>
+	 * Box-Muller 변환 사용
 	 * 
 	 * @param mean 평균
 	 * @param std 표준 편차
@@ -23,9 +24,11 @@ public class StatUtil {
 
 	    Random random = new Random();
 
+	    // 0과 1 사이의 랜덤값 생성
 	    double u1 = random.nextDouble();
 	    double u2 = random.nextDouble();
 
+	    // Z0, Z1 값 중 Z0 값을 활용
 	    double z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 
 	    return mean + (z * std);
