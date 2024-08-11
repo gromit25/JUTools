@@ -712,7 +712,7 @@ public class MathUtil {
 		}
 		
 		if(r < 0) {
-			throw new IllegalArgumentException("r must be greater equals than 0:" + n);
+			throw new IllegalArgumentException("r must be greater equals than 0:" + r);
 		}
 		
 		if(n != 0 && n <= r) {
@@ -721,7 +721,9 @@ public class MathUtil {
 		
 		// 만일 0!이면, 1을 반환
 		if(n == 0) {
+			
 			return new BigDecimal(1);
+			
 		} else {
 			
 			BigDecimal result = new BigDecimal(n);
@@ -741,7 +743,11 @@ public class MathUtil {
 	 * @return 팩토리얼 결과
 	 */
 	public static BigDecimal factorial(int n) throws Exception {
-		return factorial(n, n - 1);
+		if(n != 0) {
+			return factorial(n, n - 1);
+		} else {
+			return factorial(0, 0);
+		}
 	}
 	
 	/**

@@ -627,24 +627,36 @@ public class MathUtilTest {
 	
 	@Test
 	public void testFactorial1() throws Exception {
+		// 0!
+		assertEquals("1", MathUtil.factorial(0).toString());
+	}
+	
+	@Test
+	public void testFactorial2() throws Exception {
+		// 1!
+		assertEquals("1", MathUtil.factorial(1).toString());
+	}
+	
+	@Test
+	public void testFactorial3() throws Exception {
 		// 2!
 		assertEquals("2", MathUtil.factorial(2).toString());
 	}
 	
 	@Test
-	public void testFactorial2() throws Exception {
+	public void testFactorial4() throws Exception {
 		// 3!
 		assertEquals("6", MathUtil.factorial(3).toString());
 	}
 	
 	@Test
-	public void testFactorial3() throws Exception {
+	public void testFactorial5() throws Exception {
 		// 10!
 		assertEquals("3628800", MathUtil.factorial(10).toString());
 	}
 	
 	@Test
-	public void testFactorial4() throws Exception {
+	public void testFactorial6() throws Exception {
 		// 35!
 		assertEquals("10333147966386144929666651337523200000000", MathUtil.factorial(35).toString());
 	}
