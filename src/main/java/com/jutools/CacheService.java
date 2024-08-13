@@ -20,7 +20,7 @@ public class CacheService {
 	 * @return 캐시 객체
 	 */
 	public static <T> Cache<T> create(Loader<T> loader, long retainTime, String cleanUpPeriod) throws Exception {
-		return new Cache<T>(loader, retainTime, cleanUpPeriod);
+		return new Cache<>(loader, retainTime, cleanUpPeriod);
 	}
 	
 	/**
