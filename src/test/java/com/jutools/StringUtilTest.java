@@ -1,6 +1,7 @@
 package com.jutools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -637,6 +638,111 @@ public class StringUtilTest {
 			
 			assertEquals("test1> test2", splited[0]);
 			assertEquals("test3", splited[1]);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine1() {
+		try {
+			
+			String msg = "   Hello world!    ";
+			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertEquals("Hello world!", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine2() {
+		try {
+			
+			String msg = "";
+			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertEquals("", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine3() {
+		try {
+			
+			String msg = "   \t  \t  ";
+			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertEquals("", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine4() {
+		try {
+			
+			String msg = null;
+			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertNull(trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine5() {
+		try {
+			
+			String msg = "  Hello \t world!  \n  \t    test   ";
+			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertEquals("Hello \t world!\ntest", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testLTrimMultiLine1() {
+		try {
+			
+			String msg = "   Hello World!   ";
+			String trimedMsg = StringUtil.ltrimMultiLine(msg);
+			
+			assertEquals("Hello World!   ", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testRTrimMultiLine1() {
+		try {
+			
+			String msg = "   Hello World!   ";
+			String trimedMsg = StringUtil.rtrimMultiLine(msg);
+			
+			assertEquals("   Hello World!", trimedMsg);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();

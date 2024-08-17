@@ -1209,6 +1209,8 @@ public class StringUtil {
 		return vars;
     }
 	
+	// -------------
+	
 	/**
 	 * target 문자열 내에 패턴(pattern)이 처음 나타난 곳까지의 문자열과<br>
 	 * 패턴이 나타난 이후의 문자열을 분리하여 반환<br>
@@ -1402,5 +1404,137 @@ public class StringUtil {
 		}
 		
 		return new InputStreamReader(new ByteArrayInputStream(str.getBytes()));
+	}
+	
+	// -------------
+	
+	public static String trimMultiLine(String str) throws Exception {
+		return trimMultiLine(str, TrimType.TRIM);
+	}
+	
+	public static String ltrimMultiLine(String str) throws Exception {
+		return trimMultiLine(str, TrimType.L_TRIM);
+	}
+	
+	public static String rtrimMultiLine(String str) throws Exception {
+		return trimMultiLine(str, TrimType.R_TRIM);
+	}
+	
+	private enum TrimType {
+		TRIM,
+		L_TRIM,
+		R_TRIM
+	}
+	
+	private static String trimMultiLine(String str, TrimType type) throws Exception {
+		
+		if(type == null) {
+			throw new Exception("trim type is null.");
+		}
+		
+		if(str == null) {
+			return null;
+		}
+		
+		StringBuilder trimedStr = new StringBuilder("");
+		
+		int index = 0;
+		while(index < str.length()) {
+			index = trimOneLine(str, type, index, trimedStr);
+		}
+		
+		return trimedStr.toString();
+	}
+	
+	/**
+	 * 
+	 * @param str
+	 * @param type
+	 * @param index
+	 * @param trimedStr
+	 * @return
+	 */
+	private static int trimOneLine(String str, TrimType type, int index, StringBuilder trimedStr) throws Exception {
+		
+		//
+		StringBuilder buffer = new StringBuilder("");
+		
+		char ch = '\0';
+		
+		// ---- 문자열 왼쪽 부분에 대한 처리 
+		for(; index < str.length(); index++) {
+			
+			ch = str.charAt(index);
+			
+			// 개행 문자(\n)가 들어온 경우,
+			// 이 행은 빈문자열(blank)이므로 개행 문자를 추가하여 반환
+			if(ch == '\n') {
+				trimedStr.append(ch);
+				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
+				return index;
+			}
+			
+			// 공백이 아닌 문자열이 들어온 경우 for문 종료
+			if(ch != ' ' && ch != '\t') {
+				buffer.append(ch);
+				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
+				break;
+			}
+
+			// 오른쪽 trim(R_TRIM)일 경우, 공백 문자를 버퍼에 추가함
+			// 이외의 경우에는 공백 문자를 추가하지 않음
+			if(type == TrimType.R_TRIM) {
+				buffer.append(ch);
+			}
+		}
+		
+		// 문자열 오른쪽 버퍼의 내용을 추가함
+		trimedStr.append(buffer);
+		
+		// 버퍼 클리어
+		buffer.setLength(0);
+		
+		// ---- 문자열 가운데 및 왼쪽 부분에 대한 처리
+		for(; index < str.length(); index++) {
+			
+			ch = str.charAt(index);
+			
+			// 개행 문자일 경우, for 문 종료
+			if(ch == '\n') {
+				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
+				break;
+			}
+			
+			// 공백이 아닌 경우, 버퍼 내용과 현재 문자 추가
+			// 공백인 경우 버퍼에 문자 추가
+			if(ch != ' ' && ch != '\t') {
+				
+				// 버퍼의 내용이 있으면 추가 후 버퍼 클리어
+				if(buffer.length() != 0) {
+					trimedStr.append(buffer);
+					buffer.setLength(0);
+				}
+				
+				// 현재 문자 추가
+				trimedStr.append(ch);
+				
+			} else {
+				
+				// 공백을 버퍼에 추가
+				buffer.append(ch);
+			}
+		}
+		
+		// 만일 왼쪽 trim(L_TRIM)이면, 버퍼의 내용을 뒤(오른쪽)에 붙힘
+		if(type == TrimType.L_TRIM) {
+			trimedStr.append(buffer);
+		}
+		
+		// 만일 개행문자로 종료되었을 경우, 개행문자를 추가함
+		if(ch == '\n') {
+			trimedStr.append(ch);
+		}
+		
+		return index;
 	}
 }
