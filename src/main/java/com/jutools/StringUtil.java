@@ -1409,24 +1409,36 @@ public class StringUtil {
 	// -------------
 	
 	public static String trimMultiLine(String str) throws Exception {
-		return trimMultiLine(str, TrimType.TRIM);
+		return trimMultiLine(str, TrimType.TRIM, false);
+	}
+	
+	public static String trimMultiLine(String str, boolean removeBlankLine) throws Exception {
+		return trimMultiLine(str, TrimType.TRIM, removeBlankLine);
 	}
 	
 	public static String ltrimMultiLine(String str) throws Exception {
-		return trimMultiLine(str, TrimType.L_TRIM);
+		return trimMultiLine(str, TrimType.L_TRIM, false);
+	}
+	
+	public static String ltrimMultiLine(String str, boolean removeBlankLine) throws Exception {
+		return trimMultiLine(str, TrimType.L_TRIM, removeBlankLine);
 	}
 	
 	public static String rtrimMultiLine(String str) throws Exception {
-		return trimMultiLine(str, TrimType.R_TRIM);
+		return trimMultiLine(str, TrimType.R_TRIM, false);
 	}
 	
+	public static String rtrimMultiLine(String str, boolean removeBlankLine) throws Exception {
+		return trimMultiLine(str, TrimType.R_TRIM, removeBlankLine);
+	}
+
 	private enum TrimType {
 		TRIM,
 		L_TRIM,
 		R_TRIM
 	}
 	
-	private static String trimMultiLine(String str, TrimType type) throws Exception {
+	private static String trimMultiLine(String str, TrimType type, boolean removeBlankLine) throws Exception {
 		
 		if(type == null) {
 			throw new Exception("trim type is null.");
@@ -1440,7 +1452,7 @@ public class StringUtil {
 		
 		int index = 0;
 		while(index < str.length()) {
-			index = trimOneLine(str, type, index, trimedStr);
+			index = trimOneLine(str, type, index, trimedStr, removeBlankLine);
 		}
 		
 		return trimedStr.toString();
@@ -1454,7 +1466,7 @@ public class StringUtil {
 	 * @param trimedStr
 	 * @return
 	 */
-	private static int trimOneLine(String str, TrimType type, int index, StringBuilder trimedStr) throws Exception {
+	private static int trimOneLine(String str, TrimType type, int index, StringBuilder trimedStr, boolean removeBlankLine) throws Exception {
 		
 		// 공란을 담아 두는 임시 버퍼
 		StringBuilder buffer = new StringBuilder("");
@@ -1475,13 +1487,18 @@ public class StringUtil {
 			// 이 행은 빈문자열(blank)이므로 개행 문자를 추가하여 반환
 			if(ch == '\n') {
 				
-				// carriage return 이 이전에 있었을 경우,
-				// '\r' 을 추가함
-				if(isCRPresent == true) {
-					trimedStr.append('\r');
+				// removeBlankLine이 설정되어 있으면 현재 라인을 추가하지 않음
+				if(removeBlankLine == false) {
+					
+					// carriage return 이 이전에 있었을 경우,
+					// '\r' 을 추가함
+					if(isCRPresent == true) {
+						trimedStr.append('\r');
+					}
+					
+					trimedStr.append(ch);
 				}
 				
-				trimedStr.append(ch);
 				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
 				return index;
 			}

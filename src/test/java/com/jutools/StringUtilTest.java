@@ -724,8 +724,23 @@ public class StringUtilTest {
 	public void testTrimMultiLine6() {
 		try {
 			
-			String msg = "  Hello \t world! \r \r\n  \t    test   ";
+			String msg = "  Hello \t world! \r \r\n  \t  \n  \t    test   ";
 			String trimedMsg = StringUtil.trimMultiLine(msg);
+			
+			assertEquals("Hello \t world!\r\n\ntest", trimedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testTrimMultiLine7() {
+		try {
+			
+			String msg = " \r\n Hello \t world! \r \r\n  \t  \r\n  \t    test   ";
+			String trimedMsg = StringUtil.trimMultiLine(msg, true);
 			
 			assertEquals("Hello \t world!\r\ntest", trimedMsg);
 			
