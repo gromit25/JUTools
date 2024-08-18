@@ -1456,10 +1456,15 @@ public class StringUtil {
 	 */
 	private static int trimOneLine(String str, TrimType type, int index, StringBuilder trimedStr) throws Exception {
 		
-		//
+		// 공란을 담아 두는 임시 버퍼
 		StringBuilder buffer = new StringBuilder("");
-		
+
+		// 읽은 문자
 		char ch = '\0';
+		
+		// carriage return(\r) 이 나타났는지 여부 변수
+		// "\r\n" 을 처리하기 위함
+		boolean isCRPresent = false;
 		
 		// ---- 문자열 왼쪽 부분에 대한 처리 
 		for(; index < str.length(); index++) {
@@ -1469,13 +1474,20 @@ public class StringUtil {
 			// 개행 문자(\n)가 들어온 경우,
 			// 이 행은 빈문자열(blank)이므로 개행 문자를 추가하여 반환
 			if(ch == '\n') {
+				
+				// carriage return 이 이전에 있었을 경우,
+				// '\r' 을 추가함
+				if(isCRPresent == true) {
+					trimedStr.append('\r');
+				}
+				
 				trimedStr.append(ch);
 				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
 				return index;
 			}
 			
 			// 공백이 아닌 문자열이 들어온 경우 for문 종료
-			if(ch != ' ' && ch != '\t') {
+			if(isBlankChar(ch) == false) {
 				buffer.append(ch);
 				index++;	// 현재 문자를 추가했기 때문에, 다음 문자를 보기 위해 index를 추가함
 				break;
@@ -1485,6 +1497,13 @@ public class StringUtil {
 			// 이외의 경우에는 공백 문자를 추가하지 않음
 			if(type == TrimType.R_TRIM) {
 				buffer.append(ch);
+			}
+			
+			// carriage return 이 나타날 경우 
+			if(ch == '\r') {
+				isCRPresent = true;
+			} else {
+				isCRPresent = false;
 			}
 		}
 		
@@ -1507,7 +1526,7 @@ public class StringUtil {
 			
 			// 공백이 아닌 경우, 버퍼 내용과 현재 문자 추가
 			// 공백인 경우 버퍼에 문자 추가
-			if(ch != ' ' && ch != '\t') {
+			if(isBlankChar(ch) == false) {
 				
 				// 버퍼의 내용이 있으면 추가 후 버퍼 클리어
 				if(buffer.length() != 0) {
@@ -1523,6 +1542,13 @@ public class StringUtil {
 				// 공백을 버퍼에 추가
 				buffer.append(ch);
 			}
+			
+			// carriage return 이 나타날 경우 
+			if(ch == '\r') {
+				isCRPresent = true;
+			} else {
+				isCRPresent = false;
+			}
 		}
 		
 		// 만일 왼쪽 trim(L_TRIM)이면, 버퍼의 내용을 뒤(오른쪽)에 붙힘
@@ -1532,9 +1558,23 @@ public class StringUtil {
 		
 		// 만일 개행문자로 종료되었을 경우, 개행문자를 추가함
 		if(ch == '\n') {
+			
+			if(isCRPresent == true) {
+				trimedStr.append('\r');
+			}
+			
 			trimedStr.append(ch);
 		}
 		
 		return index;
+	}
+	
+	/**
+	 * 
+	 * @param ch
+	 * @return
+	 */
+	private static boolean isBlankChar(char ch) {
+		return ch == ' ' || ch == '\t' || ch == '\0' || ch == '\r';
 	}
 }
