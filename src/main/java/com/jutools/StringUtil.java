@@ -1408,36 +1408,96 @@ public class StringUtil {
 	
 	// -------------
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, "hello\r\nworld!" 반환
+	 * 
+	 * @param str trim 대상 문자열
+	 * @return 라인별 trim 수행한 결과
+	 */
 	public static String trimMultiLine(String str) throws Exception {
 		return trimMultiLine(str, TrimType.TRIM, false);
 	}
-	
+
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, "hello\r\nworld!" 반환
+	 * 
+	 * @param str trim 대상 문자열
+	 * @param removeBlankLine 만일 빈 문자열일 경우 삭제할 것인지 여부
+	 * @return 라인별 trim 수행한 결과
+	 */
 	public static String trimMultiLine(String str, boolean removeBlankLine) throws Exception {
 		return trimMultiLine(str, TrimType.TRIM, removeBlankLine);
 	}
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 left trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, "hello \r\nworld! " 반환
+	 * 
+	 * @param str left trim 대상 문자열
+	 * @return 라인별 left trim 수행한 결과
+	 */
 	public static String ltrimMultiLine(String str) throws Exception {
 		return trimMultiLine(str, TrimType.L_TRIM, false);
 	}
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 left trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, "hello \r\nworld! " 반환
+	 * 
+	 * @param str left trim 대상 문자열
+	 * @param removeBlankLine 만일 빈 문자열일 경우 삭제할 것인지 여부
+	 * @return 라인별 left trim 수행한 결과
+	 */
 	public static String ltrimMultiLine(String str, boolean removeBlankLine) throws Exception {
 		return trimMultiLine(str, TrimType.L_TRIM, removeBlankLine);
 	}
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 left trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, " hello\r\n  world!" 반환
+	 * 
+	 * @param str right trim 대상 문자열
+	 * @return 라인별 right trim 수행한 결과
+	 */
 	public static String rtrimMultiLine(String str) throws Exception {
 		return trimMultiLine(str, TrimType.R_TRIM, false);
 	}
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 left trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, " hello\r\n  world!" 반환
+	 * 
+	 * @param str right trim 대상 문자열
+	 * @param removeBlankLine 만일 빈 문자열일 경우 삭제할 것인지 여부
+	 * @return 라인별 right trim 수행한 결과
+	 */
 	public static String rtrimMultiLine(String str, boolean removeBlankLine) throws Exception {
 		return trimMultiLine(str, TrimType.R_TRIM, removeBlankLine);
 	}
 
+	/**
+	 * trim 종류
+	 */
 	private enum TrimType {
+		/** 양방향 trim */
 		TRIM,
+		/** 왼쪽 trim */
 		L_TRIM,
+		/** 오른쪽 trim */
 		R_TRIM
 	}
 	
+	/**
+	 * 문자열이 여러 라인일 경우 각 라인에 대해 trim을 수행하는 메소드<br>
+	 * ex) " hello \r\n  world! " 일 경우, "hello\r\nworld!" 반환
+	 * 
+	 * @param str trim 대상 문자열
+	 * @param type trim 종류
+	 * @param removeBlankLine 만일 빈 문자열일 경우 삭제할 것인지 여부
+	 * @return 라인별 trim 수행한 결과
+	 */
 	private static String trimMultiLine(String str, TrimType type, boolean removeBlankLine) throws Exception {
 		
 		if(type == null) {
@@ -1459,12 +1519,15 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 한 라인의 문자열에 대해 trim 수행<br>
+	 * [\r]\n 까지 읽어서 trim 작업을 수행하고, [\r]\n 을 마지막에 추가함 
 	 * 
-	 * @param str
-	 * @param type
-	 * @param index
-	 * @param trimedStr
-	 * @return
+	 * @param str trim 대상 문자열
+	 * @param type trim 종류
+	 * @param index 읽기 시작해야할 위치
+	 * @param trimedStr trim 된 문자열을 담을 버퍼 객체
+	 * @param removeBlankLine 만일 빈 문자열일 경우 삭제할 것인지 여부
+	 * @return 다음에 읽을 문자열 위치
 	 */
 	private static int trimOneLine(String str, TrimType type, int index, StringBuilder trimedStr, boolean removeBlankLine) throws Exception {
 		
@@ -1587,9 +1650,11 @@ public class StringUtil {
 	}
 	
 	/**
+	 * 공백 문자 여부 반환(trimOneLine에서만 사용)<br>
+	 * 공백 문자일 경우 true
 	 * 
-	 * @param ch
-	 * @return
+	 * @param ch 검사 대상 문자
+	 * @return 공백 문자 여부
 	 */
 	private static boolean isBlankChar(char ch) {
 		return ch == ' ' || ch == '\t' || ch == '\0' || ch == '\r';
