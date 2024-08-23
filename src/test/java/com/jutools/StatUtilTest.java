@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.jutools.stat.RTParameter;
-import com.jutools.stat.RTStatistic;
+import com.jutools.stat.Parameter;
+import com.jutools.stat.Statistic;
 
 /**
  * PublishUtil 클래스의 테스트 케이스
@@ -15,11 +15,11 @@ import com.jutools.stat.RTStatistic;
 public class StatUtilTest {
 
 	@Test
-	public void testRTParameter1_1() throws Exception {
+	public void testParameter1_1() throws Exception {
 		
 		double[] values = {10, 12, 14, 18, 20, 22, 24, 25, 28, 30};
 		
-		RTParameter stat = StatUtil.createRTParameter();
+		Parameter stat = StatUtil.newParameter();
 		stat.addAll(values);
 		
 		assertEquals(10, stat.getCount());
@@ -32,9 +32,9 @@ public class StatUtilTest {
 	}
 	
 	@Test
-	public void testRTParameter2_1() throws Exception {
+	public void testParameter2_1() throws Exception {
 		
-		RTParameter stat = StatUtil.createRTParameter(203, 4533, 108353, 2715441, 10);
+		Parameter stat = StatUtil.newParameter(203, 4533, 108353, 2715441, 10);
 		
 		assertEquals(10, stat.getCount());
 		assertEquals(203.0, stat.getSum(), 0.0);
@@ -46,11 +46,11 @@ public class StatUtilTest {
 	}
 	
 	@Test
-	public void testRTStatistic1_1() throws Exception {
+	public void testStatistic1_1() throws Exception {
 		
 		double[] values = {10, 12, 14, 18, 20, 22, 24, 25, 28, 30};
 		
-		RTStatistic stat = StatUtil.createRTStatistic();
+		Statistic stat = StatUtil.newStatistic();
 		stat.addAll(values);
 		
 		assertEquals(10, stat.getCount());
@@ -63,11 +63,11 @@ public class StatUtilTest {
 	}
 	
 	@Test
-	public void testRTStatistic1_2() throws Exception {
+	public void testStatistic1_2() throws Exception {
 		
 		double[] values = {10};
 		
-		RTStatistic stat = StatUtil.createRTStatistic();
+		Statistic stat = StatUtil.newStatistic();
 		stat.addAll(values);
 		
 		assertEquals(1, stat.getCount());
@@ -80,9 +80,9 @@ public class StatUtilTest {
 	}
 	
 	@Test
-	public void testRTStatistic2_1() throws Exception {
+	public void testStatistic2_1() throws Exception {
 		
-		RTStatistic stat = StatUtil.createRTStatistic(203, 4533, 108353, 2715441, 10);
+		Statistic stat = StatUtil.newStatistic(203, 4533, 108353, 2715441, 10);
 		
 		assertEquals(10, stat.getCount());
 		assertEquals(203.0, stat.getSum(), 0.0);

@@ -2,8 +2,8 @@ package com.jutools;
 
 import java.util.Random;
 
-import com.jutools.stat.RTParameter;
-import com.jutools.stat.RTStatistic;
+import com.jutools.stat.Parameter;
+import com.jutools.stat.Statistic;
 import com.jutools.stat.nelsonrule.NelsonRule;
 
 /**
@@ -39,8 +39,8 @@ public class StatUtil {
 	 * 
 	 * @return 실시간 모수(parameter) 계산 객체
 	 */
-	public static RTParameter createRTParameter() {
-		return new RTParameter();
+	public static Parameter newParameter() {
+		return new Parameter();
 	}
 
 	/**
@@ -53,8 +53,8 @@ public class StatUtil {
 	 * @param count 데이터의 개수
 	 * @return 실시간 모수(parameter) 계산 객체
 	 */
-	public static RTParameter createRTParameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
-		return new RTParameter(sum, squaredSum, cubedSum, fourthPoweredSum, count);
+	public static Parameter newParameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		return new Parameter(sum, squaredSum, cubedSum, fourthPoweredSum, count);
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public class StatUtil {
 	 * 
 	 * @return 실시간 표본 통계량(statistic) 계산 객체
 	 */
-	public static RTStatistic createRTStatistic() {
-		return new RTStatistic();
+	public static Statistic newStatistic() {
+		return new Statistic();
 	}
 
 	/**
@@ -76,15 +76,15 @@ public class StatUtil {
 	 * @param count 데이터의 개수
 	 * @return 실시간 표본 통계량(statistic) 계산 객체
 	 */
-	public static RTStatistic createRTStatistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
-		return new RTStatistic(sum, squaredSum, cubedSum, fourthPoweredSum, count);
+	public static Statistic newStatistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+		return new Statistic(sum, squaredSum, cubedSum, fourthPoweredSum, count);
 	}
 
 	/**
 	 * 넬슨룰 검사 객체 생성<br>
 	 * 사용법)
 	 * <pre> 
-	 * NelsonRule nrule = StatUtil.createNelsonRule(10, 1, NelsonRule.RULE1|NelsonRule.RULE2);
+	 * NelsonRule nrule = StatUtil.newNelsonRule(10, 1, NelsonRule.RULE1|NelsonRule.RULE2);
 	 * 
 	 * for(double value: dataList) {
 	 *     ArrayList&lt;Integer&gt; violatedRules = nrule.check(value);
@@ -99,7 +99,7 @@ public class StatUtil {
 	 * @param rules 검사할 넬슨룰 목록 비트맵
 	 * @return
 	 */
-	public static NelsonRule createNelsonRule(double mean, double std, int rules) throws Exception {
+	public static NelsonRule newNelsonRule(double mean, double std, int rules) throws Exception {
 		return NelsonRule.builder()
 				.mean(mean)
 				.std(std)

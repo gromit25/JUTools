@@ -9,7 +9,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public class RTParameter {
+public class Parameter {
 	
 	/** 데이터의 개수 */
 	@Getter
@@ -52,7 +52,7 @@ public class RTParameter {
 	/**
 	 * 생성자
 	 */
-	public RTParameter() {
+	public Parameter() {
 		this.reset();
 	}
 	
@@ -65,7 +65,7 @@ public class RTParameter {
 	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
 	 * @param count 데이터의 개수
 	 */
-	public RTParameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+	public Parameter(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
 		
 		// 입력값 검증
 		if(count <= 0) {

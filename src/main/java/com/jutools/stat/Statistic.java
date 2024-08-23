@@ -9,7 +9,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public class RTStatistic {
+public class Statistic {
 	
 	/** 데이터의 개수 */
 	@Getter
@@ -48,7 +48,7 @@ public class RTStatistic {
 	/**
 	 * 생성자
 	 */
-	public RTStatistic() {
+	public Statistic() {
 		this.reset();
 	}
 	
@@ -61,7 +61,7 @@ public class RTStatistic {
 	 * @param fourthPoweredSum 네제곱 합(첨도 계산용)
 	 * @param count 데이터의 개수
 	 */
-	public RTStatistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
+	public Statistic(double sum, double squaredSum, double cubedSum, double fourthPoweredSum, int count) throws Exception {
 		
 		// 입력값 검증
 		if(count <= 0) {
