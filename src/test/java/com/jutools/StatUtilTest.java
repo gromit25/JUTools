@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.jutools.stat.Parameter;
 import com.jutools.stat.Statistic;
+import com.jutools.stat.PairedTTest;
 
 /**
  * PublishUtil 클래스의 테스트 케이스
@@ -92,5 +93,28 @@ public class StatUtilTest {
 		assertEquals(-0.1784, stat.getSkewness(), 0.01);
 		assertEquals(-1.1480, stat.getKurtosis(), 0.01);
 	}
-
+	
+	@Test
+	public void testPairedTTest1() throws Exception {
+		
+		double[] controlData = {
+				1660.0,	1576.0,	1572.0,	1613.0, 1519.0,
+				1572.0, 1579.0, 1625.0, 1849.0, 1600.0
+		};
+		
+		double[] experimentalData = {
+				1549.0, 1615.0, 1582.0, 1643.0, 1672.0,
+				1658.0, 1603.0, 1572.0, 1628.0, 1570.0
+		};
+		
+		PairedTTest tTest = StatUtil.newPairedTTest();
+		
+		for(int index = 0; index < controlData.length; index++) {
+			tTest.add(controlData[index], experimentalData[index]);
+		}
+		
+		System.out.println(tTest);
+		
+		assertEquals(0.233, tTest.getTValue(), 0.0005);
+	}
 }

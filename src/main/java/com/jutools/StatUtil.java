@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.jutools.stat.Parameter;
 import com.jutools.stat.Statistic;
+import com.jutools.stat.PairedTTest;
 import com.jutools.stat.nelsonrule.NelsonRule;
 
 /**
@@ -106,5 +107,12 @@ public class StatUtil {
 				.rules(rules)
 				.build();
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static PairedTTest newPairedTTest() throws Exception {
+		return new PairedTTest();
+	}
 }

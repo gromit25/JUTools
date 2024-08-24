@@ -233,16 +233,16 @@ public class Statistic {
 		StringBuilder builder = new StringBuilder("");
 		
 		builder
-			.append("{").append("\r\n")
-			.append("\"count\":").append(this.count).append("\r\n")
-			.append("\"sum\":").append(this.sum).append("\r\n")
-			.append("\"mean\":").append(this.mean).append("\r\n")
-			.append("\"variance\":").append(this.variance).append("\r\n")
-			.append("\"std\":").append(this.getStd()).append("\r\n")
-			.append("\"skewness\":").append(this.skewness).append("\r\n")
-			.append("\"kurtosis\":").append(this.kurtosis).append("\r\n")
-			.append("\"min\":").append(this.min).append("\r\n")
-			.append("\"max\":").append(this.max).append("\r\n")
+			.append("{")
+			.append("\"count\":").append(this.count).append(",")
+			.append("\"sum\":").append(this.sum).append(",")
+			.append("\"mean\":").append(this.mean).append(",")
+			.append("\"variance\":").append(this.variance).append(",")
+			.append("\"std\":").append(this.getStd()).append(",")
+			.append("\"skewness\":").append(this.skewness).append(",")
+			.append("\"kurtosis\":").append(this.kurtosis).append(",")
+			.append("\"min\":").append(this.min).append(",")
+			.append("\"max\":").append(this.max)
 			.append("}");
 		
 		return builder.toString();
