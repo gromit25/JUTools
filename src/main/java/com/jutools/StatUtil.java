@@ -109,8 +109,9 @@ public class StatUtil {
 	}
 
 	/**
+	 * 두 그룹 간의 T 검정 수행 객체 생성
 	 * 
-	 * @return
+	 * @return T 검정 수행 객체
 	 */
 	public static PairedTTest newPairedTTest() throws Exception {
 		return new PairedTTest();
