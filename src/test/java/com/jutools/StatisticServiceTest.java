@@ -21,7 +21,14 @@ public class StatisticServiceTest {
 			
 			return value;
 		},
-		null);
+		(baseTime, data, stat) -> {
+			
+			try {
+				System.out.println(DateUtil.getDateTimeStr(baseTime) + "  " + stat);
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+		});
 		
 		svc.start();
 		Thread.sleep(20 * 1000);

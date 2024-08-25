@@ -15,7 +15,7 @@ import com.jutools.StringUtil;
 public class StatisticService {
 	
 	/** 통계량 계산 객체 */
-	private Statistic stats;
+	private Statistic stat;
 	
 	/** 수집 주기 객체 */
 	private CronJob acquisitorCron;
@@ -58,7 +58,7 @@ public class StatisticService {
 		}
 
 		// 통계량 계산 객체 생성
-		this.stats = new Statistic();
+		this.stat = new Statistic();
 
 		// 데이터 수집 객체 설정
 		this.acquisitor = acquisitor;
@@ -109,11 +109,11 @@ public class StatisticService {
 		
 		// 데이터 수집 메소드 콜백
 		double data = this.acquisitor.acquire();
-		this.stats.add(data);
+		this.stat.add(data);
 		
 		// 데이터 로드 메소드 콜백
 		if(this.loader != null) {
-			this.loader.load(this.stats);
+			this.loader.load(this.acquisitorCron.getCurrentBaseTime(), data, this.stat);
 		}
 	}
 	
@@ -121,9 +121,9 @@ public class StatisticService {
 	 * 통계량 초기화
 	 */
 	private void reset() {
-		if(this.stats != null) {
+		if(this.stat != null) {
 			System.out.println("RESET");
-			this.stats.reset();
+			this.stat.reset();
 		}
 	}
 	
@@ -149,11 +149,11 @@ public class StatisticService {
 	 * @return 통계량 객체
 	 */
 	public Statistic getStatistic() {
-		return this.stats;
+		return this.stat;
 	}
 	
 	@Override
 	public String toString() {
-		return this.stats.toString();
+		return this.stat.toString();
 	}
 }
