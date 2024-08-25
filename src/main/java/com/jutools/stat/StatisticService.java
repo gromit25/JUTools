@@ -91,7 +91,7 @@ public class StatisticService {
 			// acquire 실행 락이 설정되어 있는지 확인
 			while(this.isLock == true) {
 				try {
-					Thread.sleep(300);
+					Thread.sleep(300);	// acquire 실행 중일 경우 대기
 				} catch(Exception ex) {
 					ex.printStackTrace();
 				}
@@ -122,7 +122,6 @@ public class StatisticService {
 	 */
 	private void reset() {
 		if(this.stat != null) {
-			System.out.println("RESET");
 			this.stat.reset();
 		}
 	}
