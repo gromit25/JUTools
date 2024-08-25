@@ -1,7 +1,14 @@
 package com.jutools.stat;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import com.jutools.CronJob;
 import com.jutools.StringUtil;
+
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * 통계량 서비스 클래스<br>
@@ -14,24 +21,16 @@ import com.jutools.StringUtil;
  */
 public class StatisticService {
 	
-	/** 통계량 계산 객체 */
-	private Statistic stat;
-	
-	/** 수집 주기 객체 */
-	private CronJob acquisitorCron;
-	/** 리셋 주기 객체 */
-	private CronJob resetCron;
-	
 	/** 데이터 수집 객체 */
 	private DataAcquistor acquisitor;
 	/** 데이터 저장 객체 */
 	private DataLoader loader;
 	
-	/**
-	 * acquisitor 작업 락<br>
-	 * acquisitor가 작업 중일 경우 clear 작업을 하지 못하도록 락을 설정
-	 */
-	boolean isLock = false;
+	private String acquisitorCronExp;
+	/** */
+	private CronJob resetCron;
+	/** */
+	private List<CronBlock> cronBlocks = new Vector<>(); 
 	
 	/**
 	 * 통계량 서비스 객체 생성자
@@ -56,9 +55,9 @@ public class StatisticService {
 		if(acquisitor == null) {
 			throw new IllegalArgumentException("acquisitor is null.");
 		}
-
-		// 통계량 계산 객체 생성
-		this.stat = new Statistic();
+		
+		//
+		this.acquisitorCronExp = acquisitorCronExp;
 
 		// 데이터 수집 객체 설정
 		this.acquisitor = acquisitor;
@@ -66,40 +65,117 @@ public class StatisticService {
 		// 데이터 저장 객체 설정
 		this.loader = loader;
 		
-		// 수집 주기 객체 생성
-		this.acquisitorCron = new CronJob(acquisitorCronExp, () -> {
-			
-			// 수집 시작시 수집 락을 설정
-			this.isLock = true;
-			
-			// 수집 및 저장 실행
-			this.acquireAndLoad();
-			
-			// 수집 시간과 리셋 시간이 같을 경우
-			// 수집 락을 계속 설정함 -> 수집 저장 이후 리셋을 하도록 하기 위함
-			long acquireTime = this.acquisitorCron.getNextTime();
-			long resetTime = this.resetCron.getNextTime();
-			
-			if(acquireTime != resetTime) {
-				this.isLock = false;
-			}
-		});
-		
 		// 리셋 주기 객체 설정
 		this.resetCron = new CronJob(resetCronExp, () -> {
 			
-			// acquire 실행 락이 설정되어 있는지 확인
-			while(this.isLock == true) {
-				try {
-					Thread.sleep(300);	// acquire 실행 중일 경우 대기
-				} catch(Exception ex) {
-					ex.printStackTrace();
+			// ----- 새로운 cron block 생성 및 시작
+			try {
+				this.startNewCronBlock();
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			
+			// ----- 종료된 cron block 삭제
+			
+			// 종료된 cron block 목록 생성
+			List<CronBlock> removeList = new ArrayList<>();
+			for(CronBlock cronBlock: this.cronBlocks) {
+				if(cronBlock.isTerminate() == true) {
+					removeList.add(cronBlock);
 				}
 			}
 			
-			// 통계량 리셋
-			this.reset();
+			// 종료된 cron block 목록에 있는 cron block을 삭제
+			for(CronBlock cronBlock: removeList) {
+				this.cronBlocks.remove(cronBlock);
+			}
+		}); 
+	}
+	
+	/**
+	 * 
+	 */
+	private void startNewCronBlock() throws Exception {
+		
+		//
+		CronBlock block = new CronBlock(
+							this.acquisitorCronExp, this.resetCron.getNextTime()
+							, this.acquisitor, this.loader);
+		block.start();
+		
+		//
+		this.cronBlocks.add(block);
+	}
+	
+	/**
+	 * 데이터 수집 및 통계량 계산 시작
+	 */
+	public void start() throws Exception {
+		this.resetCron.run();
+		this.startNewCronBlock();	// 주의! 실행 순서 중요. 꼭, resetCron 이 시작된 이후에 실행되어야 함
+	}
+	
+	/**
+	 * 데이터 수집 및 통계량 수집 중단
+	 */
+	public void stop() throws Exception {
+		
+		this.resetCron.stop();
+		
+		for(CronBlock cronBlock: this.cronBlocks) {
+			cronBlock.stop();
+		}
+	}
+}
+
+/**
+ * 
+ * 
+ * @author jmsohn
+ */
+class CronBlock {
+	
+	/** 통계량 계산 객체 */
+	@Getter(AccessLevel.PACKAGE)
+	private Statistic stat;
+	
+	/** 데이터 수집 객체 */
+	private DataAcquistor acquisitor;
+	/** 데이터 저장 객체 */
+	private DataLoader loader;
+	
+	/** 수집 주기 객체 */
+	private CronJob acquisitorCron;
+	/** 현재 크론 블럭의 리셋 시간 - 종료시간 */
+	private long resetTime;
+	
+	/** */
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isTerminate = false;
+	
+	/**
+	 * 생성자
+	 */
+	CronBlock(String acquisitorCronExp, long resetTime
+			, DataAcquistor acquisitor, DataLoader loader) throws Exception {
+
+		// 통계량 계산 객체 생성
+		this.stat = new Statistic();
+		
+		// 수집 주기 객체 생성
+		this.acquisitorCron = new CronJob(acquisitorCronExp, () -> {
+			// 수집 및 저장 실행
+			this.acquireAndLoad();
 		});
+
+		//
+		this.resetTime = resetTime;
+
+		//
+		this.acquisitor = acquisitor;
+		
+		//
+		this.loader = loader;
 	}
 	
 	/**
@@ -111,48 +187,32 @@ public class StatisticService {
 		double data = this.acquisitor.acquire();
 		this.stat.add(data);
 		
+		// 최종 실행 여부
+		boolean isLast = (this.acquisitorCron.getNextTime() > this.resetTime);
+		
 		// 데이터 로드 메소드 콜백
 		if(this.loader != null) {
 			this.loader.load(this.acquisitorCron.getCurrentBaseTime(), data, this.stat);
 		}
-	}
-	
-	/**
-	 * 통계량 초기화
-	 */
-	private void reset() {
-		if(this.stat != null) {
-			this.stat.reset();
+		
+		//
+		if(isLast == true) {
+			this.stop();
 		}
 	}
 	
 	/**
-	 * 데이터 수집 및 통계량 계산 시작
-	 */
-	public void start() throws Exception {
-		this.acquisitorCron.run();
-		this.resetCron.run();
-	}
-	
-	/**
-	 * 데이터 수집 및 통계량 수집 중단
-	 */
-	public void stop() throws Exception {
-		this.acquisitorCron.stop();
-		this.resetCron.stop();
-	}
-	
-	/**
-	 * 통계량 객체 반환
 	 * 
-	 * @return 통계량 객체
 	 */
-	public Statistic getStatistic() {
-		return this.stat;
+	void start() {
+		this.acquisitorCron.run();
 	}
 	
-	@Override
-	public String toString() {
-		return this.stat.toString();
+	/**
+	 * 
+	 */
+	void stop() {
+		this.acquisitorCron.stop();
+		this.isTerminate = true;
 	}
 }
