@@ -15,6 +15,7 @@ public interface DataLoader {
 	 * @param baseTime 기준 시간
 	 * @param data 데이터
 	 * @param stat 통계량
+	 * @param isLast reset 되기 이전의 최종 호출 여부
 	 */
-	public void load(long baseTime, double data, Statistic stat);
+	public void load(long baseTime, double data, Statistic stat, boolean isLast);
 }

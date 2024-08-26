@@ -21,10 +21,10 @@ public class StatisticServiceTest {
 			
 			return value;
 		},
-		(baseTime, data, stat) -> {
+		(baseTime, data, stat, isLast) -> {
 			
 			try {
-				System.out.println(DateUtil.getDateTimeStr(baseTime) + "  " + stat);
+				System.out.println(DateUtil.getDateTimeStr(baseTime) + " " + isLast + " " + stat);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}

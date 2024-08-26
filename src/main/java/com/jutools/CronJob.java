@@ -76,6 +76,9 @@ public class CronJob {
 		});
 		
 		this.cronThread.setDaemon(true);
+		// 다음 시작 시간을 미리 설정함,
+		// thread 가 완전히 시작되기 전에 nextTime을 가져가는 경우 nextTime 이 0이 되는 것을 방지하기 위함
+		this.nextTime = cronExp.getNextTimeInMillis();
 		this.cronThread.start();
 	}
 
