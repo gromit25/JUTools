@@ -12,11 +12,16 @@ import com.jutools.StringUtil;
  */
 public class XMLNode {
 	
+	/** 노드 테그명 */
 	private String tagName;
+	/** 노드 속성 */
 	private Map<String, String> attrMap = new HashMap<>();
+	/** 노드 텍스트 */
 	private String text;
 	
+	/** 부모 노드 */
 	private XMLNode parent;
+	/** 자식 노드 목록 */
 	private XMLArray childs = new XMLArray();
 	
 	/**
@@ -53,16 +58,18 @@ public class XMLNode {
 	}
 	
 	/**
+	 * 노드 테그명 반환
 	 * 
-	 * @return
+	 * @return 노드 테그명
 	 */
 	public String getTagName() {
 		return this.tagName;
 	}
 	
 	/**
+	 * 노드 테그명 설정 - 패키지 외부에서는 설정하지 못하도록 함
 	 * 
-	 * @param tagName
+	 * @param tagName 설정할 노드 테그명
 	 */
 	void setTagName(String tagName) throws Exception {
 		
@@ -90,19 +97,21 @@ public class XMLNode {
 	}
 	
 	/**
+	 * 노드의 속성 값 반환<br>
+	 * 속성 명이 없을 경우 null 을 반환
 	 * 
-	 * @param attrName
-	 * @return
+	 * @param attrName 속성 명
+	 * @return 속성 값
 	 */
 	public String getAttributeValue(String attrName) {
 		return this.getAttributeValue(attrName, null);
 	}
 	
 	/**
+	 * 노드 속성 값 설정 - 패키지 외부에서는 설정하지 못하도록 함
 	 * 
-	 * 
-	 * @param attrName
-	 * @param attrValue
+	 * @param attrName 속성 명
+	 * @param attrValue 속성 값
 	 */
 	void setAttributeValue(String attrName, String attrValue) throws Exception {
 		
@@ -124,14 +133,13 @@ public class XMLNode {
 	 */
 	public String[] getAttributeNames() throws Exception {
 		
-		//
 		return this.attrMap.keySet().toArray(new String[0]);
 	}
 	
 	/**
-	 * 노드의 텍스트를 반환
+	 * 노드 텍스트를 반환
 	 * 
-	 * @return 노드의 텍스트
+	 * @return 노드 텍스트
 	 */
 	public String getText() throws Exception {
 		
@@ -143,8 +151,9 @@ public class XMLNode {
 	}
 	
 	/**
+	 * 노드 텍스트 설정 - 패키지 외부에서는 설정하지 못하도록 함
 	 * 
-	 * @param text
+	 * @param text 설정할 노드 텍스트
 	 */
 	void setText(String text) throws Exception {
 		
@@ -156,19 +165,20 @@ public class XMLNode {
 	}
 	
 	/**
-	 * 노드의 상위 XML 노드 반환
+	 * 부모 노드 반환
 	 * 
-	 * @return 상위 XML 노드
+	 * @return 부모 노드
 	 */
 	public XMLNode getParent() {
 		return this.parent;
 	}
 	
 	/**
+	 * 부모 노드 설정 - 패키지 외부에서는 설정하지 못하도록 함
 	 * 
-	 * @param parent
+	 * @param parent 설정할 부모 노드
 	 */
-	void setParent(XMLNode parent) {
+	void setParent(XMLNode parent) throws Exception {
 		
 		this.parent = parent;
 		
@@ -178,26 +188,36 @@ public class XMLNode {
 	}
 	
 	/**
-	 * 노드의 하위 XML 노드 목록 반환
+	 * 자식 노드 목록 반환
 	 * 
-	 * @return 하위 XML 노드 목록
+	 * @return 자식 노드 목록
 	 */
 	public XMLArray getChilds() {
 		return this.childs;
 	}
 	
 	/**
+	 * 자식 노드 추가
 	 * 
-	 * @param node
+	 * @param node 자식 노드
 	 */
-	void addChild(XMLNode node) {
+	void addChild(XMLNode node) throws Exception {
+		
+		if(node == null) {
+			throw new Exception("node is null.");
+		}
+		
+		// 자식 노드 목록에 추가
 		this.childs.add(node);
+		
+		// 자식노드의 부모 노드를 현재 노드로 설정
+		node.setParent(this);
 	}
 	
 	/**
-	 * XML 노드 객체의 정보를 문자열로 변환 
+	 * 노드 객체의 정보를 문자열로 변환 
 	 * 
-	 * @return XML 노드 객체 문자열
+	 * @return 노드 객체 문자열
 	 */
 	@Override
 	public String toString() {
@@ -265,7 +285,7 @@ public class XMLNode {
 			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\~");
 			String mappingName = (specAndMappingName.length == 2)?specAndMappingName[1].trim():null;
 			
-			// 테그명과 속성명 분리
+			// 테그명과 속성 명 분리
 			String[] tagAndAttr = StringUtil.splitLast(specAndMappingName[0], "\\.");
 			String attrName = (tagAndAttr.length == 2)?tagAndAttr[1].trim():"#text";
 			String tagName = tagAndAttr[0].trim();
