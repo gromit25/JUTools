@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-
 import com.jutools.StringUtil;
 import com.jutools.TypeUtil;
 
@@ -173,7 +169,7 @@ class AttrMatcher {
 	 * @param node 검사할 노드
 	 * @return 일치 여부
 	 */
-	boolean match(Element node) throws Exception {
+	boolean match(XMLNode node) throws Exception {
 		
 		// 입력값 검증
 		if(node == null) {
@@ -184,26 +180,20 @@ class AttrMatcher {
 		if(this.attrQuery.equals(TEXT_ATTR_NAME) == true) {
 			
 			// 만일 주어진 테그의 속성이 테그의 텍스트 일 경우 처리
-			return this.valueMatchType.match(node.getTextContent(), this.valueQuery);
+			return this.valueMatchType.match(node.getText(), this.valueQuery);
 			
 		} else {
 			
 			// 만일 주어진 테그의 속성이 테그의 일반 속성일 경우 처리
 		
-			// 노드의 속성 목록을 가져옴
-			NamedNodeMap attrMap = node.getAttributes();
+			// 노드의 속성명 목록을 가져옴
+			String[] attrNames = node.getAttributeNames();
 			
-			for(int index = 0; index < attrMap.getLength(); index++) {
-				
-				// 속성을 가져옴
-				Node attrNode = attrMap.item(index);
-				if (attrNode.getNodeType() != Node.ATTRIBUTE_NODE) {
-					continue;
-				}
+			for(int index = 0; index < attrNames.length; index++) {
 				
 				// 속성의 이름과 값을 가져옴
-				String attrName = attrNode.getNodeName();
-				String attrValue = attrNode.getNodeValue();
+				String attrName = attrNames[index];
+				String attrValue = node.getAttributeValue(attrName);
 				
 				// 속성명 일치 여부 검사
 				boolean isAttrNameMatch = StringUtil.matchWildcard(attrName, this.attrQuery);

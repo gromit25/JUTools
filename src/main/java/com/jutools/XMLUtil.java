@@ -8,17 +8,14 @@ import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import com.jutools.xml.TypeShift;
 import com.jutools.xml.TypeShiftManager;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
+import com.jutools.xml.XMLNodeHandler;
 
 /**
  * xml 관련 Utility 클래스
@@ -136,27 +133,13 @@ public class XMLUtil {
 			throw new NullPointerException("input stream is null.");
 		}
 		
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(is);
+		XMLNodeHandler handler = new XMLNodeHandler();
+
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser parser = factory.newSAXParser();
+		parser.parse(is, handler);
 		
-		return fromXMLDocument(doc);
-	}
-	
-	/**
-	 * xml dom의 document 객체에서 root node를 읽어옴
-	 * 
-	 * @param doc xml dom의 document 객체
-	 * @return root node 객체
-	 */
-	public static XMLNode fromXMLDocument(Document doc) throws Exception {
-		
-		if(doc == null) {
-			throw new NullPointerException("document obj is null.");
-		}
-		
-		Element root = doc.getDocumentElement();
-		return new XMLNode(root);
+		return handler.getRootNode();
 	}
 	
 	/**
@@ -212,28 +195,6 @@ public class XMLUtil {
 	 */
 	public static XMLArray select(InputStream is, String query) throws Exception {
 		return fromInputStream(is).select(query);
-	}
-	
-	/**
-	 * xml dom의 document에 query 조회하여 결과 반환
-	 * 
-	 * @param doc xml dom의 document 객체
-	 * @param query 조회문
-	 * @return query 조회 결과
-	 */
-	public static XMLArray select(Document doc, String query) throws Exception {
-		return fromXMLDocument(doc).select(query);
-	}
-	
-	/**
-	 * xml dom의 node에 query 조회하여 결과 반환
-	 * 
-	 * @param node xml dom의 node 객체
-	 * @param query 조회문
-	 * @return query 조회 결과
-	 */
-	public static XMLArray select(Node node, String query) throws Exception {
-		return (new XMLNode(node)).select(query);
 	}
 	
 	/**

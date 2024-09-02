@@ -3,13 +3,7 @@ package com.jutools.xml;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import com.jutools.StringUtil;
-
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /**
  * XML Node Matcher 클래스<br>
@@ -41,36 +35,46 @@ class NodeMatcher {
 	private String tagNameQuery;
 	
 	/** 노드 목록의 시작점 - NodeMatcher 클래스 주의 설명 참조 */
-	@Getter(AccessLevel.PACKAGE)
 	private int start = 0;
 	
 	/** 노드 목록의 종료점 - NodeMatcher 클래스 주의 설명 참조 */
-	@Getter(AccessLevel.PACKAGE)
 	private int end = Integer.MAX_VALUE;
 	
 	/** 속성 Matcher 목록 */
 	private AttrMatcher[] attrMatchers;
 	
+	/** 자식 노드 NodeMatcher */
+	private NodeMatcher childNodeMatcher;
+	
 	/**
-	 * 생성자
+	 * 생성자 - 외부에서 직접 생성 금지
 	 * 
 	 * @param query
 	 */
-	NodeMatcher(String query) throws Exception {
+	private NodeMatcher(String query) throws Exception {
 		
 		// 입력값 검증
-		if(query == null) {
-			throw new NullPointerException("query is null.");
+		if(StringUtil.isBlank(query) == true) {
+			throw new NullPointerException("query is null or blank.");
 		}
+		
+		// ---- 쿼리를 나눔 ---------
+		// ex) query : "test1 > test2 > test3(attr1='what')"
+		//     -> "test1", "test2 > test3(attr1='what')"
+		//
+		// 첫번째 "test1" 은 현재 노드의 하위 노드 중 일치하는 것을 찾기 위함
+		// "test2 > test3(attr1='what')"는 다시 하위 노드에 select 메소드에 호출함
+		//
+		String[] splitedQuery = StringUtil.splitFirst(query, "\\s*>\\s*");
 		
 		// ---- 테그명 Matcher 객체 생성 -----
 		
 		// 주어진 쿼리(tagQuery)가 쿼리형식에 맞는지 검증
 		Pattern queryP = Pattern.compile(QUERY_P);
-		Matcher queryM = queryP.matcher(query);
+		Matcher queryM = queryP.matcher(splitedQuery[0]);
 		
 		if(queryM.matches() == false) {
-			throw new IllegalArgumentException("query is not valid:" + query);
+			throw new IllegalArgumentException("query is invalid:" + query);
 		}
 		
 		this.tagNameQuery = queryM.group("tag");
@@ -92,14 +96,73 @@ class NodeMatcher {
 			}
 			
 			// 종료점은 시작점 보다 같거나 커야함
-			if(start > end) {
-				throw new IllegalArgumentException("end index must be greater equal than start index(start, end):(" + start + "," + end + ")");
+			if(this.start > this.end) {
+				throw new IllegalArgumentException("end index must be greater equal than start index(start, end):(" + this.start + "," + this.end + ")");
 			}
 		}
 		
-		// ---- 속성 Matcher 객체 생성 -----
-		
+		// ---- 속성 Matcher 생성 -----
 		this.attrMatchers = AttrMatcher.create(queryM.group("attrs"));
+		
+		// ---- 하위 테그를 검색할 NodeMatcher 생성 ----
+		if(splitedQuery.length > 1) {
+			this.childNodeMatcher = NodeMatcher.create(splitedQuery[1]);
+		} else {
+			this.childNodeMatcher = null;
+		}
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param query
+	 * @return
+	 */
+	static NodeMatcher create(String query) throws Exception {
+		return new NodeMatcher(query);
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param nodes
+	 * @return
+	 */
+	XMLArray match(XMLArray nodes) throws Exception {
+		
+		// 매치된 노드의 담을 노드 목록 변수
+		XMLArray matchedNodes = new XMLArray();
+		
+		// 시작점(start) 부터 종료점(end) 이하이고 전체 노드의 크기 보다 작을때까지 수행
+		for(int index = this.start; index < nodes.size() && index <= this.end; index++) {
+			
+			// 현재 검사할 노드 목록을 가져옴
+			XMLNode node = nodes.get(index);
+			
+			// 노드 가 현재 표현식에 매치되고
+			// 하위 NodeMatcher(subNodeMatcher) 없으면, 매치된 목록에 노드 추가함
+			// 하위 NodeMatcher가 있으면, 하위 NodeMatcher에서 매치되는 모든 노드 목록을 추가함
+			if(this.matchNode(node) == true) {
+				
+				if(this.childNodeMatcher == null) {
+					matchedNodes.add(node);
+				} else {
+					matchedNodes.addAll(this.childNodeMatcher.match(node));
+				}
+			}
+		}
+		
+		// 매치된 노드 목록을 반환
+		return matchedNodes;
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
+	XMLArray match(XMLNode node) throws Exception {
+		return this.match(node.getChilds());
 	}
 	
 	/**
@@ -109,10 +172,10 @@ class NodeMatcher {
 	 * @param node 검사할 DOM의 Element 객체
 	 * @return 매치 여부
 	 */
-	boolean match(Element node) throws Exception {
+	private boolean matchNode(XMLNode node) throws Exception {
 		
 		// ------ 테그명 매치 검사 ---------
-		String tagName = node.getNodeName();
+		String tagName = node.getTagName();
 		boolean isTagMatched = StringUtil.matchWildcard(tagName, this.tagNameQuery);
 		
 		if(isTagMatched == false) {
@@ -132,38 +195,5 @@ class NodeMatcher {
 		
 		// 테그 매치 여부 반환
 		return isAttrMatched;
-	}
-	
-	/**
-	 * 주어진 DOM의 노드 객체가 매치 되는지 검사
-	 * 매칭 시, true 반환
-	 * 
-	 * @param node 검사할 DOM의 노드 객체
-	 * @return 매치 여부
-	 */
-	boolean match(Node node) throws Exception {
-		
-		if(node.getNodeType() != Node.ELEMENT_NODE) {
-			throw new IllegalArgumentException("node is not element type:" + node.getNodeName());
-		}
-		
-		return this.match((Element)node);
-	}
-	
-	/**
-	 * 주어진 DOM의 노드 객체가 매치 되는지 검사
-	 * 매칭 시, true 반환
-	 * 
-	 * @param node 검사할 DOM의 노드 객체
-	 * @return 매치 여부
-	 */
-	boolean match(XMLNode node) throws Exception {
-		
-		// 입력값 검증
-		if(node == null) {
-			throw new IllegalArgumentException("node is null.");
-		}
-		
-		return this.match(node.getNode());
 	}
 } 

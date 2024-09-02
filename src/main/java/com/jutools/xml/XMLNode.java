@@ -3,15 +3,7 @@ package com.jutools.xml;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import com.jutools.StringUtil;
-
-import lombok.AccessLevel;
-import lombok.Getter;
 
 /**
  * XML 노드 클래스
@@ -20,26 +12,17 @@ import lombok.Getter;
  */
 public class XMLNode {
 	
-	/** DOM의 node 객체 */
-	@Getter(AccessLevel.PACKAGE)
-	private Element node;
+	private String tagName;
+	private Map<String, String> attrMap = new HashMap<>();
+	private String text;
+	
+	private XMLNode parent;
+	private XMLArray childs = new XMLArray();
 	
 	/**
-	 * 생성자
-	 * 
-	 * @param node
+	 * 생성자 - 패키지 외부에서 생성못하게함
 	 */
-	public XMLNode(Node node) throws Exception {
-		
-		if(node == null) {
-			throw new NullPointerException("node is null.");
-		}
-		
-		if (node.getNodeType() != Node.ELEMENT_NODE) {
-			throw new IllegalArgumentException("node type is not element node:" + node.getNodeName());
-		}
-		
-		this.node = (Element)node;
+	XMLNode() {		
 	}
 	
 	/**
@@ -49,98 +32,7 @@ public class XMLNode {
 	 * @return 조회 결과 
 	 */
 	public XMLArray select(String query) throws Exception  {
-
-		// 입력값 검증
-		if(query == null) {
-			throw new IllegalArgumentException("query is null.");
-		}
-		
-		// 조회 결과를 담는 XML 목록 변수
-		XMLArray nodes = new XMLArray();
-		
-		// ------------- 1. query의 node matcher 객체 생성 ----------------
-		
-		// 쿼리를 나눔
-		// ex) query : "test1 > test2 > test3(attr1='what')"
-		//     -> "test1", "test2 > test3(attr1='what')"
-		//
-		// 첫번째 "test1" 은 현재 노드의 하위 노드 중 일치하는 것을 찾기 위함
-		// "test2 > test3(attr1='what')"는 다시 하위 노드에 select 메소드에 호출함
-		//
-		String[] splited = StringUtil.splitFirst(query, "\\s*>\\s*");
-		
-		// 노드가 query에 적합한지 검사하는 객체 생성
-		NodeMatcher matcher = new NodeMatcher(splited[0]);
-		
-		// ------------- 2. 목록에서 검색할 범위의 시작점과 종료점 추출 ----------------
-		
-		// child node의 목록을 가져옴
-		NodeList childs = this.node.getChildNodes();
-		
-		// 범위 시작점 - query에 설정된 시작점을 가져옴
-		int start = matcher.getStart();
-		
-		// 범위 종료점 - query에 설정된 종료점을 가져옴
-		// 종료점이 현재 배열 보다 클 경우 배열의 끝을 종료점으로 설정함
-		int end = matcher.getEnd();
-		
-		if(end > childs.getLength()) {
-			end = childs.getLength();
-		}
-		
-		// ------------- 3. 주어진 query에 따라 노드 추출 ----------------
-		
-		// 현재 노드의 하위 노드 중 query에 일치하는 노드를 검색
-		int elementIndex = 0;
-		for(int index = 0; index < childs.getLength(); index++) {
-			
-			// 하위 노드를 가져옴
-			Node childNode = childs.item(index);
-			if(childNode.getNodeType() != Node.ELEMENT_NODE) {
-				continue;
-			}
-			
-			// element 노드의 index가 범위 내에 있는지 검사
-			if(elementIndex < start) {
-				
-				// element 노드 index를 하나 올림
-				elementIndex++;
-
-				// 범위가 시작 되지 않으면 다음 child 노드를 검색
-				continue;
-			}
-			
-			if(elementIndex > end) {
-				// 범위 바깥으로 나가면 for 문 종료함
-				break;
-			}
-			
-			// element 노드 index를 하나 올림
-			elementIndex++;
-			
-			// query와 일치하는지 확인
-			// 일치하지 않으면 다음 하위노드 검색
-			if(matcher.match(childNode) == false) {
-				continue;
-			}
-			
-			// 하위 노드의 XML 노드를 생성 
-			XMLNode xmlChildNode = new XMLNode(childNode);
-			
-			// 만일 query가 마지막 query(splited.length ==1) 이면,
-			// -> 현재 노드를 결과에 추가함
-			// query가 마지막이 아니면,
-			// -> 하위 노드에 query를 수행 후
-			//    수행 결과를 XML 결과 목록에 모두 추가
-			if(splited.length == 1) {
-				nodes.add(xmlChildNode);
-			} else {
-				nodes.addAll(xmlChildNode.select(splited[1]));
-			}
-		}
-		
-		// query에 적합한 node 목록 반환
-		return nodes;
+		return NodeMatcher.create(query).match(this);
 	}
 	
 	/**
@@ -161,22 +53,68 @@ public class XMLNode {
 	}
 	
 	/**
-	 * 노드의 테그명 반환
 	 * 
-	 * @return 노드의 테그명
+	 * @return
 	 */
-	public String getTagName() throws Exception {
-		return this.node.getNodeName();
+	public String getTagName() {
+		return this.tagName;
+	}
+	
+	/**
+	 * 
+	 * @param tagName
+	 */
+	void setTagName(String tagName) throws Exception {
+		
+		if(StringUtil.isBlank(tagName) == true) {
+			throw new Exception("tag name is null or blank.");
+		}
+		
+		this.tagName = tagName;
 	}
 	
 	/**
 	 * 노드의 속성 값 반환
 	 * 
 	 * @param attrName 속성 명
+	 * @param attrName 속성이 없을 경우 default 값
 	 * @return 속성 값
 	 */
-	public String getAttributeValue(String attrName) throws Exception {
-		return this.node.getAttribute(attrName);
+	public String getAttributeValue(String attrName, String defaultValue) {
+		
+		if(this.attrMap.containsKey(attrName) == true) {
+			return this.attrMap.get(attrName);
+		} else {
+			return defaultValue;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param attrName
+	 * @return
+	 */
+	public String getAttributeValue(String attrName) {
+		return this.getAttributeValue(attrName, null);
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param attrName
+	 * @param attrValue
+	 */
+	void setAttributeValue(String attrName, String attrValue) throws Exception {
+		
+		if(StringUtil.isBlank(attrName) == true) {
+			throw new Exception("attribute name is null or blank.");
+		}
+		
+		if(attrValue == null) {
+			throw new Exception("attribute value is null.");
+		}
+		
+		this.attrMap.put(attrName, attrValue);
 	}
 	
 	/**
@@ -186,20 +124,8 @@ public class XMLNode {
 	 */
 	public String[] getAttributeNames() throws Exception {
 		
-		// 속성 목록을 가져옴
-		NamedNodeMap attrMap = this.node.getAttributes();
-		
-		// 속성 목록에서 속성명을 가져와
-		// 목록에 추가함
-		String[] attrNames = new String[attrMap.getLength()];
-		
-		for(int index = 0; index < attrMap.getLength(); index++) {
-			
-			Node attr = attrMap.item(index);
-			attrNames[index] = attr.getNodeName(); 
-		}
-		
-		return attrNames;
+		//
+		return this.attrMap.keySet().toArray(new String[0]);
 	}
 	
 	/**
@@ -208,7 +134,25 @@ public class XMLNode {
 	 * @return 노드의 텍스트
 	 */
 	public String getText() throws Exception {
-		return this.node.getTextContent();
+		
+		if(this.text == null) {
+			this.text = "";
+		}
+		
+		return this.text;
+	}
+	
+	/**
+	 * 
+	 * @param text
+	 */
+	void setText(String text) throws Exception {
+		
+		if(text == null) {
+			throw new Exception("text is null.");
+		}
+		
+		this.text = text;
 	}
 	
 	/**
@@ -216,14 +160,20 @@ public class XMLNode {
 	 * 
 	 * @return 상위 XML 노드
 	 */
-	public XMLNode getParent() throws Exception {
+	public XMLNode getParent() {
+		return this.parent;
+	}
+	
+	/**
+	 * 
+	 * @param parent
+	 */
+	void setParent(XMLNode parent) {
 		
-		Node parent = this.node.getParentNode();
+		this.parent = parent;
 		
-		if(parent != null && parent.getNodeType() == Node.ELEMENT_NODE) {
-			return new XMLNode(parent);
-		} else {
-			return null;
+		if(this.parent != null) {
+			this.parent.addChild(this);
 		}
 	}
 	
@@ -232,8 +182,16 @@ public class XMLNode {
 	 * 
 	 * @return 하위 XML 노드 목록
 	 */
-	public XMLArray getChilds() throws Exception {
-		return this.select("*");
+	public XMLArray getChilds() {
+		return this.childs;
+	}
+	
+	/**
+	 * 
+	 * @param node
+	 */
+	void addChild(XMLNode node) {
+		this.childs.add(node);
 	}
 	
 	/**
@@ -307,7 +265,7 @@ public class XMLNode {
 			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\~");
 			String mappingName = (specAndMappingName.length == 2)?specAndMappingName[1].trim():null;
 			
-			//
+			// 테그명과 속성명 분리
 			String[] tagAndAttr = StringUtil.splitLast(specAndMappingName[0], "\\.");
 			String attrName = (tagAndAttr.length == 2)?tagAndAttr[1].trim():"#text";
 			String tagName = tagAndAttr[0].trim();
