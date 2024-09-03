@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jutools.StringUtil;
+import com.jutools.xml.typeshift.TypeShift;
+import com.jutools.xml.typeshift.TypeShiftManager;
 
 /**
  * XML 노드 클래스

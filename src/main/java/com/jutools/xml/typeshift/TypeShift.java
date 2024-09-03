@@ -1,4 +1,4 @@
-package com.jutools.xml;
+package com.jutools.xml.typeshift;
 
 import java.util.Map;
 

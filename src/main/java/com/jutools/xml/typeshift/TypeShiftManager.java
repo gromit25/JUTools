@@ -1,4 +1,4 @@
-package com.jutools.xml;
+package com.jutools.xml.typeshift;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class TypeShiftManager {
 	 * @param name
 	 * @return
 	 */
-	static TypeShift getTypeShift(String name) {
+	public static TypeShift getTypeShift(String name) {
 		
 		//
 		TypeShift typeShift = typeShifts.get(name);

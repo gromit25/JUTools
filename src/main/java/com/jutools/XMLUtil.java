@@ -11,11 +11,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.jutools.xml.TypeShift;
-import com.jutools.xml.TypeShiftManager;
 import com.jutools.xml.XMLArray;
 import com.jutools.xml.XMLNode;
 import com.jutools.xml.XMLNodeHandler;
+import com.jutools.xml.typeshift.TypeShift;
+import com.jutools.xml.typeshift.TypeShiftManager;
 
 /**
  * xml 관련 Utility 클래스
