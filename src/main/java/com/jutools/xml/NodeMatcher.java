@@ -113,20 +113,20 @@ class NodeMatcher {
 	}
 	
 	/**
+	 * 주어진 쿼리를 처리할 수 있는 NodeMatcher 객체를 생성하여 반환
 	 * 
-	 * 
-	 * @param query
-	 * @return
+	 * @param query 쿼리
+	 * @return 생성된 NodeMatcher 객체
 	 */
 	static NodeMatcher create(String query) throws Exception {
 		return new NodeMatcher(query);
 	}
 	
 	/**
+	 * 대상 노드 목록(nodes)에서 쿼리에 적합한 노드 목록을 추출하여 반환
 	 * 
-	 * 
-	 * @param nodes
-	 * @return
+	 * @param nodes 대상 노드 목록
+	 * @return 쿼리에 적합한 노드 목록
 	 */
 	XMLArray match(XMLArray nodes) throws Exception {
 		
@@ -157,9 +157,10 @@ class NodeMatcher {
 	}
 	
 	/**
+	 * 대상 노드(node)의 자식 노드들 중 쿼리에 적합한 노드 목록을 추출하여 반환
 	 * 
-	 * @param node
-	 * @return
+	 * @param node 대상 노드
+	 * @return 자식 노드들 중 쿼리에 적합한 노드 목록
 	 */
 	XMLArray match(XMLNode node) throws Exception {
 		return this.match(node.getChilds());
