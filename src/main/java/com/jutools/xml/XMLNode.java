@@ -211,7 +211,7 @@ public class XMLNode {
 		this.childs.add(node);
 		
 		// 자식노드의 부모 노드를 현재 노드로 설정
-		node.setParent(this);
+		node.parent = this;
 	}
 	
 	/**
