@@ -3,7 +3,7 @@ package com.jutools.xml.typeshift;
 import java.util.Map;
 
 /**
- * 
+ * Int 타입 변환 클래스
  * 
  * @author jmsohn
  */
