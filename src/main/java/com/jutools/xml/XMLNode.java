@@ -8,7 +8,14 @@ import com.jutools.xml.typeshift.TypeShift;
 import com.jutools.xml.typeshift.TypeShiftManager;
 
 /**
- * XML 노드 클래스
+ * XML 노드 클래스<br>
+ * 테그명, 속성명, 속성값, 노드 텍스트, 테일 텍스트로 구성됨<br>
+ * 노드 텍스트는 현재 노드의 텍스트이며,<br>
+ * 테일 텍스트는 노드 종료이후 텍스트임<br>
+ * <br>
+ * 예를 들어, &lt;text&gt; hi &lt;p&gt;name&lt;/p&gt;!&lt;/text&gt;일 경우<br>
+ * p 노드의 노드 텍스트는 "name"이 되고 테일 텍스트는 "!" 이 됨<br>
+ * text 노드의 노드 텍스트는 "hi " 이 되고 테일 텍스트는 ""이 됨
  * 
  * @author jmsohn
  */
