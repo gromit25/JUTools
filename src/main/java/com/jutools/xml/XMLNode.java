@@ -280,10 +280,13 @@ public class XMLNode {
 	}
 	
 	/**
-	 * "tagname.attr~mappingname@type=default"
+	 * 맵핑 스펙에 따라 노드의 내용을 Map 객체로 생성 및 반환<br>
+	 * 맵핑 스팩: "tagname.attr->mappingname@type=default"<br>
+	 * 하위 테그 텍스트 또는 속성을 mappingname으로 type 변환하여 추가함<br>
+	 * 만일, 해당 테그 텍스트나 속성이 없는 경우 default 값을 사용함
 	 * 
-	 * @param mappingSpecs
-	 * @return
+	 * @param mappingSpecs 맵핑 스펙 목록
+	 * @return 스펙에 따라 생성된 Map 객체
 	 */
 	public Map<String, Object> toMap(String... mappingSpecs) throws Exception {
 		
@@ -311,7 +314,7 @@ public class XMLNode {
 			TypeShift typeShift = TypeShiftManager.getTypeShift(typeName);
 			
 			// mapping 명
-			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\~");
+			String[] specAndMappingName = StringUtil.splitLast(specAndType[0], "\\->");
 			String mappingName = (specAndMappingName.length == 2)?specAndMappingName[1].trim():null;
 			
 			// 테그명과 속성 명 분리

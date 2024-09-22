@@ -218,7 +218,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.selectFirst("book");
 
-		Map<String, Object> map = book.toMap("isbn~isbn_num");
+		Map<String, Object> map = book.toMap("isbn->isbn_num");
 		assertEquals("0001", map.get("isbn_num"));
 	}
 	
@@ -252,8 +252,8 @@ public class XMLUtilTest {
 				.selectFirst("book");
 
 		Map<String, Object> map = book.toMap(
-			"isbn~isbn@Int=-1"
-			, "title~title" 
+			"isbn->isbn@Int=-1"
+			, "title->title" 
 		);
 		
 		assertEquals(1, map.get("isbn"));
@@ -267,7 +267,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.selectFirst("book");
 
-		Map<String, Object> map = book.toMap("isbn_t~isbn@Int=-1");
+		Map<String, Object> map = book.toMap("isbn_t->isbn@Int=-1");
 		assertEquals(-1, map.get("isbn"));
 	}
 	
@@ -287,7 +287,7 @@ public class XMLUtilTest {
 				.fromString(XML_TEXT)
 				.selectFirst("book");
 
-		Map<String, Object> map = book.toMap("year~recent_yn@IsRecent=N");
+		Map<String, Object> map = book.toMap("year->recent_yn@IsRecent=N");
 		assertEquals("Y", map.get("recent_yn"));
 	}
 	
