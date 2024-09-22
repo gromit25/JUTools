@@ -87,6 +87,13 @@ public class XMLUtilTest {
 			+ "  </ns:book>\r\n"
 			+ "</bookstore>";
 	
+	private static final String XML_TAIL_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+			+ "<text>\n"
+			+ "hello <p>name</p>!\n"
+			+ "today: <p>year</p>-<p>month</p>-<p>day</p>\n"
+			+ "this is test.\n"
+			+ "</text>";
+	
 	/**
 	 *
 	 * 
@@ -282,6 +289,28 @@ public class XMLUtilTest {
 
 		Map<String, Object> map = book.toMap("year~recent_yn@IsRecent=N");
 		assertEquals("Y", map.get("recent_yn"));
+	}
+	
+	@Test
+	public void testTailText1() throws Exception {
+		
+		XMLNode text = XMLUtil.fromString(XML_TAIL_TEXT);
+		
+		assertEquals("\nhello ", text.getText());
+		
+		XMLArray params = text.select("p");
+		
+		assertEquals("name", params.get(0).getText());
+		assertEquals("!\ntoday: ", params.get(0).getTail());
+		
+		assertEquals("year", params.get(1).getText());
+		assertEquals("-", params.get(1).getTail());
+		
+		assertEquals("month", params.get(2).getText());
+		assertEquals("-", params.get(2).getTail());
+
+		assertEquals("day", params.get(3).getText());
+		assertEquals("\nthis is test.\n", params.get(3).getTail());
 	}
 
 	@Test

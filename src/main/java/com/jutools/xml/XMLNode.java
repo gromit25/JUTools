@@ -20,6 +20,8 @@ public class XMLNode {
 	private Map<String, String> attrMap = new HashMap<>();
 	/** 노드 텍스트 */
 	private String text;
+	/** 테일 텍스트 */
+	private String tail;
 	
 	/** 부모 노드 */
 	private XMLNode parent;
@@ -139,11 +141,11 @@ public class XMLNode {
 	}
 	
 	/**
-	 * 노드 텍스트를 반환
+	 * 노드 텍스트 반환
 	 * 
 	 * @return 노드 텍스트
 	 */
-	public String getText() throws Exception {
+	public String getText() {
 		
 		if(this.text == null) {
 			this.text = "";
@@ -157,13 +159,31 @@ public class XMLNode {
 	 * 
 	 * @param text 설정할 노드 텍스트
 	 */
-	void setText(String text) throws Exception {
+	void setText(String text) {
+		this.text = text;
+	}
+	
+	/**
+	 * 테일 텍스트 반환
+	 * 
+	 * @return 테일 텍스트
+	 */
+	public String getTail() {
 		
-		if(text == null) {
-			throw new Exception("text is null.");
+		if(this.tail == null) {
+			this.tail = "";
 		}
 		
-		this.text = text;
+		return this.tail;
+	}
+	
+	/**
+	 * 테일 텍스트 설정 - 패키지 외부에서는 설정하지 못하도록 함
+	 * 
+	 * @param tail 설정할 테일 텍스트
+	 */
+	void setTail(String tail) {
+		this.tail = tail;
 	}
 	
 	/**
