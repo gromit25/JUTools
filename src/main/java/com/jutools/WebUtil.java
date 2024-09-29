@@ -16,6 +16,8 @@ public class WebUtil {
 	private static Map<Character, String> htmlEntityMap;
 	/** 유효한 확장자 모음 */
 	private static String[] defaultValidExts;
+	/** email 패턴 */
+	private static Pattern emailP = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 	
 	static {
 		
@@ -216,5 +218,23 @@ public class WebUtil {
 	 */
 	public static boolean isValidFileName(String fileName) throws Exception {
 		return isValidFileName(fileName, -1);
+	}
+	
+	/**
+	 * 주어진 문자열이 이메일 패턴인지 여부 반환
+	 * 
+	 * @param email 검사할 문자열
+	 * @return 이메일 패턴 여부 - 이메일 패턴일 경우 true 반환
+	 */
+	public static boolean isEmailPattern(String email) {
+		
+		// 입력값이 빈값일 경우 false를 반환
+		if(StringUtil.isBlank(email) == true) {
+			return false;
+		}
+		
+		// 주어진 문자열이 이메일 패턴인지 검사하여 반환
+		Matcher emailM = emailP.matcher(email);
+		return emailM.matches();
 	}
 }
