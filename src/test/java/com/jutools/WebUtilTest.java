@@ -145,4 +145,11 @@ public class WebUtilTest {
 			fail("exception is occured");
 		}
 	}
+	
+	@Test
+	public void testIsEmailPattern1() {
+		
+		boolean result = WebUtil.isEmailPattern("john.doe@test.com");
+		assertTrue(result);
+	}
 }
