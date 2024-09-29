@@ -6,6 +6,7 @@
   <version>0.1</version>
   
   <properties>
+	<java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <deploy.target.dir>C:/apps/jutools</deploy.target.dir>
   </properties>
@@ -62,14 +63,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.4.2</version>
         <configuration>
           <outputDirectory>${deploy.target.dir}</outputDirectory>
           <archive>
             <manifest>
               <packageName>com.jutools</packageName>
               <addClasspath>true</addClasspath>
-              <classpathPrefix>${deploy.target.dir}/lib</classpathPrefix>
+              <classpathPrefix>./lib</classpathPrefix>
             </manifest>
           </archive>
         </configuration>
