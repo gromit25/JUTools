@@ -351,7 +351,7 @@ for(XMLNode book: books) {
 <format>
 	|   TEST MESSAGE - XML FORMAT
 	|   --------------------------------------------------------------------------
-	<foreach element="message" listExp="messages">
+	<foreach element="message" list="messages">
 	|      <style type="FG_WHITE_BRIGHT"><print exp="message"/></style>
 	</foreach>
 	|   --------------------------------------------------------------------------
@@ -412,7 +412,7 @@ try {
 		<cell position="baseRow:baseColumn" size=":200" style="테이블헤더스타일">
 			|메세지들
 		</cell>
-		<foreach element="message" listExp="messages">
+		<foreach element="message" list="messages">
 			<cell position="baseRow+1+_index_message:baseColumn" style="테이블데이터스타일">
 				|<print exp="message"/>
 			</cell>
