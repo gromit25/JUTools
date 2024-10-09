@@ -43,7 +43,7 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 	/** listExp 속성 수행하기 위한 Evaluator */
 	@Getter
 	@Setter
-	@FormatterAttr(name="listExp", mandatory=true)
+	@FormatterAttr(name="list", mandatory=true)
 	private OLExp listExp;
 	
 	/** element 속성의 설정값 */
