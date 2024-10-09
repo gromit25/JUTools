@@ -20,23 +20,23 @@ import lombok.Setter;
 @FormatterSpec(group="flow", tag="for")
 public class ForFormatter extends AbstractFlowComponentFormatter {
 	
-	/** for문 initExp속성의 Evaluator */
+	/** for문 init 속성의 Evaluator */
 	@Getter
 	@Setter
 	@FormatterAttr(name="init", mandatory=true)
 	private OLExp initExp;
 
-	/** for문 conditionExp속성의 Evaluator */
+	/** for문 test 속성의 Evaluator */
 	@Getter
 	@Setter
-	@FormatterAttr(name="cond", mandatory=true)
-	private MathExp conditionExp;
+	@FormatterAttr(name="test", mandatory=true)
+	private MathExp testExp;
 	
-	/** for문 stepExp속성의 Evaluator */
+	/** for문 step 속성의 Evaluator */
 	@Getter
 	@Setter
 	@FormatterAttr(name="step", mandatory=true)
-	private MathExp stepExp;
+	private OLExp stepExp;
 
 	@Override
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
@@ -48,7 +48,7 @@ public class ForFormatter extends AbstractFlowComponentFormatter {
 				// for 문 인덱스 초기화 수행
 				this.getInitExp().execute(values);
 				// for 문 조건문 수행, true 이면 for 문 수행
-				this.getConditionExp().execute(values)
+				this.getTestExp().execute(values)
 					.pop(Boolean.class) == true;
 				// for 문 인덱스 증가문 수행
 				this.getStepExp().execute(values)
