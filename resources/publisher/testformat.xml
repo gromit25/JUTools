@@ -3,7 +3,7 @@
 
 	|   TEST MESSAGE - XML FORMAT
 	|   --------------------------------------------------------------------------
-	<foreach element="message" listExp="messages">
+	<foreach element="message" list="messages">
 	|      <style type="FG_WHITE_BRIGHT"><print exp="message"/></style>
 	|      <style type="FG_WHITE_BRIGHT">${message}</style>
 	</foreach>

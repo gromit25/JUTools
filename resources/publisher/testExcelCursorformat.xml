@@ -24,7 +24,7 @@
 				|헤더2
 			</cell>
 		</rowcells>
-		<foreach element="message" listExp="messages">
+		<foreach element="message" list="messages">
 			<rowcells>
 				<cell style="테이블데이터스타일">
 					|column1:<print exp="message"/>
