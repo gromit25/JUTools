@@ -33,7 +33,7 @@ public class IfFormatter extends AbstractFlowComponentFormatter {
 	/** if문 수행 여부를 확인 하기 위한 스크립트 Evaluator */
 	@Getter
 	@Setter
-	@FormatterAttr(name="exp", mandatory=true)
+	@FormatterAttr(name="test", mandatory=true)
 	private OLExp exp;
 
 	@Override
