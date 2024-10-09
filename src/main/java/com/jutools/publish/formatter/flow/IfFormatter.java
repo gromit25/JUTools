@@ -20,7 +20,7 @@ import lombok.Setter;
  * exp 속성 : 판별식<br>
  * <pre>
  * ex)
- * &lt;if exp="expression"&gt;
+ * &lt;if test="expression"&gt;
  * |  hello world!
  * &lt;/if&gt;
  * </pre>

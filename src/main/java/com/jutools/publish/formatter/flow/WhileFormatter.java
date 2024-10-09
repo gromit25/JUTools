@@ -13,14 +13,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * while formatter
- * while formatter는 판별식(exp)의 참이면, List를 반복수행 함
- * 하나의 FlowFormatter를 여러번 실행시키는 개념임
- * 
- * exp 속성 : 판별식
- *
- * ex)
- * <while exp="expression">...</while>
+ * while formatter<br>
+ * while formatter는 판별식(exp)의 참이면, List를 반복수행 함<br>
+ * 하나의 FlowFormatter를 여러번 실행시키는 개념임<br>
+ * <br>
+ * test 속성 : 판별식<br>
+ * <br>
+ * ex)<br>
+ * &lt;while test="expression"&gt;<br>
+ * ...<br>
+ * &lt;/while&gt;<br>
  * 
  * @author jmsohn
  */
