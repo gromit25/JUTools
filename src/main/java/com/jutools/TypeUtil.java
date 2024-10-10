@@ -356,7 +356,7 @@ public class TypeUtil {
 			throw new IllegalArgumentException("field name is empty:" + fieldName);
 		}
 		
-		// 클래스에 속성 정보 획득
+		// 클래스에 속성 정보 획득 -> 타입 정보 추출용
 		// 주의) getField 메소드를 사용하면 안됨
 		//      getField 메소드는 public만 가져옴
 		Field field = clazz.getDeclaredField(fieldName);
@@ -398,7 +398,7 @@ public class TypeUtil {
 			throw new IllegalArgumentException("field name is empty:" + fieldName);
 		}
 		
-		// 클래스에 속성 정보 획득
+		// 클래스에 속성 정보 획득 -> 타입 정보 추출용
 		// 주의) getField 메소드를 사용하면 안됨
 		//      getField 메소드는 public만 가져옴
 		Field field = clazz.getDeclaredField(fieldName);
