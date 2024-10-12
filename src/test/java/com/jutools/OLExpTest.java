@@ -3,6 +3,7 @@ package com.jutools;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -10,12 +11,33 @@ import com.jutools.olexp.OLExp;
 import com.jutools.parserfw.exception.ParseException;
 import com.jutools.parserfw.exception.UnexpectedEndException;
 
+import lombok.Data;
+
 /**
  * OLExp 클래스의 테스트 케이스
  * 
  * @author jmsohn
  */
 public class OLExpTest {
+	
+	/**
+	 * 테스트용 클래스
+	 */
+	@Data
+	public static class TestVO {
+		private String subject;
+		private String body;
+		private AttachVO file;
+	}
+	
+	@Data
+	public static class AttachVO {
+		private String filename;
+		
+		public AttachVO(String filename) {
+			this.filename = filename;
+		}
+	}
 	
 	@Test
 	public void testCalculate1_1() {
@@ -617,5 +639,48 @@ public class OLExpTest {
 		} catch(Exception ex) {
 			fail();
 		}
+	}
+	
+	@Test
+	public void testAttr1() throws Exception {
+		
+		// 테스트용 데이터 생성
+		TestVO vo = new TestVO();
+		vo.setSubject("subject 입니다.");
+		vo.setBody("내용 입니다.");
+		
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("message", vo);
+		
+		// 테스트
+		String result = OLExp
+				.compile("'subject: ' + message.subject")
+				.execute(values)
+				.pop(String.class);
+		
+		// 결과 확인
+		assertEquals("subject: subject 입니다.", result);
+	}
+	
+	@Test
+	public void testAttr2() throws Exception {
+		
+		// 테스트용 데이터 생성
+		TestVO vo = new TestVO();
+		vo.setSubject("subject 입니다.");
+		vo.setBody("내용 입니다.");
+		vo.setFile(new AttachVO("test.txt"));
+		
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("message", vo);
+		
+		// 테스트
+		String result = OLExp
+				.compile("'file: ' + message.file.filename")
+				.execute(values)
+				.pop(String.class);
+		
+		// 결과 확인
+		assertEquals("file: test.txt", result);
 	}
 }

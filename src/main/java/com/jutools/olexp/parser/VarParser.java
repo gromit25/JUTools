@@ -1,10 +1,12 @@
 package com.jutools.olexp.parser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jutools.instructions.INVOKE;
 import com.jutools.instructions.Instruction;
 import com.jutools.instructions.LOAD_VAR;
+import com.jutools.instructions.NOP;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
@@ -19,11 +21,13 @@ import com.jutools.parserfw.TreeNode;
 public class VarParser extends AbstractParser<Instruction> {
 	
 	/** 변수명 혹은 메소드명 */
-	private StringBuffer buffer;
+	private StringBuffer varName;
 	/** 메소드 여부 */
 	private boolean isMethod;
 	/** 메소드의 파라미터 목록 */
-	private ArrayList<TreeNode<Instruction>> params;
+	private List<TreeNode<Instruction>> params;
+	/** 배열 및 속성 노드 */
+	private TreeNode<Instruction> tailNode;
 
 	/**
 	 * 생성자
@@ -41,9 +45,10 @@ public class VarParser extends AbstractParser<Instruction> {
 	protected void init() throws Exception {
 
 		// 속성 초기화
-		this.buffer = new StringBuffer();
+		this.varName = new StringBuffer();
 		this.isMethod = false;
 		this.params = new ArrayList<TreeNode<Instruction>>();
+		this.tailNode = null;
 		
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
@@ -54,8 +59,9 @@ public class VarParser extends AbstractParser<Instruction> {
 		
 		this.putTransferMap("VAR", new TransferBuilder()
 				.add("a-zA-Z0-9\\_", "VAR")
+				.add("\\.", "ATTR")
 				.add("\\(", "PARAM_START")
-				.add("^a-zA-Z0-9\\_\\(", "VAR_END", -1)
+				.add("^a-zA-Z0-9\\_\\.\\(", "VAR_END", -1)
 				.build());
 		
 		this.putTransferMap("PARAM_START", new TransferBuilder()
@@ -78,6 +84,7 @@ public class VarParser extends AbstractParser<Instruction> {
 		
 		// 종료 상태 추가
 		this.putEndStatus("VAR");
+		this.putEndStatus("ATTR", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR_END", EndStatusType.IMMEDIATELY_END); // VAR_END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("PARAM_END", EndStatusType.IMMEDIATELY_END); // PARAM_END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
@@ -87,8 +94,17 @@ public class VarParser extends AbstractParser<Instruction> {
 			source={"START", "VAR"},
 			target={"VAR"}
 	)
-	public void handleNumber(Event event) throws Exception {
-		this.buffer.append(event.getCh());
+	public void handleVar(Event event) throws Exception {
+		this.varName.append(event.getCh());
+	}
+	
+	@TransferEventHandler(
+			source={"VAR"},
+			target={"ATTR"}
+	)
+	public void handleAttr(Event event) throws Exception {
+		AttrParser parser = new AttrParser();
+		this.tailNode = parser.parse(event.getReader());
 	}
 	
 	@TransferEventHandler(
@@ -114,29 +130,49 @@ public class VarParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
+		// VAR 노드
+		TreeNode<Instruction> varNode = null;
+		
+		// 메소드 여부에 따라 처리
 		if(this.isMethod == false) {
 			
-			// LOAD_VAR 명령어 Node로 설정
-			this.setNodeData(
-				new LOAD_VAR().addParam(this.buffer.toString())
+			// LOAD_VAR 명령어 VAR 노드로 설정
+			varNode = new TreeNode<Instruction>(
+				new LOAD_VAR().addParam(this.varName.toString())
 			);
 			
 		} else {
 			
-			// INVOKE 메소드명 파라미터수
-			TreeNode<Instruction> instNode = new TreeNode<Instruction>(
+			// INVOKE 명령어 생성
+			TreeNode<Instruction> invokeNode = new TreeNode<Instruction>(
 				new INVOKE()
-					.addParam(this.buffer.toString())	// 메소드명
+					.addParam(this.varName.toString())	// 메소드명
 					.addParam(Integer.toString(this.params.size()))	// 파라미터수
 			);
 			
 			// 메소드 parameter 추가
 			for(TreeNode<Instruction> param: this.params) {
-				instNode.addChild(param);
+				invokeNode.addChild(param);
 			}
 			
-			// Node로 설정
-			this.setNode(instNode);
+			// VAR 노드로 설정
+			varNode = invokeNode;
+		}
+		
+		//
+		if(this.tailNode == null) {
+			
+			//
+			this.setNode(varNode);
+			
+		} else {
+			
+			//
+			TreeNode<Instruction> rootNode = new TreeNode<>(new NOP());
+			rootNode.addChild(varNode);
+			rootNode.addChild(tailNode);
+			
+			this.setNode(rootNode);
 		}
 	}
 }
