@@ -14,20 +14,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * set formatter
- * exp의 표현식을 수행한 값을 value container에 name값을 키로 하여 넣음
- * name 속성 : value container에 설정할 이름
- * exp 속성 : value container에 넣을 값의 표현식
- *   
- * 주 용도:
- * visual basic 등에서 사용하는 with 절 대체용
- * 
- * node.getOs().getCpu().getPercent() 를 
- * <set name="oscpu" exp="node.getOs().getCpu()"/>
- * oscpu.getPercent() 로 사용할 수 있음
- * 
- * 사용 형식:
- * <set name="infoName" exp="info.getName()"/>
+ * set formatter<br>
+ * exp의 표현식을 수행한 값을 value container에 name값을 키로 하여 넣음<br>
+ * name 속성 : value container에 설정할 이름<br>
+ * exp 속성 : value container에 넣을 값의 표현식<br>
+ * <br>
+ * 주 용도:<br>
+ * value container에 값 설정<br>
+ * <br>
+ * node.getOs().getCpu().getPercent() 를<br> 
+ * &lt;set name="oscpu" exp="node.getOs().getCpu()"/&gt;<br>
+ * oscpu.getPercent() 로 사용할 수 있음<br>
+ * <br>
+ * 사용 형식:<br>
+ * &lt;set name="infoName" exp="info.getName()"/&gt;<br>
  * 
  * @author jmsohn
  */
