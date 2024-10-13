@@ -16,7 +16,11 @@ public class EQUAL extends Instruction {
 		Object p1 = stack.pop();
 		Object p2 = stack.pop();
 		
-		stack.push(p1.equals(p2));
+		if(p1 == null || p2 == null) {
+			stack.push(p1 == p2);
+		} else {
+			stack.push(p1.equals(p2));
+		}
 	}
 
 }

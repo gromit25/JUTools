@@ -1,7 +1,6 @@
 package com.jutools.olexp.parser;
 
 import com.jutools.instructions.Instruction;
-import com.jutools.instructions.LOAD_VAR;
 import com.jutools.instructions.STORE;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.TransferBuilder;
@@ -117,9 +116,10 @@ public class StoreParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
+		// L_VAR 상태에서 끝날 경우, 즉 변수만 있는 경우
 		if(this.getStatus().equals("L_VAR") == true) {
-			this.setNodeData(
-				new LOAD_VAR().addParam(this.lValueBuffer.toString())
+			this.setNode(
+				new BooleanParser().parse(this.lValueBuffer.toString())
 			);
 		}
 	}

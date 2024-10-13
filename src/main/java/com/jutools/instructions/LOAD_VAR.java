@@ -14,16 +14,21 @@ public class LOAD_VAR extends Instruction {
 	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		Object value = values.get(this.getParam(0));
-		Class<?> valueClass = value.getClass();
 		
-		if(valueClass == int.class || valueClass == Integer.class
-			|| valueClass == long.class || valueClass == Long.class
-			|| valueClass == float.class || valueClass == Float.class) {
-			
-			stack.push(((Number)value).doubleValue());
-			
+		if(value == null) {
+			stack.push(null);
 		} else {
-			stack.push(value);
+			Class<?> valueClass = value.getClass();
+			
+			if(valueClass == int.class || valueClass == Integer.class
+				|| valueClass == long.class || valueClass == Long.class
+				|| valueClass == float.class || valueClass == Float.class) {
+				
+				stack.push(((Number)value).doubleValue());
+				
+			} else {
+				stack.push(value);
+			}
 		}
 		
 	}

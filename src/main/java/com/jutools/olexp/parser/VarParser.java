@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.jutools.instructions.INVOKE;
 import com.jutools.instructions.Instruction;
+import com.jutools.instructions.LOAD_FALSE;
+import com.jutools.instructions.LOAD_NULL;
+import com.jutools.instructions.LOAD_TRUE;
 import com.jutools.instructions.LOAD_VAR;
 import com.jutools.instructions.NOP;
 import com.jutools.parserfw.AbstractParser;
@@ -105,6 +108,9 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"ATTR"}
 	)
 	public void handleAttr(Event event) throws Exception {
+		
+		this.checkVarName();
+		
 		AttrParser parser = new AttrParser();
 		this.tailNode = parser.parse(event.getReader());
 	}
@@ -114,6 +120,9 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"ELEMENT"}
 	)
 	public void handleElement(Event event) throws Exception {
+		
+		this.checkVarName();
+		
 		ElementParser parser = new ElementParser();
 		this.tailNode = parser.parse(event.getReader());
 	}
@@ -123,6 +132,9 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"PARAM_START"}
 	)
 	public void handleParamStart(Event event) throws Exception {
+		
+		this.checkVarName();
+		
 		this.isMethod = true;
 	}
 	
@@ -144,20 +156,43 @@ public class VarParser extends AbstractParser<Instruction> {
 		// VAR 노드
 		TreeNode<Instruction> varNode = null;
 		
+		// 변수 명 가져옴
+		String varNameStr = this.varName.toString();
+		
 		// 메소드 여부에 따라 처리
 		if(this.isMethod == false) {
 			
-			// LOAD_VAR 명령어 VAR 노드로 설정
-			varNode = new TreeNode<Instruction>(
-				new LOAD_VAR().addParam(this.varName.toString())
-			);
+			if(varNameStr.equals("true") == true) {
+				// true 일 경우
+				varNode = new TreeNode<Instruction>(
+						new LOAD_TRUE()
+					);
+				
+			} else if(varNameStr.equals("false") == true) {
+				// false 일 경우
+				varNode = new TreeNode<Instruction>(
+						new LOAD_FALSE()
+					);
+				
+			} else if(varNameStr.equals("null") == true) {
+				// null 일 경우
+				varNode = new TreeNode<Instruction>(
+						new LOAD_NULL()
+					);
+				
+			} else {
+				// 변수 일 경우
+				varNode = new TreeNode<Instruction>(
+					new LOAD_VAR().addParam(varNameStr)
+				);
+			}
 			
 		} else {
 			
 			// INVOKE 명령어 생성
 			TreeNode<Instruction> invokeNode = new TreeNode<Instruction>(
 				new INVOKE()
-					.addParam(this.varName.toString())	// 메소드명
+					.addParam(varNameStr)	// 메소드명
 					.addParam(Integer.toString(this.params.size()))	// 파라미터수
 			);
 			
@@ -170,20 +205,36 @@ public class VarParser extends AbstractParser<Instruction> {
 			varNode = invokeNode;
 		}
 		
-		//
+		// tail 노드가 없는 경우 var 노드만 추가
+		// tail 노드가 있는 경우 추가 수행
 		if(this.tailNode == null) {
 			
-			//
 			this.setNode(varNode);
 			
 		} else {
 			
-			//
 			TreeNode<Instruction> rootNode = new TreeNode<>(new NOP());
 			rootNode.addChild(varNode);
 			rootNode.addChild(this.tailNode);
 			
 			this.setNode(rootNode);
+		}
+	}
+	
+	/**
+	 * 변수명(varName)이 예약어(true, false, null) 인지 확인
+	 * 
+	 * @throws 변수명이 예약어일 경우 예외 발생
+	 */
+	private void checkVarName() throws Exception {
+		
+		String varNameStr = this.varName.toString();
+		
+		if(varNameStr.equals("true") == true
+			|| varNameStr.equals("false") == true
+			|| varNameStr.equals("null") == true) {
+			
+			throw new Exception("invalid variable name:" + varName);
 		}
 	}
 }

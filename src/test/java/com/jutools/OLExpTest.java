@@ -758,4 +758,136 @@ public class OLExpTest {
 		assertEquals("receiver(2): hij@hij.co.kr", result2);
 		assertEquals("map(test1):test1 입니다.", result3);
 	}
+	
+	@Test
+	public void testLoadTrue1() throws Exception {
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("true")
+				.execute()
+				.pop(Boolean.class);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testLoadTrue2() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", true);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value == true")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testLoadTrue3() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", true);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value != true")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testLoadFalse1() throws Exception {
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("false")
+				.execute()
+				.pop(Boolean.class);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testLoadFalse2() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", false);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value == false")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testLoadFalse3() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", false);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value != false")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testLoadNull1() throws Exception {
+		
+		// 테스트
+		Object result = OLExp
+				.compile("null")
+				.execute()
+				.pop(Object.class);
+		
+		assertNull(result);
+	}
+	
+	@Test
+	public void testLoadNull2() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", null);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value == null")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testLoadNull3() throws Exception {
+		
+		// 데이터 설정
+		Map<String, Object> values = new HashMap<>();
+		values.put("value", null);
+		
+		// 테스트
+		Boolean result = OLExp
+				.compile("value != null")
+				.execute(values)
+				.pop(Boolean.class);
+		
+		assertFalse(result);
+	}
 }
