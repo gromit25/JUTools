@@ -32,6 +32,7 @@ public class OLExpTest {
 		private String subject;
 		private String body;
 		private AttachVO file;
+		private Map<String, String> map;
 		
 		public TestVO() {
 			
@@ -44,6 +45,11 @@ public class OLExpTest {
 			this.receivers.add("def@def.org");
 			this.receivers.add("hij@hij.co.kr");
 			this.receivers.add("lmn@lmn.com");
+			
+			this.map = new HashMap<>();
+			this.map.put("test1", "test1 입니다.");
+			this.map.put("test2", "test2 입니다.");
+			this.map.put("test3", "test3 입니다.");
 		}
 	}
 	
@@ -628,7 +634,7 @@ public class OLExpTest {
 			OLExp.compile("2 * (10 + var1) *");
 			fail();
 		} catch(UnexpectedEndException uex) {
-			assertEquals(18, uex.getPos());
+			assertEquals(17, uex.getPos());
 		} catch(Exception ex) {
 			fail();
 		}
@@ -742,8 +748,14 @@ public class OLExpTest {
 				.execute(values)
 				.pop(String.class);
 		
+		String result3 = OLExp
+				.compile("'map(test1):' + message.map['test1']")
+				.execute(values)
+				.pop(String.class);
+		
 		// 결과 확인
 		assertEquals("receiver(0): abc@abc.com", result1);
 		assertEquals("receiver(2): hij@hij.co.kr", result2);
+		assertEquals("map(test1):test1 입니다.", result3);
 	}
 }
