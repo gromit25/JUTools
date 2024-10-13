@@ -2,7 +2,9 @@ package com.jutools;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -25,13 +27,29 @@ public class OLExpTest {
 	 */
 	@Data
 	public static class TestVO {
+		
+		private List<String> receivers;
 		private String subject;
 		private String body;
 		private AttachVO file;
+		
+		public TestVO() {
+			
+			this.subject = "subject 입니다.";
+			this.body = "내용 입니다.";
+			this.file = new AttachVO("test.txt");
+			
+			this.receivers = new ArrayList<>();
+			this.receivers.add("abc@abc.com");
+			this.receivers.add("def@def.org");
+			this.receivers.add("hij@hij.co.kr");
+			this.receivers.add("lmn@lmn.com");
+		}
 	}
 	
 	@Data
 	public static class AttachVO {
+		
 		private String filename;
 		
 		public AttachVO(String filename) {
@@ -646,8 +664,6 @@ public class OLExpTest {
 		
 		// 테스트용 데이터 생성
 		TestVO vo = new TestVO();
-		vo.setSubject("subject 입니다.");
-		vo.setBody("내용 입니다.");
 		
 		Map<String, Object> values = new HashMap<String, Object>();
 		values.put("message", vo);
@@ -667,9 +683,6 @@ public class OLExpTest {
 		
 		// 테스트용 데이터 생성
 		TestVO vo = new TestVO();
-		vo.setSubject("subject 입니다.");
-		vo.setBody("내용 입니다.");
-		vo.setFile(new AttachVO("test.txt"));
 		
 		Map<String, Object> values = new HashMap<String, Object>();
 		values.put("message", vo);
@@ -682,5 +695,55 @@ public class OLExpTest {
 		
 		// 결과 확인
 		assertEquals("file: test.txt", result);
+	}
+	
+	@Test
+	public void testElement1() throws Exception {
+		
+		// 테스트용 데이터 생성
+		List<String> receivers = new ArrayList<>();
+		receivers.add("abc@abc.com");
+		receivers.add("def@def.org");
+		receivers.add("hij@hij.co.kr");
+		receivers.add("lmn@lmn.com");
+		
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("receivers", receivers);
+		values.put("index", 0);
+		
+		// 테스트
+		String result = OLExp
+				.compile("'receiver(' + index + '): ' + receivers[index]")
+				.execute(values)
+				.pop(String.class);
+		
+		// 결과 확인
+		assertEquals("receiver(0): abc@abc.com", result);
+	}
+	
+	@Test
+	public void testElement2() throws Exception {
+		
+		// 테스트용 데이터 생성
+		TestVO vo = new TestVO();
+		
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("message", vo);
+		values.put("index", 0);
+		
+		// 테스트
+		String result1 = OLExp
+				.compile("'receiver(' + index + '): ' + message.receivers[index]")
+				.execute(values)
+				.pop(String.class);
+		
+		String result2 = OLExp
+				.compile("'receiver(' + (index + 2) + '): ' + message.receivers[index + 2]")
+				.execute(values)
+				.pop(String.class);
+		
+		// 결과 확인
+		assertEquals("receiver(0): abc@abc.com", result1);
+		assertEquals("receiver(2): hij@hij.co.kr", result2);
 	}
 }

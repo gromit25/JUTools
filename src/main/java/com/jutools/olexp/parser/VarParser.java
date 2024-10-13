@@ -26,7 +26,7 @@ public class VarParser extends AbstractParser<Instruction> {
 	private boolean isMethod;
 	/** 메소드의 파라미터 목록 */
 	private List<TreeNode<Instruction>> params;
-	/** 배열 및 속성 노드 */
+	/** 컬렉션(List, Map) 또는 객체 속성 노드 */
 	private TreeNode<Instruction> tailNode;
 
 	/**
@@ -60,8 +60,9 @@ public class VarParser extends AbstractParser<Instruction> {
 		this.putTransferMap("VAR", new TransferBuilder()
 				.add("a-zA-Z0-9\\_", "VAR")
 				.add("\\.", "ATTR")
+				.add("\\[", "ELEMENT", -1)
 				.add("\\(", "PARAM_START")
-				.add("^a-zA-Z0-9\\_\\.\\(", "VAR_END", -1)
+				.add("^a-zA-Z0-9\\_\\.\\[\\(", "VAR_END", -1)
 				.build());
 		
 		this.putTransferMap("PARAM_START", new TransferBuilder()
@@ -85,6 +86,7 @@ public class VarParser extends AbstractParser<Instruction> {
 		// 종료 상태 추가
 		this.putEndStatus("VAR");
 		this.putEndStatus("ATTR", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("ELEMENT", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR_END", EndStatusType.IMMEDIATELY_END); // VAR_END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("PARAM_END", EndStatusType.IMMEDIATELY_END); // PARAM_END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
@@ -104,6 +106,15 @@ public class VarParser extends AbstractParser<Instruction> {
 	)
 	public void handleAttr(Event event) throws Exception {
 		AttrParser parser = new AttrParser();
+		this.tailNode = parser.parse(event.getReader());
+	}
+	
+	@TransferEventHandler(
+			source={"VAR"},
+			target={"ELEMENT"}
+	)
+	public void handleElement(Event event) throws Exception {
+		ElementParser parser = new ElementParser();
 		this.tailNode = parser.parse(event.getReader());
 	}
 	
@@ -170,7 +181,7 @@ public class VarParser extends AbstractParser<Instruction> {
 			//
 			TreeNode<Instruction> rootNode = new TreeNode<>(new NOP());
 			rootNode.addChild(varNode);
-			rootNode.addChild(tailNode);
+			rootNode.addChild(this.tailNode);
 			
 			this.setNode(rootNode);
 		}

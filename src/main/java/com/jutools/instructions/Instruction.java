@@ -1,8 +1,9 @@
 package com.jutools.instructions;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.Vector;
 
 /**
  * 명령어 추상 클래스
@@ -12,7 +13,7 @@ import java.util.Stack;
 public abstract class Instruction {
 	
 	/** 명령어의 파라미터 목록 */
-	private ArrayList<String> params = new ArrayList<String>(); 
+	private List<String> params = new Vector<String>();
 	
 	/**
 	 * 명령어 수행 메소드
@@ -53,4 +54,16 @@ public abstract class Instruction {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		
+		StringBuilder builder = new StringBuilder("");
+		
+		builder.append(this.getClass().getSimpleName());
+		for(String param: this.params) {
+			builder.append(" ").append(param);
+		}
+		
+		return builder.toString();
+	}
 }

@@ -48,12 +48,14 @@ public class AttrParser extends AbstractParser<Instruction> {
 		this.putTransferMap("ATTR", new TransferBuilder()
 				.add("a-zA-Z0-9\\_", "ATTR")
 				.add("\\.", "NEW_ATTR")
-				.add("^a-zA-Z0-9\\_\\.", "ATTR_END", -1)
+				.add("\\[", "NEW_ELEMENT", -1)
+				.add("^a-zA-Z0-9\\_\\.\\[", "ATTR_END", -1)
 				.build());
 		
 		// 종료 상태 추가
 		this.putEndStatus("ATTR");
 		this.putEndStatus("NEW_ATTR", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("NEW_ELEMENT", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("ATTR_END", EndStatusType.IMMEDIATELY_END); // ATTR_END 상태로 들어오면 Parsing을 중지
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
@@ -72,6 +74,15 @@ public class AttrParser extends AbstractParser<Instruction> {
 	)
 	public void handleNewAttr(Event event) throws Exception {
 		AttrParser parser = new AttrParser();
+		this.tailNode = parser.parse(event.getReader());
+	}
+	
+	@TransferEventHandler(
+			source={"ATTR"},
+			target={"NEW_ELEMENT"}
+	)
+	public void handleElement(Event event) throws Exception {
+		ElementParser parser = new ElementParser();
 		this.tailNode = parser.parse(event.getReader());
 	}
 	
@@ -95,9 +106,7 @@ public class AttrParser extends AbstractParser<Instruction> {
 			//
 			rootNode = new TreeNode<>(new NOP());
 			rootNode.addChild(attrNode);
-			rootNode.addChild(tailNode);
-			
-			this.setNode(rootNode);
+			rootNode.addChild(this.tailNode);
 		}
 		
 		// Node로 설정

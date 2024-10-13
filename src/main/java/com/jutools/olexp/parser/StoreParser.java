@@ -15,7 +15,7 @@ import com.jutools.parserfw.TransferEventHandler;
 public class StoreParser extends AbstractParser<Instruction> {
 	
 	/** L-value 변수명 저장 변수 */
-	private StringBuffer LValueBuffer;
+	private StringBuffer lValueBuffer;
 
 	/**
 	 * 생성자
@@ -33,7 +33,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	protected void init() throws Exception {
 		
 		// L-value 변수명 저장 버퍼 생성
-		this.LValueBuffer = new StringBuffer("");
+		this.lValueBuffer = new StringBuffer("");
 		
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
@@ -76,7 +76,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 			target={"L_VAR"}
 	)
 	public void handleVar(Event event) throws Exception {
-		this.LValueBuffer.append(event.getCh());
+		this.lValueBuffer.append(event.getCh());
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	public void handleStoreOp(Event event) throws Exception {
 		
 		this.setNodeData(
-			new STORE().addParam(this.LValueBuffer.toString())
+			new STORE().addParam(this.lValueBuffer.toString())
 		);
 		
 		this.addChild(
@@ -119,7 +119,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 		
 		if(this.getStatus().equals("L_VAR") == true) {
 			this.setNodeData(
-				new LOAD_VAR().addParam(this.LValueBuffer.toString())
+				new LOAD_VAR().addParam(this.lValueBuffer.toString())
 			);
 		}
 	}

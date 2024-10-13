@@ -188,4 +188,23 @@ public abstract class AbstractExp {
 			return type.cast(obj);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder builder = new StringBuilder("");
+		builder
+			.append("INSTRUCTION LIST\n")
+			.append("-------------------------\n");
+		
+		if(this.insts != null && this.insts.size() != 0) {
+			for(Instruction inst: this.insts) {
+				builder.append(inst).append("\n");
+			}
+		} else {
+			builder.append("instruction list is empty.\n");
+		}
+		
+		return builder.toString();
+	}
 }
