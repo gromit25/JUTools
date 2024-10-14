@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
+import com.jutools.TextGen;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
@@ -24,11 +25,16 @@ import lombok.Setter;
 @FormatterSpec(group="excel", tag="worksheet")
 public class WorksheetFormatter extends BasicFlowFormatter {
 	
-	/** worksheet 명(필수) */
+	/**
+	 * worksheet 명(필수)<br>
+	 * -> TextGen 클래스를 이용하여 이름을 동적으로 생성, nameGen 속성 참조
+	 */
 	@Getter
-	@Setter
 	@FormatterAttr(name="name", mandatory=true)
 	private String name;
+	
+	/** worksheet 명 생성기 */
+	private TextGen nameGen;
 	
 	/** */
 	@Getter
@@ -88,48 +94,78 @@ public class WorksheetFormatter extends BasicFlowFormatter {
 	@Override
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
 		
-		// workbook formatter 설정
-		WorkbookFormatter workbook = null;
 		try {
-			workbook = this.getParentInBranch(WorkbookFormatter.class);
+			
+			// workbook formatter 설정
+			WorkbookFormatter workbook = null;
+			try {
+				workbook = this.getParentInBranch(WorkbookFormatter.class);
+			} catch(Exception ex) {
+				throw new FormatterException(this, ex);
+			}
+			
+			// worksheet 명 생성
+			String worksheetName = this.nameGen.gen(values);
+	
+			// cloneFrom 이 설정 되지 않은 경우,
+			// 설정된 worksheet명으로 worksheet 생성 및 활성화 sheet(active sheet)로 설정
+			// worksheet가 없을 경우, 새로 만듦
+			if(null == this.getCopyFrom()) {
+				
+				XSSFSheet sheet = workbook.getWorkbook().getSheet(worksheetName);
+				if(sheet == null) {
+					sheet = workbook.getWorkbook().createSheet(worksheetName);
+				}
+				
+				this.setWorksheet(sheet);
+			}
+			// cloneFrom 설정되어 있는 경우,
+			// cloneFrom Sheet에서 clone을 생성하여, 설정함
+			else {
+				
+				int cloneFromIndex = workbook.getWorkbook().getSheetIndex(this.getCopyFrom());
+				XSSFSheet sheet = workbook.getWorkbook().cloneSheet(cloneFromIndex, worksheetName);
+				
+				this.setWorksheet(sheet);
+			}
+			
+			// 활성시트를 현재 시트로 설정함
+			workbook.getWorkbook().setActiveSheet(
+				workbook.getWorkbook().getSheetIndex(worksheetName)
+			);
+		
+			// worksheet의 자식 formatter 수행
+			this.execChildFormatters(out, charset, values);
+			
+			// 만일 remove 설정이 되어 있으면, 현 worksheet를 삭제함
+			if(true == this.isRemove()) {
+				int index = workbook.getWorkbook().getSheetIndex(worksheetName);
+				workbook.getWorkbook().removeSheetAt(index);
+			}
+			
+			// 첫 worksheet로 active worksheet를 변경
+			workbook.getWorkbook().setActiveSheet(0);
+			
+		} catch(FormatterException fex) {
+			throw fex;
 		} catch(Exception ex) {
 			throw new FormatterException(this, ex);
 		}
-
-		// cloneFrom 이 설정 되지 않은 경우,
-		// 설정된 worksheet명으로 worksheet 생성 및 활성화 sheet(active sheet)로 설정
-		// worksheet가 없을 경우, 새로 만듦
-		if(null == this.getCopyFrom()) {
-			XSSFSheet sheet = workbook.getWorkbook().getSheet(this.getName());
-			if(sheet == null) {
-				sheet = workbook.getWorkbook().createSheet(this.getName());
-			}
-			this.setWorksheet(sheet);
-		}
-		// cloneFrom 설정되어 있는 경우,
-		// cloneFrom Sheet에서 clone을 생성하여, 설정함
-		else {
-			int cloneFromIndex = workbook.getWorkbook().getSheetIndex(this.getCopyFrom());
-			XSSFSheet sheet = workbook.getWorkbook().cloneSheet(cloneFromIndex, this.getName());
-			this.setWorksheet(sheet);
-		}
-		
-		// 활성시트를 현재 시트로 설정함
-		workbook.getWorkbook().setActiveSheet(
-			workbook.getWorkbook().getSheetIndex(this.getName())
-		);
+	}
 	
-		// worksheet의 자식 formatter 수행
-		this.execChildFormatters(out, charset, values);
+	/**
+	 * worksheet 명 설정
+	 * 
+	 * @param name 설정할 worksheet 명
+	 */
+	public void setName(String name) throws Exception {
 		
-		// 만일 remove 설정이 되어 있으면, 현 worksheet를 삭제함
-		if(true == this.isRemove()) {
-			int index = workbook.getWorkbook().getSheetIndex(this.getName());
-			workbook.getWorkbook().removeSheetAt(index);
+		if(name == null) {
+			throw new NullPointerException("worksheet name is null.");
 		}
 		
-		// 첫 worksheet로 active worksheet를 변경
-		workbook.getWorkbook().setActiveSheet(0);
+		this.name = name;
+		this.nameGen = TextGen.compile(name);
 	}
 	
 	/**
