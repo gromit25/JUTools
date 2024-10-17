@@ -760,6 +760,26 @@ public class OLExpTest {
 	}
 	
 	@Test
+	public void testElement3() throws Exception {
+		
+		// 테스트용 데이터 생성
+		TestVO vo = new TestVO();
+		
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("message", vo);
+		values.put("index", 0);
+
+		// 테스트
+		String result = OLExp
+				.compile("if(message.receivers[index] == null, '', message.receivers[index])")
+				.execute(values)
+				.pop(String.class);
+		
+		// 결과 확인
+		assertEquals("abc@abc.com", result);
+	}
+	
+	@Test
 	public void testLoadTrue1() throws Exception {
 		
 		// 테스트

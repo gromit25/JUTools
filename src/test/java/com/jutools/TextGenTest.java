@@ -87,6 +87,6 @@ public class TextGenTest {
 		String formatText = "${if(a[i] == null, '', a[i])}";
 		String message = TextGen.compile(formatText).gen(values);
 		
-		System.out.println(message);
+		assertEquals("john doe", message);
 	}
 }
