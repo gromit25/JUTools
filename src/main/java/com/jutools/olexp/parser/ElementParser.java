@@ -50,7 +50,7 @@ public class ElementParser extends AbstractParser<Instruction> {
 		this.putTransferMap("INDEX_END", new TransferBuilder()
 				.add("\\[", "NEW_ELEMENT", -1)
 				.add("\\.", "NEW_ATTR")
-				.add("^\\[\\.", "END")
+				.add("^\\[\\.", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
