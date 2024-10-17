@@ -2,7 +2,10 @@ package com.jutools;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -69,5 +72,21 @@ public class TextGenTest {
 		String message = TextGen.compile(formatText).gen(values);
 		
 		assertEquals("hello, john doe.. ${na", message);
+	}
+	
+	@Test
+	public void testTextGen6() throws Exception {
+		
+		List<String> array = new ArrayList<>();
+		array.add("john doe");
+		
+		Map<String, Object> values = new HashMap<>();
+		values.put("a", array);
+		values.put("i", 0);
+		
+		String formatText = "${if(a[i] == null, '', a[i])}";
+		String message = TextGen.compile(formatText).gen(values);
+		
+		System.out.println(message);
 	}
 }
