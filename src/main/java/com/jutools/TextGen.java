@@ -67,7 +67,13 @@ public class TextGen {
 		
 		@Override
 		public String getText(Map<String, ?> values) throws Exception {
-			return this.execute(values).pop(String.class);
+			
+			Object text = this.execute(values).pop(Object.class);
+			if(text != null) {
+				return text.toString();
+			} else {
+				return "null";
+			}
 		}
 	}
 	
