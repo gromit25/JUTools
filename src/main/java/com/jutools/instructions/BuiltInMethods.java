@@ -13,6 +13,17 @@ import com.jutools.StringUtil.WildcardPattern;
 public class BuiltInMethods {
 	
 	/**
+	 * double -> int 로 변환
+	 * 
+	 * @param value 변환할 값
+	 * @return 변환된 int
+	 */
+	@MethodAlias(alias = "toInt")
+	public static int toInt(double value) {
+		return (int)value;
+	}
+	
+	/**
 	 * 반올림 메소드
 	 * 
 	 * @param value 반올림 대상
