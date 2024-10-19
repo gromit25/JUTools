@@ -38,14 +38,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * cell formatter
- * cell을 생성, cell 데이터 출력, cell style 적용 수행함
- * 
- * 속성에 공통으로 cell의 row와 column 관련 속성들을 지정하기 위해
- * rowColumn 표현식을 만듦
- * 형식) "rowExp:columnExp"
- * ex) "5:4" 6 row(0 부터 시작), 5 column("E" column, 0이 "A" column)
- *     ":4"  1 row, 5 column, "5:" 6 row, 0 column("A" column)
+ * cell formatter<br>
+ * cell을 생성, cell 데이터 출력, cell style 적용 수행함<br>
+ * <br>
+ * 속성에 공통으로 cell의 row와 column 관련 속성들을 지정하기 위해<br>
+ * rowColumn 표현식을 만듦<br>
+ * 형식) "rowExp:columnExp"<br>
+ * ex) "5:4" 6 row(0 부터 시작), 5 column("E" column, 0이 "A" column)<br>
+ *     ":4"  1 row, 5 column, "5:" 6 row, 0 column("A" column)<br>
  *     "base.getRow() : base.getColumn() + 2" <- 스크립트 사용가능
  * 
  * @author jmsohn
@@ -54,8 +54,8 @@ import lombok.Setter;
 public class CellFormatter extends AbstractExcelFormatter {
 
 	/**
-	 * cell의 위치
-	 * rowColumn 표현 형식 사용, defalut 값을 사용하지 않음
+	 * cell의 위치<br>
+	 * rowColumn 표현 형식 사용, defalut 값을 사용하지 않음<br>
 	 * position이 설정되지 않으면, worksheet의 커서 위치를 사용함
 	 */
 	@Getter
@@ -64,7 +64,7 @@ public class CellFormatter extends AbstractExcelFormatter {
 	private RowColumnEval positionExpEval;
 	
 	/**
-	 * cell의 병합 범위
+	 * cell의 병합 범위<br>
 	 * default값은 "0:0", 0일 경우 병합하지 않음
 	 */
 	@Getter
@@ -73,8 +73,8 @@ public class CellFormatter extends AbstractExcelFormatter {
 	private RowColumnEval spanExpEval;
 	
 	/**
-	 * cell의 크기 지정, pixel 단위임, rowColumn 표현 형식 사용
-     * row pixel은 정확히 지정되나, column pixel은 근사치로 지정됨
+	 * cell의 크기 지정, pixel 단위임, rowColumn 표현 형식 사용<br>
+     * row pixel은 정확히 지정되나, column pixel은 근사치로 지정됨<br>
      * default값은 “0:0”, 0일 경우 size 조정하지 않음
 	 */
 	@Getter
@@ -83,8 +83,8 @@ public class CellFormatter extends AbstractExcelFormatter {
 	private RowColumnEval sizeExpEval;
 	
 	/**
-	 * 자동 크기 설정
-	 * true/false 값 설정, cell 자동 size 조정 기능 설정
+	 * 자동 크기 설정<br>
+	 * true/false 값 설정, cell 자동 size 조정 기능 설정<br>
 	 * default값은 false
 	 */
 	@Getter
@@ -328,8 +328,10 @@ public class CellFormatter extends AbstractExcelFormatter {
 			//    병합된 모든 cell에 대해 각각 적용
 			//
 			@SuppressWarnings("unchecked")
-			Hashtable<String, XSSFCellStyle> styles = (Hashtable<String, XSSFCellStyle>)values.get(CellStyleFormatter.CELLSTYLE_BUNDLE_NAME);
+			Map<String, XSSFCellStyle> styles = (Hashtable<String, XSSFCellStyle>)values.get(CellStyleFormatter.CELLSTYLE_BUNDLE_NAME);
 			if(styles != null && this.getStyle() != null && styles.containsKey(this.getStyle())) {
+				
+				XSSFCellStyle style = styles.get(this.getStyle());
 				
 				Iterator<CellAddress> spanCellAddrIter = spanCellAddr.iterator();
 				while(spanCellAddrIter.hasNext() == true) {
@@ -337,8 +339,7 @@ public class CellFormatter extends AbstractExcelFormatter {
 					CellAddress cellAddr = spanCellAddrIter.next();
 					
 					XSSFCell spanCell = ExcelUtil.getCell(sheet, cellAddr);
-					spanCell.setCellStyle(styles.get(this.getStyle()));
-					
+					spanCell.setCellStyle(style);
 				}
 			}
 			

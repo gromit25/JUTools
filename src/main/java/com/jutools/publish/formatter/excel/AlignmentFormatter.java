@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -44,15 +45,22 @@ public class AlignmentFormatter extends AbstractCellStyleComponentFormatter {
 	@Override
 	protected void formatCellStyle(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
 		
+		// cell style 획득
+		XSSFCellStyle style = this.getParentStyle();
+		
+		System.out.println("AlignmentFormatter DEBUG 100:" + style.getAlignment() + ", " + style.getVerticalAlignment());
+		
 		// 수평 위치 값 설정
 		if(this.getHorizontal() != null) {
-			this.getParentStyle().setAlignment(this.getHorizontal());
+			style.setAlignment(this.getHorizontal());
 		}
 		
 		// 수직 위치 값 설정
 		if(this.getVertical() != null) {
-			this.getParentStyle().setVerticalAlignment(this.getVertical());
+			style.setVerticalAlignment(this.getVertical());
 		}
+		
+		System.out.println("AlignmentFormatter DEBUG 200:" + style.getAlignment() + ", " + style.getVerticalAlignment());
 	}
 
 }
