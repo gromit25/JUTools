@@ -1,5 +1,8 @@
 package com.jutools.instructions;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.jutools.StringUtil.WildcardPattern;
 
 /**
@@ -72,5 +75,20 @@ public class BuiltInMethods {
 		} else {
 			return falseValue;
 		}
+	}
+	
+	/**
+	 * 현재 시간을 포맷에 맞추어 문자열로 반환
+	 * 
+	 * @param format 시간 출력 포맷
+	 * @return 현재 시간 문자열
+	 */
+	@MethodAlias(alias = "now")
+	public static String now(String format) throws Exception {
+		
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		
+		return formatter.format(now);
 	}
 }

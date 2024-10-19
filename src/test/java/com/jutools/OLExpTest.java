@@ -2,6 +2,8 @@ package com.jutools;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -588,6 +590,28 @@ public class OLExpTest {
 				.execute(values).pop(Boolean.class);
 			
 			assertTrue(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testMethodCall4_1() {
+		
+		try {
+			
+			HashMap<String, Object> values = new HashMap<String, Object>();
+			
+			String result = OLExp.compile("now('yyyy-MM-dd')")
+				.execute(values).pop(String.class);
+			
+			String compare = LocalDateTime.now().format(
+				DateTimeFormatter.ofPattern("yyyy-MM-dd")
+			);
+			
+			assertEquals(compare, result);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
