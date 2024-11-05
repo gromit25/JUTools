@@ -48,7 +48,7 @@ public class SwitchFormatter extends AbstractFlowFormatter {
 	 */
 	@Getter(AccessLevel.PRIVATE)
 	@Setter(AccessLevel.PRIVATE)
-	private HashMap<String, CaseFormatter> caseFormatterMap = new HashMap<String, CaseFormatter>();
+	private Map<String, CaseFormatter> caseFormatterMap = new HashMap<String, CaseFormatter>();
 
 	/** default 분기를 위한 default formatter */
 	@Getter(AccessLevel.PRIVATE)
@@ -63,9 +63,7 @@ public class SwitchFormatter extends AbstractFlowFormatter {
 	@Override
 	public void addChildFormatter(Formatter formatter) throws FormatterException {
 		
-		// case formatter일 경우,
-		// case formatter의 value값을 key로 하여,
-		// case formatter 목록에 추가
+		// Case Formatter와 Default Formatter 설정
 		if((formatter instanceof CaseFormatter) == true ) {
 			
 			CaseFormatter caseFormatter = (CaseFormatter)formatter;
@@ -113,5 +111,4 @@ public class SwitchFormatter extends AbstractFlowFormatter {
 			this.getDefaultFormatter().format(out, charset, values);
 		}
 	}
-
 }
