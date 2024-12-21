@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -126,7 +125,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123|||6789";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(2, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));
@@ -138,7 +137,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123||45|||6789";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(2, splitedList.size());
 		assertEquals("123||45", new String(splitedList.get(0)));
@@ -150,7 +149,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123||||||6789";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(3, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));
@@ -163,7 +162,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123|||||||6789";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(3, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));
@@ -176,7 +175,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123|||6789|";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(2, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));
@@ -188,7 +187,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123|||6789|||";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes());
 	       
 		assertEquals(2, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));
@@ -200,7 +199,7 @@ public class BytesUtilTest {
 		
 		String test1 = "123|||6789|||";
 	       
-		ArrayList<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes(), true);
+		List<byte[]> splitedList = BytesUtil.split(test1.getBytes(), "|||".getBytes(), true);
 	       
 		assertEquals(3, splitedList.size());
 		assertEquals("123", new String(splitedList.get(0)));

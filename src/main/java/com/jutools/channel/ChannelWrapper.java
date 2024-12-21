@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
@@ -195,7 +195,7 @@ public abstract class ChannelWrapper implements Closeable {
 		//    -> 마지막은 이전 읽은 데이터(this.preRead)에 저장
 		
 		String line = null;
-		ArrayList<byte[]> byteslines = BytesUtil.split(read, lineEndBytes, true);
+		List<byte[]> byteslines = BytesUtil.split(read, lineEndBytes, true);
 		
 		for(int index = 0; index < byteslines.size(); index++) {
 			
