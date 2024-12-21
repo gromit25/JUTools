@@ -10,7 +10,6 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -190,7 +189,7 @@ public class FileTracker {
 						boolean isEndsWithLineSeparator = BytesUtil.endsWith(buffer, this.lineSeparator.getBytes());
 	
 						// lineSeparator로 데이터를 한 문장씩 split함
-						ArrayList<byte[]> messages = BytesUtil.split(buffer, this.lineSeparator.getBytes());
+						List<byte[]> messages = BytesUtil.split(buffer, this.lineSeparator.getBytes());
 						for(int index = 0; index < messages.size(); index++) {
 	
 							byte[] message = messages.get(index);

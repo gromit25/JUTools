@@ -327,7 +327,7 @@ public class BytesUtil {
 	 *                          false일 경우, "123"으로만 분리됨
 	 * @return 구분자에 의해 분리된 결과 목록
 	 */
-	public static ArrayList<byte[]> split(byte[] target, byte[] split, boolean isLastInclude) throws Exception {
+	public static List<byte[]> split(byte[] target, byte[] split, boolean isLastInclude) throws Exception {
 
 		// parameter null 체크
 		if(target == null) {
@@ -388,7 +388,7 @@ public class BytesUtil {
 	 * @param split 구분자 byte array
 	 * @return 구분자에 의해 분리된 결과 목록
 	 */
-	public static ArrayList<byte[]> split(byte[] target, byte[] split) throws Exception {
+	public static List<byte[]> split(byte[] target, byte[] split) throws Exception {
 		return split(target, split, false);
 	}
 	

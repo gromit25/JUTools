@@ -489,7 +489,6 @@ public class StringUtil {
 		return str.isBlank();
 	}
 
-
 	/**
 	 * 문자열을 역전 시켜 반환하는 메소드<br>
 	 * ex) abc -> cba 
