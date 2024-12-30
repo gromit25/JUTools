@@ -90,9 +90,10 @@ public class TextGen {
 		/**
 		 * 생성자
 		 * 
-		 * @param textStr
+		 * @param textStr 텍스트 문자열
+		 * @param isEscape 텍스트 문자열 escape 여부
 		 */
-		StringElement(String textStr) {
+		StringElement(String textStr, boolean isEscape) {
 			this.textStr = textStr;
 		}
 
@@ -109,9 +110,21 @@ public class TextGen {
 	 * 생성자
 	 * 
 	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @param isEscape 텍스트 문자열 escape 여부
 	 */
-	private TextGen(String formatText) throws Exception {
-		this.parse(formatText);
+	private TextGen(String formatText, boolean isEscape) throws Exception {
+		this.parse(formatText, isEscape);
+	}
+	
+	/**
+	 * 주어진 텍스트 형식 문자열을 컴파일하여 TextGen 객체를 생성하고 반환
+	 * 
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @param isEscape 텍스트 문자열 escape 여부
+	 * @return 생성된 TextGen 객체
+	 */
+	public static TextGen compile(String formatText, boolean isEscape) throws Exception {
+		return new TextGen(formatText, isEscape);
 	}
 	
 	/**
@@ -121,16 +134,18 @@ public class TextGen {
 	 * @return 생성된 TextGen 객체
 	 */
 	public static TextGen compile(String formatText) throws Exception {
-		return new TextGen(formatText);
+		return TextGen.compile(formatText, false);
 	}
+
 	
 	/**
 	 * 주어진 텍스트 형식 문자열을 파싱함<br>
 	 * 파싱 결과는 멤버 변수 elements에 저장됨 
 	 * 
 	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @param isEscape 텍스트 문자열 escape 여부
 	 */
-	private void parse(String formatText) throws Exception {
+	private void parse(String formatText, boolean isEscape) throws Exception {
 		
 		// 텍스트 요소 목록 생성
 		this.elements = new ArrayList<>();
@@ -180,7 +195,14 @@ public class TextGen {
 					// "${" 가 들어온 경우
 					// 현재까지 문자열을 StringElement로 만들어 추가
 					if(startIndex < index) {
-						this.elements.add(new StringElement(formatText.substring(startIndex, index)));
+						
+						this.elements.add(
+							new StringElement(
+								formatText.substring(startIndex, index),
+								isEscape
+							)
+						);
+						
 						startIndex = index;
 					}
 					
@@ -193,7 +215,13 @@ public class TextGen {
 		
 		// 모든 문자열을 파싱을 했는데 문자열이 남아 있는 경우 추가함
 		if(startIndex < index) {
-			this.elements.add(new StringElement(formatText.substring(startIndex, index)));
+			
+			this.elements.add(
+				new StringElement(
+					formatText.substring(startIndex, index),
+					isEscape
+				)
+			);
 		}
 	}
 	
