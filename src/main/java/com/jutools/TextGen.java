@@ -93,8 +93,13 @@ public class TextGen {
 		 * @param textStr 텍스트 문자열
 		 * @param isEscape 텍스트 문자열 escape 여부
 		 */
-		StringElement(String textStr, boolean isEscape) {
-			this.textStr = textStr;
+		StringElement(String textStr, boolean isEscape) throws Exception {
+			
+			if(isEscape == false) {
+				this.textStr = textStr;
+			} else {
+				this.textStr = StringUtil.escape(textStr);
+			}
 		}
 
 		@Override
