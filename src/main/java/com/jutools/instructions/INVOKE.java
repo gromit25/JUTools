@@ -1,6 +1,6 @@
 package com.jutools.instructions;
 
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
 import java.util.Map;
 import java.util.Stack;
 
@@ -16,8 +16,8 @@ public class INVOKE extends Instruction {
 	
 	@Setter
 	@Getter
-	private Method method;
-
+	private MethodHandle method;
+	
 	@Override
 	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
@@ -30,11 +30,13 @@ public class INVOKE extends Instruction {
 		for(int index = params.length - 1 ; index >= 0; index--) {
 			params[index] = stack.pop();
 		}
-		
-		// 메소드 호출 및 결과를 stack에 추가
-		Object result = this.method.invoke(null, params);
-		stack.push(result);
-		
-	}
 
+		// 메소드 호출 및 결과를 stack에 추가
+		try {
+			Object result = this.method.invoke(params);
+			stack.push(result);
+		} catch (Throwable t) {
+			throw (Exception)t;
+		}
+	}
 }

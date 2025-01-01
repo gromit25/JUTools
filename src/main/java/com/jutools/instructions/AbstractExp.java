@@ -1,5 +1,7 @@
 package com.jutools.instructions;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public abstract class AbstractExp {
 	@Getter
 	protected Stack<Object> stack = new Stack<Object>();
 	/** Expression 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
-	protected Map<String, Method> methods = new HashMap<String, Method>();
+	protected Map<String, MethodHandle> methods = new HashMap<>();
 
 	/**
 	 * root parser 반환
@@ -84,6 +86,9 @@ public abstract class AbstractExp {
 			throw new NullPointerException("method class is null");
 		}
 		
+		// Method Handle 을 획득하기 위한 Lookup 객체 생성
+		MethodHandles.Lookup lookup = MethodHandles.lookup();
+		
 		// 각 메소드 별로 검사하여 메소드 추가
 		for(Method method: methodClass.getMethods()) {
 			
@@ -104,8 +109,11 @@ public abstract class AbstractExp {
 				throw new Exception(methodClass.getCanonicalName() + "." + method.getName() + " method is not public");
 			}
 			
+			// Method Handle 획득
+			MethodHandle methodHandle = lookup.unreflect(method);
+			
 			// 메소드 추가
-			this.methods.put(methodMap.alias(), method);
+			this.methods.put(methodMap.alias(), methodHandle);
 		}
 		
 		return this;
@@ -132,7 +140,7 @@ public abstract class AbstractExp {
 			INVOKE invokeInst = (INVOKE)inst;
 			
 			String alias = invokeInst.getParam(0); // method alias
-			Method method = this.getMethod(alias); // get aliased method
+			MethodHandle method = this.getMethod(alias); // get aliased method
 			
 			invokeInst.setMethod(method);
 		}
@@ -144,9 +152,9 @@ public abstract class AbstractExp {
 	 * alias에 해당하는 메소드를 반환하는 메소드
 	 * 
 	 * @param alias 검색할 alias
-	 * @return 메소드
+	 * @return 메소드 핸들
 	 */
-	private Method getMethod(String alias) throws Exception {
+	private MethodHandle getMethod(String alias) throws Exception {
 		
 		if(this.methods.containsKey(alias) == false) {
 			throw new Exception("method is not found");
