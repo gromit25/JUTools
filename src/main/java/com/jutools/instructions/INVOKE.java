@@ -33,7 +33,7 @@ public class INVOKE extends Instruction {
 
 		// 메소드 호출 및 결과를 stack에 추가
 		try {
-			Object result = this.method.invoke(params);
+			Object result = this.method.invokeWithArguments(params);
 			stack.push(result);
 		} catch (Throwable t) {
 			throw (Exception)t;
