@@ -14,6 +14,7 @@ import lombok.Setter;
  */
 public class INVOKE extends Instruction {
 	
+	/** 호출할 메소드 핸들 */
 	@Setter
 	@Getter
 	private MethodHandle method;
@@ -21,6 +22,7 @@ public class INVOKE extends Instruction {
 	@Override
 	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
+		// 메소드 핸들이 있는지 확인
 		if(this.method == null) {
 			throw new NullPointerException("method is null(check link process)");
 		}
