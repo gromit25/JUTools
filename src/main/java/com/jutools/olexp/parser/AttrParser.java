@@ -94,7 +94,7 @@ public class AttrParser extends AbstractParser<Instruction> {
 		
 		//
 		TreeNode<Instruction> rootNode = new TreeNode<Instruction>(
-			new LOAD_ATTR().addParam(this.attrName.toString())	// 속성명
+			new LOAD_ATTR(this.attrName.toString())	// 속성명
 		);
 		
 		//

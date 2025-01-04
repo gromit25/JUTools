@@ -90,7 +90,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 	public void handleStoreOp(Event event) throws Exception {
 		
 		this.setNodeData(
-			new STORE().addParam(this.lValueBuffer.toString())
+			new STORE(this.lValueBuffer.toString())
 		);
 		
 		this.addChild(

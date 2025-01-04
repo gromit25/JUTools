@@ -7,7 +7,6 @@ import java.util.Stack;
 import com.jutools.TypeUtil;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 객체 속성을 스택에 추가<br>
@@ -20,8 +19,16 @@ public class LOAD_ATTR extends Instruction {
 	
 	/** 객체 속성명 */
 	@Getter
-	@Setter
 	private String attrName;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param attrName 속성명
+	 */
+	public LOAD_ATTR(String attrName) {
+		this.attrName = attrName;
+	}
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {

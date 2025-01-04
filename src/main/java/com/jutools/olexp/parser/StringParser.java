@@ -72,7 +72,7 @@ public class StringParser extends AbstractParser<Instruction> {
 		String str = StringUtil.escape(this.strBuffer.toString());
 		
 		this.setNodeData(
-			new LOAD_STRING().addParam(str)
+			new LOAD_STRING(str)
 		);
 	}
 }

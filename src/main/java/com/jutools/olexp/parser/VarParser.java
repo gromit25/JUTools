@@ -183,7 +183,7 @@ public class VarParser extends AbstractParser<Instruction> {
 			} else {
 				// 변수 일 경우
 				varNode = new TreeNode<Instruction>(
-					new LOAD_VAR().addParam(varNameStr)
+					new LOAD_VAR(varNameStr)
 				);
 			}
 			
@@ -191,9 +191,10 @@ public class VarParser extends AbstractParser<Instruction> {
 			
 			// INVOKE 명령어 생성
 			TreeNode<Instruction> invokeNode = new TreeNode<Instruction>(
-				new INVOKE()
-					.addParam(varNameStr)	// 메소드명
-					.addParam(Integer.toString(this.params.size()))	// 파라미터수
+				new INVOKE(
+					varNameStr,	// 메소드명
+					this.params.size()	// 파라미터수
+				)
 			);
 			
 			// 메소드 parameter 추가

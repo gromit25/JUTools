@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 스택의 값을 변수명으로 values 에 저장<br>
@@ -16,8 +15,16 @@ public class STORE extends Instruction {
 	
 	/** values 에 추가할 변수명 */
 	@Getter
-	@Setter
 	private String name;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param name 변수명
+	 */
+	public STORE(String name) {
+		this.name = name;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
