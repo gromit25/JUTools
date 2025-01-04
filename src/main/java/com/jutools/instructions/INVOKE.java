@@ -19,15 +19,30 @@ public class INVOKE extends Instruction {
 	@Setter
 	private String methodAlias;
 	
-	/** 호출할 메소드 핸들 */
-	@Setter
-	@Getter
-	private MethodHandle method;
-	
 	/** 메소드 파라미터 개수 */
 	@Setter
 	@Getter
 	private int paramCount;
+	
+	/**
+	 * 호출할 메소드 핸들<br>
+	 * AbstractEnging 클래스의 link 과정에서 설정됨
+	 */
+	@Setter
+	@Getter
+	private MethodHandle method;
+
+	/**
+	 * 생성자
+	 * 
+	 * @param methodAlias 메소드 별칭
+	 * @param paramCount 파라미터 개수
+	 */
+	public INVOKE(String methodAlias, int paramCount) {
+		this.methodAlias = methodAlias;
+		this.paramCount = paramCount;
+	}
+	
 	
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {

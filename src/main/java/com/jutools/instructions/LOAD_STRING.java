@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 스택에 문자열 추가
@@ -15,8 +14,16 @@ public class LOAD_STRING extends Instruction {
 	
 	/** 설정할 문자열 */
 	@Getter
-	@Setter
 	private String value;
+
+	/**
+	 * 생성자
+	 * 
+	 * @param value 설정할 문자열
+	 */
+	public LOAD_STRING(String value) {
+		this.value = value;
+	}
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {

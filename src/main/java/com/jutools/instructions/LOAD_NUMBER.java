@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 스택에 숫자(double 형) 추가
@@ -15,8 +14,16 @@ public class LOAD_NUMBER extends Instruction {
 	
 	/** 설정할 숫자 */
 	@Getter
-	@Setter
 	private double value;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param value 설정할 숫자
+	 */
+	public LOAD_NUMBER(double value) {
+		this.value = value;
+	}
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {

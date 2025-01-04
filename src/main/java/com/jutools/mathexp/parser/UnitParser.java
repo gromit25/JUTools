@@ -110,7 +110,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 
 		// 
 		this.setNodeData(new NOP());
-		this.addChildData(new LOAD_STRING().addParam(baseUnit));
+		this.addChildData(new LOAD_STRING(baseUnit));
 		
 		//
 		TreeNode<Instruction> valueNode = new TreeNode<Instruction>(new MUL());
@@ -121,7 +121,7 @@ public class UnitParser extends AbstractParser<Instruction> {
 		//
 		double factor = MathUtil.unitPrefixToFactor(unitPrefix);
 		TreeNode<Instruction> factorNode = new TreeNode<Instruction>(
-			new LOAD_NUMBER().addParam(Double.toString(factor))
+			new LOAD_NUMBER(factor)
 		);
 		
 		valueNode.addChild(factorNode);

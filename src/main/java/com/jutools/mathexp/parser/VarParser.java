@@ -119,16 +119,17 @@ public class VarParser extends AbstractParser<Instruction> {
 			
 			// LOAD_VAR 명령어 Node로 설정
 			this.setNodeData(
-				new LOAD_VAR().addParam(this.buffer.toString())
+				new LOAD_VAR(this.buffer.toString())
 			);
 			
 		} else {
 			
 			// INVOKE 메소드명 파라미터수
 			TreeNode<Instruction> instNode = new TreeNode<Instruction>(
-				new INVOKE()
-					.addParam(this.buffer.toString())	// 메소드명
-					.addParam(Integer.toString(this.params.size()))	// 파라미터수
+				new INVOKE(
+					this.buffer.toString(),	// 메소드명
+					this.params.size()	// 파라미터수
+				)
 			);
 			
 			// 메소드 parameter 추가

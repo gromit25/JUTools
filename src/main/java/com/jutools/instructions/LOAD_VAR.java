@@ -18,6 +18,15 @@ public class LOAD_VAR extends Instruction {
 	@Getter
 	@Setter
 	private String name;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param name 변수명
+	 */
+	public LOAD_VAR(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
