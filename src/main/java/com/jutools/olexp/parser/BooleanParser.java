@@ -59,7 +59,7 @@ public class BooleanParser extends AbstractParser<Instruction> {
 				.add(" \t", "EQUALITY")
 				.add("aA", "AND_OP_1")
 				.add("oO", "OR_OP_1")
-				.add("^ \tao", "END", -1)
+				.add("^ \taoAO", "END", -1)
 				.build());
 		
 		this.putTransferMap("AND_OP_1", new TransferBuilder()
