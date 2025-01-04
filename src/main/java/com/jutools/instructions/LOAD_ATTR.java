@@ -6,14 +6,22 @@ import java.util.Stack;
 
 import com.jutools.TypeUtil;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * 객체의 속성을 가져와서 스택에 넣는 명령어 클래스<br>
+ * 객체 속성을 스택에 추가<br>
  * ex) message 객체에서 subject를 가져온다면<br>
  * message.subject -> message.getSubject()를 실행한 결과를 스택에 넣음
  * 
  * @author jmsohn
  */
 public class LOAD_ATTR extends Instruction {
+	
+	/** 객체 속성명 */
+	@Getter
+	@Setter
+	private String attrName;
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
@@ -25,7 +33,7 @@ public class LOAD_ATTR extends Instruction {
 		}
 		
 		// 속성 메소드 수행하여 속성값을 반환 받음
-		Method getMethod = TypeUtil.getGetter(obj.getClass(), this.getParam(0));
+		Method getMethod = TypeUtil.getGetter(obj.getClass(), this.attrName);
 		Object attValue = getMethod.invoke(obj);
 		
 		// 속성값을 스택에 푸시

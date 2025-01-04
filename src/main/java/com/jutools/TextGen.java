@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.jutools.instructions.AbstractExp;
+import com.jutools.instructions.AbstractEngine;
 import com.jutools.instructions.Instruction;
+import com.jutools.olexp.OLExp;
 import com.jutools.olexp.parser.BooleanParser;
 import com.jutools.parserfw.AbstractParser;
 
@@ -35,13 +36,45 @@ public class TextGen {
 		public String getText(Map<String, ?> values) throws Exception;
 	}
 	
+	
+	/**
+	 * 일반 문자열 처리를 위한 텍스트 요소 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	private static class StringElement implements TextElement {
+		
+		/** 문자열 */
+		private String textStr;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param textStr 텍스트 문자열
+		 * @param isEscape 텍스트 문자열 escape 여부
+		 */
+		StringElement(String textStr, boolean isEscape) throws Exception {
+			
+			if(isEscape == false) {
+				this.textStr = textStr;
+			} else {
+				this.textStr = StringUtil.escape(textStr);
+			}
+		}
+
+		@Override
+		public String getText(Map<String, ?> values) throws Exception {
+			return this.textStr;
+		}
+	}
+	
 	/**
 	 * 텍스트 내의 표현식 처리를 위한 텍스트 요소 클래스<br>
 	 * ex) "severity: ${if(severity == 'fatal', 'red', 'yellow')}" 에서 ${if(severity == 'fatal', 'red', 'yellow')}에 대한 처리
 	 * 
 	 * @author jmsohn
 	 */
-	private static class ExpElement extends AbstractExp implements TextElement{
+	private static class ExpElement extends AbstractEngine implements TextElement{
 		
 		/**
 		 * 생성자
@@ -78,35 +111,28 @@ public class TextGen {
 	}
 	
 	/**
-	 * 일반 문자열 처리를 위한 텍스트 요소 클래스
+	 * Loop 
 	 * 
 	 * @author jmsohn
 	 */
-	private static class StringElement implements TextElement {
+	private static class LoopElement implements TextElement {
 		
-		/** 문자열 */
-		private String textStr;
+		/** */
+		private String varName;
 		
-		/**
-		 * 생성자
-		 * 
-		 * @param textStr 텍스트 문자열
-		 * @param isEscape 텍스트 문자열 escape 여부
-		 */
-		StringElement(String textStr, boolean isEscape) throws Exception {
+		/** */
+		private OLExp exp;
+		
+		private LoopElement(String varName, String exp) {
 			
-			if(isEscape == false) {
-				this.textStr = textStr;
-			} else {
-				this.textStr = StringUtil.escape(textStr);
-			}
 		}
 
 		@Override
 		public String getText(Map<String, ?> values) throws Exception {
-			return this.textStr;
+			return null;
 		}
 	}
+	
 	
 	/** 텍스트 요소 목록 변수 - parse 메소드에 의해 생성됨 */
 	private List<TextElement> elements;

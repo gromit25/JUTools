@@ -14,10 +14,20 @@ import lombok.Setter;
  */
 public class INVOKE extends Instruction {
 	
+	/** 메소드 별칭 */
+	@Getter
+	@Setter
+	private String methodAlias;
+	
 	/** 호출할 메소드 핸들 */
 	@Setter
 	@Getter
 	private MethodHandle method;
+	
+	/** 메소드 파라미터 개수 */
+	@Setter
+	@Getter
+	private int paramCount;
 	
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
@@ -28,7 +38,7 @@ public class INVOKE extends Instruction {
 		}
 		
 		// 메소드에 넘겨줄 parameter를 만듦
-		Object[] params = new Object[Integer.parseInt(this.getParam(1))]; // 파라미터의 개수 만큼 배열 생성
+		Object[] params = new Object[this.paramCount]; // 파라미터의 개수 만큼 배열 생성
 		for(int index = params.length - 1 ; index >= 0; index--) {
 			params[index] = stack.pop();
 		}

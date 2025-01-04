@@ -19,11 +19,11 @@ public class OR extends Instruction {
 		
 		// p1, p2에 대한 검증 수행
 		if(p2 == null) {
-			throw new NullPointerException("p2 value is null");
+			throw new NullPointerException("p2 value is null.");
 		}
 		
 		if(p1 == null) {
-			throw new NullPointerException("p1 value is null");
+			throw new NullPointerException("p1 value is null.");
 		}
 		
 		if((p2 instanceof Boolean) == false) {

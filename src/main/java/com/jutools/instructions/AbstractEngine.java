@@ -147,7 +147,7 @@ public abstract class AbstractEngine {
 			// method link 작업 수행
 			INVOKE invokeInst = (INVOKE)inst;
 			
-			String alias = invokeInst.getParam(0); // method alias
+			String alias = invokeInst.getMethodAlias(); // method alias
 			MethodHandle method = this.getMethod(alias); // get aliased method
 			
 			invokeInst.setMethod(method);

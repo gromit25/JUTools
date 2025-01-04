@@ -3,17 +3,27 @@ package com.jutools.instructions;
 import java.util.Map;
 import java.util.Stack;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * 스택에 변수 값 추가
+ * 스택에 변수 값 추가<br>
+ * values -> 스택
  * 
  * @author jmsohn
  */
 public class LOAD_VAR extends Instruction {
+	
+	/** 스택에 추가할 values 의 변수명 */
+	@Getter
+	@Setter
+	private String name;
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
-		Object value = values.get(this.getParam(0));
+		// values 에서 변수명에 해당하는 값 획득
+		Object value = values.get(this.name);
 		
 		if(value == null) {
 			

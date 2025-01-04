@@ -3,41 +3,36 @@ package com.jutools.instructions;
 import java.util.Map;
 import java.util.Stack;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * values에 스택의 값 저장<br>
- * 스택에서 값을 꺼내어 파라미터에 설정된 이름으로 values 저장함<br>
- * <pre>
- * ex) LOAD 1
- *     LOAD 2
- *     STORE value1, value2
- *     
- *     -> values 내에 value1: 1, value2: 2 가 저장됨 
- * </pre>
+ * 스택의 값을 변수명으로 values 에 저장<br>
+ * 스택 -> values
  * 
  * @author jmsohn
  */
 public class STORE extends Instruction {
+	
+	/** values 에 추가할 변수명 */
+	@Getter
+	@Setter
+	private String name;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
-		// 설정된 모든 파라미터에 대해
-		// 스택의 값을 values에 모두 저장
-		for(int index = 0; index < this.getParamCount(); index++) {
-			
-			// 스택에서 값을 가져옴
-			Object p1 = stack.pop();
-			if(p1 == null) {
-				throw new NullPointerException("stack is empty");
-			}
-			
-			// 스택의 값을 values에 넣음
-			// 스택의 경우 처음 입력된 것이 나중에 나오게 되어
-			// 뒤에 설정된 파라미터 부터 values에 넣음
-			String name = this.getParam(this.getParamCount() - 1 - index);
-			((Map<String, Object>)values).put(name, p1);
+		// 스택 크기 확인
+		if(stack.size() == 0) {
+			throw new NullPointerException("stack is empty.");
 		}
+		
+		// 스택에서 값 획득
+		Object value = stack.pop();
+		
+		// values 에 넣음
+		((Map<String, Object>)values).put(this.name, value);
 		
 		// 다음 실행 명령어 이동 거리 반환
 		return 1;
