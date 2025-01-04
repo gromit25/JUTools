@@ -4,14 +4,14 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * or 명령어 클래스
+ * or 실행 결과를 스택에 추가
  * 
  * @author jmsohn
  */
 public class OR extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 파라미터를 스택에서 꺼내옴
 		Object p2 = stack.pop();
@@ -39,5 +39,8 @@ public class OR extends Instruction {
 		
 		// 스택에 결과 푸시
 		stack.push(result);
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
 }

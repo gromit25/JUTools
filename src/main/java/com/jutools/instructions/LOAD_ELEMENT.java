@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * 
+ * 컬렉션에서 하나의 요소를 스택에 추가
  * 
  * @author jmsohn
  */
@@ -13,7 +13,7 @@ public class LOAD_ELEMENT extends Instruction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 객체의 인덱스를 스택에서 가져옴
 		Object index = stack.pop();
@@ -41,12 +41,16 @@ public class LOAD_ELEMENT extends Instruction {
 		
 		// 속성값을 스택에 푸시
 		stack.push(element);
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
 	
 	/**
+	 * 주어진 대상 객체 를 int 값으로 변환 
 	 * 
-	 * @param obj
-	 * @return
+	 * @param obj 대상 객체
+	 * @return 변환된 int 값
 	 */
 	private static int toInt(Object obj) throws Exception {
 		

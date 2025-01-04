@@ -11,7 +11,7 @@ import java.util.Stack;
 public class EQUAL extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		Object p1 = stack.pop();
 		Object p2 = stack.pop();
@@ -21,6 +21,8 @@ public class EQUAL extends Instruction {
 		} else {
 			stack.push(p1.equals(p2));
 		}
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
-
 }

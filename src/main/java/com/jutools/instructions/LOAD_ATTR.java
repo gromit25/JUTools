@@ -16,7 +16,7 @@ import com.jutools.TypeUtil;
 public class LOAD_ATTR extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 속성을 가져올 객체를 스택에서 가져옴
 		Object obj = stack.pop();
@@ -30,5 +30,8 @@ public class LOAD_ATTR extends Instruction {
 		
 		// 속성값을 스택에 푸시
 		stack.push(attValue);
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
 }

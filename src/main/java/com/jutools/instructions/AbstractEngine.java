@@ -14,21 +14,24 @@ import com.jutools.parserfw.AbstractParser;
 import lombok.Getter;
 
 /**
- * Expression의 추상 클래스
+ * 스크립트의 추상 클래스
  * 
  * @author jmsohn
  */
 public abstract class AbstractEngine {
 	
-	/** Expression 문자열 */
+	/** 스크립트 문자열 */
 	@Getter
-	protected String exp;
-	/** Expression 명령어 목록 */
+	protected String script;
+	
+	/** 스크립트 명령어 목록 */
 	protected List<Instruction> insts;
-	/** Expression 처리시 사용할 Stack */
+	
+	/** 스크립트 처리시 사용할 Stack */
 	@Getter
 	protected Stack<Object> stack = new Stack<Object>();
-	/** Expression 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
+	
+	/** 스크립트 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
 	protected Map<String, MethodHandle> methods = new HashMap<>();
 
 	/**
@@ -42,22 +45,25 @@ public abstract class AbstractEngine {
 	/**
 	 * 생성자
 	 * 
-	 * @param exp expression
+	 * @param script 스크립트
 	 */
-	protected AbstractEngine(String exp) throws Exception {
+	protected AbstractEngine(String script) throws Exception {
 		
-		if(exp == null) {
-			throw new NullPointerException("math expression(exp) is null");
+		if(script == null) {
+			throw new NullPointerException("script is null");
 		}
 		
-		this.exp = exp;
+		// 스크립트 설정
+		this.script = script;
+		
+		// 기본 built in method 설정
 		this.setMethod(BuiltInMethods.class);
 		
-		// Expression 파싱
+		// 스크립트 파싱
 		try {
 			
 			AbstractParser<Instruction> parser = this.getRootParser();
-			this.insts = parser.parse(exp).travelPostOrder();
+			this.insts = parser.parse(script).travelPostOrder();
 			
 		} catch(Exception ex) {
 			
@@ -126,10 +132,12 @@ public abstract class AbstractEngine {
 	 */
 	private AbstractEngine linkMethod() throws Exception {
 		
+		// 명령어 목록이 없는 경우 예외 발생
 		if(this.insts == null) {
 			throw new NullPointerException("instruction list is null");
 		}
 		
+		// 명령어 목록의 명령어 에서 메소드 호출(INVOKE) 탐색하여 link 작업 수행
 		for(Instruction inst: this.insts) {
 			
 			if(inst instanceof INVOKE == false) {
@@ -164,7 +172,7 @@ public abstract class AbstractEngine {
 	}
 	
 	/**
-	 * Expression 수행
+	 * 스크립트 명령어 수행
 	 * 
 	 * @param values 
 	 * @return 현재 객체(fluent 코딩용)

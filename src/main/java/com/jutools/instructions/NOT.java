@@ -4,14 +4,14 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * Not 연산 명령어 클래스
+ * Not 연산 결과 스택에 추가
  * 
  * @author jmsohn
  */
 public class NOT extends Instruction {
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		Object p1 = stack.pop();
 		
@@ -20,6 +20,8 @@ public class NOT extends Instruction {
 		}
 		
 		stack.push(!((Boolean)p1));
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
-
 }

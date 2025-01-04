@@ -20,7 +20,7 @@ public abstract class BiNumInstruction extends Instruction {
 	public abstract Object process(Double p1, Double p2) throws Exception;
 
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 파라미터를 스택에서 꺼내옴
 		Object p2 = stack.pop();
@@ -55,6 +55,7 @@ public abstract class BiNumInstruction extends Instruction {
 		// 스택에 결과 푸시
 		stack.push(result);
 
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
-
 }

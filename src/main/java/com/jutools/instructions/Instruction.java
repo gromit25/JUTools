@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 명령어 추상 클래스
  * 
@@ -15,13 +18,18 @@ public abstract class Instruction {
 	/** 명령어의 파라미터 목록 */
 	private List<String> params = new Vector<String>();
 	
+	/** 다음 실행 명령어 */
+	@Getter
+	@Setter
+	private Instruction next;
+	
 	/**
 	 * 명령어 수행 메소드
 	 * 
 	 * @param stack 스택
 	 * @param values 메모리
 	 */
-	public abstract void execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
+	public abstract int execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
 	
 	/**
 	 * 파라미터의 개수 반환

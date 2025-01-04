@@ -20,7 +20,7 @@ public class INVOKE extends Instruction {
 	private MethodHandle method;
 	
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 메소드 핸들이 있는지 확인
 		if(this.method == null) {
@@ -40,5 +40,8 @@ public class INVOKE extends Instruction {
 		} catch (Throwable t) {
 			throw (Exception)t;
 		}
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
 }

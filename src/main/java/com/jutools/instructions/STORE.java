@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * values에 스택의 값 저장하는 명령어 클래스<br>
+ * values에 스택의 값 저장<br>
  * 스택에서 값을 꺼내어 파라미터에 설정된 이름으로 values 저장함<br>
  * <pre>
  * ex) LOAD 1
@@ -20,7 +20,7 @@ public class STORE extends Instruction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
+	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
 		
 		// 설정된 모든 파라미터에 대해
 		// 스택의 값을 values에 모두 저장
@@ -38,6 +38,8 @@ public class STORE extends Instruction {
 			String name = this.getParam(this.getParamCount() - 1 - index);
 			((Map<String, Object>)values).put(name, p1);
 		}
+		
+		// 다음 실행 명령어 이동 거리 반환
+		return 1;
 	}
-
 }
