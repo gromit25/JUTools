@@ -2,7 +2,7 @@ package com.jutools.olexp;
 
 import java.util.HashMap;
 
-import com.jutools.instructions.AbstractExp;
+import com.jutools.instructions.AbstractEngine;
 import com.jutools.instructions.Instruction;
 import com.jutools.olexp.parser.StoreParser;
 import com.jutools.parserfw.AbstractParser;
@@ -12,7 +12,7 @@ import com.jutools.parserfw.AbstractParser;
  * 
  * @author jmsohn
  */
-public class OLExp extends AbstractExp {
+public class OLExp extends AbstractEngine {
 	
 	/**
 	 * 생성자

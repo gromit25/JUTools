@@ -18,7 +18,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public abstract class AbstractExp {
+public abstract class AbstractEngine {
 	
 	/** Expression 문자열 */
 	@Getter
@@ -44,7 +44,7 @@ public abstract class AbstractExp {
 	 * 
 	 * @param exp expression
 	 */
-	protected AbstractExp(String exp) throws Exception {
+	protected AbstractEngine(String exp) throws Exception {
 		
 		if(exp == null) {
 			throw new NullPointerException("math expression(exp) is null");
@@ -79,7 +79,7 @@ public abstract class AbstractExp {
 	 * @param methodClass 실제 실행할 메소드를 가지는 클래스(MethodAlias Annotation 사용)
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public AbstractExp setMethod(Class<?> methodClass) throws Exception {
+	public AbstractEngine setMethod(Class<?> methodClass) throws Exception {
 
 		// 입력값 검증
 		if(methodClass == null) {
@@ -124,7 +124,7 @@ public abstract class AbstractExp {
 	 * 
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	private AbstractExp linkMethod() throws Exception {
+	private AbstractEngine linkMethod() throws Exception {
 		
 		if(this.insts == null) {
 			throw new NullPointerException("instruction list is null");
@@ -169,7 +169,7 @@ public abstract class AbstractExp {
 	 * @param values 
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public AbstractExp execute(Map<String, ?> values) throws Exception {
+	public AbstractEngine execute(Map<String, ?> values) throws Exception {
 		
 		for(Instruction inst: insts) {
 			inst.execute(this.stack, values);

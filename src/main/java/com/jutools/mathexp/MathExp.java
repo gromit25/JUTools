@@ -3,7 +3,7 @@ package com.jutools.mathexp;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jutools.instructions.AbstractExp;
+import com.jutools.instructions.AbstractEngine;
 import com.jutools.instructions.Instruction;
 import com.jutools.mathexp.parser.UnitParser;
 import com.jutools.parserfw.AbstractParser;
@@ -13,7 +13,7 @@ import com.jutools.parserfw.AbstractParser;
  * 
  * @author jmsohn
  */
-public class MathExp extends AbstractExp {
+public class MathExp extends AbstractEngine {
 	
 	/**
 	 * 생성자(외부 생성 불가)
