@@ -84,7 +84,7 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 		}
 		
 		if(obj == null || (obj instanceof List) == false) {
-			throw new FormatterException(this, "N/A(" + this.getListExp().getExp() + " is not List Object)");
+			throw new FormatterException(this, "N/A(" + this.getListExp().getScript() + " is not List Object)");
 		}
 		
 		// list의 값을 하나씩 설정하여 수행함

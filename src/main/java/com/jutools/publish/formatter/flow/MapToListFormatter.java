@@ -89,7 +89,7 @@ public class MapToListFormatter extends AbstractFlowFormatter {
 		}
 		
 		if(mapObj == null || (mapObj instanceof Map) == false) {
-			throw new FormatterException(this, "N/A(" + this.getMapExp().getExp() + " is not Map Object)");
+			throw new FormatterException(this, "N/A(" + this.getMapExp().getScript() + " is not Map Object)");
 		}
 		
 		// 위에서 Map 타입 체크하였기 때문에 suppress 시킴
