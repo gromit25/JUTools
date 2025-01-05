@@ -14,7 +14,7 @@ import com.jutools.parserfw.AbstractParser;
 import lombok.Getter;
 
 /**
- * 스크립트의 추상 클래스
+ * 스크립트 엔진의 추상 클래스
  * 
  * @author jmsohn
  */
@@ -27,12 +27,26 @@ public abstract class AbstractEngine {
 	/** 스크립트 명령어 목록 */
 	protected List<Instruction> insts;
 	
-	/** 스크립트 처리시 사용할 Stack */
+	/** 스크립트 스레드 */
 	@Getter
-	protected Stack<Object> stack = new Stack<Object>();
+	protected ThreadLocal<ScriptThread> thread = ThreadLocal.withInitial(ScriptThread::new);
 	
 	/** 스크립트 내의 alias 메소드의 실제 메소드 - K: 메소드 alias 명, V: 실제 수행 메소드 */
 	protected Map<String, MethodHandle> methods = new HashMap<>();
+	
+	/**
+	 * 스크립트 엔진의 스레드
+	 * 
+	 * @author jmsohn
+	 */
+	class ScriptThread {
+		
+		/** 스크립트 수행시 사용할 Stack */
+		Stack<Object> stack = new Stack<Object>();
+		
+		/** Program Counter : 현재 실행 위치 */
+		int pc = 0;
+	}
 
 	/**
 	 * root parser 반환
@@ -165,7 +179,7 @@ public abstract class AbstractEngine {
 	private MethodHandle getMethod(String alias) throws Exception {
 		
 		if(this.methods.containsKey(alias) == false) {
-			throw new Exception("method is not found");
+			throw new Exception("method is not found:" + alias);
 		}
 		
 		return this.methods.get(alias);
@@ -178,9 +192,15 @@ public abstract class AbstractEngine {
 	 * @return 현재 객체(fluent 코딩용)
 	 */
 	public AbstractEngine execute(Map<String, ?> values) throws Exception {
+
+		// 스크립트 스레드 획득
+		ScriptThread t = this.thread.get();
 		
-		for(Instruction inst: insts) {
-			inst.execute(this.stack, values);
+		// 각 명령어 별로 실행
+		while(t.pc < this.insts.size()) {
+			
+			Instruction inst = this.insts.get(t.pc);
+			t.pc += inst.execute(t.stack, values);
 		}
 		
 		return this;
@@ -194,13 +214,16 @@ public abstract class AbstractEngine {
 	 */
 	public <T> T pop(Class<T> type) throws Exception {
 		
-		if(this.stack.isEmpty() == true) {
+		// 스크립트 스레드 획득
+		ScriptThread t = this.thread.get();
+		
+		if(t == null || t.stack.isEmpty() == true) {
 			
 			return null;
 			
 		} else {
 			
-			Object obj = this.stack.pop();
+			Object obj = t.stack.pop();
 			return type.cast(obj);
 		}
 	}
