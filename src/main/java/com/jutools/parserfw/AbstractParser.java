@@ -374,7 +374,7 @@ public abstract class AbstractParser<T> {
 	 * 
 	 * @param childNode 추가할 자식 노드
 	 */
-	protected void addChild(TreeNode<T> childNode) {
+	protected void addChild(TreeNode<T> childNode) throws Exception {
 		this.node.addChild(childNode);
 	}
 	
@@ -384,7 +384,7 @@ public abstract class AbstractParser<T> {
 	 * @param index 추가할 자식 노드의 인덱스
 	 * @param childNode 추가할 자식 노드
 	 */
-	protected void addChild(int index, TreeNode<T> childNode) {
+	protected void addChild(int index, TreeNode<T> childNode) throws Exception {
 		this.node.addChild(index, childNode);
 	}
 	
@@ -393,7 +393,7 @@ public abstract class AbstractParser<T> {
 	 * 
 	 * @param childData
 	 */
-	protected void addChildData(T childData) {
+	protected void addChildData(T childData) throws Exception {
 		this.node.addChild(new TreeNode<T>(childData));
 	}
 	

@@ -1,6 +1,9 @@
 package com.jutools.olexp.parser;
 
 import com.jutools.instructions.AND;
+import com.jutools.instructions.DUP;
+import com.jutools.instructions.IF_FALSE;
+import com.jutools.instructions.IF_TRUE;
 import com.jutools.instructions.Instruction;
 import com.jutools.instructions.OR;
 import com.jutools.parserfw.AbstractParser;
@@ -113,7 +116,7 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * and의 연산자 상태로 전이시 핸들러 메소드
+	 * and 의 연산자 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
@@ -130,7 +133,7 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	}
 	
 	/**
-	 * or의 연산자 상태로 전이시 핸들러 메소드
+	 * or 의 연산자 상태로 전이시 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
@@ -153,10 +156,24 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	protected void exit() throws Exception {
 		
 		if(this.op != null && this.p2 != null) {
-		
+			
+			// and, or 에 따라 short circuit 구성
+			TreeNode<Instruction> shortCircuit = new TreeNode<>();
+			
+			if(this.op instanceof AND) {
+				shortCircuit.setData(new IF_TRUE(1, this.p2.getChildCount()));
+			} else if(this.op instanceof OR) {
+				shortCircuit.setData(new IF_FALSE(1, this.p2.getChildCount()));
+			} else {
+				throw new Exception("unexpected operation:" + this.op.getClass());
+			}
+			
+			shortCircuit.addChild(this.p1);
+			shortCircuit.addChild(new TreeNode<Instruction>(new DUP()));
+			
 			// and,or 연산이 존재하는 경우
 			this.setNodeData(this.op);
-			this.addChild(this.p1);
+			this.addChild(shortCircuit);
 			this.addChild(this.p2);
 			
 		} else {

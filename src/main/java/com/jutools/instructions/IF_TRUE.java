@@ -15,15 +15,26 @@ import lombok.Setter;
  */
 public class IF_TRUE extends Instruction {
 	
-	/** 파라미터 1(이동할 거리) */
+	/** 파라미터 1(true 일때 이동할 거리) */
 	@Getter
 	@Setter
 	private int p1;
 	
-	/** 파라미터 2(이동할 거리) */
+	/** 파라미터 2(false 일때, 이동할 거리) */
 	@Getter
 	@Setter
 	private int p2;
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param p1 파라미터 1(true 일때 이동할 거리)
+	 * @param p2 파라미터 2(false 일때, 이동할 거리)
+	 */
+	public IF_TRUE(int p1, int p2) {
+		this.p1 = p1;
+		this.p2 = p2;
+	}
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {

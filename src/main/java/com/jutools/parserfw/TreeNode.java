@@ -22,6 +22,18 @@ public class TreeNode<T> {
 	@Getter
 	private List<TreeNode<T>> childs;
 	
+	/** 자식 노드의 개수 */
+	@Getter
+	private int childCount;
+	
+	/**
+	 * 현재 노드가 상위 노드에 자식 노드로 등록되고 나면<br>
+	 * 현재 노드의 자식 노드를 추가할 수 없음<br>
+	 * childCount 가 상위 노드에 반영되지 않는 현상 방지
+	 */
+	@Getter
+	private boolean lock;
+	
 	/**
 	 * 생성자
 	 */
@@ -37,35 +49,48 @@ public class TreeNode<T> {
 	public TreeNode(T data) {
 		this.data = data;
 		this.childs = new ArrayList<TreeNode<T>>();
+		this.childCount = 0;
+		this.lock = false;
 	}
 	
 	/**
-	 * 자식 노드 추가
-	 * 
-	 * @param node
+	 * 자식 노드 추가 금지 lock 설정
 	 */
-	public void addChild(TreeNode<T> node) {
+	public synchronized void setLock() {
+		this.lock = true;
+	}
+	
+	/**
+	 * 자식 노드 추가<br>
+	 * 주의) 상위 노드에 등록 전에 하위 노드는 모두 추가되어야 함
+	 * 
+	 * @param node 추가할 자식 노드
+	 */
+	public synchronized void addChild(TreeNode<T> node) throws Exception {
+		
+		if(this.lock == true) {
+			throw new Exception("can't add child node.");
+		}
+		
 		this.childs.add(node);
+		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
 	}
 	
 	/**
-	 * 자식 노드 추가
+	 * 주어진 위치에 자식 노드 추가<br>
+	 * 주의) 상위 노드에 등록 전에 하위 노드는 모두 추가되어야 함
 	 * 
-	 * @param index
-	 * @param node
+	 * @param index 추가할 위치 
+	 * @param node 추가할 자식 노드
 	 */
-	public void addChild(int index, TreeNode<T> node) {
+	public synchronized void addChild(int index, TreeNode<T> node) throws Exception {
+		
+		if(this.lock == true) {
+			throw new Exception("can't add child node.");
+		}
+		
 		this.childs.add(index, node);
-	}
-	
-	/**
-	 * 자식 노드 추가
-	 * 
-	 * @param index
-	 * @param node
-	 */
-	public void setChild(int index, TreeNode<T> node) {
-		this.childs.set(index, node);
+		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
 	}
 	
 	/**
@@ -89,5 +114,4 @@ public class TreeNode<T> {
 		// 방문 목록 반환
 		return list;
 	}
-
 }
