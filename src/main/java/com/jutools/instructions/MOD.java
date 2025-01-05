@@ -16,5 +16,4 @@ public class MOD extends BiNumInstruction {
 		
 		return p1 % p2;
 	}
-
 }

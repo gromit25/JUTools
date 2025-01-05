@@ -74,6 +74,8 @@ public class TreeNode<T> {
 		
 		this.childs.add(node);
 		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
+		
+		node.setLock();
 	}
 	
 	/**
@@ -91,6 +93,8 @@ public class TreeNode<T> {
 		
 		this.childs.add(index, node);
 		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
+		
+		node.setLock();
 	}
 	
 	/**

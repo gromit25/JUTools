@@ -17,4 +17,26 @@ public abstract class Instruction {
 	 * @param values 메모리
 	 */
 	public abstract int execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
+	
+	/**
+	 * 파라미터 문자열 반환
+	 * 
+	 * @return 파라미터 문자열
+	 */
+	protected String getParamString() {
+		return "";
+	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder toString = new StringBuilder("");
+		
+		toString
+			.append(this.getClass().getSimpleName())
+			.append("\t")
+			.append(this.getParamString());
+		
+		return toString.toString();
+	}
 }

@@ -69,4 +69,15 @@ public class INVOKE extends Instruction {
 		// 다음 실행 명령어 이동 거리 반환
 		return 1;
 	}
+	
+	@Override
+	protected String getParamString() {
+		
+		StringBuilder paramString = new StringBuilder("");
+		
+		paramString
+			.append(this.methodAlias);
+		
+		return paramString.toString();
+	}
 }

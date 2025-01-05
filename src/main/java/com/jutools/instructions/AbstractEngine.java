@@ -208,19 +208,20 @@ public abstract class AbstractEngine {
 	@Override
 	public String toString() {
 		
-		StringBuilder builder = new StringBuilder("");
-		builder
+		StringBuilder toString = new StringBuilder("");
+		
+		toString
 			.append("INSTRUCTION LIST\n")
 			.append("-------------------------\n");
 		
 		if(this.insts != null && this.insts.size() != 0) {
 			for(Instruction inst: this.insts) {
-				builder.append(inst).append("\n");
+				toString.append(inst).append("\n");
 			}
 		} else {
-			builder.append("instruction list is empty.\n");
+			toString.append("instruction list is empty.\n");
 		}
 		
-		return builder.toString();
+		return toString.toString();
 	}
 }

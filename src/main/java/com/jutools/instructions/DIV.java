@@ -20,5 +20,4 @@ public class DIV extends BiNumInstruction {
 		
 		return p1 / p2;
 	}
-
 }

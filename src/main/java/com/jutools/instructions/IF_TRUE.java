@@ -55,4 +55,17 @@ public class IF_TRUE extends Instruction {
 			return this.p2;
 		}
 	}
+	
+	@Override
+	protected String getParamString() {
+		
+		StringBuilder paramString = new StringBuilder("");
+		
+		paramString
+			.append(this.p1)
+			.append(",")
+			.append(this.p2);
+		
+		return paramString.toString();
+	}
 }

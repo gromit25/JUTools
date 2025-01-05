@@ -35,4 +35,14 @@ public class LOAD_NUMBER extends Instruction {
 		return 1;
 	}
 
+	@Override
+	protected String getParamString() {
+		
+		StringBuilder paramString = new StringBuilder("");
+		
+		paramString
+			.append(this.value);
+		
+		return paramString.toString();
+	}
 }
