@@ -934,4 +934,34 @@ public class OLExpTest {
 		
 		assertFalse(result);
 	}
+	
+	@Test
+	public void testShortCircuit1() throws Exception {
+		
+		OLExp exp = OLExp.compile("true or false");
+		System.out.println(exp.toString());
+		
+		Boolean result = exp.execute().pop(Boolean.class);
+		System.out.println("RESULT:" + result);
+	}
+	
+	@Test
+	public void testShortCircuit2() throws Exception {
+		
+		OLExp exp = OLExp.compile("false and true");
+		System.out.println(exp.toString());
+		
+		Boolean result = exp.execute().pop(Boolean.class);
+		System.out.println("RESULT:" + result);
+	}
+	
+	@Test
+	public void testShortCircuit3() throws Exception {
+		
+		OLExp exp = OLExp.compile("2 < 3 + 1 or 1 != 1");
+		System.out.println(exp.toString());
+		
+		Boolean result = exp.execute().pop(Boolean.class);
+		System.out.println("RESULT:" + result);
+	}
 }

@@ -163,13 +163,13 @@ public class BooleanParser extends AbstractParser<Instruction> {
 			if(this.op instanceof AND) {
 				
 				shortCircuit.setData(
-					new IF_TRUE(1, this.p2.getChildCount() + 2) // AND 다음 연산까지 이동(+2)
+					new IF_TRUE(1, this.p2.getChildCount() + 3) // AND 다음 연산까지 이동(+3)
 				);
 				
 			} else if(this.op instanceof OR) {
 				
 				shortCircuit.setData(
-					new IF_FALSE(1, this.p2.getChildCount() + 2) // OR 다음 연산까지 이동(+2)
+					new IF_FALSE(1, this.p2.getChildCount() + 3) // OR 다음 연산까지 이동(+3)
 				);
 				
 			} else {
