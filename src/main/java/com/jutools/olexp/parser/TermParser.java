@@ -19,10 +19,12 @@ public class TermParser extends AbstractParser<Instruction> {
 	
 	/** *,/,% 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
+	
 	/** *,/,% 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
-	/** *,/,% 연산 */
-	private Instruction op;
+	
+	/** *,/,% 연산 tree node */
+	private TreeNode<Instruction> op;
 
 	/**
 	 * 생성자
@@ -53,23 +55,29 @@ public class TermParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t", "START")
-				.add("^ \t", "FACTOR", -1)
+				.add("^ \t", "FACTOR_1", -1)
 				.build());
 		
-		this.putTransferMap("FACTOR", new TransferBuilder()
-				.add(" \t", "FACTOR")
+		this.putTransferMap("FACTOR_1", new TransferBuilder()
+				.add(" \t", "FACTOR_1")
 				.add("\\*\\/\\%", "OPERATION")
 				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
 				.add(" \t", "OPERATION")
-				.add("^ \t", "TERM", -1)
+				.add("^ \t", "FACTOR_2", -1)
+				.build());
+		
+		this.putTransferMap("FACTOR_2", new TransferBuilder()
+				.add(" \t", "FACTOR_2")
+				.add("\\*\\/\\%", "OPERATION")
+				.add("^ \t\\*\\/", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("FACTOR");
-		this.putEndStatus("TERM", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("FACTOR_1");
+		this.putEndStatus("FACTOR_2");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 	}
 	
@@ -80,9 +88,10 @@ public class TermParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"FACTOR"}
+			target={"FACTOR_1"}
 	)
 	public void handleP1(Event event) throws Exception {
+		
 		FactorParser parser = new FactorParser();
 		this.p1 = parser.parse(event.getReader());
 	}
@@ -93,21 +102,26 @@ public class TermParser extends AbstractParser<Instruction> {
 	 * @param event
 	 */
 	@TransferEventHandler(
-			source={"FACTOR"},
+			source={"FACTOR_1", "FACTOR_2"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
 		
 		if(event.getCh() == '*') {
-			this.op = new MUL();
+			this.op = new TreeNode<>(new MUL());
 		} else if(event.getCh() == '/') {
-			this.op = new DIV();
+			this.op = new TreeNode<>(new DIV());
 		} else if(event.getCh() == '%') {
-			this.op = new MOD();
+			this.op = new TreeNode<>(new MOD());
 		} else {
 			throw new Exception("Unexpected operation:" + event.getCh());
 		}
 		
+		// 첫번째 파라미터 추가
+		this.op.addChild(this.p1);
+		
+		// 
+		this.p1 = this.op;
 	}
 	
 	/**
@@ -117,12 +131,15 @@ public class TermParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"OPERATION"},
-			target={"TERM"}
+			target={"FACTOR_2"}
 	)
 	public void handleP2(Event event) throws Exception {
 		
-		TermParser parser = new TermParser();
+		FactorParser parser = new FactorParser();
 		this.p2 = parser.parse(event.getReader());
+		
+		// 두번째 파라미터 추가
+		this.op.addChild(this.p2);
 	}
 	
 	/**
@@ -131,17 +148,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.op != null && this.p2 != null) {
-			
-			// *,/,% 연산이 존재하는 경우
-			this.setNodeData(this.op);
-			this.addChild(this.p1);
-			this.addChild(this.p2);
-			
-		} else {
-			
-			// *,/,% 연산이 존재하지 않는 경우
-			this.setNode(this.p1);
-		}
+		// 현재 노드 설정
+		this.setNode(this.p1);
 	}
 }

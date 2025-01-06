@@ -115,5 +115,4 @@ public class FactorParser extends AbstractParser<Instruction> {
 		BooleanParser parser = new BooleanParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
-
 }
