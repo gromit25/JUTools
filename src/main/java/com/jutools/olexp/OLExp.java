@@ -45,4 +45,14 @@ public class OLExp extends AbstractEngine {
 		this.execute(new HashMap<String, Object>());
 		return this;
 	}
+	
+	/**
+	 * 명령어 수행(디버그 모드)
+	 * 
+	 * @return 현재 객체(fluent 코딩용)
+	 */
+	public OLExp executeForDebug() throws Exception {
+		this.executeForDebug(new HashMap<String, Object>());
+		return this;
+	}
 }

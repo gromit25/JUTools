@@ -24,19 +24,23 @@ public class TransferBuilder {
 	 * 
 	 * @param pattern 전이가 발생하는 character 종류
 	 * @param nextStatus 전이 상태
-	 * @param bushback 전이가 발생할 시 pushback될 숫자
+	 * @param bushback 전이가 발생할 시 pushback될 숫자(0 또는 음수 이어야 함)
 	 * @return 현재 객체(fluent 코딩용)
 	 */
 	public TransferBuilder add(String pattern, String nextStatus, int pushback) throws Exception {
-		
-		Object[] spec = new Object[3];
-		spec[0] = pattern;
-		spec[1] = nextStatus;
-		spec[2] = pushback;
+
+		// 입력값 검증
 		if(pushback > 0) {
 			throw new Exception("pushback value must be less than 0");
 		}
 		
+		// 스펙 생성
+		Object[] spec = new Object[3];
+		spec[0] = pattern;
+		spec[1] = nextStatus;
+		spec[2] = pushback;
+		
+		// 스펙 추가
 		specs.add(spec);
 		
 		return this;

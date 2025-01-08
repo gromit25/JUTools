@@ -207,6 +207,29 @@ public abstract class AbstractEngine {
 	}
 	
 	/**
+	 * 스크립트 명령어 수행(디버그 모드)
+	 * 
+	 * @param values 
+	 * @return 현재 객체(fluent 코딩용)
+	 */
+	public AbstractEngine executeForDebug(Map<String, ?> values) throws Exception {
+
+		// 스크립트 스레드 획득
+		ScriptThread t = this.thread.get();
+		
+		// 각 명령어 별로 실행
+		while(t.pc < this.insts.size()) {
+			
+			Instruction inst = this.insts.get(t.pc);
+			t.pc += inst.execute(t.stack, values);
+			
+			System.out.println(t.pc + ":" + inst.toString());
+		}
+		
+		return this;
+	}
+	
+	/**
 	 * stack의 최상단 값을 뽑아서 반환 
 	 * 
 	 * @param type stack의 값을 casting할 타입

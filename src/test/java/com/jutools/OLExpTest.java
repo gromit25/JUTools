@@ -964,4 +964,14 @@ public class OLExpTest {
 		Boolean result = exp.execute().pop(Boolean.class);
 		System.out.println("RESULT:" + result);
 	}
+	
+	@Test
+	public void testShortCircuit4() throws Exception {
+		
+		OLExp exp = OLExp.compile("false and 1 == 1 or true");
+		System.out.println(exp.toString());
+		
+		Boolean result = exp.executeForDebug().pop(Boolean.class);
+		System.out.println("RESULT:" + result);
+	}
 }

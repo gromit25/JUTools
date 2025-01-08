@@ -21,10 +21,12 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	
 	/** and,or 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
+	
 	/** and,or 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
-	/** and,or 연산 */
-	private Instruction op;
+	
+	/** and,or 연산 tree node */
+	private TreeNode<Instruction> op;
 
 	/**
 	 * 생성자
@@ -54,17 +56,19 @@ public class BooleanParser extends AbstractParser<Instruction> {
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
-				.add(" \t", "START")
-				.add("^ \t", "EQUALITY", -1)
+				.add(" \t\r\n", "START")
+				.add("^ \t\r\n", "EQUALITY_1", -1)
 				.build());
 		
-		this.putTransferMap("EQUALITY", new TransferBuilder()
-				.add(" \t", "EQUALITY")
+		// --- P1
+		this.putTransferMap("EQUALITY_1", new TransferBuilder()
+				.add(" \t\r\n", "EQUALITY_1")
 				.add("aA", "AND_OP_1")
 				.add("oO", "OR_OP_1")
-				.add("^ \taoAO", "END", -1)
+				.add("^ \t\r\naAoO", "END", -1)
 				.build());
 		
+		// --- AND 오퍼레이션
 		this.putTransferMap("AND_OP_1", new TransferBuilder()
 				.add("nN", "AND_OP_2")
 				.add("^nN", "ERROR", -1)
@@ -76,77 +80,193 @@ public class BooleanParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("AND_OP_3", new TransferBuilder()
-				.add(" \t", "BOOLEAN")
+				.add(" \t\r\n", "AND_OP_END")
 				.add("(", "BOOLEAN", -1)
-				.add("^ \t(", "ERROR", -1)
+				.add("^ \t\r\n(", "ERROR", -1)
 				.build());
 		
+		this.putTransferMap("AND_OP_END", new TransferBuilder()
+				.add(" \t\r\n", "AND_OP_END")
+				.add("(", "BOOLEAN", -1)
+				.add("^ \t\r\n(", "EQUALITY_2", -1)
+				.build());
+		
+		// --- OR 오퍼레이션
 		this.putTransferMap("OR_OP_1", new TransferBuilder()
 				.add("rR", "OR_OP_2")
-				.add("^ \t(", "ERROR", -1)
+				.add("^ \t\r\n(", "ERROR", -1)
 				.build());
 		
 		this.putTransferMap("OR_OP_2", new TransferBuilder()
-				.add(" \t", "BOOLEAN")
+				.add(" \t\r\n", "OR_OP_END")
 				.add("(", "BOOLEAN", -1)
-				.add("^ \t(", "ERROR", -1)
+				.add("^ \t\r\n(", "ERROR", -1)
+				.build());
+		
+		this.putTransferMap("OR_OP_END", new TransferBuilder()
+				.add(" \t\r\n", "OR_OP_END")
+				.add("(", "BOOLEAN", -1)
+				.add("^ \t\r\n(", "EQUALITY_2", -1)
+				.build());
+		
+		// --- P2 
+		this.putTransferMap("EQUALITY_2", new TransferBuilder()
+				.add(" \t\r\n", "EQUALITY_2")
+				.add("aA", "AND_OP_1")
+				.add("oO", "OR_OP_1")
+				.add("^ \t\r\naAoO", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("EQUALITY");
-		this.putEndStatus("BOOLEAN", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("EQUALITY_1");
+		this.putEndStatus("EQUALITY_2");
+		this.putEndStatus("BOOLEAN");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("ERROR", EndStatusType.ERROR);
 	}
 	
 	/**
-	 * and,or 의 첫번째 파라미터 상태로 전이시 핸들러 메소드
+	 * p1 상태 전이 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"EQUALITY"}
+			target={"EQUALITY_1"}
 	)
 	public void handleP1(Event event) throws Exception {
 		
 		EqualityParser parser = new EqualityParser();
 		this.p1 = parser.parse(event.getReader());
+	}
+	
+	/**
+	 * and equality 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"AND_OP_END"},
+			target={"EQUALITY_2"}
+	)
+	public void handleAndOpEquality(Event event) throws Exception {
+		
+		// and 오퍼레이션 생성
+		this.op = new TreeNode<>(new AND());
+		
+		// p2 파싱
+		EqualityParser parser = new EqualityParser();
+		this.p2 = parser.parse(event.getReader());
 
+		// short circuit 구성
+		this.composeShortCircuit();
 	}
-	
+
 	/**
-	 * and 의 연산자 상태로 전이시 핸들러 메소드
+	 * and boolean 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"AND_OP_3"},
+			source={"AND_OP_3", "AND_OP_END"},
 			target={"BOOLEAN"}
 	)
-	public void handleAndOp(Event event) throws Exception {
+	public void handleAndOpBoolean(Event event) throws Exception {
 		
-		this.op = new AND();
+		// and 오퍼레이션 생성
+		this.op = new TreeNode<>(new AND());
 		
+		// p2 파싱
 		BooleanParser parser = new BooleanParser();
 		this.p2 = parser.parse(event.getReader());
+		
+		// short circuit 구성
+		this.composeShortCircuit();
 	}
 	
 	/**
-	 * or 의 연산자 상태로 전이시 핸들러 메소드
+	 * or equality 핸들러 메소드
 	 * 
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"OR_OP_2"},
+			source={"OR_OP_END"},
+			target={"EQUALITY_2"}
+	)
+	public void handleOrOpEquality(Event event) throws Exception {
+		
+		// or 오퍼레이션 생성
+		this.op = new TreeNode<>(new OR());
+		
+		// p2 파싱
+		EqualityParser parser = new EqualityParser();
+		this.p2 = parser.parse(event.getReader());
+		
+		// short circuit 구성
+		this.composeShortCircuit();
+	}
+	
+	/**
+	 * or boolean 핸들러 메소드
+	 * 
+	 * @param event 상태 전이 이벤트 정보
+	 */
+	@TransferEventHandler(
+			source={"OR_OP_2", "OR_OP_END"},
 			target={"BOOLEAN"}
 	)
-	public void handleOrOp(Event event) throws Exception {
+	public void handleOrOpBoolean(Event event) throws Exception {
 		
-		this.op = new OR();
+		// or 오퍼레이션 생성
+		this.op = new TreeNode<>(new OR());
 		
+		// p2 파싱
 		BooleanParser parser = new BooleanParser();
 		this.p2 = parser.parse(event.getReader());
+		
+		// short circuit 구성
+		this.composeShortCircuit();
+	}
+	
+	/**
+	 * and, or 의 short circuit 구성 메소드
+	 */
+	private void composeShortCircuit() throws Exception {
+		
+		// short circuit 생성 및 추가 
+		TreeNode<Instruction> shortCircuit = new TreeNode<>();
+		
+		// and, or 연산에 따라 점프 오퍼레이션 설정
+		if(this.op.getData() instanceof AND) {
+			
+			shortCircuit.setData(
+				new IF_TRUE(1, this.p2.getChildCount() + 3) // AND 다음 연산까지 이동(+3)
+			);
+			
+		} else if(this.op.getData() instanceof OR) {
+			
+			shortCircuit.setData(
+				new IF_FALSE(1, this.p2.getChildCount() + 3) // OR 다음 연산까지 이동(+3)
+			);
+			
+		} else {
+			throw new Exception("unexpected operation:" + this.op.getClass());
+		}
+		
+		// p1 추가
+		shortCircuit.addChild(this.p1);
+		
+		// dup 명령어(스택 최상단 복사) 추가 -> p1 결과 복사용
+		shortCircuit.addChild(new TreeNode<Instruction>(new DUP()));
+		
+		// p2 추가
+		this.op.addChild(shortCircuit);
+		this.op.addChild(this.p2);
+		
+		// 오퍼레이션 노드를 p1 노드로 설정
+		// 삼항 이상의 연산에서 p1 이 되기 때문
+		// ex) true and false or false -> (true and false) or false
+		this.p1 = this.op;
 	}
 	
 	/**
@@ -155,39 +275,7 @@ public class BooleanParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.op != null && this.p2 != null) {
-			
-			// and, or 에 따라 short circuit 구성
-			TreeNode<Instruction> shortCircuit = new TreeNode<>();
-			
-			if(this.op instanceof AND) {
-				
-				shortCircuit.setData(
-					new IF_TRUE(1, this.p2.getChildCount() + 3) // AND 다음 연산까지 이동(+3)
-				);
-				
-			} else if(this.op instanceof OR) {
-				
-				shortCircuit.setData(
-					new IF_FALSE(1, this.p2.getChildCount() + 3) // OR 다음 연산까지 이동(+3)
-				);
-				
-			} else {
-				throw new Exception("unexpected operation:" + this.op.getClass());
-			}
-			
-			shortCircuit.addChild(this.p1);
-			shortCircuit.addChild(new TreeNode<Instruction>(new DUP()));
-			
-			// and,or 연산이 존재하는 경우
-			this.setNodeData(this.op);
-			this.addChild(shortCircuit);
-			this.addChild(this.p2);
-			
-		} else {
-			
-			// and,or 연산이 존재하지 않는 경우
-			this.setNode(this.p1);
-		}
+		// 파싱 노드 설정
+		this.setNode(this.p1);
 	}
 }
