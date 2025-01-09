@@ -5,11 +5,11 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.script.instructions.GREATER_EQUAL;
-import com.jutools.script.instructions.GREATER_THAN;
-import com.jutools.script.instructions.Instruction;
-import com.jutools.script.instructions.LESS_EQUAL;
-import com.jutools.script.instructions.LESS_THAN;
+import com.jutools.script.engine.instructions.GREATER_EQUAL;
+import com.jutools.script.engine.instructions.GREATER_THAN;
+import com.jutools.script.engine.instructions.Instruction;
+import com.jutools.script.engine.instructions.LESS_EQUAL;
+import com.jutools.script.engine.instructions.LESS_THAN;
 
 /**
  * 비교(<, >, <=, >=) 연산 파싱 수행<br>

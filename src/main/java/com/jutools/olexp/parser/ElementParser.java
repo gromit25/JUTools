@@ -5,9 +5,9 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.script.instructions.Instruction;
-import com.jutools.script.instructions.LOAD_ELEMENT;
-import com.jutools.script.instructions.NOP;
+import com.jutools.script.engine.instructions.Instruction;
+import com.jutools.script.engine.instructions.LOAD_ELEMENT;
+import com.jutools.script.engine.instructions.NOP;
 
 /**
  * 

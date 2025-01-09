@@ -4,8 +4,8 @@ import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
-import com.jutools.script.instructions.Instruction;
-import com.jutools.script.instructions.LOAD_NUMBER;
+import com.jutools.script.engine.instructions.Instruction;
+import com.jutools.script.engine.instructions.LOAD_NUMBER;
 
 /**
  * 숫자 파서 수행

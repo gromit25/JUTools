@@ -5,9 +5,9 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.script.instructions.EQUAL;
-import com.jutools.script.instructions.Instruction;
-import com.jutools.script.instructions.NOT_EQUAL;
+import com.jutools.script.engine.instructions.EQUAL;
+import com.jutools.script.engine.instructions.Instruction;
+import com.jutools.script.engine.instructions.NOT_EQUAL;
 
 /**
  * 동일 여부(==, !=) 연산 파싱 수행

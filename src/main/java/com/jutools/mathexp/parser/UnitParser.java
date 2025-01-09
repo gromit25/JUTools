@@ -6,11 +6,11 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.script.instructions.Instruction;
-import com.jutools.script.instructions.LOAD_NUMBER;
-import com.jutools.script.instructions.LOAD_STRING;
-import com.jutools.script.instructions.MUL;
-import com.jutools.script.instructions.NOP;
+import com.jutools.script.engine.instructions.Instruction;
+import com.jutools.script.engine.instructions.LOAD_NUMBER;
+import com.jutools.script.engine.instructions.LOAD_STRING;
+import com.jutools.script.engine.instructions.MUL;
+import com.jutools.script.engine.instructions.NOP;
 
 /**
  * 단위 파싱 수행
