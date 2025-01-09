@@ -1,4 +1,4 @@
-package com.jutools.parserfw;
+package com.jutools.script.parserfw;
 
 import java.util.ArrayList;
 import java.util.List;

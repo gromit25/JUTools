@@ -12,8 +12,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.jutools.olexp.OLExp;
-import com.jutools.parserfw.exception.ParseException;
-import com.jutools.parserfw.exception.UnexpectedEndException;
+import com.jutools.script.parserfw.exception.ParseException;
+import com.jutools.script.parserfw.exception.UnexpectedEndException;
 
 import lombok.Data;
 

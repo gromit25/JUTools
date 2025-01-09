@@ -1,4 +1,4 @@
-package com.jutools.parserfw.exception;
+package com.jutools.script.parserfw.exception;
 
 import lombok.Getter;
 

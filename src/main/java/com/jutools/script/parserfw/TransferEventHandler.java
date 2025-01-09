@@ -1,4 +1,4 @@
-package com.jutools.parserfw;
+package com.jutools.script.parserfw;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

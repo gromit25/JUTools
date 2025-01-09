@@ -1,4 +1,4 @@
-package com.jutools.parserfw;
+package com.jutools.script.parserfw;
 
 import java.io.StringReader;
 import java.lang.reflect.Method;
@@ -7,8 +7,8 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import com.jutools.parserfw.exception.ParseException;
-import com.jutools.parserfw.exception.UnexpectedEndException;
+import com.jutools.script.parserfw.exception.ParseException;
+import com.jutools.script.parserfw.exception.UnexpectedEndException;
 
 import lombok.AccessLevel;
 import lombok.Getter;

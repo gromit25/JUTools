@@ -1,4 +1,4 @@
-package com.jutools.parserfw;
+package com.jutools.script.parserfw;
 
 import java.io.PushbackReader;
 import java.io.StringReader;
