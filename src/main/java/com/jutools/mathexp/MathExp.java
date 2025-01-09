@@ -6,7 +6,7 @@ import java.util.Map;
 import com.jutools.mathexp.parser.UnitParser;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.scriptengine.AbstractEngine;
-import com.jutools.scriptengine.Instruction;
+import com.jutools.scriptengine.instructions.Instruction;
 
 /**
  * 수식 처리 클래스

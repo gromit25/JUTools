@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.jutools.olexp.parser.StoreParser;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.scriptengine.AbstractEngine;
-import com.jutools.scriptengine.Instruction;
+import com.jutools.scriptengine.instructions.Instruction;
 
 /**
  * One Line Expression 클래스

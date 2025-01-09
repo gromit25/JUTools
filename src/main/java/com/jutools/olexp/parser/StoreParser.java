@@ -3,8 +3,8 @@ package com.jutools.olexp.parser;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
-import com.jutools.scriptengine.Instruction;
-import com.jutools.scriptengine.STORE;
+import com.jutools.scriptengine.instructions.Instruction;
+import com.jutools.scriptengine.instructions.STORE;
 
 /**
  * L-value에 R-value를 저장 문장 파싱 수행

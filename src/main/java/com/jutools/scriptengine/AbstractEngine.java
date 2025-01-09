@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.Stack;
 
 import com.jutools.parserfw.AbstractParser;
+import com.jutools.scriptengine.instructions.BuiltInMethods;
+import com.jutools.scriptengine.instructions.INVOKE;
+import com.jutools.scriptengine.instructions.Instruction;
+import com.jutools.scriptengine.instructions.MethodAlias;
 
 import lombok.Getter;
 

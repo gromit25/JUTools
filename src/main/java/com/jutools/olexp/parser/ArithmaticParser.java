@@ -5,9 +5,9 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.scriptengine.ADD;
-import com.jutools.scriptengine.Instruction;
-import com.jutools.scriptengine.MINUS;
+import com.jutools.scriptengine.instructions.ADD;
+import com.jutools.scriptengine.instructions.Instruction;
+import com.jutools.scriptengine.instructions.MINUS;
 
 /**
  * +,- 연산 파싱 수행

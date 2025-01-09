@@ -8,13 +8,13 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.scriptengine.INVOKE;
-import com.jutools.scriptengine.Instruction;
-import com.jutools.scriptengine.LOAD_FALSE;
-import com.jutools.scriptengine.LOAD_NULL;
-import com.jutools.scriptengine.LOAD_TRUE;
-import com.jutools.scriptengine.LOAD_VAR;
-import com.jutools.scriptengine.NOP;
+import com.jutools.scriptengine.instructions.INVOKE;
+import com.jutools.scriptengine.instructions.Instruction;
+import com.jutools.scriptengine.instructions.LOAD_FALSE;
+import com.jutools.scriptengine.instructions.LOAD_NULL;
+import com.jutools.scriptengine.instructions.LOAD_TRUE;
+import com.jutools.scriptengine.instructions.LOAD_VAR;
+import com.jutools.scriptengine.instructions.NOP;
 
 /**
  * 변수 및 메소드 파서 수행
