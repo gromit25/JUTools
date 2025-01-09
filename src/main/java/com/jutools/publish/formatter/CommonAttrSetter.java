@@ -3,7 +3,7 @@ package com.jutools.publish.formatter;
 import java.io.File;
 import java.lang.reflect.Method;
 
-import com.jutools.olexp.OLExp;
+import com.jutools.script.olexp.OLExp;
 
 /**
  * 자바의 기본타입(primitive type) 또는 공통적으로 사용되는 타입(ex. Evaluator)에 대한
