@@ -5,8 +5,8 @@ import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
-import com.jutools.scriptengine.instructions.Instruction;
-import com.jutools.scriptengine.instructions.LOAD_STRING;
+import com.jutools.script.instructions.Instruction;
+import com.jutools.script.instructions.LOAD_STRING;
 
 /**
  * 문자열 파싱 수행

@@ -5,12 +5,12 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.scriptengine.instructions.AND;
-import com.jutools.scriptengine.instructions.DUP;
-import com.jutools.scriptengine.instructions.IF_FALSE;
-import com.jutools.scriptengine.instructions.IF_TRUE;
-import com.jutools.scriptengine.instructions.Instruction;
-import com.jutools.scriptengine.instructions.OR;
+import com.jutools.script.instructions.AND;
+import com.jutools.script.instructions.DUP;
+import com.jutools.script.instructions.IF_FALSE;
+import com.jutools.script.instructions.IF_TRUE;
+import com.jutools.script.instructions.Instruction;
+import com.jutools.script.instructions.OR;
 
 /**
  * boolean 연산(and, or) 파싱 수행

@@ -4,7 +4,7 @@ import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
-import com.jutools.scriptengine.instructions.Instruction;
+import com.jutools.script.instructions.Instruction;
 
 /**
  * 변수, 메소드, 숫자, 문자열 등 항목에 대한 파싱 수행<br>

@@ -5,9 +5,9 @@ import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
-import com.jutools.scriptengine.instructions.Instruction;
-import com.jutools.scriptengine.instructions.LOAD_ATTR;
-import com.jutools.scriptengine.instructions.NOP;
+import com.jutools.script.instructions.Instruction;
+import com.jutools.script.instructions.LOAD_ATTR;
+import com.jutools.script.instructions.NOP;
 
 /**
  * 객체 속성명 파싱 클래스
