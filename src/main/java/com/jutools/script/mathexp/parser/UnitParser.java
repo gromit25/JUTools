@@ -1,4 +1,4 @@
-package com.jutools.mathexp.parser;
+package com.jutools.script.mathexp.parser;
 
 import com.jutools.MathUtil;
 import com.jutools.script.engine.instructions.Instruction;

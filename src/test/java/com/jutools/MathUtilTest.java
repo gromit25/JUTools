@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import com.jutools.mathexp.MathResult;
+import com.jutools.script.mathexp.MathResult;
 
 /**
  * MathUtil 클래스의 테스트 케이스

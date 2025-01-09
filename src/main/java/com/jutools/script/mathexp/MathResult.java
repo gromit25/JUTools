@@ -1,4 +1,4 @@
-package com.jutools.mathexp;
+package com.jutools.script.mathexp;
 
 import lombok.Data;
 

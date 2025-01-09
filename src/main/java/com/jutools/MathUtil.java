@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
-import com.jutools.mathexp.MathExp;
-import com.jutools.mathexp.MathResult;
+import com.jutools.script.mathexp.MathExp;
+import com.jutools.script.mathexp.MathResult;
 
 import lombok.Getter;
 
