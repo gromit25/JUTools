@@ -3,10 +3,10 @@ package com.jutools.mathexp;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jutools.instructions.AbstractEngine;
-import com.jutools.instructions.Instruction;
 import com.jutools.mathexp.parser.UnitParser;
 import com.jutools.parserfw.AbstractParser;
+import com.jutools.scriptengine.AbstractEngine;
+import com.jutools.scriptengine.Instruction;
 
 /**
  * 수식 처리 클래스

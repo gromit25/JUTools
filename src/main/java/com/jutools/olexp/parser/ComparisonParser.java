@@ -1,15 +1,15 @@
 package com.jutools.olexp.parser;
 
-import com.jutools.instructions.GREATER_EQUAL;
-import com.jutools.instructions.GREATER_THAN;
-import com.jutools.instructions.Instruction;
-import com.jutools.instructions.LESS_EQUAL;
-import com.jutools.instructions.LESS_THAN;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
+import com.jutools.scriptengine.GREATER_EQUAL;
+import com.jutools.scriptengine.GREATER_THAN;
+import com.jutools.scriptengine.Instruction;
+import com.jutools.scriptengine.LESS_EQUAL;
+import com.jutools.scriptengine.LESS_THAN;
 
 /**
  * 비교(<, >, <=, >=) 연산 파싱 수행<br>

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.jutools.instructions.AbstractEngine;
-import com.jutools.instructions.Instruction;
 import com.jutools.olexp.OLExp;
 import com.jutools.olexp.parser.BooleanParser;
 import com.jutools.parserfw.AbstractParser;
+import com.jutools.scriptengine.AbstractEngine;
+import com.jutools.scriptengine.Instruction;
 
 /**
  * 표현식을 포함한 텍스트 형식 문자열과 변수 목록으로 텍스트를 생성하는 클래스<br>

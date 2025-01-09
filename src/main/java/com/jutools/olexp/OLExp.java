@@ -2,10 +2,10 @@ package com.jutools.olexp;
 
 import java.util.HashMap;
 
-import com.jutools.instructions.AbstractEngine;
-import com.jutools.instructions.Instruction;
 import com.jutools.olexp.parser.StoreParser;
 import com.jutools.parserfw.AbstractParser;
+import com.jutools.scriptengine.AbstractEngine;
+import com.jutools.scriptengine.Instruction;
 
 /**
  * One Line Expression 클래스

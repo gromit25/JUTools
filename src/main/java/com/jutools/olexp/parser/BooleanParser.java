@@ -1,16 +1,16 @@
 package com.jutools.olexp.parser;
 
-import com.jutools.instructions.AND;
-import com.jutools.instructions.DUP;
-import com.jutools.instructions.IF_FALSE;
-import com.jutools.instructions.IF_TRUE;
-import com.jutools.instructions.Instruction;
-import com.jutools.instructions.OR;
 import com.jutools.parserfw.AbstractParser;
 import com.jutools.parserfw.EndStatusType;
 import com.jutools.parserfw.TransferBuilder;
 import com.jutools.parserfw.TransferEventHandler;
 import com.jutools.parserfw.TreeNode;
+import com.jutools.scriptengine.AND;
+import com.jutools.scriptengine.DUP;
+import com.jutools.scriptengine.IF_FALSE;
+import com.jutools.scriptengine.IF_TRUE;
+import com.jutools.scriptengine.Instruction;
+import com.jutools.scriptengine.OR;
 
 /**
  * boolean 연산(and, or) 파싱 수행
