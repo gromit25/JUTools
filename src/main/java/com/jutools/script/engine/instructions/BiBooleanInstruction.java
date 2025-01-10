@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * 숫자 이항 연산 명령어 추상 클래스
+ * Boolean 이항 연산 명령어 추상 클래스
  * 
  * @author jmsohn
  */
-public abstract class BiNumberInstruction extends Instruction {
+public abstract class BiBooleanInstruction extends Instruction {
 	
 	/**
 	 * 이항 연산 수행
@@ -17,7 +17,7 @@ public abstract class BiNumberInstruction extends Instruction {
 	 * @param p2 두번째 파라미터
 	 * @return 연산 결과
 	 */
-	protected abstract Object process(Double p1, Double p2) throws Exception;
+	protected abstract Object process(Boolean p1, Boolean p2) throws Exception;
 
 	@Override
 	public int execute(Stack<Object> stack, Map<String, ?> values) throws Exception {
@@ -35,20 +35,19 @@ public abstract class BiNumberInstruction extends Instruction {
 			throw new NullPointerException("p1 value is null");
 		}
 		
-		if((p2 instanceof Double) == false) {
+		if((p2 instanceof Boolean) == false) {
 			throw new Exception("p2 is unexpected type:" + p2.getClass());
 		}
 		
-		if((p1 instanceof Double) == false) {
+		if((p1 instanceof Boolean) == false) {
 			throw new Exception("p1 is unexpected type:" + p1.getClass());
 		}
 		
 		// p1, p2에 대한 연산 수행
 		// 수행결과는 숫자(double) 또는 boolean 값
-		Object result = this.process((Double)p1, (Double)p2);
+		Object result = this.process((Boolean)p1, (Boolean)p2);
 		
-		if((result instanceof Double) == false &&
-			(result instanceof Boolean) == false) {
+		if((result instanceof Boolean) == false) {
 			throw new Exception("result value is unexpected type:" + result.getClass());
 		}
 		
