@@ -3,10 +3,10 @@ package com.jutools.nodeexporter.parser;
 import com.jutools.nodeexporter.instructions.ADD_ATTR;
 import com.jutools.nodeexporter.instructions.NOP;
 import com.jutools.nodeexporter.instructions.NodeMetricInstruction;
-import com.jutools.script.parserfw.AbstractParser;
-import com.jutools.script.parserfw.EndStatusType;
-import com.jutools.script.parserfw.TransferBuilder;
-import com.jutools.script.parserfw.TransferEventHandler;
+import com.jutools.script.parser.AbstractParser;
+import com.jutools.script.parser.EndStatusType;
+import com.jutools.script.parser.TransferBuilder;
+import com.jutools.script.parser.TransferEventHandler;
 
 /**
  * 

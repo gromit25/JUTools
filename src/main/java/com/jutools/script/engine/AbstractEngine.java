@@ -13,7 +13,7 @@ import com.jutools.script.engine.instructions.BuiltInMethods;
 import com.jutools.script.engine.instructions.INVOKE;
 import com.jutools.script.engine.instructions.Instruction;
 import com.jutools.script.engine.instructions.MethodAlias;
-import com.jutools.script.parserfw.AbstractParser;
+import com.jutools.script.parser.AbstractParser;
 
 import lombok.Getter;
 

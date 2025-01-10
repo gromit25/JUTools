@@ -6,11 +6,11 @@ import com.jutools.script.engine.instructions.IF_FALSE;
 import com.jutools.script.engine.instructions.IF_TRUE;
 import com.jutools.script.engine.instructions.Instruction;
 import com.jutools.script.engine.instructions.OR;
-import com.jutools.script.parserfw.AbstractParser;
-import com.jutools.script.parserfw.EndStatusType;
-import com.jutools.script.parserfw.TransferBuilder;
-import com.jutools.script.parserfw.TransferEventHandler;
-import com.jutools.script.parserfw.TreeNode;
+import com.jutools.script.parser.AbstractParser;
+import com.jutools.script.parser.EndStatusType;
+import com.jutools.script.parser.TransferBuilder;
+import com.jutools.script.parser.TransferEventHandler;
+import com.jutools.script.parser.TreeNode;
 
 /**
  * boolean 연산(and, or) 파싱 수행

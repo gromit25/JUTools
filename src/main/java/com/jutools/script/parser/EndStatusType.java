@@ -1,4 +1,4 @@
-package com.jutools.script.parserfw;
+package com.jutools.script.parser;
 
 /**
  * 종료 상태의 종류
