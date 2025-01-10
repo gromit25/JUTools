@@ -5,7 +5,7 @@ package com.jutools.script.engine.instructions;
  * 
  * @author jmsohn
  */
-public class MUL extends BiNumInstruction {
+public class MUL extends BiNumberInstruction {
 
 	@Override
 	public Object process(Double p1, Double p2) throws Exception {

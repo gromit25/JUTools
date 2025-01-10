@@ -22,10 +22,13 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	
 	/** 비교 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
+	
 	/** 비교 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
+	
 	/** 비교 연산 */
 	private Instruction op;
+	
 	/** 비교 연산 버퍼 */
 	private StringBuffer opBuffer;
 

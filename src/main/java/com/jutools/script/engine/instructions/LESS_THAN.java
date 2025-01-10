@@ -5,7 +5,7 @@ package com.jutools.script.engine.instructions;
  * 
  * @author jmsohn
  */
-public class LESS_THAN extends BiNumInstruction {
+public class LESS_THAN extends BiNumberInstruction {
 
 	@Override
 	public Object process(Double p1, Double p2) throws Exception {

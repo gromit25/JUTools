@@ -8,7 +8,7 @@ import java.util.Stack;
  * 
  * @author jmsohn
  */
-public abstract class BiNumInstruction extends Instruction {
+public abstract class BiNumberInstruction extends Instruction {
 	
 	/**
 	 * 이항 연산 수행
