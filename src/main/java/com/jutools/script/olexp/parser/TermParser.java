@@ -107,6 +107,7 @@ public class TermParser extends AbstractParser<Instruction> {
 	)
 	public void handleOp(Event event) throws Exception {
 		
+		// 연산자 노드 생성
 		if(event.getCh() == '*') {
 			this.op = new TreeNode<>(new MUL());
 		} else if(event.getCh() == '/') {
@@ -117,7 +118,7 @@ public class TermParser extends AbstractParser<Instruction> {
 			throw new Exception("Unexpected operation:" + event.getCh());
 		}
 		
-		// 첫번째 파라미터 추가
+		// 연산자 노드에 p1 추가
 		this.op.addChild(this.p1);
 		
 		// 

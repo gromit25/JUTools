@@ -18,10 +18,13 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	
 	/** 동일 여부 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
+	
 	/** 동일 여부 연산의 두번째 파라미터의 tree node */
 	private TreeNode<Instruction> p2;
+	
 	/** 동일 여부 연산 */
-	private Instruction op;
+	private TreeNode<Instruction> op;
+	
 	/** 동일 여부 연산 버퍼 */
 	private StringBuffer opBuffer;
 
@@ -49,14 +52,14 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
-				.add(" \t", "START")
-				.add("^ \t", "COMPARISON_1", -1)
+				.add(" \t\r\n", "START")
+				.add("^ \t\r\n", "COMPARISON_1", -1)
 				.build());
 		
 		this.putTransferMap("COMPARISON_1", new TransferBuilder()
-				.add(" \t", "COMPARISON_1")
+				.add(" \t\r\n", "COMPARISON_1")
 				.add("\\=\\!", "OPERATION")
-				.add("^ \t\\=\\!", "END", -1)
+				.add("^ \t\r\n\\=\\!", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -65,9 +68,9 @@ public class EqualityParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("COMPARISON_2", new TransferBuilder()
-				.add(" \t", "COMPARISON_2")
+				.add(" \t\r\n", "COMPARISON_2")
 				.add("\\=\\!", "OPERATION")
-				.add("^ \t\\=\\!", "END", -1)
+				.add("^ \t\r\n\\=\\!", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
@@ -91,7 +94,6 @@ public class EqualityParser extends AbstractParser<Instruction> {
 		
 		ComparisonParser parser = new ComparisonParser();
 		this.p1 = parser.parse(event.getReader());
-
 	}
 	
 	/**
@@ -118,37 +120,37 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	)
 	public void handleOp2(Event event) throws Exception {
 		
-		//
-		if(this.op != null && this.p2 != null) {
-			
-			TreeNode<Instruction> newP1 = new TreeNode<Instruction>(this.op);
-			newP1.addChild(this.p1);
-			newP1.addChild(this.p2);
-			
-			this.p1 = newP1;
-		}
-		
-		//
+		// 연산자 노드 생성
 		this.opBuffer.append(event.getCh());
+		String equalityOp = this.opBuffer.toString();
 		
-		switch(this.opBuffer.toString()) {
+		switch(equalityOp) {
 		case "==":
-			this.op = new EQUAL();
+			this.op = new TreeNode<>(new EQUAL());
 			break;
 		case "!=":
-			this.op = new NOT_EQUAL();
+			this.op = new TreeNode<>(new NOT_EQUAL());
 			break;
 		default:
-			throw new Exception("Unexpected operation:" + op);
+			throw new Exception("Unexpected operation:" + equalityOp);
 		}
 		
-		//
+		// 연산자 버퍼 클리어
 		this.opBuffer.delete(0, this.opBuffer.length());
 		
-		//
+		// p2 노드 파싱
 		ComparisonParser parser = new ComparisonParser();
 		this.p2 = parser.parse(event.getReader());
 		
+		// ---
+		
+		// 연산자 노드에 p1, p2 추가
+		this.op
+			.addChild(this.p1)
+			.addChild(this.p2);
+		
+		//
+		this.p1 = this.op;
 	}
 	
 	/**
@@ -157,17 +159,7 @@ public class EqualityParser extends AbstractParser<Instruction> {
 	@Override
 	protected void exit() throws Exception {
 		
-		if(this.op != null && this.p2 != null) {
-		
-			// 동일 여부 연산이 존재하는 경우
-			this.setNodeData(this.op);
-			this.addChild(this.p1);
-			this.addChild(this.p2);
-			
-		} else {
-			
-			// 동일 여부 연산이 존재하지 않는 경우
-			this.setNode(this.p1);
-		}
+		// 현재 노드 설정
+		this.setNode(this.p1);
 	}
 }

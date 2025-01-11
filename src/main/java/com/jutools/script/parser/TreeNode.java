@@ -65,8 +65,9 @@ public class TreeNode<T> {
 	 * 주의) 상위 노드에 등록 전에 하위 노드는 모두 추가되어야 함
 	 * 
 	 * @param node 추가할 자식 노드
+	 * @return 현재 객체
 	 */
-	public synchronized void addChild(TreeNode<T> node) throws Exception {
+	public synchronized TreeNode<T> addChild(TreeNode<T> node) throws Exception {
 		
 		if(this.lock == true) {
 			throw new Exception("can't add child node.");
@@ -76,6 +77,8 @@ public class TreeNode<T> {
 		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
 		
 		node.setLock();
+		
+		return this;
 	}
 	
 	/**
