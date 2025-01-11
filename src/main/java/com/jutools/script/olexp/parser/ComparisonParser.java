@@ -27,7 +27,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	private TreeNode<Instruction> p2;
 	
 	/** 비교 연산 */
-	private Instruction op;
+	private TreeNode<Instruction> op;
 	
 	/** 비교 연산 버퍼 */
 	private StringBuffer opBuffer;
@@ -56,14 +56,14 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
-				.add(" \t", "START")
-				.add("^ \t", "ARITHMATIC_1", -1)
+				.add(" \t\r\n", "START")
+				.add("^ \t\r\n", "ARITHMATIC_1", -1)
 				.build());
 		
 		this.putTransferMap("ARITHMATIC_1", new TransferBuilder()
-				.add(" \t", "ARITHMATIC_1")
+				.add(" \t\r\n", "ARITHMATIC_1")
 				.add("\\<\\>", "OPERATION")
-				.add("^ \t\\<\\>", "END", -1)
+				.add("^ \t\r\n\\<\\>", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
@@ -72,8 +72,8 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 				.build());
 		
 		this.putTransferMap("ARITHMATIC_2", new TransferBuilder()
-				.add(" \t", "ARITHMATIC_2")
-				.add("^ \t", "END", -1)
+				.add(" \t\r\n", "ARITHMATIC_2")
+				.add("^ \t\r\n", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
@@ -96,7 +96,6 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		
 		ArithmaticParser parser = new ArithmaticParser();
 		this.p1 = parser.parse(event.getReader());
-
 	}
 	
 	/**
@@ -123,31 +122,32 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	)
 	public void handleP2(Event event) throws Exception {
 		
-		//
+		// 비교 연산 중 같은(=) 조건 있을 경우 추가
+		// -> <=, >=
 		if(event.getCh() == '=') {
 			this.opBuffer.append(event.getCh());
 		}
 		
-		// 
+		// 비교 연산 생성
 		String compareOp = this.opBuffer.toString();
 		switch(compareOp) {
 		case ">":
-			this.op = new GREATER_THAN();
+			this.op = new TreeNode<>(new GREATER_THAN());
 			break;
 		case ">=":
-			this.op = new GREATER_EQUAL();
+			this.op = new TreeNode<>(new GREATER_EQUAL());
 			break;
 		case "<":
-			this.op = new LESS_THAN();
+			this.op = new TreeNode<>(new LESS_THAN());
 			break;
 		case "<=":
-			this.op = new LESS_EQUAL();
+			this.op = new TreeNode<>(new LESS_EQUAL());
 			break;
 		default:
 			throw new Exception("Unexpected operation: " + compareOp);	
 		}
 		
-		//
+		// p2 생성
 		ArithmaticParser parser = new ArithmaticParser();
 		this.p2 = parser.parse(event.getReader());
 	}
@@ -161,7 +161,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		if(this.op != null && this.p2 != null) {
 		
 			// 비교 연산이 존재하는 경우
-			this.setNodeData(this.op);
+			this.setNode(this.op);
 			this.addChild(this.p1);
 			this.addChild(this.p2);
 			
@@ -171,5 +171,4 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 			this.setNode(this.p1);
 		}
 	}
-
 }

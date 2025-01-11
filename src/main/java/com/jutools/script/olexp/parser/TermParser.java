@@ -54,25 +54,25 @@ public class TermParser extends AbstractParser<Instruction> {
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
-				.add(" \t", "START")
-				.add("^ \t", "FACTOR_1", -1)
+				.add(" \t\r\n", "START")
+				.add("^ \t\r\n", "FACTOR_1", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR_1", new TransferBuilder()
-				.add(" \t", "FACTOR_1")
+				.add(" \t\r\n", "FACTOR_1")
 				.add("\\*\\/\\%", "OPERATION")
-				.add("^ \t\\*\\/", "END", -1)
+				.add("^ \t\r\n\\*\\/", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
-				.add(" \t", "OPERATION")
-				.add("^ \t", "FACTOR_2", -1)
+				.add(" \t\r\n", "OPERATION")
+				.add("^ \t\r\n", "FACTOR_2", -1)
 				.build());
 		
 		this.putTransferMap("FACTOR_2", new TransferBuilder()
-				.add(" \t", "FACTOR_2")
+				.add(" \t\r\n", "FACTOR_2")
 				.add("\\*\\/\\%", "OPERATION")
-				.add("^ \t\\*\\/", "END", -1)
+				.add("^ \t\r\n\\*\\/", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
