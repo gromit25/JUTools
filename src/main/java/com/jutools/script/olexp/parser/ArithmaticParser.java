@@ -53,25 +53,25 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
-				.add(" \t", "START")
-				.add("^ \t", "TERM_1", -1)
+				.add(" \t\r\n", "START")
+				.add("^ \t\r\n", "TERM_1", -1)
 				.build());
 		
 		this.putTransferMap("TERM_1", new TransferBuilder()
-				.add(" \t", "TERM_1")
+				.add(" \t\r\n", "TERM_1")
 				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "END", -1)
+				.add("^ \t\r\n\\+\\-", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
-				.add(" \t", "OPERATION")
-				.add("^ \t", "TERM_2", -1)
+				.add(" \t\r\n", "OPERATION")
+				.add("^ \t\r\n", "TERM_2", -1)
 				.build());
 		
 		this.putTransferMap("TERM_2", new TransferBuilder()
-				.add(" \t", "TERM_2")
+				.add(" \t\r\n", "TERM_2")
 				.add("\\+\\-", "OPERATION")
-				.add("^ \t\\+\\-", "END", -1)
+				.add("^ \t\r\n\\+\\-", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
