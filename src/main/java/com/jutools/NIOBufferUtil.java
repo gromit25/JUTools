@@ -1,5 +1,7 @@
 package com.jutools;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.nio.Buffer;
 
@@ -15,25 +17,28 @@ public class NIOBufferUtil {
 	// JDK 1.8에서 지원하지 않는 메소드
 	// 만일 1.8초과이면 null이 아니고 1.8이면 null로 설정
 	/** flip 메소드 */
-	private static Method flipMethod;
+	private static MethodHandle flipMethod;
 	/** clear 메소드 */
-	private static Method clearMethod;
+	private static MethodHandle clearMethod;
 	
 	static {
 		
 		// Method 초기화 수행
 		Class<?> bufferClass = Buffer.class;
 		
+		// Method Handle 을 가져오기 위한 Lookup 객체 
+		MethodHandles.Lookup lookup = MethodHandles.lookup();
+		
 		// flip method 설정
 		try {
-			flipMethod = bufferClass.getMethod("flip");
+			flipMethod = lookup.unreflect(bufferClass.getMethod("flip"));
 		} catch(Exception ex) {
 			flipMethod = null;
 		}
 		
 		// clear method 설정
 		try {
-			clearMethod = bufferClass.getMethod("clear");
+			clearMethod = lookup.unreflect(bufferClass.getMethod("clear"));
 		} catch(Exception ex) {
 			clearMethod = null;
 		}
@@ -53,10 +58,17 @@ public class NIOBufferUtil {
 		}
 		
 		if(NIOBufferUtil.flipMethod == null) {
+			
 			buffer.limit(buffer.position()); // limit = position;
 			buffer.position(0);              // position = 0; mark = -1; 주의) mark가 0으로 설정되어 있으면 -1이 되지 않음
+			
 		} else {
-			flipMethod.invoke(buffer);
+			
+			try {
+				flipMethod.invokeExact(buffer);
+			} catch(Throwable t) {
+				throw new Exception(t);
+			}
 		}
 		
 		return buffer;
@@ -76,10 +88,17 @@ public class NIOBufferUtil {
 		}
 		
 		if(NIOBufferUtil.clearMethod == null) {
+			
 			buffer.position(0);              // position = 0; mark = -1; 주의) mark가 0으로 설정되어 있으면 -1이 되지 않음
 			buffer.limit(buffer.capacity()); // limit = capacity;
+			
 		} else {
-			clearMethod.invoke(buffer);
+			
+			try {
+				clearMethod.invokeExact(buffer);
+			} catch(Throwable t) {
+				throw new Exception(t);
+			}
 		}
 		
 		return buffer;
