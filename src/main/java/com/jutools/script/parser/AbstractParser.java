@@ -7,6 +7,7 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import com.jutools.NIOBufferUtil;
 import com.jutools.script.parser.exception.ParseException;
 import com.jutools.script.parser.exception.UnexpectedEndException;
 
@@ -258,7 +259,7 @@ public abstract class AbstractParser<T> {
 					if(transferFunction.getPushback() < 0) {
 						
 						// 읽기 모드 전환
-						pushbackBuffer.flip();
+						NIOBufferUtil.flip(pushbackBuffer);
 						
 						// pushback할 크기를 가져옴
 						// pushback 크기가 버퍼의 크기보다 크면,
@@ -287,7 +288,7 @@ public abstract class AbstractParser<T> {
 						// pushback 수행
  						in.unread(unread);
  						
-						pushbackBuffer.clear();
+						NIOBufferUtil.clear(pushbackBuffer);
 					}
 					
 					// 다음 상태명 변수
