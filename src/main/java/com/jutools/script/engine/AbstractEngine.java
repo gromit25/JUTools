@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import com.jutools.script.parser.AbstractParser;
 import com.jutools.script.engine.instructions.BuiltInMethods;
 import com.jutools.script.engine.instructions.INVOKE;
 import com.jutools.script.engine.instructions.Instruction;
 import com.jutools.script.engine.instructions.MethodAlias;
-import com.jutools.script.parser.AbstractParser;
 
 import lombok.Getter;
 
@@ -50,6 +50,14 @@ public abstract class AbstractEngine {
 		
 		/** Program Counter : 현재 실행 위치 */
 		int pc = 0;
+		
+		/**
+		 * 스레드 초기화
+		 */
+		void clear() {
+			this.stack.clear();
+			this.pc = 0;
+		}
 	}
 
 	/**
@@ -197,8 +205,9 @@ public abstract class AbstractEngine {
 	 */
 	public AbstractEngine execute(Map<String, ?> values) throws Exception {
 
-		// 스크립트 스레드 획득
+		// 스크립트 스레드 획득 및 초기화
 		ScriptThread t = this.thread.get();
+		t.clear();
 		
 		// 각 명령어 별로 실행
 		while(t.pc < this.insts.size()) {
@@ -218,8 +227,9 @@ public abstract class AbstractEngine {
 	 */
 	public AbstractEngine executeForDebug(Map<String, ?> values) throws Exception {
 
-		// 스크립트 스레드 획득
+		// 스크립트 스레드 획득 및 초기화
 		ScriptThread t = this.thread.get();
+		t.clear();
 		
 		// 각 명령어 별로 실행
 		while(t.pc < this.insts.size()) {
