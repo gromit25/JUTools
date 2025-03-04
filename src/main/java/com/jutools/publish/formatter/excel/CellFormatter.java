@@ -406,6 +406,7 @@ public class CellFormatter extends AbstractExcelFormatter {
 	/**
 	 * formula의 cell reference의 상대 위치를 계산하여 반환함 
 	 * https://stackoverflow.com/questions/47594254/apache-poi-update-formula-references-when-copying
+	 * 
 	 * @param sheet
 	 * @param formula
 	 * @param rowdiff
