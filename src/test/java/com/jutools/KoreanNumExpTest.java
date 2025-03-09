@@ -84,6 +84,42 @@ public class KoreanNumExpTest {
 	}
 	
 	@Test
+	public void testToKorean13() throws Exception {
+		String msg = KoreanNumExp.toKorean("123");
+		assertEquals("백이십삼", msg);
+	}
+	
+	@Test
+	public void testToKorean14() throws Exception {
+		String msg = KoreanNumExp.toKorean("123.034");
+		assertEquals("백이십삼점영삼사", msg);
+	}
+	
+	@Test
+	public void testToKorean15() throws Exception {
+		String msg = KoreanNumExp.toKorean("00123.034");
+		assertEquals("백이십삼점영삼사", msg);
+	}
+	
+	@Test
+	public void testToKorean16() throws Exception {
+		String msg = KoreanNumExp.toKorean("0.034");
+		assertEquals("영점영삼사", msg);
+	}
+	
+	@Test
+	public void testToKorean17() throws Exception {
+		String msg = KoreanNumExp.toKorean("-0.034");
+		assertEquals("마이너스 영점영삼사", msg);
+	}
+	
+	@Test
+	public void testToKorean18() throws Exception {
+		String msg = KoreanNumExp.toKorean("-100.034");
+		assertEquals("마이너스 백점영삼사", msg);
+	}
+	
+	@Test
 	public void testToLong1_1() throws Exception {
 		long result = KoreanNumExp.toLong("십이");
 		assertEquals(12, result);
