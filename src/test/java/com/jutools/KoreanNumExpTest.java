@@ -48,23 +48,11 @@ public class KoreanNumExpTest {
 	}
 	
 	@Test
-	public void testToKorean7() throws Exception {
-		String msg = KoreanNumExp.toKorean(1500010, " ");
-		assertEquals("백오십만 십", msg);
-	}
-	
-	@Test
 	public void testToKorean8() throws Exception {
 		String msg = KoreanNumExp.toKorean(54775807);
 		assertEquals("오천사백칠십칠만오천팔백칠", msg);
 	}
 
-	@Test
-	public void testToKorean9() throws Exception {
-		String msg = KoreanNumExp.toKorean(9223372036854775807L, " ");
-		assertEquals("구백이십이경 삼천삼백칠십이조 삼백육십팔억 오천사백칠십칠만 오천팔백칠", msg);
-	}
-	
 	@Test
 	public void testToKorean10() throws Exception {
 		String msg = KoreanNumExp.toKorean(-9223372036854775807L);
@@ -120,92 +108,74 @@ public class KoreanNumExpTest {
 	}
 	
 	@Test
-	public void testToLong1_1() throws Exception {
-		long result = KoreanNumExp.toLong("십이");
+	public void testToNumber1_1() throws Exception {
+		long result = KoreanNumExp.toNumber("십이");
 		assertEquals(12, result);
 	}
 	
 	@Test
-	public void testToLong1_2() throws Exception {
-		long result = KoreanNumExp.toLong("삼백이십일");
+	public void testToNumber1_2() throws Exception {
+		long result = KoreanNumExp.toNumber("삼백이십일");
 		assertEquals(321, result);
 	}
 	
 	@Test
-	public void testToLong1_3() throws Exception {
-		long result = KoreanNumExp.toLong("천이백삼십사");
+	public void testToNumber1_3() throws Exception {
+		long result = KoreanNumExp.toNumber("천이백삼십사");
 		assertEquals(1234, result);
 	}
 	
 	@Test
-	public void testToLong1_4() throws Exception {
-		long result = KoreanNumExp.toLong("오만육천칠백팔십구");
+	public void testToNumber1_4() throws Exception {
+		long result = KoreanNumExp.toNumber("오만육천칠백팔십구");
 		assertEquals(56789, result);
 	}
 	
 	@Test
-	public void testToLong1_5() throws Exception {
-		long result = KoreanNumExp.toLong("오십만");
+	public void testToNumber1_5() throws Exception {
+		long result = KoreanNumExp.toNumber("오십만");
 		assertEquals(500000, result);
 	}
 	
 	@Test
-	public void testToLong1_6() throws Exception {
-		long result = KoreanNumExp.toLong("십일만천백십일");
+	public void testToNumber1_6() throws Exception {
+		long result = KoreanNumExp.toNumber("십일만천백십일");
 		assertEquals(111111, result);
 	}
 	
 	@Test
-	public void testToLong1_7() throws Exception {
-		long result = KoreanNumExp.toLong("백오십만 십", " ");
-		assertEquals(1500010, result);
-	}
-	
-	@Test
-	public void testToLong1_8() throws Exception {
-		long result = KoreanNumExp.toLong("오천사백칠십칠만오천팔백칠");
+	public void testToNumber1_8() throws Exception {
+		long result = KoreanNumExp.toNumber("오천사백칠십칠만오천팔백칠");
 		assertEquals(54775807, result);
 	}
 	
 	@Test
-	public void testToLong1_9() throws Exception {
-		long result = KoreanNumExp.toLong("구백이십이경 삼천삼백칠십이조 삼백육십팔억 오천사백칠십칠만 오천팔백칠", " ");
-		assertEquals(9223372036854775807L, result);
-	}
-	
-	@Test
-	public void testToLong1_10() throws Exception {
-		long result = KoreanNumExp.toLong("마이너스 구백이십이경삼천삼백칠십이조삼백육십팔억오천사백칠십칠만오천팔백칠");
+	public void testToNumber1_10() throws Exception {
+		long result = KoreanNumExp.toNumber("마이너스 구백이십이경삼천삼백칠십이조삼백육십팔억오천사백칠십칠만오천팔백칠");
 		assertEquals(-9223372036854775807L, result);
 	}
 	
 	@Test
-	public void testToLong1_11() throws Exception {
-		long result = KoreanNumExp.toLong("마이너스 일");
+	public void testToNumber1_11() throws Exception {
+		long result = KoreanNumExp.toNumber("마이너스 일");
 		assertEquals(-1, result);
 	}
 	
 	@Test
-	public void testToLong1_12() throws Exception {
-		long result = KoreanNumExp.toLong("영");
+	public void testToNumber1_12() throws Exception {
+		long result = KoreanNumExp.toNumber("영");
 		assertEquals(0, result);
 	}
 	
 	@Test
-	public void testToLong2_1() throws Exception {
-		try {
-			KoreanNumExp.toLong("테스트", "");
-		} catch(Exception ex) {
-			
-		}
+	public void testToNumberExp1() throws Exception {
+		String result = KoreanNumExp.toNumberExp("백이십삼");
+		System.out.println(result);
 	}
 	
 	@Test
-	public void testToLong2_2() throws Exception {
-		try {
-			KoreanNumExp.toLong("십이테스트", "");
-		} catch(Exception ex) {
-			
-		}
+	public void testToNumberExp2() throws Exception {
+		String result = KoreanNumExp.toNumberExp("백이십삼점영일");
+		System.out.println(result);
 	}
 }

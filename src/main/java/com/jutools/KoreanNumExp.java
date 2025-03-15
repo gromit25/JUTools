@@ -19,7 +19,7 @@ import lombok.Getter;
 public class KoreanNumExp {
 	
 	/** 숫자 표현 패턴 문자열 */
-	private static String NUM_PATTERN = "(?<sign>\\-)?(?<intpart>[0-9]+)(\\.(?<fractionalpart>[0-9]+))?";
+	private static String NUM_PATTERN = "(?<sign>\\-)?(?<intpart>[0-9]+)(\\.(?<decimalpart>[0-9]+))?";
 	
 	/** 숫자 표현 패턴 */
 	private static Pattern numP = Pattern.compile(NUM_PATTERN);
@@ -244,23 +244,17 @@ public class KoreanNumExp {
 	
 	/**
 	 * 숫자를 한글 표현으로 변환하여 출력<br>
-	 * ex) n: 56789, space: "" -> "오만육천칠백팔십구"<br>
-	 *     n: 1500010, space: " " -> "백오십만 십"
+	 * ex) n: 56789 -> "오만육천칠백팔십구"<br>
+	 *     n: 1500010 -> "백오십만십"
 	 * 
 	 * @param n 한글 표현으로 변환할 숫자 
-	 * @param space 만단위 띄어쓸 문자열
 	 * @return 주어진 숫자의 한글 표현
 	 */
-	public static String toKorean(long n, String space) throws Exception {
+	public static String toKorean(long n) throws Exception {
 		
 		// 값이 0일 경우 "영" 반환
 		if(n == 0L) {
 			return KoreanNum.영.name();
-		}
-		
-		// 만단위 띄어쓰기가 null 일 경우, 스페이스("")로 치환
-		if(space == null) {
-			space = "";
 		}
 		
 		// 한글 표현식을 담을 변수
@@ -294,8 +288,7 @@ public class KoreanNumExp {
 				int tenThousandUnitPos = digitPos / 4;
 				if(tenThousandUnitPos != 0) {
 					koreanExp
-						.append((KoreanTenThousandUnit.values()[tenThousandUnitPos - 1]).name())
-						.append(space);
+						.append((KoreanTenThousandUnit.values()[tenThousandUnitPos - 1]).name());
 				}
 			}
 		} // End of for pos
@@ -305,37 +298,14 @@ public class KoreanNumExp {
 	
 	/**
 	 * 숫자를 한글 표현으로 변환하여 출력<br>
-	 * ex) n: 56789, space: "" -> "오만육천칠백팔십구"
+	 * ex) n: 56789 -> "오만육천칠백팔십구"<br>
+	 *     n: 1500010 -> "백오십만십"
 	 * 
 	 * @param n 한글 표현으로 변환할 숫자 
 	 * @return 주어진 숫자의 한글 표현
-	 */
-	public static String toKorean(long n) throws Exception {
-		return toKorean(n, "");
-	}
-	
-	/**
-	 * 숫자를 한글 표현으로 변환하여 출력<br>
-	 * ex) n: 56789, space: "" -> "오만육천칠백팔십구"<br>
-	 *     n: 1500010, space: " " -> "백오십만 십"
-	 * 
-	 * @param n 한글 표현으로 변환할 숫자 
-	 * @param space 만단위 띄어쓸 문자열
-	 * @return 주어진 숫자의 한글 표현
-	 */
-	public static String toKorean(int n, String space) throws Exception {
-		return toKorean((long)n, space);
-	}
-	
-	/**
-	 * 숫자를 한글 표현으로 변환하여 출력<br>
-	 * ex) n: 56789, space: "" -> "오만육천칠백팔십구"
-	 * 
-	 * @param n 한글 표현으로 변환할 숫자 
-	 * @return 주어진 숫자의 한글 표현 문자열
 	 */
 	public static String toKorean(int n) throws Exception {
-		return toKorean(n, "");
+		return toKorean((long)n);
 	}
 	
 	/**
@@ -369,14 +339,14 @@ public class KoreanNumExp {
 		
 		// 주어진 숫자의 소수부 획득
 		// 없을 경우 스킵
-		String numFractionalPartStr = numM.group("fractionalpart");
-		if(numFractionalPartStr != null) {
+		String numDecimalPartStr = numM.group("decimalpart");
+		if(numDecimalPartStr != null) {
 			
 			koreanExpStr.append(DECIMAL_POINT_KOREAN_EXP);
 			
-			for(int index = 0; index < numFractionalPartStr.length(); index++) {
+			for(int index = 0; index < numDecimalPartStr.length(); index++) {
 				
-				long num = numFractionalPartStr.charAt(index) - '0';
+				long num = numDecimalPartStr.charAt(index) - '0';
 				koreanExpStr.append(KoreanNum.get(num).name());
 			}
 		}
@@ -393,10 +363,9 @@ public class KoreanNumExp {
 	 *     n: "백오십만 십", space: " " -> 1500010 
 	 * 
 	 * @param koreanExp 변환할 숫자 한글 표현
-	 * @param space 만단위 띄어쓰기 문자열 
 	 * @return 변환된 숫자
 	 */
-	public static long toLong(String koreanExp, String space) throws Exception {
+	public static long toNumber(String koreanExp) throws Exception {
 		
 		// 입력값 검증
 		if(StringUtil.isBlank(koreanExp) == true) {
@@ -405,11 +374,6 @@ public class KoreanNumExp {
 		
 		// 문자열 양쪽의 공백 제거
 		koreanExp = koreanExp.trim();
-		
-		// space가 null일 경우, 빈문자열("") 로 치환
-		if(space == null) {
-			space = "";
-		}
 		
 		// 부호 변수
 		int sign = 1;
@@ -420,7 +384,7 @@ public class KoreanNumExp {
 		}
 		
 		// 변환할 숫자 한글 표현에서 파싱 트리를 생성
-		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp, space);
+		TreeNode<AbstractNode> root = parseKoreanExp(koreanExp);
 		
 		// 파싱 트리의 내용을 가져와 실행
 		List<AbstractNode> nodes =  root.travelPostOrder();
@@ -435,15 +399,43 @@ public class KoreanNumExp {
 	}
 	
 	/**
-	 * 주어진 문자열을 숫자로 변환
-	 * ex) n: "오만육천칠백팔십구" -> 56789<br>
-	 *     n: "백오십만십" -> 1500010 
 	 * 
-	 * @param koreanExp 변환할 숫자 한글 표현 
-	 * @return 변환된 숫자
+	 * 
+	 * @param koreanExp
+	 * @return
 	 */
-	public static long toLong(String koreanExp) throws Exception {
-		return toLong(koreanExp, "");
+	public static String toNumberExp(String koreanExp) throws Exception {
+		
+		if(StringUtil.isBlank(koreanExp) == true) {
+			throw new Exception("korean expression is null or blank.");
+		}
+		
+		String[] splitedKoreanExp = koreanExp.split(DECIMAL_POINT_KOREAN_EXP);
+		if(splitedKoreanExp.length != 1 && splitedKoreanExp.length != 2) {
+			throw new Exception("korean expression is invalid:" + koreanExp);
+		}
+		
+		//
+		StringBuilder numberExp = new StringBuilder("");
+		
+		// 정수부 파싱 및 추가
+		numberExp.append(toNumber(splitedKoreanExp[0]));
+		
+		// 소수부 추가
+		// 있을 경우에만
+		if(splitedKoreanExp.length == 2 && splitedKoreanExp[1].length() != 0) {
+			
+			numberExp.append(".");
+			
+			String decimalPart = splitedKoreanExp[1];
+			for(int index = 0; index < decimalPart.length(); index++) {
+				
+				KoreanNum decimalNum = KoreanNum.get(decimalPart.charAt(index));
+				numberExp.append(Long.toString(decimalNum.getN()));
+			}
+		}
+		
+		return numberExp.toString();
 	}
 	
 	//---------------------------
@@ -544,14 +536,14 @@ public class KoreanNumExp {
 	 * @param koreanExp 숫자로 변환할 숫자 한글 표현식
 	 * @return 변환된 숫자
 	 */
-	private static TreeNode<AbstractNode> parseKoreanExp(String koreanExp, String space) throws Exception {
+	private static TreeNode<AbstractNode> parseKoreanExp(String koreanExp) throws Exception {
 		
 		// 숫자 한글 표현식의 Reader 객체 생성
 		ExpReader reader = new ExpReader(koreanExp);
 		
 		// 만단위 파싱 트리 생성
 		// -> "십만천" 이면, "십만"을 먼저 파싱함
-		TreeNode<AbstractNode> root = parseTenThousand(reader, space);
+		TreeNode<AbstractNode> root = parseTenThousand(reader);
 
 		// 다음 만단위 트리 파싱
 		// -> "십만천" = "십만" + "천" 이기 때문에
@@ -566,7 +558,7 @@ public class KoreanNumExp {
 			TreeNode<AbstractNode> add = new TreeNode<>(new ADD());
 			
 			add.addChild(root);
-			add.addChild(parseTenThousand(reader, space));
+			add.addChild(parseTenThousand(reader));
 			
 			root = add;
 		}
@@ -579,10 +571,9 @@ public class KoreanNumExp {
 	 * 만단위 파싱 트리 생성
 	 * 
 	 * @param reader 파싱할 문자열 Reader
-	 * @param space 만단위 띄어쓰기 문자열
 	 * @return 파싱 트리
 	 */
-	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader, String space) throws Exception {
+	private static TreeNode<AbstractNode> parseTenThousand(ExpReader reader) throws Exception {
 		
 		// 천단위 파싱트리 생성 이후, 만단위 파싱트리를 추가함
 		// ex) "삼백이십만" -> "삼백이십" 파싱트리 생성 후, "만"에 대한 파싱트리를 추가함
@@ -642,39 +633,6 @@ public class KoreanNumExp {
 				mul.addChild(new TreeNode<>(new LOAD(tenThousandUnit.getFactor())));
 				
 				root = mul;
-			}
-		}
-		
-		// 만단위 띄어쓰기 문자열 검사
-		if(StringUtil.isEmpty(space) == false) {
-			
-			boolean matched = true;
-			
-			int index = 0;
-			while((read = reader.read()) != -1) {
-				
-				// 모든 만단위 띄어쓰기가 만족하는 경우
-				if(index >= space.length()) {
-					
-					reader.unread(read);
-					
-					matched = true;
-					break;
-				}
-				
-				// 만일, 현재 읽은 문자와 만단위 띄어쓰기 문자가 일치 하지 않는 경우
-				if((char)read != space.charAt(index)) {
-					matched = false;
-					break;
-				}
-				
-				index++;
-			}
-			
-			// 만단위 띄어쓰기 문자열과 입력된 문자열이
-			// 일치 하지 않는 경우 예외 발생 시킴
-			if(matched == false) {
-				throw new ParseException(reader.getPos(), (char)read, "NONE");
 			}
 		}
 		
