@@ -23,11 +23,9 @@ import lombok.Getter;
  */
 public class StringUtil {
 	
-	/** 숫자 패턴 */
-	private static Pattern numP = Pattern.compile("[0-9]+(\\.[0-9]+)?");
-	
 	/**
-	 * 주어진 문자열의 숫자 형태 여부 반환 
+	 * 주어진 문자열의 숫자 형태 여부 반환
+	 * ex) 12, 12.34 
 	 * 
 	 * @param numStr 문자열
 	 * @return 숫자 형태 여부 반환
@@ -39,9 +37,27 @@ public class StringUtil {
 			return false;
 		}
 		
-		// 숫자 여부 반환
-		return numP.matcher(numStr).matches();
+		// 숫자 형태 여부 반환
+		return numStr.matches("[0-9]+(\\.[0-9]+)?");
 	}
+	
+	/**
+	 * 주어진 문자열의 정수 형태 여부 반환 
+	 * 
+	 * @param intStr 문자열
+	 * @return 정수 형태 여부 반환
+	 */
+	public static boolean isIntStr(String intStr) {
+		
+		// 입력값이 null 이거나 blank 이면 false 반환
+		if(isBlank(intStr) == true) {
+			return false;
+		}
+		
+		// 정수 형태 여부 반환
+		return intStr.matches("[0-9]+");
+	}
+
 	
 	/**
 	 * 주어진 문자열에 대한 이스케이프 처리<br>
