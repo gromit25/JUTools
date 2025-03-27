@@ -23,6 +23,26 @@ import lombok.Getter;
  */
 public class StringUtil {
 	
+	/** 숫자 패턴 */
+	private static Pattern numP = Pattern.compile("[0-9]+(\\.[0-9]+)?");
+	
+	/**
+	 * 주어진 문자열의 숫자 형태 여부 반환 
+	 * 
+	 * @param numStr 문자열
+	 * @return 숫자 형태 여부 반환
+	 */
+	public static boolean isNumStr(String numStr) {
+		
+		// 입력값이 null 이거나 blank 이면 false 반환
+		if(isBlank(numStr) == true) {
+			return false;
+		}
+		
+		// 숫자 여부 반환
+		return numP.matcher(numStr).matches();
+	}
+	
 	/**
 	 * 주어진 문자열에 대한 이스케이프 처리<br>
 	 * ex) "ab\\tc" -> "ab\tc"
