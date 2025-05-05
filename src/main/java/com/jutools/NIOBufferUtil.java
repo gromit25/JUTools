@@ -2,6 +2,7 @@ package com.jutools;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.nio.Buffer;
 
 /**
@@ -30,14 +31,16 @@ public class NIOBufferUtil {
 		
 		// flip method 설정
 		try {
-			flipMethod = lookup.unreflect(bufferClass.getMethod("flip"));
+			flipMethod = lookup.unreflect(bufferClass.getMethod("flip"))
+					.asType(MethodType.methodType(Buffer.class, void.class));
 		} catch(Exception ex) {
 			flipMethod = null;
 		}
 		
 		// clear method 설정
 		try {
-			clearMethod = lookup.unreflect(bufferClass.getMethod("clear"));
+			clearMethod = lookup.unreflect(bufferClass.getMethod("clear"))
+					.asType(MethodType.methodType(Buffer.class, void.class));
 		} catch(Exception ex) {
 			clearMethod = null;
 		}
