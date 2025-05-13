@@ -16,5 +16,5 @@ public interface PauseReader {
 	 * @param buffer
 	 * @return
 	 */
-	public void read(Consumer<String> action, byte[] buffer) throws Exception;
+	public void read(byte[] buffer, Consumer<String> action) throws Exception;
 }

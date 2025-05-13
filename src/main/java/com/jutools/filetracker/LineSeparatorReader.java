@@ -52,7 +52,7 @@ public class LineSeparatorReader implements PauseReader {
 	}
 
 	@Override
-	public void read(Consumer<String> action, byte[] buffer) throws Exception {
+	public synchronized void read(byte[] buffer, Consumer<String> action) throws Exception {
 		
 		// 데이터 끝에 lineSeparator가 있는지 확인
 		boolean isEndsWithLineSeparator = BytesUtil.endsWith(buffer, this.lineSeparator);
