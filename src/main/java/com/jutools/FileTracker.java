@@ -204,7 +204,7 @@ public class FileTracker {
 						readBuffer.get(buffer);
 	
 						// reader 끊어 읽기 수행
-						this.reader.read(action, buffer);
+						this.reader.read(buffer, action);
 	                    
 						NIOBufferUtil.clear(readBuffer);
 						
