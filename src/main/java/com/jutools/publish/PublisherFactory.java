@@ -14,12 +14,14 @@ import com.jutools.publish.formatter.XmlLocInputStream;
 
 /**
  * 구체화 Publisher(concrete publisher) 생성 Factory 클래스
+ * 
  * @author jmsohn
  */
 public class PublisherFactory {
 	
 	/**
 	 * 입력 스트림에서 구체화된 Publisher(concrete publisher) 생성
+	 * 
 	 * @param type publisher의 종류
 	 * @param formatXmlInput publisher를 구성하기 위한 format xml의 InputStream
 	 * @return 생성된 Publisher
@@ -54,6 +56,7 @@ public class PublisherFactory {
 	
 	/**
 	 * XML 파일에서 구체화된 Publisher(concrete publisher) 생성
+	 * 
 	 * @param type publisher의 종류
 	 * @param formatFile publisher를 구성하기 위한 format xml file
 	 * @return 생성된 Publisher
@@ -77,6 +80,7 @@ public class PublisherFactory {
 	
 	/**
 	 * XML 문자열에서 구체화된 Publisher(concrete publisher) 생성
+	 * 
 	 * @param type type publisher의 종류
 	 * @param formatString publisher를 구성하기 위한 format xml의 문자열
 	 * @param cs format string의 character set(null 일경우, default character set 사용함)
@@ -104,6 +108,7 @@ public class PublisherFactory {
 	
 	/**
 	 * XML 문자열에서 구체화된 Publisher(concrete publisher) 생성
+	 * 
 	 * @param type type publisher의 종류
 	 * @param formatString publisher를 구성하기 위한 format xml의 문자열(default character set으로 읽음)
 	 * @return 생성된 Publisher
@@ -111,5 +116,4 @@ public class PublisherFactory {
 	public static Publisher create(PublisherType type, String formatString) throws Exception {
 		return PublisherFactory.create(type, formatString, null);
 	}
-
 }
