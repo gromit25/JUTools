@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.jutools.publish.formatter.Formatter;
@@ -83,7 +82,7 @@ public abstract class Publisher {
 	public static void publish(PublisherType type, InputStream formatInputStream, File outFile, Charset charset, Map<String, Object> values) throws Exception {
     	try (OutputStream outExcel = new FileOutputStream(outFile)) {
     		Publisher publisher = PublisherFactory.create(type, formatInputStream);
-    		publisher.publish(outExcel, charset, new HashMap<String, Object>());
+    		publisher.publish(outExcel, charset, values);
     	}
 	}
 
