@@ -74,7 +74,7 @@ public class PublishUtilTest {
 			File formatFile = new File("resources/publisher/testExcelLineChart.xml");   
 			File outFile = new File("C:\\data\\publish\\testLineChart.xlsx");
 
-			PublishUtil.toExcel(formatFile, outFile);
+			PublishUtil.toExcel(formatFile, outFile, new HashMap<>());
 			
 			assertTrue(true);
 
@@ -93,7 +93,7 @@ public class PublishUtilTest {
 			File formatFile = new File("resources/publisher/testExcelPieChart.xml");   
 			File outFile = new File("C:\\data\\publish\\testPieChart.xlsx");
 
-			PublishUtil.toExcel(formatFile, outFile);
+			PublishUtil.toExcel(formatFile, outFile, new HashMap<>());
 			
 			assertTrue(true);
 
