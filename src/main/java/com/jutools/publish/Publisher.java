@@ -55,7 +55,7 @@ public abstract class Publisher {
 	public static void publish(PublisherType type, File formatFile, File outFile, Charset charset, Map<String, Object> values) throws Exception {
     	try (OutputStream outExcel = new FileOutputStream(outFile)) {
     		Publisher publisher = PublisherFactory.create(type, formatFile);
-    		publisher.publish(outExcel, charset, new HashMap<String, Object>());
+    		publisher.publish(outExcel, charset, values);
     	}
 	}
 	
