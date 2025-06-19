@@ -15,6 +15,7 @@ import com.jutools.script.olexp.OLExp;
 public class CommonAttrSetter {
 	
 	/**
+	 * Class type의 속성 설정 메서드<
 	 * 
 	 * @param formatter 속성을 지정할 formatter 객체
 	 * @param setMethod formatter의 속성값 setMethod
@@ -115,5 +116,4 @@ public class CommonAttrSetter {
 	public static void setOLExp(Formatter formatter, Method setMethod, String attrValue) throws Exception {
 		setMethod.invoke(formatter, OLExp.compile(attrValue));
 	}
-	
 }
