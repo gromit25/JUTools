@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.xml.sax.Attributes;
+
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -43,8 +45,22 @@ public class SetFormatter extends AbstractFlowFormatter {
 	/** value container에 추가할 값을 연산하기 위한 스크립트 Evaluator */
 	@Getter
 	@Setter
-	@FormatterAttr(name="exp", mandatory=true)
+	@FormatterAttr(name="exp", mandatory=false)
 	private OLExp exp;
+
+	@Getter
+	@Setter
+	@FormatterAttr(name="value", mandatory=false)
+	private String value;
+
+	@Override
+	public void setAttributes(Attributes attributes) throws FormatterException {
+		
+		// set tag는 exp 또는 value 만 있어야 함
+		if(attributes.getLength() != 2) {
+			throw new FormatterException(this, "set tag must have only one attribute(exp or value)!");
+		}
+	}
 
 	@Override
 	public void addText(String text) throws FormatterException {
@@ -59,13 +75,20 @@ public class SetFormatter extends AbstractFlowFormatter {
 	@Override
 	protected void execFormat(OutputStream out, Charset charset, Map<String, Object> values) throws FormatterException {
 		
-		// exp에 설정된 operation을 수행 후 결과를
-		// value container에 설정할 이름(SetFormatter.name)으로 넣음
-		try {
-			values.put(this.getName(), this.getExp().execute(values).pop(Object.class));
-		} catch(Exception ex) {
-			throw new FormatterException(this, ex);
+		if(this.exp != null) {
+			
+			// exp에 설정된 operation을 수행 후 결과를
+			// value container에 설정할 이름(SetFormatter.name)으로 추가
+			try {
+				values.put(this.getName(), this.getExp().execute(values).pop(Object.class));
+			} catch(Exception ex) {
+				throw new FormatterException(this, ex);
+			}
+			
+		} else {
+			
+			// value 값을 value container에 설정할 이름(SetFormatter.name)으로 추가
+			values.put(this.getName(), this.value); 
 		}
 	}
-
 }

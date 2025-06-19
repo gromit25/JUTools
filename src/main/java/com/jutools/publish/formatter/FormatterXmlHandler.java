@@ -229,7 +229,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			this.getFormatter().setLineNumber(tagStartLoc.getLineNum());
 			this.getFormatter().setColumnNumber(tagStartLoc.getColumnNum());
 			
-			//
+			// XML tag의 속성(Attr) 값들을 Formatter에 설정
 			this.processFormatterAttrAnnotation(this.getFormatter(), attributes);
 			
 			// formatter에 속성 값 설정
@@ -342,7 +342,7 @@ public abstract class FormatterXmlHandler extends DefaultHandler {
 			
 			// 4.1 필수여부(mandatory)를 확인하여,
 			//     필수인데 값이 없을 경우 오류 발생함
-			if(attrValue == null || attrValue.trim().equals(""))  {
+			if(attrValue == null)  {
 				if(attrAnnotation.mandatory() == true) {
 					throw new FormatterException(formatter, attrAnnotation.name() + " is not set");
 				} else {

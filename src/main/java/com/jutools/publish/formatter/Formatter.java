@@ -39,7 +39,7 @@ public abstract class Formatter {
 	private Formatter parent;
 	
 	/**
-	 * xml 테그의 attribute 읽기 수행시 callback
+	 * xml 테그의 attribute 읽고 Formatter에 설정 수행 후 callback 됨
 	 * -> FormatterAttr Annotation으로 처리가 불가능한 경우에 한하여 사용 
 	 * 
 	 * @param attributes 테그의 attribute 값
