@@ -4,7 +4,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -116,18 +118,18 @@ public class TypeUtil {
 	/**
 	 * Integer List를 int 배열로 변환함 
 	 * 
-	 * @param arrayList Integer 타입의 List
+	 * @param targetList Integer 타입의 List
 	 * @return 변환된 int 배열
 	 */
-	public static int[] toIntArray(List<Integer> arrayList) {
+	public static int[] toIntArray(List<Integer> targetList) {
 		
-		if(arrayList == null) {
+		if(targetList == null) {
 			return new int[0];
 		}
 		
-		int[] intArray = new int[arrayList.size()];
+		int[] intArray = new int[targetList.size()];
 		for(int index = 0; index < intArray.length; index++) {
-			intArray[index] = arrayList.get(index);
+			intArray[index] = targetList.get(index);
 		}
 		
 		return intArray;
@@ -136,18 +138,18 @@ public class TypeUtil {
 	/**
 	 * Long List를 long 배열로 변환함 
 	 * 
-	 * @param arrayList Long 타입의 List
+	 * @param targetList Long 타입의 List
 	 * @return 변환된 long 배열
 	 */
-	public static long[] toLongArray(List<Long> arrayList) {
+	public static long[] toLongArray(List<Long> targetList) {
 		
-		if(arrayList == null) {
+		if(targetList == null) {
 			return new long[0];
 		}
 		
-		long[] longArray = new long[arrayList.size()];
+		long[] longArray = new long[targetList.size()];
 		for(int index = 0; index < longArray.length; index++) {
-			longArray[index] = arrayList.get(index);
+			longArray[index] = targetList.get(index);
 		}
 		
 		return longArray;
@@ -156,18 +158,18 @@ public class TypeUtil {
 	/**
 	 * Float List를 float 배열로 변환함 
 	 * 
-	 * @param arrayList Float 타입의 List
+	 * @param targetList Float 타입의 List
 	 * @return 변환된 float 배열
 	 */
-	public static float[] toFloatArray(List<Float> arrayList) {
+	public static float[] toFloatArray(List<Float> targetList) {
 		
-		if(arrayList == null) {
+		if(targetList == null) {
 			return new float[0];
 		}
 		
-		float[] floatArray = new float[arrayList.size()];
+		float[] floatArray = new float[targetList.size()];
 		for(int index = 0; index < floatArray.length; index++) {
-			floatArray[index] = arrayList.get(index);
+			floatArray[index] = targetList.get(index);
 		}
 		
 		return floatArray;
@@ -176,18 +178,18 @@ public class TypeUtil {
 	/**
 	 * Double List를 float 배열로 변환함 
 	 * 
-	 * @param arrayList Double 타입의 List
+	 * @param targetList Double 타입의 List
 	 * @return 변환된 double 배열
 	 */
-	public static double[] toDoubleArray(List<Double> arrayList) {
+	public static double[] toDoubleArray(List<Double> targetList) {
 		
-		if(arrayList == null) {
+		if(targetList == null) {
 			return new double[0];
 		}
 		
-		double[] doubleArray = new double[arrayList.size()];
+		double[] doubleArray = new double[targetList.size()];
 		for(int index = 0; index < doubleArray.length; index++) {
-			doubleArray[index] = arrayList.get(index);
+			doubleArray[index] = targetList.get(index);
 		}
 		
 		return doubleArray;
@@ -201,7 +203,7 @@ public class TypeUtil {
 	 * @param elementType List 객체 요소의 타입
 	 * @return 변환된 배열 객체
 	 */
-	public static <T> T[] toArray(List<T> arrayList, Class<T> elementType) throws Exception {
+	public static <T> T[] toArray(List<T> targetList, Class<T> elementType) throws Exception {
 		
 		// 리스트의 요소 타입이 정의 되지 않은 경우 예외 발생
 		if(elementType == null) {
@@ -212,8 +214,8 @@ public class TypeUtil {
 		int arrayLength = 0;
 		
 		// 리스트가 null일 경우, 빈 배열 생성
-		if(arrayList != null) {
-			arrayLength = arrayList.size();
+		if(targetList != null) {
+			arrayLength = targetList.size();
 		}
 		
 		// 배열 객체 생성
@@ -223,7 +225,51 @@ public class TypeUtil {
 		
 		// 배열 복사
 		for(int index = 0; index < arrayLength; index++) {
-			array[index] = arrayList.get(index);
+			array[index] = targetList.get(index);
+		}
+		
+		// 배열 반환
+		return array;
+	}
+	
+	/**
+	 * List 형 객체를 배열 형태로 변환하여 반환<br>
+	 * List 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
+	 * 
+	 * @param array 변환할 List 객체
+	 * @param elementType List 객체 요소의 타입
+	 * @return 변환된 배열 객체
+	 */
+	public static <T> T[] toArray(Set<T> targetSet, Class<T> elementType) throws Exception {
+		
+		// 리스트의 요소 타입이 정의 되지 않은 경우 예외 발생
+		if(elementType == null) {
+			throw new Exception("type is null.");
+		}
+		
+		// 생성할 배열 크기 변수
+		int arrayLength = 0;
+		
+		// 리스트가 null일 경우, 빈 배열 생성
+		if(targetSet != null) {
+			arrayLength = targetSet.size();
+		}
+		
+		// 배열 객체 생성
+		// new T[];는 안됨
+		@SuppressWarnings("unchecked")
+		T[] array = (T[])Array.newInstance(elementType, arrayLength);
+		
+		// 배열 복사
+		if(arrayLength != 0) {
+			
+			int index = 0;
+			Iterator<T> targetIterator = targetSet.iterator();
+			
+			while(targetIterator.hasNext() == true) {
+				array[index] = targetIterator.next();
+				index++;
+			}
 		}
 		
 		// 배열 반환

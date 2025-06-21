@@ -7,6 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.junit.Test;
@@ -78,6 +80,26 @@ public class TypeUtilTest {
 			testArray.add("test 3");
 			
 			String[] array = TypeUtil.toArray(testArray, String.class);
+			
+			assertEquals(3, array.length);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testToArray3() {
+		try {
+
+			Set<String> testSet = new HashSet<>();
+			testSet.add("test 1");
+			testSet.add("test 2");
+			testSet.add("test 2");
+			testSet.add("test 3");
+			
+			String[] array = TypeUtil.toArray(testSet, String.class);
 			
 			assertEquals(3, array.length);
 			
