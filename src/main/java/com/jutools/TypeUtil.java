@@ -199,7 +199,7 @@ public class TypeUtil {
 	 * List 형 객체를 배열 형태로 변환하여 반환<br>
 	 * List 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
 	 * 
-	 * @param array 변환할 List 객체
+	 * @param targetList 변환할 List 객체
 	 * @param elementType List 객체 요소의 타입
 	 * @return 변환된 배열 객체
 	 */
@@ -233,10 +233,10 @@ public class TypeUtil {
 	}
 	
 	/**
-	 * List 형 객체를 배열 형태로 변환하여 반환<br>
-	 * List 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
+	 * Set 형 객체를 배열 형태로 변환하여 반환<br>
+	 * Set 형 객체가 null 일 경우, 빈 배열이 반환됨(null 반환 아님)
 	 * 
-	 * @param array 변환할 List 객체
+	 * @param targetSet 변환할 Set 객체
 	 * @param elementType List 객체 요소의 타입
 	 * @return 변환된 배열 객체
 	 */
