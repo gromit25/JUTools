@@ -1,18 +1,13 @@
 package com.jutools;
 
-import java.util.Hashtable;
-import java.util.Map;
-
-import lombok.Getter;
-
 /**
  * DB 종류별 JDBC 드라이버 클래스명 설정
  *
  * @author jmsohn
  */
-public enum DBDriver {
+public enum DBDriverType {
 
-	ORACLE("oracle") {
+	ORACLE {
 		
 		@Override
 		public String getDriver() {
@@ -37,7 +32,7 @@ public enum DBDriver {
 			return "jdbc:oracle:thin:@//" + host + ":" + port + "/" + database;
 		}
 	},
-	MYSQL("mysql") {
+	MYSQL {
 		
 		@Override
 		public String getDriver() {
@@ -62,7 +57,7 @@ public enum DBDriver {
 			return "jdbc:mysql://" + host + ":" + port + "/" + database;
 		}
 	},
-	POSTGRESQL("postgresql") {
+	POSTGRESQL {
 		
 		@Override
 		public String getDriver() {
@@ -87,7 +82,7 @@ public enum DBDriver {
 			return "jdbc:postgresql://" + host + ":" + port + "/" + database;
 		}
 	},
-	SQLSERVER("sqlserver") {
+	SQLSERVER {
 		
 		@Override
 		public String getDriver() {
@@ -112,7 +107,7 @@ public enum DBDriver {
 			return "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + database;
 		}
 	},
-	MARIADB("mariadb") {
+	MARIADB {
 		
 		@Override
 		public String getDriver() {
@@ -137,44 +132,6 @@ public enum DBDriver {
 			return "jdbc:mariadb://" + host + ":" + port + "/" + database;
 		}
 	};
-
-	/**
-	 * db별 driver class 맵
-	 * key: db 명, value: driver class 맵
-	 */
-	private static Map<String, DBDriver> driverMap = new Hashtable<>();
-	
-	/*
-	 * 초기화 수행
-	 */
-	static {
-		for(DBDriver dbDriver: DBDriver.values()) {
-			driverMap.put(dbDriver.name(), dbDriver);
-		}
-	}
-
-	/**
-	 * DB 명에 따른 JDBC 드라이버 클래스명 찾기
-	 *
-	 * @param name DB 명
-	 * @return DB driver 종류
-	 */
-	public static DBDriver find(String name) {
-		return driverMap.get(name);
-	}
-
-	/** db 명 */
-	@Getter
-	private String name;
-	
-	/**
-	 * 생성자
-	 * 
-	 * @param name db 명 
-	 */
-	DBDriver(String name) {
-		this.name = name;
-	}
 	
 	/**
 	 * 드라이버 명을 반환
