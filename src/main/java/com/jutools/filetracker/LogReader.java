@@ -13,7 +13,7 @@ import com.jutools.BytesUtil;
  * 
  * @author jmsohn
  */
-public class LogReader implements PauseReader {
+public class LogReader implements SplitReader {
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset = Charset.defaultCharset();

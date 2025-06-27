@@ -12,7 +12,7 @@ import com.jutools.StringUtil;
  * 
  * @author jmsohn
  */
-public class LineSeparatorReader implements PauseReader {
+public class LineSeparatorReader implements SplitReader {
 	
 	/** line 구분자 */
 	private byte[] lineSeparator;

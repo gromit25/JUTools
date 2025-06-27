@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  * 
  * @author jmsohn
  */
-public interface PauseReader {
+public interface SplitReader {
 
 	/**
 	 * 끊어 읽기 수행

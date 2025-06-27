@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import com.jutools.filetracker.LineSeparatorReader;
-import com.jutools.filetracker.PauseReader;
+import com.jutools.filetracker.SplitReader;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +30,7 @@ public class FileTracker {
 	// config 값
 	
 	/** 끊어읽기 reader */
-	private PauseReader reader;
+	private SplitReader reader;
 	
 	/** buffer의 크기 */
 	private int bufferSize = 1024 * 1024;
@@ -56,7 +56,7 @@ public class FileTracker {
 	 * 
 	 * @param file 트레킹할 파일
 	 */
-	protected FileTracker(File file, PauseReader reader) throws Exception {
+	protected FileTracker(File file, SplitReader reader) throws Exception {
 
 		// 입력값 검증
 		if(file == null) {
@@ -106,7 +106,7 @@ public class FileTracker {
 	 * @param reader 끊어읽기 reader
 	 * @return 생성된 FileTracker
 	 */
-	public static FileTracker create(File file, PauseReader reader) throws Exception {
+	public static FileTracker create(File file, SplitReader reader) throws Exception {
 		return new FileTracker(file, reader);
 	}
 	
