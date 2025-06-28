@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import com.jutools.filetracker.LineSeparatorReader;
+import com.jutools.filetracker.LineSplitReader;
 import com.jutools.filetracker.SplitReader;
 
 import lombok.Getter;
@@ -64,7 +64,7 @@ public class FileTracker {
 		}
 		
 		if(reader == null) {
-			this.reader = new LineSeparatorReader("\n");
+			this.reader = new LineSplitReader("\n");
 		}
 		
 		// 타겟 파일 Path 객체 생성

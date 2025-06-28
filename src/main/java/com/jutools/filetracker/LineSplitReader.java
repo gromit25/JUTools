@@ -12,7 +12,7 @@ import com.jutools.StringUtil;
  * 
  * @author jmsohn
  */
-public class LineSeparatorReader implements SplitReader {
+public class LineSplitReader implements SplitReader {
 	
 	/** line 구분자 */
 	private byte[] lineSeparator;
@@ -29,7 +29,7 @@ public class LineSeparatorReader implements SplitReader {
 	 * @param lineSeparator line 구분자
 	 * @param charset character set
 	 */
-	public LineSeparatorReader(String lineSeparator, Charset charset) throws Exception {
+	public LineSplitReader(String lineSeparator, Charset charset) throws Exception {
 		
 		if(StringUtil.isEmpty(lineSeparator) == true) {
 			throw new IllegalArgumentException("line separator is blank.");
@@ -47,7 +47,7 @@ public class LineSeparatorReader implements SplitReader {
 	 * 
 	 * @param lineSeparator line 구분자
 	 */
-	public LineSeparatorReader(String lineSeparator) throws Exception {
+	public LineSplitReader(String lineSeparator) throws Exception {
 		this(lineSeparator, null);
 	}
 
