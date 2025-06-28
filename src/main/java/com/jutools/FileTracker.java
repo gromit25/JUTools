@@ -37,17 +37,20 @@ public class FileTracker {
 	
 	/** tracking polling time */
 	private long pollingTime = 10;
+	
 	/** tracking polling time unit */
 	private TimeUnit pollingTimeUnit = TimeUnit.SECONDS;
 	
 	/** tracking 중지 여부 */
 	@Getter
 	@Setter
-	private boolean stop = false;
+	private volatile boolean stop = false;
 
 	// 내부 변수
 	/** 트렉킹할 목표 파일의 경로 */
+	@Getter
 	private Path path;
+	
 	/** 파일 변경 사항을 확인하기 위한 watchService */
 	private WatchService watchSvc;
 
@@ -239,6 +242,7 @@ public class FileTracker {
 		}
 		
 		this.bufferSize = bufferSize;
+		
 		return this;
 	}
 }
