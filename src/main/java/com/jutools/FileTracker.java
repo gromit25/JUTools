@@ -164,59 +164,62 @@ public class FileTracker {
 					continue;
 				}
 		
-				/* 이벤트 목록에 현재 tracking 파일이 있으면, 파일을 읽음 */
-				List<WatchEvent<?>> events = watchKey.pollEvents();
-				for (WatchEvent<?> event : events) {
-	
-					WatchEvent.Kind<?> kind = event.kind(); // 이벤트 종류
-					Path eventFile = (Path) event.context(); // 이벤트가 발생한 파일
-	
-					// 이벤트 발생 파일이 tracking 파일(this.path)이 아닐 경우 다음 이벤트 처리
-					String eventFileName = eventFile.toFile().getName();
-					if(eventFileName.equals(this.path.toFile().getName()) == false) {
-						continue;
-					}
-	
-					// 새로 파일이 생성된 경우(원본 파일은 이름이 변경되고, 파일이 새로 생성될 경우),
-					// -> 기존 채널을 닫고, 새로 생성함
-					if(kind == StandardWatchEventKinds.ENTRY_CREATE) {
-	
-						// 기존 채널 닫음
-						if (readChannel != null) {
-							readChannel.close();
-							readChannel = null;
+				try {
+					/* 이벤트 목록에 현재 tracking 파일이 있으면, 파일을 읽음 */
+					List<WatchEvent<?>> events = watchKey.pollEvents();
+					for (WatchEvent<?> event : events) {
+		
+						WatchEvent.Kind<?> kind = event.kind(); // 이벤트 종류
+						Path eventFile = (Path) event.context(); // 이벤트가 발생한 파일
+		
+						// 이벤트 발생 파일이 tracking 파일(this.path)이 아닐 경우 다음 이벤트 처리
+						String eventFileName = eventFile.toFile().getName();
+						if(eventFileName.equals(this.path.toFile().getName()) == false) {
+							continue;
 						}
-	
-						// 새로 채널을 오픈함
-						readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
-					}
-	
-					/* 데이터 읽기 및 처리 */
-					// 더이상 읽을 바이트가 없을 때까지 반복
-					while ((readChannel.read(readBuffer)) != -1) {
-	
-						NIOBufferUtil.flip(readBuffer);
-	
-						/*
-						 지정한 bufferSize 만큼 받은 데이터를 끊어읽기 수행
-						 데이터가 끝나지 않은 경우 임시 저장 후 다음 데이터 앞에 붙임
-						*/
-	
-						// ByteBuffer -> ByteArray
-						byte[] buffer = new byte[readBuffer.remaining()];
-						readBuffer.get(buffer);
-	
-						// reader 끊어 읽기 수행
-						this.reader.read(buffer, action);
-	                    
-						NIOBufferUtil.clear(readBuffer);
+		
+						// 새로 파일이 생성된 경우(원본 파일은 이름이 변경되고, 파일이 새로 생성될 경우),
+						// -> 기존 채널을 닫고, 새로 생성함
+						if(kind == StandardWatchEventKinds.ENTRY_CREATE) {
+		
+							// 기존 채널 닫음
+							if (readChannel != null) {
+								readChannel.close();
+								readChannel = null;
+							}
+		
+							// 새로 채널을 오픈함
+							readChannel = FileChannel.open(this.path, StandardOpenOption.READ);
+						}
+		
+						/* 데이터 읽기 및 처리 */
+						// 더이상 읽을 바이트가 없을 때까지 반복
+						while ((readChannel.read(readBuffer)) != -1) {
+		
+							NIOBufferUtil.flip(readBuffer);
+		
+							/*
+							 지정한 bufferSize 만큼 받은 데이터를 끊어읽기 수행
+							 데이터가 끝나지 않은 경우 임시 저장 후 다음 데이터 앞에 붙임
+							*/
+		
+							// ByteBuffer -> ByteArray
+							byte[] buffer = new byte[readBuffer.remaining()];
+							readBuffer.get(buffer);
+		
+							// reader 끊어 읽기 수행
+							this.reader.read(buffer, action);
+		                    
+							NIOBufferUtil.clear(readBuffer);
+							
+						} // End of while readChannel
 						
-					} // End of while readChannel
+					} // End of for events
 					
-				} // End of for events
-				
-				// 다음 이벤트를 얻기 위해 reset 수행함
-				watchKey.reset();
+				} finally {
+					// 다음 이벤트를 얻기 위해 reset 수행함
+					watchKey.reset();
+				}
 				
 			} // End of while
 			
