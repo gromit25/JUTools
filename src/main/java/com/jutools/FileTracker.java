@@ -165,6 +165,7 @@ public class FileTracker {
 				}
 		
 				try {
+					
 					/* 이벤트 목록에 현재 tracking 파일이 있으면, 파일을 읽음 */
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					for (WatchEvent<?> event : events) {
