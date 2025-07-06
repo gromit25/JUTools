@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.jutools.script.engine.AbstractEngine;
 import com.jutools.script.engine.instructions.Instruction;
-import com.jutools.script.olexp.OLExp;
 import com.jutools.script.olexp.parser.BooleanParser;
 import com.jutools.script.parser.AbstractParser;
 
@@ -109,30 +108,6 @@ public class TextGen {
 			}
 		}
 	}
-	
-	/**
-	 * Loop 
-	 * 
-	 * @author jmsohn
-	 */
-	private static class LoopElement implements TextElement {
-		
-		/** */
-		private String varName;
-		
-		/** */
-		private OLExp exp;
-		
-		private LoopElement(String varName, String exp) {
-			
-		}
-
-		@Override
-		public String getText(Map<String, ?> values) throws Exception {
-			return null;
-		}
-	}
-	
 	
 	/** 텍스트 요소 목록 변수 - parse 메소드에 의해 생성됨 */
 	private List<TextElement> elements;
