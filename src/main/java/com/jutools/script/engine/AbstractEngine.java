@@ -238,6 +238,7 @@ public abstract class AbstractEngine {
 			t.pc += inst.execute(t.stack, values);
 			
 			System.out.println(t.pc + ":" + inst.toString());
+			System.out.println("   stack:" + t.stack.toString());
 		}
 		
 		return this;
