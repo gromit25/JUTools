@@ -109,6 +109,9 @@ public class TextGen {
 		}
 	}
 	
+	/** 변환 시작 문자 */
+	private char replaceStartChar;
+	
 	/** 텍스트 요소 목록 변수 - parse 메소드에 의해 생성됨 */
 	private List<TextElement> elements;
 	
@@ -117,9 +120,34 @@ public class TextGen {
 	 * 
 	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
 	 * @param isEscape 텍스트 문자열 escape 여부
+	 * @param replaceStartChar 변환 시작 문자
 	 */
-	private TextGen(String formatText, boolean isEscape) throws Exception {
+	private TextGen(String formatText, boolean isEscape, char replaceStartChar) throws Exception {
+		this.replaceStartChar = replaceStartChar;
 		this.parse(formatText, isEscape);
+	}
+	
+	/**
+	 * 주어진 텍스트 형식 문자열을 컴파일하여 TextGen 객체를 생성하고 반환
+	 * 
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @param isEscape 텍스트 문자열 escape 여부
+	 * @param replaceStartChar 변환 시작 문자
+	 * @return 생성된 TextGen 객체
+	 */
+	public static TextGen compile(String formatText, boolean isEscape, char replaceStartChar) throws Exception {
+		return new TextGen(formatText, isEscape, replaceStartChar);
+	}
+	
+	/**
+	 * 주어진 텍스트 형식 문자열을 컴파일하여 TextGen 객체를 생성하고 반환
+	 * 
+	 * @param formatText 표현식을 포함한 텍스트 형식 문자열
+	 * @param isEscape 텍스트 문자열 escape 여부
+	 * @return 생성된 TextGen 객체
+	 */
+	public static TextGen compile(String formatText, char replaceStartChar) throws Exception {
+		return TextGen.compile(formatText, false, replaceStartChar);
 	}
 	
 	/**
@@ -130,7 +158,7 @@ public class TextGen {
 	 * @return 생성된 TextGen 객체
 	 */
 	public static TextGen compile(String formatText, boolean isEscape) throws Exception {
-		return new TextGen(formatText, isEscape);
+		return TextGen.compile(formatText, isEscape, '$');
 	}
 	
 	/**
@@ -140,7 +168,7 @@ public class TextGen {
 	 * @return 생성된 TextGen 객체
 	 */
 	public static TextGen compile(String formatText) throws Exception {
-		return TextGen.compile(formatText, false);
+		return TextGen.compile(formatText, false, '$');
 	}
 
 	
@@ -196,7 +224,7 @@ public class TextGen {
 			} else {
             	
 				// 일반 문자열 상태
-				if (ch == '$' && formatText.charAt(index+1) == '{' && index+1 < formatText.length()) {
+				if (ch == this.replaceStartChar && formatText.charAt(index+1) == '{' && index+1 < formatText.length()) {
 					
 					// "${" 가 들어온 경우
 					// 현재까지 문자열을 StringElement로 만들어 추가
