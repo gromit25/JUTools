@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.jutools.BytesUtil;
-import com.jutools.StringUtil;
 
 /**
  * line 구분자로 끊어 읽기 Reader
@@ -14,11 +13,14 @@ import com.jutools.StringUtil;
  */
 public class LineSplitReader implements SplitReader {
 	
-	/** line 구분자 */
-	private byte[] lineSeparator;
+	/** \n 의 byte array */
+	private static byte[] LINE_FEED = "\n".getBytes();
+	
+	/** \r 의 byte array */
+	private static byte[] CARRAGE_RETURN = "\r".getBytes();
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
-	private Charset charset = Charset.defaultCharset();
+	private Charset charset;
 	
 	/** 끝나지 않은 데이터 임시 저장 변수 */
 	byte[] temp = null;
@@ -26,39 +28,32 @@ public class LineSplitReader implements SplitReader {
 	/**
 	 * 생성자
 	 * 
-	 * @param lineSeparator line 구분자
 	 * @param charset character set
 	 */
-	public LineSplitReader(String lineSeparator, Charset charset) throws Exception {
-		
-		if(StringUtil.isEmpty(lineSeparator) == true) {
-			throw new IllegalArgumentException("line separator is blank.");
-		}
+	public LineSplitReader(Charset charset) throws Exception {
 		
 		if(charset != null) {
 			this.charset = charset;
+		} else {
+			this.charset = Charset.defaultCharset();
 		}
-		
-		this.lineSeparator = lineSeparator.getBytes();
 	}
 	
 	/**
 	 * 생성자
-	 * 
-	 * @param lineSeparator line 구분자
 	 */
-	public LineSplitReader(String lineSeparator) throws Exception {
-		this(lineSeparator, null);
+	public LineSplitReader() throws Exception {
+		this(null);
 	}
 
 	@Override
 	public synchronized void read(byte[] buffer, Consumer<String> action) throws Exception {
 		
 		// 데이터 끝에 lineSeparator가 있는지 확인
-		boolean isEndsWithLineSeparator = BytesUtil.endsWith(buffer, this.lineSeparator);
+		boolean isEndsWithLineFeed = BytesUtil.endsWith(buffer, LINE_FEED);
 
 		// lineSeparator로 데이터를 한 문장씩 split함
-		List<byte[]> messages = BytesUtil.split(buffer, this.lineSeparator);
+		List<byte[]> messages = BytesUtil.split(buffer, LINE_FEED);
 		for(int index = 0; index < messages.size(); index++) {
 
 			byte[] message = messages.get(index);
@@ -71,11 +66,16 @@ public class LineSplitReader implements SplitReader {
 				this.temp = null;
 			}
 
-			// lineSeparator 를 통해 잘린 데이터는
+			// "\n" 를 통해 잘린 데이터는
 			// 날짜 포맷 후 logMessageArr 에 추가
-			if(index != messages.size() - 1 || isEndsWithLineSeparator == true) {
+			if(index != messages.size() - 1 || isEndsWithLineFeed == true) {
 				
-				// 람다 함수에서 데이터를 처리함
+				// 만일 마지막 문자가 "\r" 일 경우 제외 시킴
+				if(BytesUtil.endsWith(message, CARRAGE_RETURN) == true) {
+					message = BytesUtil.cut(message, 0, message.length - 1);
+				}
+				
+				// 사용자 처리 메소드에서 데이터를 처리함
 				action.accept(new String(message, this.charset));
 				
 			} else {

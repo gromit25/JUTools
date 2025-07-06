@@ -461,8 +461,8 @@ public class BytesUtil {
 			throw new IllegalArgumentException("start is invalid:" + start);
 		}
 		
-		if(length < 1) {
-			throw new IllegalArgumentException("length is invalid:" + start);
+		if(length == 0) {
+			return new byte[0];
 		}
 
 		byte[] cutArray = new byte[length];

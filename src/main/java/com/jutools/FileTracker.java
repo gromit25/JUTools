@@ -67,7 +67,7 @@ public class FileTracker {
 		}
 		
 		if(reader == null) {
-			this.reader = new LineSplitReader("\n");
+			this.reader = new LineSplitReader();
 		}
 		
 		// 타겟 파일 Path 객체 생성
