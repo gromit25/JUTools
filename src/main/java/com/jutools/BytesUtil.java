@@ -315,10 +315,8 @@ public class BytesUtil {
 	}
 	
 	/**
-	 * 주어진 target byte array를 split 하는 메소드<br>
-	 * target byte와 구분자의 byte를 비교하여<br>
-	 * 구분자가 포함 됐을 경우 분리 함
-	 *
+	 * 주어진 target byte array를 split 하는 메소드
+  	 *
 	 * @param target target byte array
 	 * @param splitter 구분자 byte array
 	 * @param isSplitterInclude 분할된 문자열에 배열의 구분자를 포함할 것인지 여부
@@ -375,7 +373,6 @@ public class BytesUtil {
 	
 	/**
 	 * 주어진 target byte array를 split 하는 메소드<br>
-	 * target byte와 구분자의 byte를 비교하여<br>
 	 * 구분자가 포함 됐을 경우 분리 함
 	 *
 	 * @param target target byte array
