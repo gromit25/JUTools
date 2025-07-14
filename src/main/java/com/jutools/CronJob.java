@@ -33,6 +33,10 @@ public class CronJob {
 	@Getter
 	private long nextTime;
 	
+	/** 크론잡 중단 여부 */
+	@Getter
+	private volatile boolean stop = true;
+	
 	/**
 	 * 생성자
 	 * 
@@ -55,7 +59,7 @@ public class CronJob {
 			@Override
 			public void run() {
 				
-				while(true) {
+				while(stop == false) {
 					
 					// 다음 수행 시간까지 대기
 					try {
@@ -75,11 +79,13 @@ public class CronJob {
 			}
 		});
 		
-		this.cronThread.setDaemon(true);
 		// 다음 시작 시간을 미리 설정함,
 		// thread 가 완전히 시작되기 전에 nextTime을 가져가는 경우 nextTime 이 0이 되는 것을 방지하기 위함
 		this.nextTime = cronExp.getNextTimeInMillis();
 		this.cronThread.start();
+		
+		// 중단 상태 변경
+		this.stop = false;
 	}
 
 	/**
@@ -96,6 +102,8 @@ public class CronJob {
 		}
 		
 		this.nextTime = -1;
+		
+		this.stop = true;
 	}
 	
 	/**
