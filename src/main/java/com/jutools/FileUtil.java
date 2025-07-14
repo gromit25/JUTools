@@ -27,7 +27,7 @@ public class FileUtil {
 	 * key - 파일확장자(ex: .pdf(점 포함))<br>
 	 * value - 매직넘버 목록, 하나의 파일 확장자에 여러 매직넘버가 있을 수 있음
 	 */
-	private static Map<String, ArrayList<byte[]>> magicMap;
+	private static Map<String, List<byte[]>> magicMap;
 	
 	static {
 		
