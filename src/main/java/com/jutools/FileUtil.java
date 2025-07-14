@@ -599,7 +599,7 @@ public class FileUtil {
 		}
 
 		if(pollingPeriod < 100L) {
-			throw new IllegalArgumentException("polling period must be greater than 100: " + pollingPeriod);
+			throw new IllegalArgumentException("polling period must be greater than 100(0.1 sec): " + pollingPeriod);
 		}
 
 		// stop 파일명
