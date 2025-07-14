@@ -320,63 +320,57 @@ public class BytesUtil {
 	 * 구분자가 포함 됐을 경우 분리 함
 	 *
 	 * @param target target byte array
-	 * @param split 구분자 byte array
-	 * @param isLastInclude 배열의 마지막이 구분자(split)로 끝날 경우, 추가할 것인지 여부<br>
-	 *                      ex) true로 설정되고 target : "123\n", split : "\n" 일 경우,<br>
-	 *                          "123", "" 으로 분리됨<br>
-	 *                          false일 경우, "123"으로만 분리됨
+	 * @param splitter 구분자 byte array
+	 * @param isSplitterInclude 분할된 문자열에 배열의 구분자를 포함할 것인지 여부
 	 * @return 구분자에 의해 분리된 결과 목록
 	 */
-	public static List<byte[]> split(byte[] target, byte[] split, boolean isLastInclude) throws Exception {
+	public static List<byte[]> split(byte[] target, byte[] splitter, boolean isSplitterInclude) throws Exception {
 
 		// parameter null 체크
 		if(target == null) {
 			throw new NullPointerException("target array is null.");
 		}
 
-		if(split == null) {
-			throw new NullPointerException("split array is null.");
+		if(splitter == null) {
+			throw new NullPointerException("splitter array is null.");
 		}
 
 		// 구분자에 의해 분리된 결과
-		ArrayList<byte[]> splitedTarget = new ArrayList<>();
+		List<byte[]> splitedTarget = new ArrayList<>();
 		
 		// split이 발견된 곳의 위치 변수
 		int index = -1;
+		
 		// 검사를 시작할 위치 변수
 		int start = 0;
 		
 		do {
 			
-			// isLastInclude가 true이면,
-			// 배열의 마지막이 구분자(split)로 끝날 경우 공백 배열을 추가함
-			if(isLastInclude == false && start >= target.length) {
-				break;
-			}
-			
-			// 목표 배열 내 split이 발견된 곳의 위치 확인 
-			index = indexOf(target, start, split);
+			// 목표 배열 내 splitter가 발견된 곳의 위치 확인 
+			// 찾지 못할 경우 -1 반환
+			index = indexOf(target, start, splitter);
 			
 			// 시작지점(start)부터 발견된 곳(index)의 배열을 splitedTarget에 추가 
-			// index가 -1일 경우 시작지점 부터 끝까지의 배열을 추가
-			byte[] splitedBytes = null;
+			// index가 -1일 경우 시작 지점부터 끝까지 배열을 추가
+			int splitLength = 0;
 			if(index >= 0) {
-				splitedBytes = new byte[index - start];
+				splitLength = index - start + ((isSplitterInclude)?splitter.length:0);
 			} else {
-				splitedBytes = new byte[target.length - start];
+				splitLength = target.length - start;
 			}
+			
+			byte[] splitedBytes = new byte[splitLength];
 			
 			System.arraycopy(target, start, splitedBytes, 0, splitedBytes.length);
 			splitedTarget.add(splitedBytes);
 			
-			// 다음 시작위치 계산(현재발견된 위치 + split의 크기)
-			start = index + split.length;
+			// 다음 시작위치 계산(splitter가 발견된 위치 + splitter의 크기)
+			start = index + splitter.length;
 			
-		} while(index >= 0);
+		} while(index >= 0 && start < target.length);
     	
 		// 최종 결과 반환
 		return splitedTarget;
-
 	}
 	
 	/**
