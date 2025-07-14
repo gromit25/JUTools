@@ -27,7 +27,7 @@ public class FileUtil {
 	 * key - 파일확장자(ex: .pdf(점 포함))<br>
 	 * value - 매직넘버 목록, 하나의 파일 확장자에 여러 매직넘버가 있을 수 있음
 	 */
-	private static HashMap<String, ArrayList<byte[]>> magicMap;
+	private static Map<String, ArrayList<byte[]>> magicMap;
 	
 	static {
 		
@@ -284,7 +284,7 @@ public class FileUtil {
 		byte[] head = readNBytes(file, 256);
 		
 		// 파일의 매직 넘버 검사
-		ArrayList<byte[]> magicNumbers = magicMap.get(ext);
+		List<byte[]> magicNumbers = magicMap.get(ext);
 		for(byte[] magicNumber: magicNumbers) {
 			
 			// 일치하는 매직 넘버가 있는 경우, true를 반환
