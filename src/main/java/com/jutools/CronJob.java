@@ -63,9 +63,13 @@ public class CronJob {
 					
 					// 다음 수행 시간까지 대기
 					try {
+						
 						nextTime = cronExp.getNextTimeInMillis();
 						Thread.sleep(nextTime - System.currentTimeMillis());
+						
 					} catch(InterruptedException iex) {
+						
+						// 인터럽트 발생시 종료 처리
 						break;
 					}
 					
