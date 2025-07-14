@@ -36,7 +36,7 @@ public class FileUtil {
 		
 		// .rtf
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x7B, (byte)0x5C, (byte)0x71, (byte)0x74, (byte)0x66, (byte)0x31});
 			magics.add(new byte[]{(byte)0x7B, (byte)0x5C, (byte)0x72, (byte)0x74, (byte)0x66, (byte)0x31});
 
@@ -45,7 +45,7 @@ public class FileUtil {
 		
 		// .xls
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".xls", magics);
@@ -53,7 +53,7 @@ public class FileUtil {
 		
 		// .xlsx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 			
 			magicMap.put(".xlsx", magics);
@@ -61,7 +61,7 @@ public class FileUtil {
 		
 		// .xlt
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".xlt", magics);
@@ -69,7 +69,7 @@ public class FileUtil {
 		
 		// .xltx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 			
 			magicMap.put(".xltx", magics);
@@ -77,7 +77,7 @@ public class FileUtil {
 		
 		// .xltm
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 			
 			magicMap.put(".xltm", magics);
@@ -85,7 +85,7 @@ public class FileUtil {
 		
 		// .ppt
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".ppt", magics);
@@ -93,7 +93,7 @@ public class FileUtil {
 		
 		// .pptx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 			
 			magicMap.put(".pptx", magics);
@@ -101,7 +101,7 @@ public class FileUtil {
 		
 		// .doc
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".doc", magics);
@@ -109,7 +109,7 @@ public class FileUtil {
 		
 		// .docx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 
 			magicMap.put(".docx", magics);
@@ -117,7 +117,7 @@ public class FileUtil {
 		
 		// .docm
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 
 			magicMap.put(".docm", magics);
@@ -125,7 +125,7 @@ public class FileUtil {
 		
 		// .dot
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".dot", magics);
@@ -133,7 +133,7 @@ public class FileUtil {
 		
 		// .dotx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 
 			magicMap.put(".dotx", magics);
@@ -141,7 +141,7 @@ public class FileUtil {
 		
 		// .dotm
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x50, (byte)0x4B, (byte)0x03, (byte)0x04});
 
 			magicMap.put(".dotx", magics);
@@ -149,7 +149,7 @@ public class FileUtil {
 		
 		// .hwp
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xD0, (byte)0xCF, (byte)0x11, (byte)0xE0, (byte)0xA1, (byte)0xB1, (byte)0x1A, (byte)0xE1});
 
 			magicMap.put(".hwp", magics);
@@ -157,7 +157,7 @@ public class FileUtil {
 		
 		// .hwpx
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x4D, (byte)0x53, (byte)0x5F, (byte)0x56});
 
 			magicMap.put(".hwp", magics);
@@ -165,7 +165,7 @@ public class FileUtil {
 		
 		// .pdf
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x25, (byte)0x50, (byte)0x44, (byte)0x46, (byte)0x2D});
 
 			magicMap.put(".pdf", magics);
@@ -173,7 +173,7 @@ public class FileUtil {
 		
 		// .jpg
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xFF, (byte)0xD8, (byte)0xFF, (byte)0xE1});
 
 			magicMap.put(".jpg", magics);
@@ -181,7 +181,7 @@ public class FileUtil {
 		
 		// .jpeg
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0xFF, (byte)0xD8, (byte)0xFF, (byte)0xFE, (byte)0x00});
 
 			magicMap.put(".jpeg", magics);
@@ -189,7 +189,7 @@ public class FileUtil {
 		
 		// .tiff
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x49, (byte)0x49, (byte)0x2A});
 			magics.add(new byte[]{(byte)0x4D, (byte)0x4D, (byte)0x2A});
 
@@ -198,7 +198,7 @@ public class FileUtil {
 		
 		// .gif
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x47, (byte)0x49, (byte)0x46, (byte)0x38, (byte)0x37, (byte)0x61});
 			magics.add(new byte[]{(byte)0x47, (byte)0x49, (byte)0x46, (byte)0x38, (byte)0x39, (byte)0x61});
 
@@ -207,7 +207,7 @@ public class FileUtil {
 		
 		// .bmp
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x42, (byte)0x4D});
 
 			magicMap.put(".bmp", magics);
@@ -215,7 +215,7 @@ public class FileUtil {
 		
 		// .png
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x89, (byte)0x50, (byte)0x4E, (byte)0x47, (byte)0x0D, (byte)0x0A, (byte)0x1A, (byte)0x0A});
 
 			magicMap.put(".png", magics);
@@ -223,7 +223,7 @@ public class FileUtil {
 
 		// .mp3
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x49, (byte)0x44, (byte)0x33, (byte)0x03});
 
 			magicMap.put(".mp3", magics);
@@ -231,7 +231,7 @@ public class FileUtil {
 		
 		// .mov
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x6D, (byte)0x64, (byte)0x61, (byte)0x74});
 
 			magicMap.put(".mov", magics);
@@ -239,7 +239,7 @@ public class FileUtil {
 		
 		// .avi
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x41, (byte)0x56, (byte)0x49, (byte)0x20});
 			magics.add(new byte[]{(byte)0x52, (byte)0x49, (byte)0x46, (byte)0x46});
 			magics.add(new byte[]{(byte)0x52, (byte)0x49, (byte)0x46, (byte)0x46, (byte)0x6A, (byte)0x42, (byte)0x01, (byte)0x00});
@@ -249,7 +249,7 @@ public class FileUtil {
 		
 		// .mpeg
 		{
-			ArrayList<byte[]> magics = new ArrayList<>();
+			List<byte[]> magics = new ArrayList<>();
 			magics.add(new byte[]{(byte)0x00, (byte)0x00, (byte)0x01, (byte)0xB3});
 
 			magicMap.put(".mpeg", magics);
