@@ -79,6 +79,9 @@ public class FileTracker {
         	throw new Exception("directory is not exists:" + parentPath.toFile().getAbsolutePath());
 		}
 
+		// 리더 설정
+		this.reader = reader;
+
 		/* watchService 생성 */
 		this.watchSvc =  parentPath.getFileSystem().newWatchService();
 
