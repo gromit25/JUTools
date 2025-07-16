@@ -82,7 +82,7 @@ public class FileTracker {
 		// 리더 설정
 		this.reader = reader;
 
-		/* watchService 생성 */
+		// watchService 생성
 		this.watchSvc =  parentPath.getFileSystem().newWatchService();
 
 		// target을 watchService에 등록
