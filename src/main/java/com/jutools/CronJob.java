@@ -59,26 +59,27 @@ public class CronJob {
 			@Override
 			public void run() {
 				
-				while(stop == false) {
+				while(stop == false && Thread.currentThread().isInterrupted() == false) {
 					
-					// 다음 수행 시간까지 대기
 					try {
 						
+						// 다음 수행 시간까지 대기
 						nextTime = cronExp.getNextTimeInMillis();
 						Thread.sleep(nextTime - System.currentTimeMillis());
+						
+						// 최근 시간을 설정
+						currentBaseTime = nextTime;
+						
+						// 잡 수행
+						jobThread = new Thread(job);
+						jobThread.start();
 						
 					} catch(InterruptedException iex) {
 						
 						// 인터럽트 발생시 종료 처리
-						break;
+						stop = true;
+						Thread.currentThread().interrupt();
 					}
-					
-					// 최근 시간을 설정
-					currentBaseTime = nextTime;
-					
-					// 잡 수행
-					jobThread = new Thread(job);
-					jobThread.start();
 				}
 			}
 		});
