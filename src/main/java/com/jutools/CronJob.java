@@ -97,6 +97,9 @@ public class CronJob {
 	 */
 	public void stop() {
 		
+		this.nextTime = -1;
+		this.stop = true;
+		
 		if(this.jobThread != null) {
 			this.jobThread.interrupt();
 		}
@@ -104,10 +107,6 @@ public class CronJob {
 		if(this.cronThread != null) {
 			this.cronThread.interrupt();
 		}
-		
-		this.nextTime = -1;
-		
-		this.stop = true;
 	}
 	
 	/**
