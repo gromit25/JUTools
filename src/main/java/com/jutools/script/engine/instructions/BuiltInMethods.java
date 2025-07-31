@@ -2,6 +2,7 @@ package com.jutools.script.engine.instructions;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import com.jutools.StringUtil.WildcardPattern;
 
@@ -19,7 +20,7 @@ public class BuiltInMethods {
 	 * @return 변환된 int
 	 */
 	@MethodAlias(alias = "toInt")
-	public static int toInt(double value) {
+	public static int toInt(Map<String, ?> values, double value) {
 		return (int)value;
 	}
 	
@@ -30,7 +31,7 @@ public class BuiltInMethods {
 	 * @return 반올림 수행 결과
 	 */
 	@MethodAlias(alias = "round")
-	public static double round(double value) {
+	public static double round(Map<String, ?> values, double value) {
 		return Math.round(value);
 	}
 	
@@ -42,7 +43,7 @@ public class BuiltInMethods {
 	 * @return 지수 곱 결과
 	 */
 	@MethodAlias(alias = "pow")
-	public static double pow(double base, double exponent) {
+	public static double pow(Map<String, ?> values, double base, double exponent) {
 		return Math.pow(base, exponent);
 	}
 	
@@ -54,7 +55,7 @@ public class BuiltInMethods {
 	 * @return 와일드 카드 매치 여부
 	 */
 	@MethodAlias(alias = "matchW")
-	public static boolean matchWildcard(String pattern, String target) throws Exception {
+	public static boolean matchWildcard(Map<String, ?> values, String pattern, String target) throws Exception {
 		return WildcardPattern.create(pattern).match(target).isMatch();
 	}
 	
@@ -66,7 +67,7 @@ public class BuiltInMethods {
 	 * @return 정규 표현식 매치 여부
 	 */
 	@MethodAlias(alias = "matchR")
-	public static boolean matchRegExp(String pattern, String target) throws Exception {
+	public static boolean matchRegExp(Map<String, ?> values, String pattern, String target) throws Exception {
 		return target.matches(pattern);
 	}
 	
@@ -79,7 +80,7 @@ public class BuiltInMethods {
 	 * @return if 조건에 따라 반환 값(trueValue or falseValue)
 	 */
 	@MethodAlias(alias = "if")
-	public static Object ifMethod(Boolean condition, Object trueValue, Object falseValue) throws Exception {
+	public static Object ifMethod(Map<String, ?> values, Boolean condition, Object trueValue, Object falseValue) throws Exception {
 		
 		if(condition == true) {
 			return trueValue;
@@ -95,7 +96,7 @@ public class BuiltInMethods {
 	 * @return 현재 시간 문자열
 	 */
 	@MethodAlias(alias = "now")
-	public static String now(String format) throws Exception {
+	public static String now(Map<String, ?> values, String format) throws Exception {
 		
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);

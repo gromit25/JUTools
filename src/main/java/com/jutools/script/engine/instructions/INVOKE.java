@@ -53,8 +53,10 @@ public class INVOKE extends Instruction {
 		}
 		
 		// 메소드에 넘겨줄 parameter를 만듦
-		Object[] params = new Object[this.paramCount]; // 파라미터의 개수 만큼 배열 생성
-		for(int index = params.length - 1 ; index >= 0; index--) {
+		Object[] params = new Object[this.paramCount + 1]; // 파라미터의 개수 만큼 배열 생성
+		
+		params[0] = values;
+		for(int index = params.length - 1 ; index >= 1; index--) {
 			params[index] = stack.pop();
 		}
 
