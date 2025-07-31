@@ -14,7 +14,7 @@ public abstract class Instruction {
 	 * 명령어 수행 메소드
 	 * 
 	 * @param stack 스택
-	 * @param values 메모리
+	 * @param values 변수 저장 객체
 	 */
 	public abstract int execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
 	
