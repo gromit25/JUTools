@@ -16,9 +16,12 @@ public class OLExp extends AbstractEngine {
 	
 	/**
 	 * 생성자
+	 * 
+	 * @param exp 스크립트 문자열
+	 * @param methodClsAry 커스텀 메소드 클래스 목록
 	 */
-	protected OLExp(String exp) throws Exception {
-		super(exp);
+	protected OLExp(String exp, Class<?>... methodClsAry) throws Exception {
+		super(exp, methodClsAry);
 	}
 
 	@Override
@@ -29,11 +32,12 @@ public class OLExp extends AbstractEngine {
 	/**
 	 * 생성 메소드
 	 * 
-	 * @param exp 명령어 문자열
+	 * @param exp 스크립트 문자열
+	 * @param methodClsAry 커스텀 메소드 클래스 목록
 	 * @return 생성된 명령어 처리 클래스
 	 */
-	public static OLExp compile(String exp) throws Exception {
-		return new OLExp(exp);
+	public static OLExp compile(String exp, Class<?>... methodClsAry) throws Exception {
+		return new OLExp(exp, methodClsAry);
 	}
 	
 	/**
