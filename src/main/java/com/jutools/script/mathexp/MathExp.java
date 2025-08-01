@@ -19,9 +19,10 @@ public class MathExp extends AbstractEngine {
 	 * 생성자(외부 생성 불가)
 	 * 
 	 * @parma exp 수식 
+	 * @param methodClsAry 커스텀 메소드 클래스 목록
 	 */
-	private MathExp(String exp) throws Exception {
-		super(exp);
+	private MathExp(String exp, Class<?>... methodClsAry) throws Exception {
+		super(exp, methodClsAry);
 	}
 	
 	@Override
@@ -33,10 +34,11 @@ public class MathExp extends AbstractEngine {
 	 * 생성 메소드
 	 * 
 	 * @param exp 산술식 문자열
+	 * @param methodClsAry 커스텀 메소드 클래스 목록
 	 * @return 생성된 산술식 처리 클래스
 	 */
-	public static MathExp compile(String exp) throws Exception {
-		return new MathExp(exp);
+	public static MathExp compile(String exp, Class<?>... methodClsAry) throws Exception {
+		return new MathExp(exp, methodClsAry);
 	}
 
 	/**
