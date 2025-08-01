@@ -73,7 +73,7 @@ public abstract class AbstractEngine {
 	 * 
 	 * @param script 스크립트
 	 */
-	protected AbstractEngine(String script) throws Exception {
+	protected AbstractEngine(String script, Class<?>... methodClsAry) throws Exception {
 		
 		if(script == null) {
 			throw new NullPointerException("script is null");
@@ -83,7 +83,12 @@ public abstract class AbstractEngine {
 		this.script = script;
 		
 		// 기본 built in method 설정
-		this.setMethod(BuiltInMethods.class);
+		this.putMethod(BuiltInMethods.class);
+		
+		// method 추가
+		for(Class<?> methodCls : methodClsAry) {
+			this.putMethod(methodCls);
+		}
 		
 		// 스크립트 파싱
 		try {
@@ -111,7 +116,7 @@ public abstract class AbstractEngine {
 	 * @param methodClass 실제 실행할 메소드를 가지는 클래스(MethodAlias Annotation 사용)
 	 * @return 현재 객체(fluent 코딩용)
 	 */
-	public AbstractEngine setMethod(Class<?> methodClass) throws Exception {
+	public AbstractEngine putMethod(Class<?> methodClass) throws Exception {
 
 		// 입력값 검증
 		if(methodClass == null) {
