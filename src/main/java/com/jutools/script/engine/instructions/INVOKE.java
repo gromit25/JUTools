@@ -28,9 +28,11 @@ public class INVOKE extends Instruction {
 	 * 호출할 메소드 핸들<br>
 	 * AbstractEnging 클래스의 link 과정에서 설정됨
 	 */
-	@Setter
 	@Getter
 	private MethodHandle method;
+	
+	/** void형 return type 여부 */
+	private boolean isVoid;
 
 	/**
 	 * 생성자
@@ -62,8 +64,14 @@ public class INVOKE extends Instruction {
 
 		// 메소드 호출 및 결과를 stack에 추가
 		try {
-			Object result = this.method.invokeWithArguments(params);
-			stack.push(result);
+			
+			if(this.isVoid == true) {
+				this.method.invokeWithArguments(params);
+			} else {
+				Object result = this.method.invokeWithArguments(params);
+				stack.push(result);
+			}
+			
 		} catch (Throwable t) {
 			throw (Exception)t;
 		}
@@ -81,5 +89,19 @@ public class INVOKE extends Instruction {
 			.append(this.methodAlias);
 		
 		return paramString.toString();
+	}
+	
+	/**
+	 * 메소드 핸들 설정
+	 * 
+	 * @param method 설정할 메소드 핸들
+	 */
+	public void setMethod(MethodHandle method) {
+		
+		// 메소드 핸들 설정
+		this.method = method;
+		
+		// void 형 리턴 타입 여부 설정
+		this.isVoid = this.method.type().returnType() == Void.class || this.method.type().returnType() == void.class; 
 	}
 }
