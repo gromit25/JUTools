@@ -1,6 +1,8 @@
 package com.jutools.stat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 
@@ -225,7 +227,32 @@ public class Statistic {
 	}
 	
 	/**
+	 * 현재 객체를 Map 형태로 변환하여 반환
+	 * 
+	 * @return 변환된 맵 객체
+	 */
+	public Map<String, Object> toMap() {
+		
+		Map<String, Object> statMap = new HashMap<>();
+		
+		statMap.put("count", this.count);
+		statMap.put("count", this.count);
+		statMap.put("sum", this.sum);
+		statMap.put("mean", this.mean);
+		statMap.put("variance", this.variance);
+		statMap.put("std", this.getStd());
+		statMap.put("skewness", this.skewness);
+		statMap.put("kurtosis", this.kurtosis);
+		statMap.put("min", this.min);
+		statMap.put("max", this.max);
+		
+		return statMap;
+	}
+	
+	/**
 	 * 현재 객체를 json 문자열 형태로 반환
+	 * 
+	 * @return 변환된 json 문자열
 	 */
 	@Override
 	public String toString() {
