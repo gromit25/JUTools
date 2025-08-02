@@ -380,6 +380,15 @@ public abstract class AbstractParser<T> {
 	}
 	
 	/**
+	 * 현재 노드의 자식 수를 반환
+	 * 
+	 * @return 현재 노드의 자식수
+	 */
+	protected int getChildCount() {
+		return (this.node != null && this.node.getChilds() != null)?this.node.getChilds().size():0;
+	}
+	
+	/**
 	 * 현재 노드에 자식 노드를 추가함
 	 * 
 	 * @param index 추가할 자식 노드의 인덱스

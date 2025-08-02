@@ -22,9 +22,9 @@ public class TreeNode<T> {
 	@Getter
 	private List<TreeNode<T>> childs;
 	
-	/** 자식 노드의 개수 */
+	/** 총 자식 노드의 개수 */
 	@Getter
-	private int childCount;
+	private int totChildCount;
 	
 	/**
 	 * 현재 노드가 상위 노드에 자식 노드로 등록되고 나면<br>
@@ -49,7 +49,7 @@ public class TreeNode<T> {
 	public TreeNode(T data) {
 		this.data = data;
 		this.childs = new ArrayList<TreeNode<T>>();
-		this.childCount = 0;
+		this.totChildCount = 0;
 		this.lock = false;
 	}
 	
@@ -74,7 +74,7 @@ public class TreeNode<T> {
 		}
 		
 		this.childs.add(node);
-		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
+		this.totChildCount += 1 + node.totChildCount; // 자기노드(1) 와 자식노드 수 추가
 		
 		node.setLock();
 		
@@ -95,7 +95,7 @@ public class TreeNode<T> {
 		}
 		
 		this.childs.add(index, node);
-		this.childCount += 1 + node.childCount; // 자기노드(1) 와 자식노드 수 추가
+		this.totChildCount += 1 + node.totChildCount; // 자기노드(1) 와 자식노드 수 추가
 		
 		node.setLock();
 	}

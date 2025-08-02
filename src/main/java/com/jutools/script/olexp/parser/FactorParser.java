@@ -38,13 +38,14 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.add("0-9\\-", "NUMBER", -1)
 				.add("a-zA-Z\\_", "VAR", -1)
 				.add("'", "STR", -1)
+				.add("[", "LIST", -1)
 				.add("(", "EXPRESSION")
-				.add("^ \t0-9'\\-a-zA-Z\\_(", "ERROR")
+				.add("^ \t0-9'\\-a-zA-Z\\_[(", "END", -1)
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()
 				.add("^)", "BOOLEAN", -1)  //TODO 계속 변경해야 함
-				.add(")", "ERROR")
+				.add(")", "FACTOR_ERROR")
 				.build());
 		
 		this.putTransferMap("BOOLEAN", new TransferBuilder()  //TODO
@@ -56,8 +57,9 @@ public class FactorParser extends AbstractParser<Instruction> {
 		this.putEndStatus("NUMBER", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("VAR", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("STR", EndStatusType.IMMEDIATELY_END);
+		this.putEndStatus("LIST", EndStatusType.IMMEDIATELY_END);
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
-		this.putEndStatus("ERROR", EndStatusType.ERROR);
+		this.putEndStatus("FACTOR_ERROR", EndStatusType.ERROR);
 	}
 
 	/**
@@ -99,6 +101,20 @@ public class FactorParser extends AbstractParser<Instruction> {
 	)
 	public void handleStr(Event event) throws Exception {
 		StringParser parser = new StringParser();
+		this.setNode(parser.parse(event.getReader()));
+	}
+	
+	/**
+	 * List 파싱
+	 * 
+	 * @param event
+	 */
+	@TransferEventHandler(
+			source={"START"},
+			target={"LIST"}
+	)
+	public void handleList(Event event) throws Exception {
+		ListParser parser = new ListParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
 	

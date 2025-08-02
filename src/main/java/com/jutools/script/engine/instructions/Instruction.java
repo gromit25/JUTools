@@ -15,6 +15,7 @@ public abstract class Instruction {
 	 * 
 	 * @param stack 스택
 	 * @param values 변수 저장 객체
+	 * @return 다음 실행 명령어 이동 거리
 	 */
 	public abstract int execute(Stack<Object> stack, Map<String, ?> values) throws Exception;
 	

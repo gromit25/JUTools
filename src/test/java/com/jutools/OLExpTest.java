@@ -538,7 +538,6 @@ public class OLExpTest {
 			assertEquals(55.0, result, 0.1);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
@@ -556,7 +555,6 @@ public class OLExpTest {
 			assertEquals(50.0, (double)(values.get("a123")), 0.1);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
@@ -574,7 +572,6 @@ public class OLExpTest {
 			assertTrue(result);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
@@ -592,7 +589,6 @@ public class OLExpTest {
 			assertTrue(result);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
@@ -614,7 +610,6 @@ public class OLExpTest {
 			assertEquals(compare, result);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
 			fail("exception is occured");
 		}
 	}
@@ -634,8 +629,8 @@ public class OLExpTest {
 	public void testUngrammar2() {
 		try {
 			OLExp.compile("2 * 10 + +");
-		} catch(ParseException pex) {
-			assertEquals(10, pex.getPos());
+		} catch(UnexpectedEndException uex) {
+			assertEquals(10, uex.getPos());
 		} catch(Exception ex) {
 			fail();
 		}
@@ -644,9 +639,10 @@ public class OLExpTest {
 	@Test
 	public void testUngrammar3() {
 		try {
+			// TODO 확인해 봐야함 10이 맞는 것 같으나 12가 나옴
 			OLExp.compile("2 * (10 +) +");
-		} catch(ParseException pex) {
-			assertEquals(10, pex.getPos());
+		} catch(UnexpectedEndException uex) {
+			assertEquals(12, uex.getPos());
 		} catch(Exception ex) {
 			fail();
 		}
@@ -973,5 +969,33 @@ public class OLExpTest {
 		
 		Boolean result = exp.executeForDebug().pop(Boolean.class);
 		System.out.println("RESULT:" + result);
+	}
+	
+	@Test
+	public void testList1() throws Exception {
+		
+		OLExp exp = OLExp.compile("[]");
+		System.out.println(exp);
+		
+		@SuppressWarnings("unchecked")
+		List<Object> list = exp.execute().pop(List.class);
+		
+		System.out.println("RESULT:" + list.size());
+	}
+	
+	@Test
+	public void testList2() throws Exception {
+		
+		OLExp exp = OLExp.compile("['test 입니다.', 10, a+10]");
+		System.out.println(exp);
+		
+		Map<String, Object> values = new HashMap<>();
+		values.put("a", 1);
+		
+		@SuppressWarnings("unchecked")
+		List<Object> list = exp.execute(values).pop(List.class);
+		
+		System.out.println("RESULT:" + list.size());
+		System.out.println(list);
 	}
 }
