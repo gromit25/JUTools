@@ -40,7 +40,7 @@ public class FactorParser extends AbstractParser<Instruction> {
 				.add("'", "STR", -1)
 				.add("[", "LIST", -1)
 				.add("(", "EXPRESSION")
-				.add("^ \t0-9'\\-a-zA-Z\\_[(", "END", -1)
+				.add("^ \t0-9'\\-a-zA-Z\\_[(", "FACTOR_ERROR")
 				.build());
 		
 		this.putTransferMap("EXPRESSION", new TransferBuilder()

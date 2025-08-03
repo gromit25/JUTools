@@ -629,8 +629,8 @@ public class OLExpTest {
 	public void testUngrammar2() {
 		try {
 			OLExp.compile("2 * 10 + +");
-		} catch(UnexpectedEndException uex) {
-			assertEquals(10, uex.getPos());
+		} catch(ParseException pex) {
+			assertEquals(10, pex.getPos());
 		} catch(Exception ex) {
 			fail();
 		}
@@ -639,10 +639,10 @@ public class OLExpTest {
 	@Test
 	public void testUngrammar3() {
 		try {
-			// TODO 확인해 봐야함 10이 맞는 것 같으나 12가 나옴
+			// TODO 위치 확인 필요
 			OLExp.compile("2 * (10 +) +");
-		} catch(UnexpectedEndException uex) {
-			assertEquals(12, uex.getPos());
+		} catch(ParseException pex) {
+			assertEquals(10, pex.getPos());
 		} catch(Exception ex) {
 			fail();
 		}

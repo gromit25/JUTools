@@ -42,8 +42,14 @@ public class ListParser extends AbstractParser<Instruction> {
 		
 		// 상태 변환 맵 추가
 		this.putTransferMap("START", new TransferBuilder()
-				.add("[", "ELEMENT")
+				.add("[", "START_ELEMENT")
 				.add("^[", "LIST_ERROR")
+				.build());
+		
+		this.putTransferMap("START_ELEMENT", new TransferBuilder()
+				.add(" \t", "START_ELEMENT")
+				.add("]", "ELEMENT_END")
+				.add("^[", "ELEMENT", -1)
 				.build());
 		
 		this.putTransferMap("ELEMENT", new TransferBuilder()
@@ -66,7 +72,7 @@ public class ListParser extends AbstractParser<Instruction> {
 	}
 	
 	@TransferEventHandler(
-			source={"START", "ELEMENT", "SEPARATOR"},
+			source={"START_ELEMENT", "ELEMENT", "SEPARATOR"},
 			target={"ELEMENT"}
 	)
 	public void handleElement(Event event) throws Exception {
