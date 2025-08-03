@@ -934,59 +934,53 @@ public class OLExpTest {
 	public void testShortCircuit1() throws Exception {
 		
 		OLExp exp = OLExp.compile("true or false");
-		System.out.println(exp.toString());
 		
 		Boolean result = exp.execute().pop(Boolean.class);
-		System.out.println("RESULT:" + result);
+		assertTrue(result);
 	}
 	
 	@Test
 	public void testShortCircuit2() throws Exception {
 		
 		OLExp exp = OLExp.compile("false and true");
-		System.out.println(exp.toString());
 		
 		Boolean result = exp.execute().pop(Boolean.class);
-		System.out.println("RESULT:" + result);
+		assertFalse(result);
 	}
 	
 	@Test
 	public void testShortCircuit3() throws Exception {
 		
 		OLExp exp = OLExp.compile("2 < 3 + 1 or 1 != 1");
-		System.out.println(exp.toString());
 		
 		Boolean result = exp.execute().pop(Boolean.class);
-		System.out.println("RESULT:" + result);
+		assertTrue(result);
 	}
 	
 	@Test
 	public void testShortCircuit4() throws Exception {
 		
 		OLExp exp = OLExp.compile("false and 1 == 1 or true");
-		System.out.println(exp.toString());
 		
 		Boolean result = exp.executeForDebug().pop(Boolean.class);
-		System.out.println("RESULT:" + result);
+		assertTrue(result);
 	}
 	
 	@Test
 	public void testList1() throws Exception {
 		
 		OLExp exp = OLExp.compile("[]");
-		System.out.println(exp);
 		
 		@SuppressWarnings("unchecked")
 		List<Object> list = exp.execute().pop(List.class);
 		
-		System.out.println("RESULT:" + list.size());
+		assertEquals(0, list.size());
 	}
 	
 	@Test
 	public void testList2() throws Exception {
 		
 		OLExp exp = OLExp.compile("['test 입니다.', 10, a+10]");
-		System.out.println(exp);
 		
 		Map<String, Object> values = new HashMap<>();
 		values.put("a", 1);
@@ -994,7 +988,9 @@ public class OLExpTest {
 		@SuppressWarnings("unchecked")
 		List<Object> list = exp.execute(values).pop(List.class);
 		
-		System.out.println("RESULT:" + list.size());
-		System.out.println(list);
+		assertEquals(3, list.size());
+		assertEquals("test 입니다.", list.get(0).toString());
+		assertEquals("10.0", list.get(1).toString());
+		assertEquals("11.0", list.get(2).toString());
 	}
 }
