@@ -5,31 +5,31 @@ import java.util.Vector;
 import java.util.function.Consumer;
 
 /**
- * 
+ * 특정 시간 동안 변화(touch)가 없으면 이벤트 발생시키는 클래스
  * 
  * @author jmsohn
  */
 public class TimeoutEventGen {
 	
-	/** */
+	/** 중단 여부 */
 	private boolean stop;
 	
-	/** */
+	/** 대기 기간 */
 	private long timeout;
 	
-	/** */
+	/** 최종 변화(touch)된 시간 */
 	private volatile long lastTouchedTimestamp;
 	
-	/** */
+	/** 대기 스레드 */
 	private Thread timeoutThread;
 	
-	/** */
+	/** 이벤트 리스너 목록 */
 	private List<Consumer<TimeoutEvent>> listenerList;
 
 	/**
+	 * 생성자
 	 * 
-	 * 
-	 * @param timeout
+	 * @param timeout 대기 시간
 	 */
 	public TimeoutEventGen(long timeout) throws Exception {
 		
@@ -43,10 +43,10 @@ public class TimeoutEventGen {
 	}
 	
 	/**
+	 * 이벤트 리스너 추가
 	 * 
-	 * 
-	 * @param listener
-	 * @return
+	 * @param listener 추가할 이벤트 리스너
+	 * @return 현재 객체
 	 */
 	public TimeoutEventGen add(Consumer<TimeoutEvent> listener) throws Exception {
 		
@@ -60,18 +60,18 @@ public class TimeoutEventGen {
 	}
 	
 	/**
-	 * 
+	 * touch 수행
 	 */
 	public void touch() {
 		this.lastTouchedTimestamp = System.currentTimeMillis();
 	}
 	
 	/**
+	 * 이벤트 대기 시작
 	 * 
-	 * 
-	 * @return
+	 * @return 현재 객체
 	 */
-	public TimeoutEventGen start() throws Exception {
+	public TimeoutEventGen run() throws Exception {
 		
 		if(this.stop == false) {
 			throw new IllegalStateException("thread is aleady started.");
@@ -79,7 +79,7 @@ public class TimeoutEventGen {
 		
 		this.stop = false;
 		
-		//
+		// 대기 스레드 생성
 		this.timeoutThread = new Thread(new Runnable() {
 			
 			@Override
@@ -121,15 +121,16 @@ public class TimeoutEventGen {
 			}
 		});
 		
-		//
+		// 대기 스레드 시작
 		this.timeoutThread.start();
 		
 		return this;
 	}
 	
 	/**
+	 * 대기 스레드 중단
 	 * 
-	 * @return
+	 * @return 현재 객체
 	 */
 	public TimeoutEventGen stop() throws Exception {
 		
