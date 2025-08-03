@@ -639,7 +639,6 @@ public class OLExpTest {
 	@Test
 	public void testUngrammar3() {
 		try {
-			// TODO 위치 확인 필요
 			OLExp.compile("2 * (10 +) +");
 		} catch(ParseException pex) {
 			assertEquals(10, pex.getPos());
