@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  * 
  * @author jmsohn
  */
-public class TimeoutEventGen<T extends TimeoutEvent> {
+public class Timer<T extends TimeoutEvent> {
 	
 	/** 중단 여부 */
 	private boolean stop;
@@ -32,7 +32,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	 * 
 	 * @param timeout 대기 시간(ms)
 	 */
-	public TimeoutEventGen(long timeout) throws Exception {
+	public Timer(long timeout) throws Exception {
 
 		// 입력값 검증
 		// 최소 1초 이상
@@ -51,7 +51,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	 * @param listener 추가할 이벤트 리스너
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen<T> add(Consumer<T> listener) throws Exception {
+	public Timer<T> add(Consumer<T> listener) throws Exception {
 		
 		if(listener == null) {
 			throw new IllegalArgumentException("listener is null.");
@@ -75,7 +75,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
   	 * @param eventSupplier timeout이 발생했을 때 event 객체를 생성하여 반환하는 공급자
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen<T> run(Supplier<T> eventSupplier) throws Exception {
+	public Timer<T> run(Supplier<T> eventSupplier) throws Exception {
 		
 		if(this.stop == false) {
 			throw new IllegalStateException("thread is aleady started.");
@@ -143,7 +143,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	 * 
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen<T> stop() throws Exception {
+	public Timer<T> stop() throws Exception {
 		
 		if(this.stop == true || this.timeoutThread.isAlive() == false) {
 			throw new IllegalStateException("thread is aleady stopped.");
