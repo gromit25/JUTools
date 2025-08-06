@@ -33,8 +33,10 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	 * @param timeout 대기 시간(ms)
 	 */
 	public TimeoutEventGen(long timeout) throws Exception {
-		
-		if(timeout < 1) {
+
+		// 입력값 검증
+		// 최소 1초 이상
+		if(timeout < 1000L) {
 			throw new IllegalArgumentException("timeout value must be greater than 1:" + timeout);
 		}
 		
