@@ -70,6 +70,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	/**
 	 * 이벤트 대기 시작
 	 * 
+  	 * @param eventSupplier timeout이 발생했을 때 event 객체를 생성하여 반환하는 공급자
 	 * @return 현재 객체
 	 */
 	public TimeoutEventGen<T> run(Supplier<T> eventSupplier) throws Exception {
@@ -107,6 +108,11 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 						
 						// 이벤트 생성
 						T event = eventSupplier.get();
+						if(event == null) {
+							continue;
+						}
+
+						// 이덴트 객체 시간 설정
 						event.setTimestamp(cur);
 						event.setLastTouchedTimestamp(lastTouched);
 						
