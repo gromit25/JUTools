@@ -30,7 +30,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	/**
 	 * 생성자
 	 * 
-	 * @param timeout 대기 시간
+	 * @param timeout 대기 시간(ms)
 	 */
 	public TimeoutEventGen(long timeout) throws Exception {
 		
