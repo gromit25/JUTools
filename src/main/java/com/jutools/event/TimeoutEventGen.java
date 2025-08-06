@@ -3,13 +3,14 @@ package com.jutools.event;
 import java.util.List;
 import java.util.Vector;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * 특정 시간 동안 변화(touch)가 없으면 이벤트 발생시키는 클래스
  * 
  * @author jmsohn
  */
-public class TimeoutEventGen {
+public class TimeoutEventGen<T extends TimeoutEvent> {
 	
 	/** 중단 여부 */
 	private boolean stop;
@@ -18,13 +19,13 @@ public class TimeoutEventGen {
 	private long timeout;
 	
 	/** 최종 변화(touch)된 시간 */
-	private volatile long lastTouchedTimestamp;
+	private volatile long lastTouched;
 	
 	/** 대기 스레드 */
 	private Thread timeoutThread;
 	
 	/** 이벤트 리스너 목록 */
-	private List<Consumer<TimeoutEvent>> listenerList;
+	private List<Consumer<T>> listenerList;
 
 	/**
 	 * 생성자
@@ -48,7 +49,7 @@ public class TimeoutEventGen {
 	 * @param listener 추가할 이벤트 리스너
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen add(Consumer<TimeoutEvent> listener) throws Exception {
+	public TimeoutEventGen<T> add(Consumer<T> listener) throws Exception {
 		
 		if(listener == null) {
 			throw new IllegalArgumentException("listener is null.");
@@ -63,7 +64,7 @@ public class TimeoutEventGen {
 	 * touch 수행
 	 */
 	public void touch() {
-		this.lastTouchedTimestamp = System.currentTimeMillis();
+		this.lastTouched = System.currentTimeMillis();
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class TimeoutEventGen {
 	 * 
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen run() throws Exception {
+	public TimeoutEventGen<T> run(Supplier<T> eventSupplier) throws Exception {
 		
 		if(this.stop == false) {
 			throw new IllegalStateException("thread is aleady started.");
@@ -98,19 +99,19 @@ public class TimeoutEventGen {
 						long cur = System.currentTimeMillis();
 						
 						// 타임 아웃 시간이 지나지 않았을 경우 다시 대기
-						if(cur - lastTouchedTimestamp < timeout) {
+						if(cur - lastTouched < timeout) {
 							
-							waitTime = lastTouchedTimestamp + timeout - cur;
+							waitTime = lastTouched + timeout - cur;
 							continue;
 						}
 						
 						// 이벤트 생성
-						TimeoutEvent event = new TimeoutEvent();
+						T event = eventSupplier.get();
 						event.setTimestamp(cur);
-						event.setLastTouchedTimestamp(lastTouchedTimestamp);
+						event.setLastTouchedTimestamp(lastTouched);
 						
 						// 리스너에게 전달
-						for(Consumer<TimeoutEvent> listener: listenerList) {
+						for(Consumer<T> listener: listenerList) {
 							listener.accept(event);
 						}
 						
@@ -132,7 +133,7 @@ public class TimeoutEventGen {
 	 * 
 	 * @return 현재 객체
 	 */
-	public TimeoutEventGen stop() throws Exception {
+	public TimeoutEventGen<T> stop() throws Exception {
 		
 		if(this.stop == true || this.timeoutThread.isAlive() == false) {
 			throw new IllegalStateException("thread is aleady stopped.");
