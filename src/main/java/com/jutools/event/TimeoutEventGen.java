@@ -108,7 +108,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 							continue;
 						}
 
-						waitTime = cur + timeout;
+						waitTime = timeout;
 						
 						// 이벤트 생성
 						T event = eventSupplier.get();
