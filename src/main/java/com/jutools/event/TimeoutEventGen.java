@@ -37,7 +37,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 		// 입력값 검증
 		// 최소 1초 이상
 		if(timeout < 1000L) {
-			throw new IllegalArgumentException("timeout value must be greater than 1:" + timeout);
+			throw new IllegalArgumentException("timeout value must be greater than 1000: " + timeout);
 		}
 		
 		this.timeout = timeout;
