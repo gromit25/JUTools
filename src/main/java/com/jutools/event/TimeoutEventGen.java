@@ -19,7 +19,7 @@ public class TimeoutEventGen<T extends TimeoutEvent> {
 	private long timeout;
 	
 	/** 최종 변화(touch)된 시간(ms) */
-	private volatile long lastTouched = 0;
+	private volatile long lastTouched = 0L;
 	
 	/** 대기 스레드 */
 	private Thread timeoutThread;
