@@ -118,7 +118,7 @@ public class Timer<T extends TimeoutEvent> {
 
 						// 이덴트 객체 시간 설정
 						event.setTimestamp(cur);
-						event.setLastTouchedTimestamp(lastTouched);
+						event.setLastTouched(lastTouched);
 						
 						// 리스너에게 전달
 						for(Consumer<T> listener: listenerList) {
