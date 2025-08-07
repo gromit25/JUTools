@@ -14,5 +14,5 @@ public class TimeoutEvent {
 	private long timestamp;
 
 	/** 최총 touch 된 시간 */
-	private long lastTouchedTimestamp;
+	private long lastTouched;
 }
