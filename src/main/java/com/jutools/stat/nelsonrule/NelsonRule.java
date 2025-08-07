@@ -1,6 +1,7 @@
 package com.jutools.stat.nelsonrule;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Builder;
