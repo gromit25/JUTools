@@ -59,7 +59,7 @@ public class NelsonRule {
 	
 	/** 검사 진행할 넬슨룰 목록 */
 	@Getter
-	private ArrayList<Rule> rules;
+	private List<Rule> rules;
 	
 	/**
 	 * 생성자
@@ -84,7 +84,7 @@ public class NelsonRule {
 	 * @param value 현재 값
 	 * @return 위반한 룰 목록(위반이 없을 경우, 크기 0)
 	 */
-	public ArrayList<Integer> check(double value) {
+	public List<Integer> check(double value) {
 		
 		// 검사할 룰이 없으면 빈 목록 반환
 		if(this.getRules() == null) {
