@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public class Timer<T extends TimeoutEvent> {
 	
 	/** 중단 여부 */
-	private boolean stop;
+	private volatile boolean stop = true;
 	
 	/** 대기 기간(ms) */
 	private long timeout;
