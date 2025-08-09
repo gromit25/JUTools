@@ -1,0 +1,264 @@
+package com.jutools.script.pipescript;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+import com.jutools.StringUtil;
+import com.jutools.script.olexp.OLExp;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 파이프 스크립트<br>
+ * ex) type=='cpu' and host=='server1' | stat(usage) | print()
+ *
+ * @author jmsohn
+ */
+@Slf4j
+public class PipeScript {
+
+	/** 변수 컨테이너의 힘메모리 키 */
+	public static final String HEAP_KEY = "<heap>";
+
+	/** 출력 큐 */
+	public static final String OUT_Q = "<out_queue>";
+	
+	
+	/** 중단 여부 */
+	private volatile boolean stop;
+
+	/** 파이프 스크립트 목록 */
+	private List<ScriptRunner> scriptRunnerList;
+
+	/** 각 파이프 스크립트를 실행하는 실행자 */
+	private ExecutorService executor;
+
+	
+	/**
+	 * 생성자
+	 *
+	 * @param pipeScript 파이프 스크립트 문자열
+	 * @param methodClassAry 메소드 클래스 목록 
+	 */
+	private PipeScript(String pipeScript, Class<?>[] methodClassAry) throws Exception {
+
+		// 입력값 검증
+		if(StringUtil.isBlank(pipeScript) == true) {
+			throw new IllegalArgumentException("pipe script is null or blank.");
+		}
+
+		// script에서 파이프(|)를 분리하여 script 객체 목록 생성
+		String[] scriptStrAry = pipeScript.split("\\|");
+		this.scriptRunnerList = new ArrayList<>();
+		
+		ScriptRunner preRunner = null;
+		
+		for(String scriptStr: scriptStrAry) {
+			
+			// script runner 생성 후 목록에 추가
+			ScriptRunner scriptRunner = new ScriptRunner(scriptStr, methodClassAry);
+			this.scriptRunnerList.add(scriptRunner);
+			
+			// script runner 간 파이프 연결
+			if(preRunner != null) {
+				preRunner.setNext(scriptRunner);
+			}
+			
+			preRunner = scriptRunner;
+		}
+
+		// 상태 설정
+		this.stop = true;
+	}
+
+	/**
+	 * 파이프 스크립트 문자열 컴파일 후 객체 반환
+	 *
+	 * @param pipeScript 파이프 스크립트 문자열
+	 * @param methodClassAry 메소드 클래스 목록
+  	 * @return 생성된 파이프 스크립트 객체
+  	 */
+	public static PipeScript compile(
+		String pipeScript,
+		Class<?>... methodClassAry
+	) throws Exception {
+		
+		return new PipeScript(pipeScript, methodClassAry);
+	}
+
+	/**
+ 	 * 파이프 스크립트 실행
+   	 */
+	public void run() throws Exception {
+
+		if(this.stop == false) {
+			throw new IllegalStateException("pipe script is already started.");
+		}
+
+		if(this.scriptRunnerList == null || this.scriptRunnerList.size() == 0) {
+			throw new IllegalStateException("pipe script is not set.");
+		}
+			
+		this.executor = Executors.newFixedThreadPool(this.scriptRunnerList.size());
+		for(ScriptRunner scriptRunner: this.scriptRunnerList) {
+			this.executor.submit(scriptRunner);
+		}
+
+		this.stop = false;
+	}
+
+	/**
+ 	 * 파이프 스크립트 실행 중단
+   	 */
+	public void stop() {
+
+		// 중단할 thread가 있는지 확인
+		// stop 은 검사하지 않음, 중단 상태라도 수행 중인 thread가 존재할 경우 중단하기 위함
+		if(this.executor == null || this.executor.isShutdown() == true) {
+			return;
+		}
+
+		this.executor.shutdown();
+		this.stop = true;
+	}
+	
+	/**
+	 * 파이프 스크립트의 입력 큐 반환
+	 * 
+	 * @return 파이프 스크립트 입력 큐
+	 */
+	public BlockingQueue<Map<String, Object>> getInQueue() {
+		return this.scriptRunnerList.get(0).inQ;
+	}
+	
+	/**
+	 * 변수 컨테이너의 Heap 객체를 반환
+	 * 
+	 * @param values 변수 컨테이너
+	 * @return Heap 객체
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getHeap(Map<String, ?> values) {
+		
+		if(values == null) {
+			return null;
+		}
+		
+		return (Map<String, Object>)values.get(HEAP_KEY);
+	}
+	
+	/**
+	 * 파이프 스크립트의 실행 객체<br>
+  	 * 파이프로 연결된 하나의 스크립트 실행 객체임
+  	 *
+	 * @author jmsohn
+	 */
+	class ScriptRunner implements Runnable {
+
+		/** 중단 여부 */
+		private volatile boolean stop = true;
+		
+		/** 파이프 입력 큐 */
+		private BlockingQueue<Map<String, Object>> inQ;
+		
+		/** 파이프 출력 큐 */
+		private BlockingQueue<Map<String, Object>> outQ;
+		
+		/** 실행할 스크립트 객체 */
+		private OLExp script;
+
+		/** 스크립트 Heap - 상태 저장용 */
+		private Map<String, Object> heap;
+
+
+		/**
+  		 * 생성자
+		 *
+		 * @param scirptStr 스크립트 문자열
+		 * @param methodClassAry 메소드 클래스 배열
+		 */
+		ScriptRunner(String scriptStr, Class<?>[] methodClassAry) throws Exception {
+
+			// 스크립트 컴파일
+			this.script = OLExp.compile(scriptStr, methodClassAry);
+
+			// 입력/출력 큐 설정
+			this.inQ = new LinkedBlockingQueue<>(); // Thread Safe
+			this.outQ = null;
+			
+			// Heap 생성
+			this.heap = new ConcurrentHashMap<>(); // Thread Safe
+		}
+
+		/**
+  		 * 실행 메소드
+   		 */
+		@SuppressWarnings("unchecked")
+		@Override
+		public void run() {
+
+			this.stop = false;
+
+			while(this.stop == false) {
+
+				try {
+					
+					// 1. 큐에서 값을 전달 받음
+					Map<String, Object> values = this.inQ.poll(1, TimeUnit.SECONDS);;
+					if(values == null) {
+						continue;
+					}
+					
+					// 2. script 수행
+					values.put(HEAP_KEY, this.heap);
+					Object result = this.script.execute(values).pop(Object.class);
+					values.remove(HEAP_KEY);
+					
+					// 3. 결괏값의 종류에 처리 수행
+					if(result instanceof Boolean) {
+						if(((Boolean)result) == false) {
+							continue;
+						}
+					} else if(result instanceof Map) {
+						values.putAll((Map<String, Object>)result);
+					}
+					
+					// 4. 다음 컴포넌트로 데이터 전달
+					if(this.outQ != null) {
+						this.outQ.put(values);
+					}
+					
+				} catch(InterruptedException iex) {
+					log.error("interrupt is occured.", iex);
+					this.stop = true;
+				} catch(Exception ex) {
+					log.error("script error: " + script.getScript(), ex);
+				}
+			}
+		}
+
+		/**
+		 * 파이프를 통해 연결될 다음 스크립트 객체 설정
+   		 *
+		 * @param next 다음 스크립트 객체
+		 * @return 현재 객체
+		 */
+		ScriptRunner setNext(ScriptRunner next) throws Exception {
+
+			if(next == null) {
+				throw new IllegalArgumentException("next component is null.");
+			}
+
+			this.outQ = next.inQ;
+
+			return this;
+		}
+	}
+}
