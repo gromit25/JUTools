@@ -61,6 +61,7 @@ public class JMXService implements Closeable {
 			env.put(JMXConnector.CREDENTIALS, credentials);
 		}
 
+		// Connector 생성
 		this.jmxConnector = JMXConnectorFactory.connect(jmxUrl, env);
 	}
 	
