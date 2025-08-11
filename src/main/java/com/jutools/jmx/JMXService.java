@@ -57,7 +57,7 @@ public class JMXService implements Closeable {
         
 		// 아이디/패스워드가 있을 경우 환경 변수에 설정
 		if(StringUtil.isBlank(username) == false && StringUtil.isBlank(password) == false) {
-			String[] credentials = new String[] {username, password };
+			String[] credentials = new String[] {username, password};
 			env.put(JMXConnector.CREDENTIALS, credentials);
 		}
 
