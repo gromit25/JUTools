@@ -105,17 +105,15 @@ public class JMXService implements Closeable {
 			throw new Exception("connType is invalid.");
 		}
 	}
-	
+
 	/**
 	 * JMX 객체의 속성 값 반환 
 	 * 
-	 * @param <T> 속성 값 타입
 	 * @param objectNameStr 객체 명
 	 * @param attrNameStr 속성 명
-	 * @param returnType 속성 값 반환 타입
 	 * @return 속성 값
 	 */
-	public <T> T get(String objectNameStr, String attrNameStr, Class<T> returnType) throws Exception {
+	public Object get(String objectNameStr, String attrNameStr) throws Exception {
 
 		// jmx 연결이 없는 경우 null 반환
 		if(this.jmxConnector == null) {
@@ -130,10 +128,6 @@ public class JMXService implements Closeable {
 		if(StringUtil.isBlank(attrNameStr) == true) {
 			throw new IllegalArgumentException("attrNameStr is null or blank.");
 		}
-		
-		if(returnType == null) {
-			throw new IllegalArgumentException("returnType is null.");
-		}
 
 		// MBeanServerConnection 변수
 		MBeanServerConnection mbeanServerConnection = this.getMBeanConnection();
@@ -142,7 +136,27 @@ public class JMXService implements Closeable {
 		ObjectName objectName = new ObjectName(objectNameStr);
 
 		// JMX 값 획득 및 반환
-		Object value = mbeanServerConnection.getAttribute(objectName, attrNameStr);
+		return mbeanServerConnection.getAttribute(objectName, attrNameStr);
+	}
+	
+	/**
+	 * JMX 객체의 속성 값 반환 
+	 * 
+	 * @param <T> 속성 값 타입
+	 * @param objectNameStr 객체 명
+	 * @param attrNameStr 속성 명
+	 * @param returnType 속성 값 반환 타입
+	 * @return 속성 값
+	 */
+	public <T> T get(String objectNameStr, String attrNameStr, Class<T> returnType) throws Exception {
+
+		// 입력 값 검증
+		if(returnType == null) {
+			throw new IllegalArgumentException("returnType is null.");
+		}
+
+		// JMX 값 획득 및 반환
+		Object value = this.get(objectName, attrNameStr);
 		return returnType.cast(value);
 	}
 
