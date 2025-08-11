@@ -115,11 +115,6 @@ public class JMXService implements Closeable {
 	 */
 	public Object get(String objectNameStr, String attrNameStr) throws Exception {
 
-		// jmx 연결이 없는 경우 null 반환
-		if(this.jmxConnector == null) {
-			return null;
-		}
-		
 		// 입력 값 검증
 		if(StringUtil.isBlank(objectNameStr) == true) {
 			throw new IllegalArgumentException("objectNameStr is null or blank.");
