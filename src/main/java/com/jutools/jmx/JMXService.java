@@ -156,7 +156,7 @@ public class JMXService implements Closeable {
 		}
 
 		// JMX 값 획득 및 반환
-		Object value = this.get(objectName, attrNameStr);
+		Object value = this.get(objectNameStr, attrNameStr);
 		return returnType.cast(value);
 	}
 
