@@ -75,7 +75,7 @@ public class JMXService implements Closeable {
 	}
 	
 	/**
-	 * 생성자 - 내부 JXM 연결용
+	 * 생성자 - 내부 VM JXM 연결용
 	 */
 	public JMXService() throws Exception {
 		this.connType = JMXConnectionType.INTERNAL;
