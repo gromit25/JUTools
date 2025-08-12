@@ -661,7 +661,10 @@ for(double data: dataList) {
 > JMX(Java Management eXtension) 원격 및 로컬 JVM 모니터링 데이터 수집    
 
 ```java
+
+// JMX Service 접속
 try(JMXService svc = new JMXService("localhost", 1099)) {
+
     // CPU Load 모니터링 데이터 수집
 	System.out.println(
 		svc.get(
