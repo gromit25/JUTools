@@ -665,7 +665,7 @@ for(double data: dataList) {
 // JMX Service 접속
 try(JMXService svc = new JMXService("localhost", 1099)) {
 
-    // CPU Load 모니터링 데이터 수집
+    // CPU Load 모니터링 데이터 수집 및 화면 출력
 	System.out.println(
 		svc.get(
 			"java.lang:type=OperatingSystem",
