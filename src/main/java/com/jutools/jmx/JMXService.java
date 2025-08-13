@@ -113,15 +113,15 @@ public class JMXService implements Closeable {
 	 * @param namePattern 검색할 ObjectName의 패턴
 	 * @return Object Name 목록
 	 */
-	public List<String> findObjectName(String namePattern) throws Exception {
+	public List<String> findObjectName(String namePatternStr) throws Exception {
 		
 		// 입력 값 검증
-		if(StringUtil.isBlank(namePattern) == true) {
+		if(StringUtil.isBlank(namePatternStr) == true) {
 			throw new Exception("pattern is null or blank.");
 		}
 		
 		// 검색 수행
-        ObjectName query = new ObjectName(namePattern);
+        ObjectName query = new ObjectName(namePatternStr);
         Set<ObjectName> mbeans = this.getMBeanConnection().queryNames(query, null);
         
         // Object Name 목록 생성 및 반환
@@ -177,6 +177,35 @@ public class JMXService implements Closeable {
 		// JMX 값 획득 및 반환
 		Object value = this.get(objectNameStr, attrNameStr);
 		return returnType.cast(value);
+	}
+
+	/**
+	 * 주어진 ObjectName Pattern과 일치하는 Object Name의 속성 값 맵을 반환함
+	 * 
+	 * @param namePatternStr 검색할 ObjectName의 패턴
+	 * @param attrNameStr 속성명
+	 * @return 속성 값 맵 반환(K-Object Name, V-속성 값)
+	 */
+	public Map<String, Object> getByPattern(String namePatternStr, String attrNameStr) throws Exception {
+		
+		// 입력 값 검증
+		if(StringUtil.isBlank(namePatternStr) == true) {
+			throw new IllegalArgumentException("");
+		}
+		
+		if(StringUtil.isBlank(attrNameStr) == true) {
+			throw new IllegalArgumentException("");
+		}
+		
+		// 속성 값 맵 생성 및 반환
+		Map<String, Object> valueMap = new HashMap<>();
+		
+		List<String> nameList = this.findObjectName(namePatternStr);
+		for(String name: nameList) {
+			valueMap.put(name, this.get(name, attrNameStr));
+		}
+		
+		return valueMap;
 	}
 
 	@Override
