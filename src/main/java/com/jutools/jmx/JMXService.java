@@ -180,7 +180,7 @@ public class JMXService implements Closeable {
 	}
 
 	/**
-	 * 주어진 ObjectName Pattern과 일치하는 Object Name의 속성 값 맵을 반환함
+	 * 주어진 ObjectName Pattern과 일치하는 Object Name의 속성 값 맵을 반환
 	 * 
 	 * @param namePatternStr 검색할 ObjectName의 패턴
 	 * @param attrNameStr 속성명
