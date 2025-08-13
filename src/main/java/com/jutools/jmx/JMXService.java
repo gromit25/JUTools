@@ -125,14 +125,11 @@ public class JMXService implements Closeable {
 			throw new IllegalArgumentException("attrNameStr is null or blank.");
 		}
 
-		// MBeanServerConnection 변수
-		MBeanServerConnection mbeanServerConnection = this.getMBeanConnection();
-
 		// ObjectName 설정
 		ObjectName objectName = new ObjectName(objectNameStr);
 
 		// JMX 값 획득 및 반환
-		return mbeanServerConnection.getAttribute(objectName, attrNameStr);
+		return this.getMBeanConnection().getAttribute(objectName, attrNameStr);
 	}
 	
 	/**
