@@ -108,6 +108,32 @@ public class JMXService implements Closeable {
 	}
 
 	/**
+	 * 주어진 ObjectName Pattern과 일치하는 Object Name 목록을 반환
+	 * 
+	 * @param namePattern 검색할 ObjectName의 패턴
+	 * @return Object Name 목록
+	 */
+	public List<String> findObjectName(String namePattern) throws Exception {
+		
+		// 입력 값 검증
+		if(StringUtil.isBlank(namePattern) == true) {
+			throw new Exception("pattern is null or blank.");
+		}
+		
+		// 검색 수행
+        ObjectName query = new ObjectName(namePattern);
+        Set<ObjectName> mbeans = this.getMBeanConnection().queryNames(query, null);
+        
+        // Object Name 목록 생성 및 반환
+        List<String> nameList = new ArrayList<String>();
+        for(ObjectName mbean : mbeans) {
+        	nameList.add(mbean.getCanonicalName());
+        }
+        
+        return nameList;
+	}
+
+	/**
 	 * JMX 객체의 속성 값 반환 
 	 * 
 	 * @param objectNameStr 객체 명
