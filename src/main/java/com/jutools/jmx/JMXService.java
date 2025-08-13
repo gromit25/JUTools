@@ -193,11 +193,11 @@ public class JMXService implements Closeable {
 		
 		// 입력 값 검증
 		if(StringUtil.isBlank(namePatternStr) == true) {
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("namePatternStr is null or blank.");
 		}
 		
 		if(StringUtil.isBlank(attrNameStr) == true) {
-			throw new IllegalArgumentException("");
+			throw new IllegalArgumentException("attrNameStr is null or blank.");
 		}
 		
 		// 속성 값 맵 생성 및 반환
