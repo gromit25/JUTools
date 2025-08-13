@@ -185,7 +185,8 @@ public class JMXService implements Closeable {
 		if(this.jmxConnector == null) {
 			return;
 		}
-		
+
+		// 외부 서버 연결이 아니면 아무것도 하지 않고 반환
 		if(this.connType == JMXConnectionType.INTERNAL) {
 			return;
 		}
