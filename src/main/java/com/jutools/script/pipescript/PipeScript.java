@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import com.jutools.StringUtil;
 import com.jutools.script.olexp.OLExp;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,11 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PipeScript {
 
-	/** 변수 컨테이너의 힘메모리 키 */
-	public static final String HEAP_KEY = "<heap>";
-
-	/** 출력 큐 */
-	public static final String OUT_Q = "<out_queue>";
+	/** 변수 컨테이너의 Script Runner 객체 키 문자열 */
+	public static final String SCRIPT_RUNNER = "<script_runner>";
 	
 	
 	/** 중단 여부 */
@@ -139,19 +137,27 @@ public class PipeScript {
 	}
 	
 	/**
-	 * 변수 컨테이너의 Heap 객체를 반환
+	 * 변수 컨테이너에서 현재 Script Runner를 반환함
 	 * 
-	 * @param values 변수 컨테이너
-	 * @return Heap 객체
+	 * @param map 변수 컨테이너
+	 * @return Script Runner
 	 */
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getHeap(Map<String, ?> values) {
+	public static ScriptRunner getScriptRunner(Map<String, ?> map) throws Exception {
 		
-		if(values == null) {
-			return null;
+		if(map == null) {
+			throw new IllegalArgumentException("map is null.");
 		}
 		
-		return (Map<String, Object>)values.get(HEAP_KEY);
+		if(map.containsKey(SCRIPT_RUNNER) == false) {
+			throw new IllegalArgumentException("script runner(" + SCRIPT_RUNNER + ") is not found.");
+		}
+		
+		Object scriptRunner = map.containsKey(SCRIPT_RUNNER);
+		if(scriptRunner instanceof ScriptRunner == false) {
+			throw new IllegalArgumentException("script runner is unexpected type: " + scriptRunner.getClass());
+		}
+
+		return (ScriptRunner)scriptRunner;
 	}
 	
 	/**
@@ -160,7 +166,7 @@ public class PipeScript {
   	 *
 	 * @author jmsohn
 	 */
-	class ScriptRunner implements Runnable {
+	public static class ScriptRunner implements Runnable {
 
 		/** 중단 여부 */
 		private volatile boolean stop = true;
@@ -169,12 +175,14 @@ public class PipeScript {
 		private BlockingQueue<Map<String, Object>> inQ;
 		
 		/** 파이프 출력 큐 */
+		@Getter
 		private BlockingQueue<Map<String, Object>> outQ;
 		
 		/** 실행할 스크립트 객체 */
 		private OLExp script;
 
 		/** 스크립트 Heap - 상태 저장용 */
+		@Getter
 		private Map<String, Object> heap;
 
 
@@ -217,9 +225,9 @@ public class PipeScript {
 					}
 					
 					// 2. script 수행
-					values.put(HEAP_KEY, this.heap);
+					values.put(SCRIPT_RUNNER, this);
 					Object result = this.script.execute(values).pop(Object.class);
-					values.remove(HEAP_KEY);
+					values.remove(SCRIPT_RUNNER);
 					
 					// 3. 결괏값의 종류에 처리 수행
 					if(result instanceof Boolean) {
