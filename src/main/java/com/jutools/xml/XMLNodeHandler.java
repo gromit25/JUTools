@@ -30,8 +30,9 @@ public class XMLNodeHandler extends DefaultHandler {
 	 */
 	private boolean isTextStatus;
 	
-	/** */
+	/** XML의 텍스트 만들기 위한 임시 객체 */
 	private StringBuilder textBuilder;
+
 	
 	/**
 	 * 생성자
