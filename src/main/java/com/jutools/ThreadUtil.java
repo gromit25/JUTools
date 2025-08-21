@@ -10,7 +10,7 @@ public class ThreadUtil {
 	public static void shutdown(ExecutorService execSvc) throws Exception {
 
 		// 입력값 검증
-		if(this.execSvc == null || this.execSvc.isShutdonw() == true) {
+		if(execSvc == null || execSvc.isShutdonw() == true) {
 			return;
 		}
 
