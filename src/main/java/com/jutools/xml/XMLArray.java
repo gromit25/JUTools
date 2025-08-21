@@ -15,6 +15,7 @@ public class XMLArray implements Iterable<XMLNode> {
 	/** XML 노드 목록 객체 */
 	private List<XMLNode> nodes = new Vector<>();
 	
+	
 	/**
 	 * 생성자
 	 */
