@@ -302,7 +302,10 @@ public class PipeScript {
 		 * @param timeout 타임 아웃 설정
 		 * @param listenerAry 리스너 목록
 		 */
-		public <T extends TimeoutEvent> void runTimer(long timeout, Consumer<T>... listenerAry) throws Exception {
+		public <T extends TimeoutEvent> void runTimer(
+			long timeout,
+			Consumer<T>... listenerAry
+		) throws Exception {
 
 			// 타이머 객체 생성
 			this.timer = new Timer<T>(timeout);
