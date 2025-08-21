@@ -8,11 +8,13 @@ package com.jutools;
 public class ThreadUtil {
 
 	public static void shutdown(ExecutorService execSvc) throws Exception {
-    
+
+		// 입력값 검증
 		if(this.execSvc == null || this.execSvc.isShutdonw() == true) {
 			return;
 		}
-    
+
+		// 셧다운 수행
 		execSvc.shutdown();
 		
 		try {
