@@ -7,6 +7,11 @@ package com.jutools;
  */
 public class ThreadUtil {
 
+	/**
+	 * ExecutorService 객체의 shutdown 수행
+	 *
+	 * @param execSvc shutdown 할 ExecutorService 객체
+	 */
 	public static void shutdown(ExecutorService execSvc) throws Exception {
 
 		// 입력값 검증
