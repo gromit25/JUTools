@@ -185,6 +185,8 @@ public class PipeScript {
 		@Getter
 		private Map<String, Object> heap;
 
+		/** 데이터 수신 타이머 */
+		private Timer timer;
 
 		/**
   		 * 생성자
@@ -222,6 +224,10 @@ public class PipeScript {
 					Map<String, Object> values = this.inQ.poll(1, TimeUnit.SECONDS);;
 					if(values == null) {
 						continue;
+					}
+
+					if(this.timer != null) {
+						this.timer.touch();
 					}
 					
 					// 2. script 수행
@@ -268,5 +274,27 @@ public class PipeScript {
 
 			return this;
 		}
-	}
+
+		/**
+		 * 타이머 설정 및 실행
+		 *
+		 * @param timeout 타임 아웃 설정
+		 * @param listenerAry 리스너 목록
+		 */
+		public <T extends TimeoutEvent> void runTimer(long timeout, Consumer<T>... listenerAry) throws Exception {
+
+			// 타이머 객체 생성
+			this.timer = new Timer<T>(timeout);
+
+			// 타이머에 리스너 추가
+			if(listenerAry != null && listenerAry.length > 0) {
+				for(Consumer<? extends TimeoutEvent> listener: listenerAry) {
+					this.timer.add(listener);
+				}
+			}
+
+			// 타이머 실행
+			this.timer.run();
+		}
+	} // end of ScriptRunner
 }
