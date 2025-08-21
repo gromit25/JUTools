@@ -36,7 +36,7 @@ public class PipeScript {
 	private List<ScriptRunner> scriptRunnerList;
 
 	/** 각 파이프 스크립트를 실행하는 실행자 */
-	private ExecutorService executor;
+	private ExecutorService execSvc;
 
 	
 	/**
@@ -103,10 +103,10 @@ public class PipeScript {
 		if(this.scriptRunnerList == null || this.scriptRunnerList.size() == 0) {
 			throw new IllegalStateException("pipe script is not set.");
 		}
-			
-		this.executor = Executors.newFixedThreadPool(this.scriptRunnerList.size());
+		
+		this.execSvc = Executors.newFixedThreadPool(this.scriptRunnerList.size());
 		for(ScriptRunner scriptRunner: this.scriptRunnerList) {
-			this.executor.submit(scriptRunner);
+			this.execSvc.submit(scriptRunner);
 		}
 
 		this.stop = false;
@@ -119,11 +119,11 @@ public class PipeScript {
 
 		// 중단할 thread가 있는지 확인
 		// stop 은 검사하지 않음, 중단 상태라도 수행 중인 thread가 존재할 경우 중단하기 위함
-		if(this.executor == null || this.executor.isShutdown() == true) {
+		if(this.execSvc == null || this.execSvc.isShutdown() == true) {
 			return;
 		}
 
-		this.executor.shutdown();
+		this.execSvc.shutdown();
 		this.stop = true;
 	}
 	
@@ -191,6 +191,7 @@ public class PipeScript {
 		/** 데이터 수신 타이머 */
 		private Timer timer;
 
+		
 		/**
   		 * 생성자
 		 *
@@ -303,6 +304,22 @@ public class PipeScript {
 
 			// 타이머 실행
 			this.timer.run();
+		}
+
+		/**
+		 *
+		 */
+		public void stop() throws Exception {
+
+			// 타이머 중단
+			if(this.timer != null) {
+				this.timer.stop();
+			}
+
+			// 스레드 중단
+			if(this.scriptExecSvc != null && this.scriptExecSvc.isShutdonw() == false) {
+				this.scriptExecSvc.shutdown();
+			}
 		}
 	} // end of ScriptRunner
 }
