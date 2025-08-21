@@ -1,5 +1,8 @@
 package com.jutools;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /**
  * 스레드 처리관련 Utility
  *
@@ -15,7 +18,7 @@ public class ThreadUtil {
 	public static void shutdown(ExecutorService execSvc) throws Exception {
 
 		// 입력값 검증
-		if(execSvc == null || execSvc.isShutdonw() == true) {
+		if(execSvc == null || execSvc.isShutdown() == true) {
 			return;
 		}
 
