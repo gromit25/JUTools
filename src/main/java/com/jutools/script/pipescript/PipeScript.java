@@ -85,6 +85,7 @@ public class PipeScript {
    	 */
 	public void run() throws Exception {
 
+		// 실행 상태 검사
 		if(this.stop == false) {
 			throw new IllegalStateException("pipe script is already started.");
 		}
@@ -93,12 +94,14 @@ public class PipeScript {
 			throw new IllegalStateException("pipe script is not set.");
 		}
 		
+		// 실행 상태를 실행으로 변경
+		this.stop = false;
+		
+		// 스크립트 실행
 		this.execSvc = Executors.newFixedThreadPool(this.scriptRunnerList.size());
 		for(ScriptRunner scriptRunner: this.scriptRunnerList) {
 			this.execSvc.submit(scriptRunner);
 		}
-
-		this.stop = false;
 	}
 
 	/**
