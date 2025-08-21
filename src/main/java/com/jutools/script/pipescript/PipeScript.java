@@ -181,6 +181,9 @@ public class PipeScript {
 		/** 실행할 스크립트 객체 */
 		private OLExp script;
 
+		/** 스크립트 실행 스레드 관리 객체 */
+		private ExecutorService scriptExecSvc = Executors.newCachedThreadPool();
+
 		/** 스크립트 Heap - 상태 저장용 */
 		@Getter
 		private Map<String, Object> heap;
@@ -200,17 +203,16 @@ public class PipeScript {
 			this.script = OLExp.compile(scriptStr, methodClassAry);
 
 			// 입력/출력 큐 설정
-			this.inQ = new LinkedBlockingQueue<>(); // Thread Safe
+			this.inQ = new LinkedBlockingQueue<>();
 			this.outQ = null;
 			
 			// Heap 생성
-			this.heap = new ConcurrentHashMap<>(); // Thread Safe
+			this.heap = new ConcurrentHashMap<>();
 		}
 
 		/**
   		 * 실행 메소드
    		 */
-		@SuppressWarnings("unchecked")
 		@Override
 		public void run() {
 
@@ -220,34 +222,40 @@ public class PipeScript {
 
 				try {
 					
-					// 1. 큐에서 값을 전달 받음
+					// 입력 큐에서 값을 전달 받음
 					Map<String, Object> values = this.inQ.poll(1, TimeUnit.SECONDS);;
 					if(values == null) {
 						continue;
 					}
 
+					// 타이머가 있는 경우 touch
 					if(this.timer != null) {
 						this.timer.touch();
 					}
+
+					// 스크립트 실행
+					this.scriptExecSvc.submit(() -> {
 					
-					// 2. script 수행
-					values.put(SCRIPT_RUNNER, this);
-					Object result = this.script.execute(values).pop(Object.class);
-					values.remove(SCRIPT_RUNNER);
+						// 1. script 수행
+						values.put(SCRIPT_RUNNER, this);
+						Object result = this.script.execute(values).pop(Object.class);
+						values.remove(SCRIPT_RUNNER);
 					
-					// 3. 결괏값의 종류에 처리 수행
-					if(result instanceof Boolean) {
-						if(((Boolean)result) == false) {
-							continue;
+						// 2. 결괏값의 종류에 처리 수행
+						if(result instanceof Boolean) {
+							if(((Boolean)result) == false) {
+								return;
+							}
+						} else if(result instanceof Map) {
+							@SuppressWarnings("unchecked")
+							values.putAll((Map<String, Object>)result);
 						}
-					} else if(result instanceof Map) {
-						values.putAll((Map<String, Object>)result);
-					}
 					
-					// 4. 다음 컴포넌트로 데이터 전달
-					if(this.outQ != null) {
-						this.outQ.put(values);
-					}
+						// 3. 다음 컴포넌트로 데이터 전달
+						if(this.outQ != null) {
+							this.outQ.put(values);
+						}
+					});
 					
 				} catch(InterruptedException iex) {
 					log.error("interrupt is occured.", iex);
