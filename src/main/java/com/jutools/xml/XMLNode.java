@@ -35,6 +35,7 @@ public class XMLNode {
 	/** 자식 노드 목록 */
 	private XMLArray childs = new XMLArray();
 	
+	
 	/**
 	 * 생성자 - 패키지 외부에서 생성못하게함
 	 */
