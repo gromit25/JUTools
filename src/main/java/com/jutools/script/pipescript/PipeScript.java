@@ -336,6 +336,7 @@ public class PipeScript {
 			// 스레드 중단
 			ThreadUtil.shutdown(this.scriptExecSvc);
 
+			// 중단 상태로 변경
 			this.stop = true;
 		}
 	} // end of ScriptRunner
