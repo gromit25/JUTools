@@ -117,6 +117,18 @@ public class PipeScript {
    	 */
 	public void stop() {
 
+		// 중단 여부 확인
+		if(this.stop == true) {
+			return;
+		}
+
+		// 각 Script Runner 중단
+		for(ScriptRunner scriptRunner: scriptRunnerList) {
+			try {
+				scriptRunner.stop();
+			} catch(Exception ex) {}
+		}
+
 		// 중단할 thread가 있는지 확인
 		// stop 은 검사하지 않음, 중단 상태라도 수행 중인 thread가 존재할 경우 중단하기 위함
 		if(this.execSvc == null || this.execSvc.isShutdown() == true) {
