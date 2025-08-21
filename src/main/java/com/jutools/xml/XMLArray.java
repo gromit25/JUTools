@@ -37,16 +37,18 @@ public class XMLArray implements Iterable<XMLNode> {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * 하위 노드를 Stream 으로 반환
+	 *
+	 * @return 하위 노드 Stream
 	 */
 	public Stream<XMLNode> stream() {
         return this.nodes.stream();
     }
 	
 	/**
+	 * 하위 노드를 병렬 Stream 으로 반환
 	 * 
-	 * @return
+	 * @return 하위 노드 병렬 Stream
 	 */
 	public Stream<XMLNode> parallelStream() {
         return this.nodes.parallelStream();
