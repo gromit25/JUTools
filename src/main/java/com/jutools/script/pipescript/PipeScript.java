@@ -323,6 +323,11 @@ public class PipeScript {
 		 */
 		public void stop() throws Exception {
 
+			// 이미 중단 되어 있으면 반환
+			if(this.stop == true) {
+				return;
+			}
+
 			// 타이머 중단
 			if(this.timer != null) {
 				this.timer.stop();
@@ -330,6 +335,8 @@ public class PipeScript {
 
 			// 스레드 중단
 			ThreadUtil.shutdown(this.scriptExecSvc);
+
+			this.stop = true;
 		}
 	} // end of ScriptRunner
 }
