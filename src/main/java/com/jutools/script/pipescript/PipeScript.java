@@ -129,13 +129,10 @@ public class PipeScript {
 			} catch(Exception ex) {}
 		}
 
-		// 중단할 thread가 있는지 확인
-		// stop 은 검사하지 않음, 중단 상태라도 수행 중인 thread가 존재할 경우 중단하기 위함
-		if(this.execSvc == null || this.execSvc.isShutdown() == true) {
-			return;
-		}
+		// 스레드 shutdown
+		ThreadUtil.shutdown(this.execSvc);
 
-		this.execSvc.shutdown();
+		// 상태 변경
 		this.stop = true;
 	}
 	
@@ -322,7 +319,7 @@ public class PipeScript {
 		}
 
 		/**
-		 *
+		 * 스레드 중지
 		 */
 		public void stop() throws Exception {
 
@@ -332,9 +329,7 @@ public class PipeScript {
 			}
 
 			// 스레드 중단
-			if(this.scriptExecSvc != null && this.scriptExecSvc.isShutdonw() == false) {
-				this.scriptExecSvc.shutdown();
-			}
+			ThreadUtil.shutdown(this.scriptExecSvc);
 		}
 	} // end of ScriptRunner
 }
