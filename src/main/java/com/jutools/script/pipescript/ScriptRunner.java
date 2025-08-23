@@ -227,7 +227,7 @@ public class ScriptRunner implements Runnable {
 			throw new IllegalArgumentException("script runner(" + SCRIPT_RUNNER + ") is not found.");
 		}
 		
-		Object scriptRunner = map.containsKey(SCRIPT_RUNNER);
+		Object scriptRunner = map.get(SCRIPT_RUNNER);
 		if(scriptRunner instanceof ScriptRunner == false) {
 			throw new IllegalArgumentException("script runner is unexpected type: " + scriptRunner.getClass());
 		}
