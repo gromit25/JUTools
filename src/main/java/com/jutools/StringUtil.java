@@ -1186,7 +1186,7 @@ public class StringUtil {
 	public static ArrayList<String> findAllVars(String str) {
 
 		// 변수명을 순서대로 담을 목록
-		ArrayList<String> vars = new ArrayList<>();
+		List<String> vars = new ArrayList<>();
 		// ${변수}의 변수 명을 담을 임시 변수
 		StringBuilder var = new StringBuilder();
 
@@ -1266,8 +1266,7 @@ public class StringUtil {
 	 */
 	public static String[] splitFirst(String target, String pattern) throws Exception {
 		return splitFirstN(target, pattern, 1);
-	} // End of splitFirst
-	
+	}
 	
 	/**
 	 * target 문자열 내에 처음부터 n회 패턴(pattern)으로 나누어 반환<br>
@@ -1309,7 +1308,7 @@ public class StringUtil {
 		}
 		
 		// 분리된 문자열을 저장할 변수
-		ArrayList<String> splited = new ArrayList<String>();
+		List<String> splited = new ArrayList<String>();
 		
 		// target 문자열에 패턴 적용
 		Pattern patternP = Pattern.compile(pattern);
