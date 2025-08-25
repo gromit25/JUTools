@@ -235,7 +235,7 @@ public class StringUtil {
 		}
 		
 		// 검색 문자열들에 대한 정보 객체 변수 선언 및 초기화 수행
-		ArrayList<FindStr> findStrObjs = new ArrayList<FindStr>(findStrs.length);
+		List<FindStr> findStrObjs = new ArrayList<FindStr>(findStrs.length);
 		for(int index = 0; index < findStrs.length; index++) {
 			findStrObjs.add(new FindStr(findStrs[index], ignoreCase));
 		}
@@ -435,7 +435,7 @@ public class StringUtil {
 	public static String join(String delimiter, Iterable<?> iter) throws Exception {
 		
 		// iterator에서 문자열 목록을 만듦
-		ArrayList<String> strs = new ArrayList<>();
+		List<String> strs = new ArrayList<>();
 		
 		iter.forEach(obj -> {
 			strs.add(obj.toString());
@@ -563,7 +563,7 @@ public class StringUtil {
 		}
 		
 		// 나누어진 문자열들을 보관하는 변수 
-		ArrayList<String> splitedStrs = new ArrayList<String>();
+		List<String> splitedStrs = new ArrayList<String>();
 		// 문자열을 나누기 위한 임시 변수
 		StringBuilder splitedStrBuffer = new StringBuilder("");
 		// 이전 문자가 escape 문자였는지 여부
@@ -732,11 +732,11 @@ public class StringUtil {
 		
 		// wildcard match시에만 사용
 		/** 매치된 문자열 목록 */
-		private ArrayList<String> groups;
+		private List<String> groups;
 		/** 매치된 문자열의 시작 위치 목록 */
-		private ArrayList<Integer> starts;
+		private List<Integer> starts;
 		/** 매치된 문자열의 길이 목록 */
-		private ArrayList<Integer> lengths;
+		private List<Integer> lengths;
 		
 		/**
 		 * 생성자
@@ -1038,11 +1038,11 @@ public class StringUtil {
 		/** 매치 여부 */
 		private boolean match;
 		/** 매치된 문자열 목록 */
-		private ArrayList<String> groups;
+		private List<String> groups;
 		/** 매치된 문자열의 시작 위치 목록 */
-		private ArrayList<Integer> starts;
+		private List<Integer> starts;
 		/** 매치된 문자열의 길이 목록 */
-		private ArrayList<Integer> lengths;
+		private List<Integer> lengths;
 		
 		/**
 		 * 생성자
@@ -1053,7 +1053,7 @@ public class StringUtil {
 		 * @param lengths 매치된 문자열의 길이 목록
 		 */
 		@Builder
-		public WildcardMatcher(boolean match, ArrayList<String> groups, ArrayList<Integer> starts, ArrayList<Integer> lengths) {
+		public WildcardMatcher(boolean match, List<String> groups, List<Integer> starts, List<Integer> lengths) {
 			this.match = match;
 			this.groups = groups;
 			this.starts = starts;
@@ -1184,7 +1184,7 @@ public class StringUtil {
 	 * @param str 변수가 포함된 문자열
 	 * @return 변수 목록
 	 */
-	public static ArrayList<String> findAllVars(String str) {
+	public static List<String> findAllVars(String str) {
 
 		// 변수명을 순서대로 담을 목록
 		List<String> vars = new ArrayList<>();
