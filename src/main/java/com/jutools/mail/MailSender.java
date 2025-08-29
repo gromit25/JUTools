@@ -62,16 +62,22 @@ public class MailSender {
 	 * 
 	 * 
 	 * @param props
+	 * @param password
 	 * @param charset
 	 */
-	MailSender(Properties props, String charset) throws Exception {
+	MailSender(Properties props, String password, String charset) throws Exception {
 		
 		if(props == null) {
 			throw new IllegalArgumentException("props is null.");
 		}
 
 		this.props = props;
-		if(charset != null) {
+		
+		if(StringUtil.isBlank(password) == true) {
+			throw new IllegalArgumentException("password is null or blank.");
+		}
+		
+		if(StringUtil.isBlank(charset) == false) {
 			this.charset = charset;
 		}
 	}
