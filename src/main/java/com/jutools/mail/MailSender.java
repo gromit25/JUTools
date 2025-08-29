@@ -36,11 +36,11 @@ public class MailSender {
 	/** 캐릭터 셋 설정 */
 	private String charset = "UTF-8";
 	
-	/** 발송자 메일 주소 */
+	/** 발신인 메일 주소 */
 	@Getter
 	private InternetAddress sender;
 
-	/** 발송자 메일 서버 패스워드 */
+	/** 발신인 메일 서버 패스워드 */
 	private String password;
 	
 	/** 수신자 메일 주소 목록 */
