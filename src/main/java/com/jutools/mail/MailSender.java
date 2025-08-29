@@ -19,10 +19,11 @@ public class MailSender {
 	
 	/** */
 	@Getter
-	private String sender;
+	private InternetAddress sender;
 	
 	/** */
-	private List<String> receiverList = new Vector<>();
+	@Getter
+	private List<InternetAddress> receiverList = new Vector<>();
 	
 	/** */
 	private TextGen subjectGen;
@@ -82,6 +83,32 @@ public class MailSender {
 		// subject/body 생성
 		String subject = this.subjectGen.gen(values);
 		String body = this.bodyGen.gen(values);
+
+		// 메일 발송 ----------
+		// 메일 발송 세션 생성
+		Session sess = Session.getDefaultInstance(this.prop, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(sender, senderPwd);
+			}
+		};
+
+		// 메시지 생성
+		MimeMessage message = new MimeMessage(this.session);
+
+		// 메시지 발신자 설정
+		message.setFrom(this.sender);
+
+		// 메시지 수신자 설정
+		helper.setTo(this.receiverList.toArray());
+
+		// 메시지 제목 설정
+		helper.setSubject(MimeUtility.encodeText(subject, mailCharset, "B"));
+
+		// 메시지 내용 설정
+		helper.setText(body, true);
+
+		// 메시지 전송
+		Transport.send(message);
 	}
 	
 	/**
@@ -91,7 +118,7 @@ public class MailSender {
 	 * @return
 	 */
 	public MailSender setSender(String sender) throws Exception {
-		this.sender = sender;
+		this.sender = new InternetAddress(sender);
 		return this;
 	}
 
@@ -101,26 +128,28 @@ public class MailSender {
 	 * @param receiveerAry
 	 * @return
 	 */
-	public MailSender addReceiver(String... receiverAry) {
+	public MailSender addReceiver(String... receiverAry) throws Exception {
 
 		if(receiverAry == null || receiverAry.length == 0) {
 			return this;
 		}
 
 		for(String receiver: receiverAry) {
-			this.receiverList.add(receiver);
+			this.receiverList.add(new InternetAddress(receiver));
 		}
 		
 		return this;
 	}
 
-	public MailSender addReceiver(List<String> receiverList) {
+	public MailSender addReceiver(List<String> receiverList) throws Exception {
 		
 		if(receiverList == null || receiverList.size() == 0) {
 			return this;
 		}
 
-		this.receiverList.addAll(receiverList);
+		for(String receiver: receiverList) {
+			this.receiverList.add(new InternetAddress(receiver));
+		}
 
 		return this;
 	}
