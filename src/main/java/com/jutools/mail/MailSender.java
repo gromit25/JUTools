@@ -62,21 +62,32 @@ public class MailSender {
 	 * 
 	 * 
 	 * @param props
+	 * @param sender
 	 * @param password
 	 * @param charset
 	 */
-	MailSender(Properties props, String password, String charset) throws Exception {
-		
+	MailSender(Properties props, InternetAddress sender, String password, String charset) throws Exception {
+
+		// 접속 프로퍼티 설정
 		if(props == null) {
 			throw new IllegalArgumentException("props is null.");
 		}
 
 		this.props = props;
-		
+
+		// 발신인 설정
+		if(sender == null) {
+			throw new IllegalArgumentException("sender is null.");
+		}
+		this.sender = sender;
+
+		// 패스워드 설정
 		if(StringUtil.isBlank(password) == true) {
 			throw new IllegalArgumentException("password is null or blank.");
 		}
-		
+		this.password = password;
+
+		// 캐릭터셋 설정
 		if(StringUtil.isBlank(charset) == false) {
 			this.charset = charset;
 		}
@@ -164,17 +175,6 @@ public class MailSender {
 		Transport.send(message);
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param sender
-	 * @return
-	 */
-	public MailSender setSender(String sender) throws Exception {
-		this.sender = new InternetAddress(sender);
-		return this;
-	}
-
 	/**
 	 *
 	 *
