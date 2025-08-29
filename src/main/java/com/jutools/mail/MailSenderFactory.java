@@ -24,6 +24,10 @@ public class MailSenderFactory {
 	public MailSenderFactory() {
 		this.props.put(MailConstant.AUTH, "true");
 	}
+
+	public MailSender build() throws Exception {
+		return new MailSender(this.props, this.password, this.charset);
+	}
 	
 	public MailSenderFactory host(String host) {
 		this.props.put(MailConstant.HOST, host);
@@ -58,9 +62,5 @@ public class MailSenderFactory {
 	public MailSenderFactory charset(String charset) {
 		this.charset = charset;
 		return this;
-	}
-	
-	public MailSender build() throws Exception {
-		return new MailSender(this.props, this.password, this.charset);
 	}
 }
