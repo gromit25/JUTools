@@ -53,7 +53,7 @@ public class MailSender {
 	/** 내용 생성기 */
 	private TextGen bodyGen;
 	
-	/** 내용의 MIME Type*/
+	/** 내용의 MIME Type */
 	private String bodyMimeType = "text/html; charset=UTF-8";
 	
 	/** 첨무 파일 목록 */
