@@ -7,47 +7,49 @@ import com.jutools.StringUtil;
 import jakarta.mail.internet.InternetAddress;
 
 /**
- * 
+ * MailSender 팩토리 클래스
  * 
  * @author jmsohn
  */
 public class MailSenderFactory {
 	
-	/** */
+	/** 메일 서버 연결을 위한 설정 프로퍼티 */
 	private Properties props = new Properties();
 	
-	/** */
+	/** 캐릭터 셋 */
 	private String charset = "UTF-8";
 
-	/** */
+	/** 발신인 이메일 주소 */
 	private InternetAddress sender;
 	
-	/** */
+	/** 메일 서버 접속용 발신인 패스워드 */
 	private String password;
 	
 	/**
-	 * 
+	 * 생성자
 	 */
 	public MailSenderFactory() {
+
+		// 디폴트 값 설정
 		this.props.put(MailConstant.AUTH, "true");
 		this.props.put(MailConstant.PORT, "25");
 		this.props.put(MailConstant.DEBUG, "false");
 	}
 
 	/**
+	 * 설정된 값으로 MailSender 객체 생성 후 반환
 	 * 
-	 * 
-	 * @return
+	 * @return 생성된 MailSender 객체
 	 */
 	public MailSender build() throws Exception {
 		return new MailSender(this.props, this.sender, this.password, this.charset);
 	}
 	
 	/**
+	 * 메일 서버 설정 - 필수
 	 * 
-	 * 
-	 * @param host
-	 * @return
+	 * @param host 메일 서버
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory host(String host) throws Exception {
 		
@@ -60,10 +62,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * 메일 서버 포트 설정 - 옵션(디폴트: 25)
 	 * 
-	 * 
-	 * @param port
-	 * @return
+	 * @param port 메일 서버 포트
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory port(int port) throws Exception {
 		
@@ -76,10 +78,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * 디버그 모드 사용 여부 설정 - 옵션(디폴트 : false)
 	 * 
-	 * 
-	 * @param debug
-	 * @return
+	 * @param debug 디버그 모드 사용 여부
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory debug(boolean debug) {
 		this.props.put(MailConstant.DEBUG, Boolean.toString(debug));
@@ -87,10 +89,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * SSL 사용여부 설정 - 옵편(디폴트 : false)
 	 * 
-	 * 
-	 * @param ssl
-	 * @return
+	 * @param ssl SSL 사용 여부
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory ssl(boolean ssl) {
 		this.props.put(MailConstant.SSL, Boolean.toString(ssl));
@@ -98,10 +100,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * TLS 사용여부 설정 - 옵편(디폴트 : false)
 	 * 
-	 * 
-	 * @param tls
-	 * @return
+	 * @param tls TLS 사용 여부
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory tls(boolean tls) {
 		this.props.put(MailConstant.TLS, Boolean.toString(tls));
@@ -109,10 +111,10 @@ public class MailSenderFactory {
 	}
 
 	/**
+	 * 발신인 이메일 주소 설정
 	 * 
-	 * 
-	 * @param sender
-	 * @return
+	 * @param sender 발신인 이메일 주소
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory sender(String sender) throws Exception {
 
@@ -125,10 +127,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * 메일 서버 접속용 발신인 패스워드 설정
 	 * 
-	 * 
-	 * @param password
-	 * @return
+	 * @param password 메일 서버 접속용 발신인 패스워드
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory password(String password) throws Exception {
 		
@@ -141,9 +143,10 @@ public class MailSenderFactory {
 	}
 	
 	/**
+	 * 캐릭터 셋 설정
 	 * 
-	 * @param charset
-	 * @return
+	 * @param charset 캐릭터 셋
+	 * @return 현재 객체
 	 */
 	public MailSenderFactory charset(String charset) throws Exception {
 		
