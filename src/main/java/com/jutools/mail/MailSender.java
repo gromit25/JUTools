@@ -124,7 +124,8 @@ public class MailSender {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(sender.getAddress(), password);
 				}
-			});
+			}
+		);
 
 		// 메시지 생성
 		MimeMessage message = new MimeMessage(session);
