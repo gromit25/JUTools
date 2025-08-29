@@ -24,6 +24,7 @@ public class MailSenderFactory {
 	
 	/** 메일 서버 접속용 발신인 패스워드 */
 	private String password;
+
 	
 	/**
 	 * 생성자
