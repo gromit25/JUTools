@@ -67,7 +67,7 @@ public class MailSenderFactory {
 	 */
 	public MailSenderFactory port(int port) throws Exception {
 		
-		if(port < 0) {
+		if(port <= 0 || port > 65535) {
 			throw new IllegalArgumentException("port number is invalid: " + port);
 		}
 		
