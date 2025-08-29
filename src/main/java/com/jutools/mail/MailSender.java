@@ -2,10 +2,26 @@ package com.jutools.mail;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Vector;
 
+import com.jutools.StringUtil;
+import com.jutools.TextGen;
+import com.jutools.TypeUtil;
+
+import jakarta.mail.Authenticator;
+import jakarta.mail.Multipart;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage.RecipientType;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.internet.MimeUtility;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 
@@ -18,8 +34,13 @@ public class MailSender {
 	private Properties props;
 	
 	/** */
+	private String charset = "UTF-8";
+	
+	/** */
 	@Getter
 	private InternetAddress sender;
+	
+	private String password;
 	
 	/** */
 	@Getter
@@ -32,20 +53,27 @@ public class MailSender {
 	private TextGen bodyGen;
 	
 	/** */
+	private String bodyMimeType = "text/html; charset=UTF-8";
+	
+	/** */
 	private List<File> attachFileList = new Vector<>();
 	
 	/**
 	 * 
 	 * 
 	 * @param props
+	 * @param charset
 	 */
-	MailSender(Properties props) throws Exception {
+	MailSender(Properties props, String charset) throws Exception {
 		
 		if(props == null) {
 			throw new IllegalArgumentException("props is null.");
 		}
 
 		this.props = props;
+		if(charset != null) {
+			this.charset = charset;
+		}
 	}
 
 	/**
@@ -64,8 +92,12 @@ public class MailSender {
 			throw new Exception("properties is null.");
 		}
 
-		if(StirngUtil.isBlank(this.sender) == true) {
-			throw new Exception("sender is null or blank.");
+		if(this.sender == null) {
+			throw new Exception("sender is null.");
+		}
+		
+		if(StringUtil.isBlank(this.password) == true) {
+			throw new Exception("password is blank or null.");
 		}
 
 		if(this.receiverList == null || this.receiverList.size() == 0) {
@@ -86,26 +118,40 @@ public class MailSender {
 
 		// 메일 발송 ----------
 		// 메일 발송 세션 생성
-		Session sess = Session.getDefaultInstance(this.prop, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(sender, senderPwd);
-			}
-		};
+		Session session = Session.getDefaultInstance(
+			this.props,
+			new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(sender.getAddress(), password);
+				}
+			});
 
 		// 메시지 생성
-		MimeMessage message = new MimeMessage(this.session);
+		MimeMessage message = new MimeMessage(session);
 
 		// 메시지 발신자 설정
 		message.setFrom(this.sender);
 
 		// 메시지 수신자 설정
-		helper.setTo(this.receiverList.toArray());
+		message.setRecipients(
+			RecipientType.TO,
+			TypeUtil.toArray(this.receiverList, InternetAddress.class)
+		);
 
 		// 메시지 제목 설정
-		helper.setSubject(MimeUtility.encodeText(subject, mailCharset, "B"));
+		message.setSubject(
+			MimeUtility.encodeText(subject, this.charset, "B")
+		);
 
 		// 메시지 내용 설정
-		helper.setText(body, true);
+		Multipart content = new MimeMultipart();
+		
+		MimeBodyPart bodyPart = new MimeBodyPart();
+		bodyPart.setContent(body, bodyMimeType);
+		
+		content.addBodyPart(bodyPart);
+		
+		message.setContent(content);
 
 		// 메시지 전송
 		Transport.send(message);
@@ -141,6 +187,12 @@ public class MailSender {
 		return this;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param receiverList
+	 * @return
+	 */
 	public MailSender addReceiver(List<String> receiverList) throws Exception {
 		
 		if(receiverList == null || receiverList.size() == 0) {
@@ -154,16 +206,34 @@ public class MailSender {
 		return this;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param subjectTemplate
+	 * @return
+	 */
 	public MailSender setSubjectTemplate(String subjectTemplate) throws Exception {
 		this.subjectGen = TextGen.compile(subjectTemplate);
 		return this;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param bodyTemplate
+	 * @return
+	 */
 	public MailSender setBodyTemplate(String bodyTemplate) throws Exception {
 		this.bodyGen = TextGen.compile(bodyTemplate);
 		return this;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param attachFileAry
+	 * @return
+	 */
 	public MailSender addFile(File... attachFileAry) {
 
 		if(attachFileAry == null || attachFileAry.length == 0) {
@@ -171,13 +241,19 @@ public class MailSender {
 		}
 
 		for(File attachFile: attachFileAry) {
-			this.attach.add(attachFile);
+			this.attachFileList.add(attachFile);
 		}
 		
 		return this;
 	}
 
-	public MailSender addFile(List<String> attachFileList) {
+	/**
+	 * 
+	 * 
+	 * @param attachFileList
+	 * @return
+	 */
+	public MailSender addFile(List<File> attachFileList) {
 		
 		if(attachFileList == null || attachFileList.size() == 0) {
 			return this;
