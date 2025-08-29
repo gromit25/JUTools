@@ -16,6 +16,9 @@ public class MailSenderFactory {
 	
 	/** */
 	private String charset = "UTF-8";
+
+	/** */
+	private InetAddress sender;
 	
 	/** */
 	private String password;
@@ -100,6 +103,22 @@ public class MailSenderFactory {
 	 */
 	public MailSenderFactory tls(boolean tls) {
 		this.props.put(MailConstant.TLS, Boolean.toString(tls));
+		return this;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	public MailSenderFactory sender(String sender) throws Exception {
+
+		if(StringUtil.isBlank(sender) == true) {
+			throw new IllegalArgumentException("sender is null or blank.");
+		}
+		
+		this.sender = new InetAddress(sender);
 		return this;
 	}
 	
