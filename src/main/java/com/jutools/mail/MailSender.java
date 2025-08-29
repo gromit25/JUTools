@@ -98,6 +98,7 @@ public class MailSender {
  	 * 메일 전송 실행
 	 *
 	 * @param values 변수 컨테이너
+	 * @return 현재 객체
 	 */
 	public MailSender send(Map<String, ?> values) throws Exception {
 
