@@ -4,6 +4,8 @@ import java.util.Properties;
 
 import com.jutools.StringUtil;
 
+import jakarta.mail.internet.InternetAddress;
+
 /**
  * 
  * 
@@ -18,7 +20,7 @@ public class MailSenderFactory {
 	private String charset = "UTF-8";
 
 	/** */
-	private InetAddress sender;
+	private InternetAddress sender;
 	
 	/** */
 	private String password;
@@ -38,7 +40,7 @@ public class MailSenderFactory {
 	 * @return
 	 */
 	public MailSender build() throws Exception {
-		return new MailSender(this.props, this.password, this.charset);
+		return new MailSender(this.props, this.sender, this.password, this.charset);
 	}
 	
 	/**
@@ -118,7 +120,7 @@ public class MailSenderFactory {
 			throw new IllegalArgumentException("sender is null or blank.");
 		}
 		
-		this.sender = new InetAddress(sender);
+		this.sender = new InternetAddress(sender);
 		return this;
 	}
 	
