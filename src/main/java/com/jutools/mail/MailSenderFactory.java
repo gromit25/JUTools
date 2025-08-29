@@ -2,6 +2,8 @@ package com.jutools.mail;
 
 import java.util.Properties;
 
+import com.jutools.StringUtil;
+
 /**
  * 
  * 
@@ -23,43 +25,111 @@ public class MailSenderFactory {
 	 */
 	public MailSenderFactory() {
 		this.props.put(MailConstant.AUTH, "true");
+		this.props.put(MailConstant.PORT, "25");
+		this.props.put(MailConstant.DEBUG, "false");
 	}
 
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	public MailSender build() throws Exception {
 		return new MailSender(this.props, this.password, this.charset);
 	}
 	
-	public MailSenderFactory host(String host) {
+	/**
+	 * 
+	 * 
+	 * @param host
+	 * @return
+	 */
+	public MailSenderFactory host(String host) throws Exception {
+		
+		if(StringUtil.isBlank(host) == true) {
+			throw new IllegalArgumentException("host name is null or blank.");
+		}
+		
 		this.props.put(MailConstant.HOST, host);
 		return this;
 	}
 	
-	public MailSenderFactory port(int port) {
+	/**
+	 * 
+	 * 
+	 * @param port
+	 * @return
+	 */
+	public MailSenderFactory port(int port) throws Exception {
+		
+		if(port < 0) {
+			throw new IllegalArgumentException("port number is invalid: " + port);
+		}
+		
 		this.props.put(MailConstant.PORT, Integer.toString(port));
 		return this;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param debug
+	 * @return
+	 */
 	public MailSenderFactory debug(boolean debug) {
-		this.props.put(MailConstant.DEGUG, Boolean.toString(debug));
+		this.props.put(MailConstant.DEBUG, Boolean.toString(debug));
 		return this;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param ssl
+	 * @return
+	 */
 	public MailSenderFactory ssl(boolean ssl) {
 		this.props.put(MailConstant.SSL, Boolean.toString(ssl));
 		return this;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param tls
+	 * @return
+	 */
 	public MailSenderFactory tls(boolean tls) {
 		this.props.put(MailConstant.TLS, Boolean.toString(tls));
 		return this;
 	}
 	
-	public MailSenderFactory password(String password) {
+	/**
+	 * 
+	 * 
+	 * @param password
+	 * @return
+	 */
+	public MailSenderFactory password(String password) throws Exception {
+		
+		if(StringUtil.isBlank(password) == true) {
+			throw new IllegalArgumentException("password is null or blank.");
+		}
+		
 		this.password = password;
 		return this;
 	}
 	
-	public MailSenderFactory charset(String charset) {
+	/**
+	 * 
+	 * @param charset
+	 * @return
+	 */
+	public MailSenderFactory charset(String charset) throws Exception {
+		
+		if(StringUtil.isBlank(charset) == true) {
+			throw new IllegalArgumentException("charset is null or blank.");
+		}
+		
 		this.charset = charset;
 		return this;
 	}
