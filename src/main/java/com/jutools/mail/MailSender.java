@@ -24,47 +24,48 @@ import jakarta.mail.internet.MimeUtility;
 import lombok.Getter;
 
 /**
- * 
+ *  메일 발송 객체 클래스
  * 
  * @author jmsohn
  */
 public class MailSender {
 	
-	/** */
+	/** 메일 서버 접속용 설정 프로퍼티 */
 	private Properties props;
 	
-	/** */
+	/** 캐릭터 셋 설정 */
 	private String charset = "UTF-8";
 	
-	/** */
+	/** 발송자 메일 주소 */
 	@Getter
 	private InternetAddress sender;
-	
+
+	/** 발송자 메일 서버 패스워드 */
 	private String password;
 	
-	/** */
+	/** 수신자 메일 주소 목록 */
 	@Getter
 	private List<InternetAddress> receiverList = new Vector<>();
 	
-	/** */
+	/** 제목 생성기 */
 	private TextGen subjectGen;
 	
-	/** */
+	/** 내용 생성기 */
 	private TextGen bodyGen;
 	
-	/** */
+	/** 내용의 MIME Type*/
 	private String bodyMimeType = "text/html; charset=UTF-8";
 	
-	/** */
+	/** 첨무 파일 목록 */
 	private List<File> attachFileList = new Vector<>();
 	
 	/**
+	 * 생성자
 	 * 
-	 * 
-	 * @param props
-	 * @param sender
-	 * @param password
-	 * @param charset
+	 * @param props 메일 서버 접속용 설정 프로퍼티
+	 * @param sender 메일 송신자
+	 * @param password 메일 서버 패스워드
+	 * @param charset 캐릭터셋
 	 */
 	MailSender(Properties props, InternetAddress sender, String password, String charset) throws Exception {
 
@@ -94,11 +95,11 @@ public class MailSender {
 	}
 
 	/**
- 	 *
+ 	 * 메일 전송 실행
 	 *
-	 * @param values
+	 * @param values 변수 컨테이너
 	 */
-	public void send(Map<String, ?> values) throws Exception {
+	public MailSender send(Map<String, ?> values) throws Exception {
 
 		// 입력값 검증 및 객체 설정 상태 검증
 		if(values == null) {
@@ -173,13 +174,15 @@ public class MailSender {
 
 		// 메시지 전송
 		Transport.send(message);
+
+		return this;
 	}
 	
 	/**
+	 * 수신자 추가
 	 *
-	 *
-	 * @param receiveerAry
-	 * @return
+	 * @param receiveerAry 수신자 목록
+	 * @return 현재 객체
 	 */
 	public MailSender addReceiver(String... receiverAry) throws Exception {
 
@@ -195,10 +198,10 @@ public class MailSender {
 	}
 
 	/**
+	 * 수신자 추가
 	 * 
-	 * 
-	 * @param receiverList
-	 * @return
+	 * @param receiverList 수신자 목록
+	 * @return 현재 객체
 	 */
 	public MailSender addReceiver(List<String> receiverList) throws Exception {
 		
@@ -214,10 +217,10 @@ public class MailSender {
 	}
 
 	/**
+	 * 제목 템플릿 설정 
 	 * 
-	 * 
-	 * @param subjectTemplate
-	 * @return
+	 * @param subjectTemplate 제목 템플릿
+	 * @return 현재 객체
 	 */
 	public MailSender setSubjectTemplate(String subjectTemplate) throws Exception {
 		this.subjectGen = TextGen.compile(subjectTemplate);
@@ -225,10 +228,10 @@ public class MailSender {
 	}
 
 	/**
+	 * 메시지 내용 템플릿 설정
 	 * 
-	 * 
-	 * @param bodyTemplate
-	 * @return
+	 * @param bodyTemplate 메시지 내용 템플릿
+	 * @return 현재 객체
 	 */
 	public MailSender setBodyTemplate(String bodyTemplate) throws Exception {
 		this.bodyGen = TextGen.compile(bodyTemplate);
@@ -236,10 +239,10 @@ public class MailSender {
 	}
 
 	/**
+	 * 첨부 파일 추가
 	 * 
-	 * 
-	 * @param attachFileAry
-	 * @return
+	 * @param attachFileAry 첨부 파일 목록
+	 * @return 현재 객체
 	 */
 	public MailSender addFile(File... attachFileAry) {
 
@@ -255,10 +258,10 @@ public class MailSender {
 	}
 
 	/**
+	 * 첨부 파일 추가
 	 * 
-	 * 
-	 * @param attachFileList
-	 * @return
+	 * @param attachFileList 첨부 파일 목록
+	 * @return 현재 객체
 	 */
 	public MailSender addFile(List<File> attachFileList) {
 		
