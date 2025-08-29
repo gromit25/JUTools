@@ -22,18 +22,18 @@ public class MailSender {
 	private String sender;
 	
 	/** */
-	private List<String> receiverList;
+	private List<String> receiverList = new Vector<>();
 	
 	/** */
 	@Getter
-	private String subject;
+	private String subject = "";
 	
 	/** */
 	@Getter
-	private String body;
+	private String body = "";
 	
 	/** */
-	private List<File> attachFileList;
+	private List<File> attachFileList = new Vector<>();
 	
 	/**
 	 * 
@@ -53,8 +53,23 @@ public class MailSender {
 		this.sender = sender;
 		return this;
 	}
-	
-	public MailSender addReceiver(String... receiverAry) throws Exception {
+
+	/**
+	 *
+	 *
+	 * @param receiveerAry
+	 * @return
+	 */
+	public MailSender addReceiver(String... receiverAry) {
+
+		if(receiverAry == null || receiverAry.length == 0) {
+			return this;
+		}
+
+		for(String receiver: receiverAry) {
+			this.receiverList.add(receiver);
+		}
+		
 		return this;
 	}
 }
