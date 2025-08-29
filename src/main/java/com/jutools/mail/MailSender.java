@@ -58,6 +58,7 @@ public class MailSender {
 	
 	/** 첨무 파일 목록 */
 	private List<File> attachFileList = new Vector<>();
+
 	
 	/**
 	 * 생성자
