@@ -25,12 +25,10 @@ public class MailSender {
 	private List<String> receiverList = new Vector<>();
 	
 	/** */
-	@Getter
-	private String subject = "";
+	private TextGen subjectGen;
 	
 	/** */
-	@Getter
-	private String body = "";
+	private TextGen bodyGen;
 	
 	/** */
 	private List<File> attachFileList = new Vector<>();
@@ -41,6 +39,43 @@ public class MailSender {
 	 * @param props
 	 */
 	MailSender(Properties props) throws Exception {
+	}
+
+	/**
+ 	 *
+	 *
+	 * @param values
+	 */
+	public void send(Map<String, ?> values) throws Exception {
+
+		// 입력값 검증 및 객체 설정 상태 검증
+		if(values == null) {
+			throw new IllegalArgumentException("values is null.");
+		}
+
+		if(this.props == null) {
+			throw new Exception("properties is null.");
+		}
+
+		if(StirngUtil.isBlank(this.sender) == true) {
+			throw new Exception("sender is null or blank.");
+		}
+
+		if(this.receiverList == null || this.receiverList.size() == 0) {
+			throw new Exception("receiver list is null or none.");
+		}
+
+		if(this.subjectGen == null) {
+			throw new Exception("subject template is not set.");
+		}
+
+		if(this.bodyGen == null) {
+			throw new Exception("body template is not set.");
+		}
+
+		// subject/body 생성
+		String subject = this.subjectGen.gen(values);
+		String body = this.bodyGen.gen(values);
 	}
 	
 	/**
@@ -70,6 +105,51 @@ public class MailSender {
 			this.receiverList.add(receiver);
 		}
 		
+		return this;
+	}
+
+	public MailSender addReceiver(List<String> receiverList) {
+		
+		if(receiverList == null || receiverList.size() == 0) {
+			return this;
+		}
+
+		this.receiverList.addAll(receiverList);
+
+		return this;
+	}
+
+	public MailSender setSubjectTemplate(String subjectTemplate) throws Exception {
+		this.subjectGen = TextGen.compile(subjectTemplate);
+		return this;
+	}
+
+	public MailSender setBodyTemplate(String bodyTemplate) throws Exception {
+		this.bodyGen = TextGen.compile(bodyTemplate);
+		return this;
+	}
+
+	public MailSender addFile(File... attachFileAry) {
+
+		if(attachFileAry == null || attachFileAry.length == 0) {
+			return this;
+		}
+
+		for(File attachFile: attachFileAry) {
+			this.attach.add(attachFile);
+		}
+		
+		return this;
+	}
+
+	public MailSender addFile(List<String> attachFileList) {
+		
+		if(attachFileList == null || attachFileList.size() == 0) {
+			return this;
+		}
+
+		this.attachFileList.addAll(attachFileList);
+
 		return this;
 	}
 }
