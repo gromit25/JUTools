@@ -39,6 +39,12 @@ public class MailSender {
 	 * @param props
 	 */
 	MailSender(Properties props) throws Exception {
+		
+		if(props == null) {
+			throw new IllegalArgumentException("props is null.");
+		}
+
+		this.props = props;
 	}
 
 	/**
