@@ -1,6 +1,7 @@
 package com.jutools.mail;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -177,6 +178,16 @@ public class MailSender {
 		// 메시지 전송
 		Transport.send(message);
 
+		return this;
+	}
+	
+	/**
+ 	 * 메일 전송 실행
+	 *
+	 * @return 현재 객체
+	 */
+	public MailSender send() throws Exception {
+		this.send(new HashMap<String, Object>());
 		return this;
 	}
 	
