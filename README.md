@@ -675,3 +675,27 @@ try(JMXService svc = new JMXService("localhost", 1099)) {
 	);
 }
 ```
+
+### MailSender
+----------------------------------    
+> Mail 발송 컴포넌트
+
+```java
+MailSender sender = new MailSenderFactory()
+	.host("smtp.bbb.ccc")
+	.port(25)
+	.tls(true)
+	.sender("aaa@bbb.ccc")
+	.password("1111111")
+	.build();
+		
+Map<String, Object> values = new HashMap<>();
+values.put("name", "gromit25");
+		
+sender
+	.addReceiver("ddd@eee.fff")
+	.setSubjectTemplate("hello ${name}")
+	.setBodyTemplate("안녕하세요. ${name}님, 테스트 입니다. ")
+	.send(values);
+```
+
