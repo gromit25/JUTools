@@ -681,6 +681,7 @@ try(JMXService svc = new JMXService("localhost", 1099)) {
 > Mail 발송 컴포넌트
 
 ```java
+//  MailSnder 객체 생성
 MailSender sender = new MailSenderFactory()
 	.host("smtp.bbb.ccc")
 	.port(25)
@@ -688,10 +689,12 @@ MailSender sender = new MailSenderFactory()
 	.sender("aaa@bbb.ccc")
 	.password("1111111")
 	.build();
-		
+
+// 변수 설정
 Map<String, Object> values = new HashMap<>();
 values.put("name", "gromit25");
-		
+
+// 메일 발송
 sender
 	.addReceiver("ddd@eee.fff")
 	.setSubjectTemplate("hello ${name}")
