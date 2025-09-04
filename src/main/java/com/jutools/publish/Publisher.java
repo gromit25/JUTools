@@ -52,9 +52,9 @@ public abstract class Publisher {
 	 * @param values 변수-값 목록
 	 */
 	public static void publish(PublisherType type, File formatFile, File outFile, Charset charset, Map<String, Object> values) throws Exception {
-    	try (OutputStream outExcel = new FileOutputStream(outFile)) {
+    	try (OutputStream out = new FileOutputStream(outFile)) {
     		Publisher publisher = PublisherFactory.create(type, formatFile);
-    		publisher.publish(outExcel, charset, values);
+    		publisher.publish(out, charset, values);
     	}
 	}
 	
