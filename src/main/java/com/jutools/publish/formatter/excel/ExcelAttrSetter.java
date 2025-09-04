@@ -23,6 +23,7 @@ import com.jutools.publish.formatter.FormatterAttrSetterClass;
 public class ExcelAttrSetter {
 	
 	/**
+	 * Workbook의 template 설정
 	 * 
 	 * @param formatter 속성을 지정할 formatter 객체
 	 * @param setMethod formatter의 속성값 setMethod
@@ -42,8 +43,9 @@ public class ExcelAttrSetter {
 	}
 	
 	/**
-	 * RowColumnEval type의 속성 설정 메서드
+	 * RowColumnEval type의 속성 설정
 	 *   FormatterAttrSetter 어노테이션 주석 참조
+	 *
 	 * @param formatter 속성을 지정할 formatter 객체
 	 * @param setMethod formatter의 속성값 setMethod
 	 * @param attrValue formatter에 설정할 속성의 문자열값
@@ -54,6 +56,7 @@ public class ExcelAttrSetter {
 	}
 	
 	/**
+	 * 범위 속성 설정
 	 * 
 	 * @param formatter 속성을 지정할 formatter 객체
 	 * @param setMethod formatter의 속성값 setMethod
