@@ -1,7 +1,5 @@
 package com.jutools.publish.formatter.excel;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
@@ -11,10 +9,10 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.jutools.FileUtil;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttrSetter;
 import com.jutools.publish.formatter.FormatterAttrSetterClass;
-import com.jutools.publish.formatter.FormatterException;
 
 /**
  * 엑셀 객체에 대한 XML 속성값(스트링)을 파싱하여 설정하는 클래스
@@ -33,17 +31,11 @@ public class ExcelAttrSetter {
 	@FormatterAttrSetter(XSSFWorkbook.class)
 	public static void setWorkbook(Formatter formatter, Method setMethod, String attrValue) throws Exception {
 
-		// template file을 가져옴
-		File templateFile = new File(attrValue);
-		if(false == templateFile.canRead()) {
-			throw new FormatterException(formatter, "Can't read " + attrValue);
-		}
-		
 		// template 파일을 읽어옴
 		// 주의!
 		// 만일 XSSFWorkbook을 만들때, new XSSFWorkbook(File file)로
 		// 만들게 되면, 변경사항이 원본 파일에도 영향을 주게됨
-		try(InputStream templateIS = new FileInputStream(templateFile)) {
+		try(InputStream templateIS = FileUtil.getInputStream(attrValue)) {
 			XSSFWorkbook template = new XSSFWorkbook(templateIS);
 			setMethod.invoke(formatter, template);
 		}
