@@ -398,6 +398,30 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 파일 InputStream을 반환<br>
+	 * File 객체로 접근 가능한지 확인 후 없는 경우 ClassPath의 파일의 InputStream을 반환함
+	 * 
+	 * @param fileName 파일명
+	 * @return 파일 InputStream
+	 */
+	public static InputStream getInputStream(String fileName) throws Exception {
+		
+		// File 객체로 접근 가능한지 확인하여 반환
+		File file = new File(fileName);
+		if(file.exists() == true) {
+			return new FileInputStream(file);
+		}
+		
+		// ClassPath의 객체로 반환
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+		if(is != null) {
+			return is;
+		} else {
+			throw new Exception("Can't read file: " + fileName);
+		}
+	}
+	
+	/**
 	 * 입력 스트림에서 모든 바이트를 읽어 반환<br>
 	 * 읽을 데이터가 적을 경우 사용(많으면 성능 문제와 메모리 문제가 발생할 수 있음)
 	 * 
