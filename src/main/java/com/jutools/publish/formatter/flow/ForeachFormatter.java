@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
+import com.jutools.StringUtil;
 import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
@@ -25,6 +26,7 @@ import lombok.Setter;
  * <br>
  * list 속성 : 반복 수행할 List, java.lang.List type이어야함<br>
  * element 속성 : foreach 문 내에서 사용할 list의 각 요소 이름을 지정<br>
+ * separator 속성(Optional) : 각 요소(element) 사이에 추가할 문자열 설정<br>
  * <pre>
  * ex)
  * &lt;foreach element="info" list="infos"&gt;
@@ -51,6 +53,12 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 	@Setter
 	@FormatterAttr(name="element", mandatory=true)
 	private String element;
+
+	/** 구분자 */
+	@Getter
+	@Setter
+	@FormatterAttr(name="separator", mandatory=false)
+	private String separator;
 	
 	/** list의 element가 없을 경우 수행할 대체(alt) FlowFormatter */
 	@Setter(value=AccessLevel.PRIVATE)
@@ -102,12 +110,20 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 			for(Object element : list) {
 				
 				try {
-					values.put(INDEX_PRE + this.getElement(), index);
+					
+					// 목록의 현재 요소를 추가
 					values.put(this.getElement(), element);
+					
+					// 구분자 추가 
+					if(StringUtil.isEmpty(this.separator) == false && index != 0) {
+						out.write(this.separator.getBytes(charset));
+					}
+					
 				} catch(Exception ex) {
 					throw new FormatterException(this, ex);
 				}
-				
+
+				// element 메시지 추가
 				this.getBasicFlowFormatter().format(out, charset, values);
 				
 				values.remove(this.getElement());
