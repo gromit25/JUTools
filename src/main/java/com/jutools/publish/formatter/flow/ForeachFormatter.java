@@ -42,19 +42,19 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 	/** foreach loop의 index명을 만들때 element명의 전치문구 */
 	private static String INDEX_PRE = "_index_";
 	
-	/** listExp 속성 수행하기 위한 Evaluator */
+	/** 목록(list) 속성 수행하기 위한 Evaluator */
 	@Getter
 	@Setter
 	@FormatterAttr(name="list", mandatory=true)
 	private OLExp listExp;
 	
-	/** element 속성의 설정값 */
+	/** 요소(element) 속성의 설정값 */
 	@Getter
 	@Setter
 	@FormatterAttr(name="element", mandatory=true)
 	private String element;
 
-	/** 구분자 */
+	/** 구분자(separator) */
 	@Getter
 	@Setter
 	@FormatterAttr(name="separator", mandatory=false)
