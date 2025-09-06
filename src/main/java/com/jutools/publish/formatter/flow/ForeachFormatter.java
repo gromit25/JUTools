@@ -116,8 +116,7 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 					if(StringUtil.isEmpty(this.separator) == false && index != 0) {
 						if(out instanceof TextFormatOutputStream) {
 							
-							((TextFormatOutputStream)out).setHasPreLine(false);	// 이전 라인이 없다고 함으로서 개행을 추가하지 않음
-							out.write(("|" + this.separator).getBytes(charset));
+							out.write((">" + this.separator).getBytes(charset));
 							out.flush();
 						}
 					}
