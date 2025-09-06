@@ -10,6 +10,7 @@ import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
+import com.jutools.publish.formatter.text.TextFormatOutputStream;
 import com.jutools.script.olexp.OLExp;
 
 import lombok.AccessLevel;
@@ -38,9 +39,6 @@ import lombok.Setter;
  */
 @FormatterSpec(group="flow", tag="foreach")
 public class ForeachFormatter extends AbstractFlowComponentFormatter {
-	
-	/** foreach loop의 index명을 만들때 element명의 전치문구 */
-	private static String INDEX_PRE = "_index_";
 	
 	/** 목록(list) 속성 수행하기 위한 Evaluator */
 	@Getter
@@ -116,7 +114,12 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 					
 					// 구분자 추가 
 					if(StringUtil.isEmpty(this.separator) == false && index != 0) {
-						out.write(this.separator.getBytes(charset));
+						if(out instanceof TextFormatOutputStream) {
+							
+							((TextFormatOutputStream)out).setHasPreLine(false);	// 이전 라인이 없다고 함으로서 개행을 추가하지 않음
+							out.write(("|" + this.separator).getBytes(charset));
+							out.flush();
+						}
 					}
 					
 				} catch(Exception ex) {
@@ -126,11 +129,12 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 				// element 메시지 추가
 				this.getBasicFlowFormatter().format(out, charset, values);
 				
+				// 현재 element 삭제
 				values.remove(this.getElement());
-				values.remove(INDEX_PRE + this.getElement());
 				
 				index++;
 			}
+			
 		} else {
 			
 			// element 가 없고, alt flow가 있을 경우

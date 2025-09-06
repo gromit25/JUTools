@@ -37,8 +37,8 @@ public class TextFormatOutputStream extends OutputStream {
 	 * 이렇게 하는 이유는 메시지 종료시, 일괄적으로 개행을 하면
 	 * 메시지2 출력시에도 개행이 발생하여 항상 한줄이 추가되는 문제가 있음
 	 */
-	@Getter(AccessLevel.PRIVATE)
-	@Setter(AccessLevel.PRIVATE)
+	@Getter
+	@Setter
 	private boolean hasPreLine;
 	
 	/**
