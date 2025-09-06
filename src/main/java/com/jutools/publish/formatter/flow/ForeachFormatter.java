@@ -10,7 +10,6 @@ import com.jutools.publish.formatter.Formatter;
 import com.jutools.publish.formatter.FormatterAttr;
 import com.jutools.publish.formatter.FormatterException;
 import com.jutools.publish.formatter.FormatterSpec;
-import com.jutools.publish.formatter.text.TextFormatOutputStream;
 import com.jutools.script.olexp.OLExp;
 
 import lombok.AccessLevel;
@@ -114,11 +113,8 @@ public class ForeachFormatter extends AbstractFlowComponentFormatter {
 					
 					// 구분자 추가 
 					if(StringUtil.isEmpty(this.separator) == false && index != 0) {
-						if(out instanceof TextFormatOutputStream) {
-							
-							out.write((">" + this.separator).getBytes(charset));
-							out.flush();
-						}
+						out.write((">" + this.separator).getBytes(charset));
+						out.flush();
 					}
 					
 				} catch(Exception ex) {
