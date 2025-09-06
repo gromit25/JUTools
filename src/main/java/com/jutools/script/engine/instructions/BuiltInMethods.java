@@ -51,6 +51,24 @@ public class BuiltInMethods {
 	}
 	
 	/**
+	 * 환경 변수 값 반환<br>
+	 * 미설정 시 null 을 반환
+	 * 
+	 * @param values 변수 저장 객체
+	 * @param name 가져올 환경 변수 명
+	 * @return 환경 변수 값 
+	 */
+	@MethodAlias(alias = "env")
+	public static String env(Map<String, ?> values, String name) {
+		
+		if(name == null) {
+			return null;
+		}
+		
+		return System.getenv(name);
+	}
+	
+	/**
 	 * 와일드 카드 매치 메소드
 	 * 
 	 * @param values 변수 저장 객체
