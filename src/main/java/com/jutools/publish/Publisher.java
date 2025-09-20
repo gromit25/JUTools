@@ -1,5 +1,6 @@
 package com.jutools.publish;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -41,6 +42,21 @@ public abstract class Publisher {
 	 * @param values value container
 	 */
 	public abstract void publish(OutputStream out, Charset charset, Map<String, Object> values) throws Exception;
+	
+	/**
+	 * publish 결과를 문자열로 변환하여 반환
+	 * 
+	 * @param charset charater set
+	 * @param values value container
+	 * @return 출력 문자열
+	 */
+	public String publish(Charset charset, Map<String, Object> values) throws Exception {
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		this.publish(out, Charset.forName("UTF-8"), values);
+		
+		return new String(out.toByteArray(), "UTF-8");
+	}
 	
 	/**
 	 * output stream으로 publish 수행
