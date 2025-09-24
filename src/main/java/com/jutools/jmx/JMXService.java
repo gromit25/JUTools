@@ -40,7 +40,7 @@ public class JMXService implements Closeable {
 	
 	/** 연결 종료 여부 */
 	@Getter
-	private boolean closed;
+	private volatile boolean closed;
 	
 
 	/**
