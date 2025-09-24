@@ -37,6 +37,11 @@ public class JMXService implements Closeable {
 	
 	/** JMX 연결 */
 	private JMXConnector jmxConnector;
+	
+	/** 연결 종료 여부 */
+	@Getter
+	private boolean closed;
+	
 
 	/**
 	 * 생성자 - 외부 JMX 서버 연결용
@@ -66,6 +71,7 @@ public class JMXService implements Closeable {
 
 		// Connector 생성
 		this.jmxConnector = JMXConnectorFactory.connect(jmxUrl, env);
+		this.closed = false;
 	}
 	
 	/**
@@ -83,6 +89,7 @@ public class JMXService implements Closeable {
 	 */
 	public JMXService() throws Exception {
 		this.connType = JMXConnectionType.INTERNAL;
+		this.closed = false;
 	}
 	
 	/**
@@ -185,34 +192,47 @@ public class JMXService implements Closeable {
 	/**
 	 * 주어진 ObjectName Pattern과 일치하는 Object Name의 속성 값 맵을 반환
 	 * 
-	 * @param namePatternStr 검색할 ObjectName의 패턴
-	 * @param attrNameStr 속성명
-	 * @return 속성 값 맵 반환(K-Object Name, V-속성 값)
+	 * @param query 검색할 ObjectName 쿼리
+	 * @param attrName 속성 명 목록 
+	 * @return 속성 값 맵 반환(K: Object Name, V: 속성명-값 맵)
 	 */
-	public Map<String, Object> getByPattern(String namePatternStr, String attrNameStr) throws Exception {
+	public Map<String, Map<String, Object>> getByQuery(String query, String... attrNameAry) throws Exception {
 		
 		// 입력 값 검증
-		if(StringUtil.isBlank(namePatternStr) == true) {
-			throw new IllegalArgumentException("namePatternStr is null or blank.");
+		if(StringUtil.isBlank(query) == true) {
+			throw new IllegalArgumentException("query is null or blank.");
 		}
 		
-		if(StringUtil.isBlank(attrNameStr) == true) {
-			throw new IllegalArgumentException("attrNameStr is null or blank.");
+		if(attrNameAry == null || attrNameAry.length == 0) {
+			throw new IllegalArgumentException("attrNameAry is null or length is 0.");
 		}
 		
-		// 속성 값 맵 생성 및 반환
-		Map<String, Object> valueMap = new HashMap<>();
+		// ObjectName 맵 변수
+		Map<String, Map<String, Object>> nameAttrMap = new HashMap<>();
 		
-		List<String> nameList = this.findObjectName(namePatternStr);
+		List<String> nameList = this.findObjectName(query);
 		for(String name: nameList) {
-			valueMap.put(name, this.get(name, attrNameStr));
+			
+			// 속성 명 - 값 맵 객체 생성
+			Map<String, Object> attrMap = new HashMap<>();
+			for(String attrName: attrNameAry) {
+				attrMap.put(attrName, this.get(name, attrName));
+			}
+			
+			// ObjectName 맵에 추가
+			nameAttrMap.put(name, attrMap);
 		}
 		
-		return valueMap;
+		return nameAttrMap;
 	}
 
 	@Override
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
+		
+		// 이미 닫힌 경우는 반환
+		if(this.closed == true) {
+			return;
+		}
 		
 		if(this.jmxConnector == null) {
 			return;
@@ -224,5 +244,6 @@ public class JMXService implements Closeable {
 		}
 		
 		this.jmxConnector.close();
+		this.closed = true;
 	}
 }
