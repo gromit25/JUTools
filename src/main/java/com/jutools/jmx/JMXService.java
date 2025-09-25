@@ -17,6 +17,8 @@ import javax.management.remote.JMXServiceURL;
 
 import com.jutools.StringUtil;
 
+import lombok.Getter;
+
 /**
  * JMX 서비스 객체
  * 
