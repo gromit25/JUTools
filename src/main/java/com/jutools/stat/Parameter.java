@@ -19,10 +19,13 @@ public class Parameter {
 	@Getter
 	private double sum;
 	/** 제곱합(표준편차 계산용) */
+	@Getter
 	private double squaredSum;
 	/** 세제곱 합(왜도 계산용) */
+	@Getter
 	private double cubedSum;
 	/** 네제곱 합(첨도 계산용) */
+	@Getter
 	private double fourthPoweredSum;
 	
 	/** 평균 값 */
