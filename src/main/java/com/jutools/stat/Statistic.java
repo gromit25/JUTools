@@ -80,7 +80,7 @@ public class Statistic {
 	/**
 	 * 통계량 초기화
 	 */
-	public void reset() {
+	public synchronized void reset() {
 
 		this.count = 0;
 		
