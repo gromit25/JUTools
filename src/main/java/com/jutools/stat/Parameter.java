@@ -164,6 +164,7 @@ public class Parameter {
 		
 		//---- 데이터 개수 초기화
 		double n = (double)this.count;
+		if(n == 0) return;	// 데이터 개수가 0이면 계산하지 않고 반환
 		
 		//---- 모수 계산 수행
 		this.mean = this.sum/n;
@@ -172,14 +173,23 @@ public class Parameter {
 		double fourthPoweredMean = cubedMean * this.mean;
 		
 		this.variance = (this.squaredSum/n) - squaredMean;
-		this.skewness =
+
+		// 분산이 0 이면, 첨도와 왜도 0으로 설정
+		// 아닐 경우 첨도 및 왜도 계산
+		if(this.variance == 0) {
+			 
+			this.skewness = 0;
+			this.kurtosis = 0;
+			
+		} else {
+			this.skewness =
 				(
 					(this.cubedSum/n)
 					- cubedMean
 					- (3 * this.mean * this.variance)
 				)
 				/ Math.pow(this.variance, 3.0/2.0);
-		this.kurtosis =
+			this.kurtosis =
 				(
 					(this.fourthPoweredSum/n)
 					- (4 * this.mean * this.cubedSum / n)
@@ -187,6 +197,7 @@ public class Parameter {
 					+ (3 * fourthPoweredMean)
 				)
 				/ (this.variance * this.variance) - 3;
+		}
 	}
 	
 	/**
