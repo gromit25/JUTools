@@ -82,7 +82,7 @@ public class Parameter {
 	/**
 	 * 모수 값 초기화
 	 */
-	public void reset() {
+	public synchronized void reset() {
 
 		this.count = 0;
 		
