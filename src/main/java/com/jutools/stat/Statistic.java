@@ -162,6 +162,7 @@ public class Statistic {
 		
 		//---- 데이터 초기화
 		double n = (double)this.count;
+		if(n == 0) return;	// 데이터 개수가 0이면 계산하지 않고 반환
 		
 		//---- 표본 통계량 계산 수행
 		this.mean = this.sum/n;
@@ -177,7 +178,7 @@ public class Statistic {
 		}
 		
 		//---- 왜도 계산
-		if(n < 3) {
+		if(n < 3 || this.variance == 0) {
 			this.skewness = 0.0;
 		} else {
 			
@@ -192,7 +193,7 @@ public class Statistic {
 		}
 		
 		//---- 첨도 계산
-		if(n < 4) {
+		if(n < 4 || this.variance == 0) {
 			this.kurtosis = 0.0;
 		} else {
 			
