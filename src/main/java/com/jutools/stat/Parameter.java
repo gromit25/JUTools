@@ -29,28 +29,19 @@ public class Parameter {
 	private double fourthPoweredSum;
 	
 	/** 평균 값 */
-	@Getter
 	private double mean;
 	/** 분산 */
-	@Getter
 	private double variance;
 	/** 왜도 */
-	@Getter
 	private double skewness;
 	/** 첨도 */
-	@Getter
 	private double kurtosis;
 	
 	/** 최소 값 */
-	@Getter
 	private double min;
 	/** 최대 값 */
-	@Getter
 	private double max;
-	
-	/** 중앙 값 */
-	@Getter
-	private double median;
+
 	
 	/**
 	 * 생성자
@@ -164,8 +155,6 @@ public class Parameter {
 		if(this.max < value) {
 			this.max = value;
 		}
-		
-		//---- 중앙값 계산
 	}
 	
 	/**
@@ -201,12 +190,101 @@ public class Parameter {
 	}
 	
 	/**
+	 * 평균 반환
+	 * 
+	 * @return 평균
+	 */
+	public double getMean() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.mean;
+	}
+	
+	/**
+	 * 분산 반환
+	 * 
+	 * @return 분산
+	 */
+	public double getVariance() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.variance;
+	}
+	
+	/**
 	 * 표준 편차 반환
 	 * 
 	 * @return 표준 편차
 	 */
 	public double getStd() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+
 		return Math.sqrt(this.variance);
+	}
+
+	/**
+	 * 왜도 반환
+	 * 
+	 * @return 왜도
+	 */
+	public double getSkewness() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.skewness;
+	}
+	
+	/**
+	 * 첨도 반환
+	 * 
+	 * @return 첨도
+	 */
+	public double getKurtosis() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.kurtosis;
+	}
+	
+	/**
+	 * 최소 값 반환
+	 * 
+	 * @return 최소 값
+	 */
+	public double getMin() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.min;
+	}
+
+	/**
+	 * 최대 값 반환
+	 * 
+	 * @return 최대 값
+	 */
+	public double getMax() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.max;
 	}
 	
 	/**
@@ -221,13 +299,13 @@ public class Parameter {
 			.append("{").append("\r\n")
 			.append("\"count\":").append(this.count).append("\r\n")
 			.append("\"sum\":").append(this.sum).append("\r\n")
-			.append("\"mean\":").append(this.mean).append("\r\n")
-			.append("\"variance\":").append(this.variance).append("\r\n")
+			.append("\"mean\":").append(this.getMean()).append("\r\n")
+			.append("\"variance\":").append(this.getVariance()).append("\r\n")
 			.append("\"std\":").append(this.getStd()).append("\r\n")
-			.append("\"skewness\":").append(this.skewness).append("\r\n")
-			.append("\"kurtosis\":").append(this.kurtosis).append("\r\n")
-			.append("\"min\":").append(this.min).append("\r\n")
-			.append("\"max\":").append(this.max).append("\r\n")
+			.append("\"skewness\":").append(this.getSkewness()).append("\r\n")
+			.append("\"kurtosis\":").append(this.getKurtosis()).append("\r\n")
+			.append("\"min\":").append(this.getMin()).append("\r\n")
+			.append("\"max\":").append(this.getMax()).append("\r\n")
 			.append("}");
 		
 		return builder.toString();
