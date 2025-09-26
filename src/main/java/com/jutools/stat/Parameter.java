@@ -182,6 +182,7 @@ public class Parameter {
 			this.kurtosis = 0;
 			
 		} else {
+			
 			this.skewness =
 				(
 					(this.cubedSum/n)
