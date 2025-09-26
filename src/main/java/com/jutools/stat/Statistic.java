@@ -28,23 +28,17 @@ public class Statistic {
 	private double fourthPoweredSum;
 	
 	/** 평균 값 */
-	@Getter
 	private double mean;
 	/** 분산 */
-	@Getter
 	private double variance;
 	/** 왜도 */
-	@Getter
 	private double skewness;
 	/** 첨도 */
-	@Getter
 	private double kurtosis;
 	
 	/** 최소 값 */
-	@Getter
 	private double min;
 	/** 최대 값 */
-	@Getter
 	private double max;
 	
 	/**
@@ -218,15 +212,6 @@ public class Statistic {
 	}
 	
 	/**
-	 * 표준 편차 반환
-	 * 
-	 * @return 표준 편차
-	 */
-	public double getStd() {
-		return Math.sqrt(this.variance);
-	}
-	
-	/**
 	 * 현재 객체를 Map 형태로 변환하여 반환
 	 * 
 	 * @return 변환된 맵 객체
@@ -238,21 +223,117 @@ public class Statistic {
 		statMap.put("count", this.count);
 		statMap.put("count", this.count);
 		statMap.put("sum", this.sum);
-		statMap.put("mean", this.mean);
-		statMap.put("variance", this.variance);
+		statMap.put("mean", this.getMean());
+		statMap.put("variance", this.getVariance());
 		statMap.put("std", this.getStd());
-		statMap.put("skewness", this.skewness);
-		statMap.put("kurtosis", this.kurtosis);
-		statMap.put("min", this.min);
-		statMap.put("max", this.max);
+		statMap.put("skewness", this.getSkewness());
+		statMap.put("kurtosis", this.getKurtosis());
+		statMap.put("min", this.getMin());
+		statMap.put("max", this.getMax());
 		
 		return statMap;
 	}
 	
 	/**
-	 * 현재 객체를 json 문자열 형태로 반환
+	 * 평균 반환
 	 * 
-	 * @return 변환된 json 문자열
+	 * @return 평균
+	 */
+	public double getMean() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.mean;
+	}
+	
+	/**
+	 * 분산 반환
+	 * 
+	 * @return 분산
+	 */
+	public double getVariance() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.variance;
+	}
+	
+	/**
+	 * 표준 편차 반환
+	 * 
+	 * @return 표준 편차
+	 */
+	public double getStd() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+
+		return Math.sqrt(this.variance);
+	}
+
+	/**
+	 * 왜도 반환
+	 * 
+	 * @return 왜도
+	 */
+	public double getSkewness() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.skewness;
+	}
+	
+	/**
+	 * 첨도 반환
+	 * 
+	 * @return 첨도
+	 */
+	public double getKurtosis() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.kurtosis;
+	}
+	
+	/**
+	 * 최소 값 반환
+	 * 
+	 * @return 최소 값
+	 */
+	public double getMin() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.min;
+	}
+
+	/**
+	 * 최대 값 반환
+	 * 
+	 * @return 최대 값
+	 */
+	public double getMax() {
+		
+		if(this.count == 0) {
+			return Double.NaN;
+		}
+		
+		return this.max;
+	}
+	
+	/**
+	 * 현재 객체를 json 문자열 형태로 반환
 	 */
 	@Override
 	public String toString() {
@@ -260,16 +341,16 @@ public class Statistic {
 		StringBuilder builder = new StringBuilder("");
 		
 		builder
-			.append("{")
-			.append("\"count\":").append(this.count).append(",")
-			.append("\"sum\":").append(this.sum).append(",")
-			.append("\"mean\":").append(this.mean).append(",")
-			.append("\"variance\":").append(this.variance).append(",")
-			.append("\"std\":").append(this.getStd()).append(",")
-			.append("\"skewness\":").append(this.skewness).append(",")
-			.append("\"kurtosis\":").append(this.kurtosis).append(",")
-			.append("\"min\":").append(this.min).append(",")
-			.append("\"max\":").append(this.max)
+			.append("{").append("\r\n")
+			.append("\"count\":").append(this.count).append("\r\n")
+			.append("\"sum\":").append(this.sum).append("\r\n")
+			.append("\"mean\":").append(this.getMean()).append("\r\n")
+			.append("\"variance\":").append(this.getVariance()).append("\r\n")
+			.append("\"std\":").append(this.getStd()).append("\r\n")
+			.append("\"skewness\":").append(this.getSkewness()).append("\r\n")
+			.append("\"kurtosis\":").append(this.getKurtosis()).append("\r\n")
+			.append("\"min\":").append(this.getMin()).append("\r\n")
+			.append("\"max\":").append(this.getMax()).append("\r\n")
 			.append("}");
 		
 		return builder.toString();
