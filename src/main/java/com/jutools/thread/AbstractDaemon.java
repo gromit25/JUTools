@@ -8,7 +8,7 @@ package com.jutools.thread;
 public abstract class AbstractDaemon {
 	
 	/** 데몬 스레드 */
-	private Thread daemonThread;
+	private volatile Thread daemonThread;
 	
 
 	/**
@@ -29,22 +29,31 @@ public abstract class AbstractDaemon {
 	/**
 	 * 데몬 스레드 생성 및 실행
 	 */
-	public void run() {
+	public synchronized void run() {
+		
+		// 이미 실행 중이면 반환
+		if(this.isAlive() == true) {
+			return;
+		}
 		
 		// 데몬 스레드 생성
 		this.daemonThread = new Thread(
 			new Runnable() {
 				public void run() {
 					
+					final Thread currentThread = Thread.currentThread();
+					
 					try {
 						
 						// 인터럽트 발생시까지 무한 루프
-						while(daemonThread.isInterrupted() == false) {
+						while(currentThread.isInterrupted() == false) {
 						
 							try {
 								process();
 							} catch(InterruptedException iex) {
-								daemonThread.interrupt();
+								currentThread.interrupt();
+							} catch(Excepiton ex) {
+								ex.printStackTrace();
 							}
 						}
 					} finally {
@@ -56,6 +65,9 @@ public abstract class AbstractDaemon {
 			}
 		);
 		
+		// 데몬 스레드 설정
+		this.daemonThread.setDaemon(true);
+		
 		// 데몬 스레드 실행
 		this.daemonThread.start();
 	}
@@ -63,7 +75,7 @@ public abstract class AbstractDaemon {
 	/**
 	 * 데몬 스레드 중단
 	 */
-	public void stop() {
+	public synchronized void stop() {
 		
 		if(this.daemonThread == null || this.daemonThread.isAlive() == false) {
 			return;
