@@ -52,7 +52,7 @@ public abstract class AbstractDaemon {
 								process();
 							} catch(InterruptedException iex) {
 								currentThread.interrupt();
-							} catch(Excepiton ex) {
+							} catch(Exception ex) {
 								ex.printStackTrace();
 							}
 						}
