@@ -9,13 +9,22 @@ public abstract class AbstractDaemon {
 	
 	/** 데몬 스레드 */
 	private Thread daemonThread;
+	
 
 	/**
-	 * 실제 업무 로직
+	 * 업무 처리
 	 * 
 	 * @throws InterruptedException 인터럽트 호출시 발생되는 예외
 	 */
 	protected abstract void process() throws InterruptedException;
+	
+	/**
+	 * 종료시 호출<br>
+	 * 필요시 Override 하여 사용
+	 */
+	protected void exit() {
+		// Do nothing
+	}
 	
 	/**
 	 * 데몬 스레드 생성 및 실행
@@ -27,6 +36,7 @@ public abstract class AbstractDaemon {
 			new Runnable() {
 				public void run() {
 					
+					// 인터럽트 발생시까지 무한 루프
 					while(daemonThread.isInterrupted() == false) {
 						
 						try {
@@ -35,6 +45,9 @@ public abstract class AbstractDaemon {
 							daemonThread.interrupt();
 						}
 					}
+					
+					// 종료시 호출
+					exit();
 				}
 			}
 		);
@@ -48,7 +61,7 @@ public abstract class AbstractDaemon {
 	 */
 	public void stop() {
 		
-		if(this.daemonThread == null) {
+		if(this.daemonThread == null || this.daemonThread.isAlive() == false) {
 			return;
 		}
 		
