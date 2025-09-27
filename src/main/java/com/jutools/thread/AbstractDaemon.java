@@ -36,18 +36,22 @@ public abstract class AbstractDaemon {
 			new Runnable() {
 				public void run() {
 					
-					// 인터럽트 발생시까지 무한 루프
-					while(daemonThread.isInterrupted() == false) {
+					try {
 						
-						try {
-							process();
-						} catch(InterruptedException iex) {
-							daemonThread.interrupt();
+						// 인터럽트 발생시까지 무한 루프
+						while(daemonThread.isInterrupted() == false) {
+						
+							try {
+								process();
+							} catch(InterruptedException iex) {
+								daemonThread.interrupt();
+							}
 						}
-					}
+					} finally {
 					
-					// 종료시 호출
-					exit();
+						// 종료시 호출
+						exit();
+					}
 				}
 			}
 		);
