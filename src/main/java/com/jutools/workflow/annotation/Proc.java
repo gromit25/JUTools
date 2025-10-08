@@ -20,6 +20,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface Process {
+public @interface Proc {
 
 }

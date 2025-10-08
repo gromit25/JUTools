@@ -17,7 +17,7 @@ import com.jutools.workflow.Message;
 import com.jutools.workflow.WorkflowContext;
 import com.jutools.workflow.annotation.Activity;
 import com.jutools.workflow.annotation.Init;
-import com.jutools.workflow.annotation.Process;
+import com.jutools.workflow.annotation.Proc;
 import com.jutools.workflow.annotation.Exit;
 import com.jutools.workflow.annotation.Cron;
 
@@ -270,7 +270,7 @@ public class RunnerFactory {
 	 */
 	private void setProcessMethod(ActivityRunner runner, Method method) throws Exception {
 		
-		com.jutools.workflow.annotation.Process processAnnotation = method.getAnnotation(Process.class);
+		com.jutools.workflow.annotation.Proc processAnnotation = method.getAnnotation(Proc.class);
 		if(processAnnotation == null) {
 			return;
 		}
