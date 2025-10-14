@@ -158,7 +158,7 @@ public class RunnerFactory {
 		
 		// 메소드 public 여부 검사
 		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("ini method must be public: " + method);
+			throw new IllegalArgumentException("init method must be public: " + method);
 		}
 		
 		// 리턴 타입 검사
@@ -195,7 +195,7 @@ public class RunnerFactory {
 		
 		// 메소드 public 여부 검사
 		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("ini method must be public: " + method);
+			throw new IllegalArgumentException("exit method must be public: " + method);
 		}
 		
 		// 리턴 타입 검사
