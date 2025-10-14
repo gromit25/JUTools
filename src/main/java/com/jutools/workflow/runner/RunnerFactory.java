@@ -237,14 +237,16 @@ public class RunnerFactory {
 		}
 		
 		// 파라미터 검사
-		if(method.getParameterCount() != 0) {
-			throw new IllegalArgumentException("cron method must have 0 parameter: " + method);
+		if(method.getParameterCount() != 2) {
+			throw new IllegalArgumentException("cron method must have 2 parameter: " + method);
 		}
+
+		//TODO 파라미터가 long 값인지 확인 필요
 		
-		// cron 주기 설정
+		// 크론 주기 설정
 		String period = this.resolveValue(cronAnnotation.period());
 
-		// cron 잡 생성
+		// 크론 잡 생성
 		CronJob cronJob = new CronJob(period);
 		cronJob.setJob(() -> {
 			
@@ -269,7 +271,7 @@ public class RunnerFactory {
 			}
 		});
 		
-		// cron method 추가
+		// 크론 method 추가
 		runner.getCronJobMap().put(method.getName(), cronJob);
 	}
 	
