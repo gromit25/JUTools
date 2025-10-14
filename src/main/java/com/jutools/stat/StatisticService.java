@@ -192,7 +192,7 @@ class CronBlock {
 		
 		// 데이터 로드 메소드 콜백
 		if(this.loader != null) {
-			this.loader.load(this.acquisitorCron.getCurrentBaseTime(), data, this.stat, isLast);
+			this.loader.load(this.acquisitorCron.getBaseTime(), data, this.stat, isLast);
 		}
 		
 		//
