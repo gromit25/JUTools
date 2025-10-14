@@ -95,7 +95,6 @@ public class RunnerFactory {
 			
 			// cron 메소드 추가
 			this.addCronMethod(runner, method);
-			
 		}
 		
 		// process 메소드 설정되어 있는지 확인
@@ -145,7 +144,8 @@ public class RunnerFactory {
 	 * @param method 설정할 메소드
 	 */
 	private void setInitMethod(ActivityRunner runner, Method method) throws Exception {
-		
+
+		// 어노테이션 획득
 		Init initAnnotation = method.getAnnotation(Init.class);
 		if(initAnnotation == null) {
 			return;
@@ -182,7 +182,8 @@ public class RunnerFactory {
 	 * @param method 설정할 메소드
 	 */
 	private void setExitMethod(ActivityRunner runner, Method method) throws Exception {
-		
+
+		// 어노테이션 획득
 		Exit exitAnnotation = method.getAnnotation(Exit.class);
 		if(exitAnnotation == null) {
 			return;
@@ -219,7 +220,8 @@ public class RunnerFactory {
 	 * @param method 설정할 메소드
 	 */
 	private void addCronMethod(ActivityRunner runner, Method method) throws Exception {
-		
+
+		// 어노테이션 획득
 		Cron cronAnnotation = method.getAnnotation(Cron.class);
 		if(cronAnnotation == null) {
 			return;
@@ -290,8 +292,9 @@ public class RunnerFactory {
 	 * @param method 설정할 메소드
 	 */
 	private void setProcessMethod(ActivityRunner runner, Method method) throws Exception {
-		
-		com.jutools.workflow.annotation.Proc processAnnotation = method.getAnnotation(Proc.class);
+
+		// 어노테이션 획득
+		Proc processAnnotation = method.getAnnotation(Proc.class);
 		if(processAnnotation == null) {
 			return;
 		}
