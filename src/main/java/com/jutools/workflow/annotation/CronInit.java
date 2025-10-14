@@ -14,5 +14,6 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface CronInit {
-
+  /** 메소드 명 */
+  String method;
 }
