@@ -237,11 +237,19 @@ public class RunnerFactory {
 		}
 		
 		// 파라미터 검사
-		if(method.getParameterCount() != 2) {
-			throw new IllegalArgumentException("cron method must have 2 parameter: " + method);
+		Class<?>[] paramTypes = method.getParameterTypes();
+
+		// 파라미터 개수가 2개인지 확인
+		if (paramTypes.length != 2) {
+			throw new IllegalArgumentException("cron method must have 2 long or Long type parameter: " + method);
 		}
 
-		//TODO 파라미터가 long 값인지 확인 필요
+		// 각 파라미터가 long 또는 Long인지 확인
+		for (Class<?> type : paramTypes) {
+			if ((type == long.class || type == Long.class) == false) {
+				throw new IllegalArgumentException("cron method must have 2 long or Long type parameter: " + method);
+			}
+		}
 		
 		// 크론 주기 설정
 		String period = this.resolveValue(cronAnnotation.period());
