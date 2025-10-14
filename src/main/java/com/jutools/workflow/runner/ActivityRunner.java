@@ -172,7 +172,7 @@ public class ActivityRunner {
 
 		// 스레드 시작 전 초기화 메소드 호출
 		if(this.initMethod != null) {
-			this.initMethod.invoke(activity);
+			this.initMethod.invoke(this.activity);
 		}
 		
 		// 각 스레드 시작
@@ -182,10 +182,17 @@ public class ActivityRunner {
 		
 		// -------- 크론 작업 시작 
 		for(String key: this.cronJobMap.keySet()) {
-
-			//TODO 
 			
+			// 키의 크론잡 획득
 			CronJob job = this.cronJobMap.get(key);
+
+			// 크론잡 초기화 메소드 실행
+			Method cronInitMethod = this.cronInitMap.get(key);
+			if(cronInitMethod != null) {
+				cronInitMethod.invoke(this.activity, job.getCronExp().getNextTimeInMillis());
+			}
+			
+			// 크론 잡 실행
 			job.run();
 		}
 		

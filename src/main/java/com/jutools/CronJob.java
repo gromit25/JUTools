@@ -17,6 +17,7 @@ import lombok.Getter;
 public class CronJob {
 	
 	/** 크론 시간 표현식 */
+	@Getter
 	private CronExp cronExp;
 	/** 수행할 잡 */
 	private Runnable job;
@@ -95,7 +96,7 @@ public class CronJob {
 		
 		// 다음 시작 시간을 미리 설정함,
 		// thread 가 완전히 시작되기 전에 nextTime을 가져가는 경우 nextTime 이 0이 되는 것을 방지하기 위함
-		this.nextTime = cronExp.getNextTimeInMillis();
+		this.nextTime = this.cronExp.getNextTimeInMillis();
 		this.cronThread.start();
 		
 		// 중단 상태 변경
@@ -129,15 +130,6 @@ public class CronJob {
 	}
 	
 	/**
-	 * 설정된 크론 시간 표현식 반환
-	 * 
-	 * @return 설정된 시간 표현식
-	 */
-	public String getCronExp() {
-		return this.cronExp.getCronExp();
-	}
-	
-	/**
 	 * 수행할 잡 설정
 	 * 
 	 * @param job 수행할 잡
@@ -161,7 +153,7 @@ public class CronJob {
 		StringBuilder builder = new StringBuilder("");
 		
 		builder
-			.append(this.getCronExp())
+			.append(this.cronExp.getCronExp())
 			.append(" ")
 			.append(this.job.getClass().getCanonicalName());
 		
