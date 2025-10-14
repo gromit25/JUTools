@@ -243,23 +243,34 @@ public class RunnerFactory {
 		
 		// cron 주기 설정
 		String period = this.resolveValue(cronAnnotation.period());
+
+		// cron 잡 생성
+		CronJob cronJob = new CronJob(period);
+		cronJob.setJob(() -> {
+			
+			final CronJob curCronJob = cronJob;
+			final ActivityRunner curRunner = runner;
+			final Method cronMethod = method;
+				
+			try {
+
+				// 크론 메소드 호출
+				Object result = cronMethod.invoke(
+					curRunner.getActivity(),
+					curCronJob.getBaseTime(),
+					curCronJob.getNextTime()
+				);
+
+				// 호출 결과를 다음 액티비티로 전달
+				curRunner.put(result);
+				
+			}catch(Exception ex) {
+				log.error(cronMethod.toString(), ex);
+			}
+		});
 		
 		// cron method 추가
-		runner.getCronJobMap().put(
-			method.getName(),
-			new CronJob(period, () -> {
-				
-				final ActivityRunner curRunner = runner;
-				final Method cronMethod = method;
-				
-				try {
-					Object result = cronMethod.invoke(curRunner.getActivity());
-					curRunner.put(result);
-				}catch(Exception ex) {
-					log.error(cronMethod.toString(), ex);
-				}
-			})
-		);
+		runner.getCronJobMap().put(method.getName(), cronJob);
 	}
 	
 	/**
