@@ -325,7 +325,7 @@ public class RunnerFactory {
 				// process 메소드에 입력 파라미터(Message<?>)가 있는 경우 fromQueue 를 생성함
 				runner.setFromQueue(new LinkedBlockingQueue<>());
 			} else {
-				throw new IllegalArgumentException("init method must have 0 parameter: " + method);
+				throw new IllegalArgumentException("process method parameter must be 'none' or 'Message<?>': " + method);
 			}
 		}
 		
