@@ -212,6 +212,44 @@ public class RunnerFactory {
 		// exit method 설정
 		runner.setExitMethod(method);
 	}
+
+	/**
+	 * 크론 초기화 메소드 추가
+	 * 
+	 * @param runner 액티비티 런너
+	 * @param method 설정할 메소드
+	 */
+	private void addCronInitMethod(ActivityRunner runner, Method method) throws Exception {
+		
+		// 어노테이션 획득
+		CronInit cronInitAnnotation = method.getAnnotation(CronInit.class);
+		if(cronInitAnnotation == null) {
+			return;
+		}
+
+		// 메소드 public 여부 검사
+		if(isPublic(method) == false) {
+			throw new IllegalArgumentException("cron init method must be public: " + method);
+		}
+
+		// 파라미터 검사
+		Class<?>[] paramTypes = method.getParameterTypes();
+
+		// 파라미터 개수가 1개인지 확인
+		if (paramTypes.length != 1) {
+			throw new IllegalArgumentException("cron init method must have 1 long or Long type parameter: " + method);
+		}
+
+		// 각 파라미터가 long 또는 Long인지 확인
+		for (Class<?> type : paramTypes) {
+			if ((type == long.class || type == Long.class) == false) {
+				throw new IllegalArgumentException("cron method must have 1 long or Long type parameter: " + method);
+			}
+		}
+
+		// 크론 method 추가
+		runner.getCronInitMap().put(cronInitAnnotation.method(), method);
+	}
 	
 	/**
 	 * 크론 메소드 추가
