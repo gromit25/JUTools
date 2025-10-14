@@ -20,6 +20,7 @@ import com.jutools.workflow.annotation.Init;
 import com.jutools.workflow.annotation.Proc;
 import com.jutools.workflow.annotation.Exit;
 import com.jutools.workflow.annotation.Cron;
+import com.jutools.workflow.annotation.CronInit;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,16 +85,19 @@ public class RunnerFactory {
 		// 실행할 메소드 추출 및 설정
 		for(Method method: activity.getClass().getMethods()) {
 			
-			// init 메소드 설정
+			// 초기화 메소드 설정
 			this.setInitMethod(runner, method);
 			
-			// process 메소드 설정
+			// 데이터 처리 메소드 설정
 			this.setProcessMethod(runner, method);
 
-			// exit 메소드 설정
+			// 종료 메소드 설정
 			this.setExitMethod(runner, method);
 			
-			// cron 메소드 추가
+			// 크론 초기화 메소드 추가
+			this.addCronInitMethod(runner, method);
+			
+			// 크론 메소드 추가
 			this.addCronMethod(runner, method);
 		}
 		
@@ -173,6 +177,57 @@ public class RunnerFactory {
 		
 		// init method 설정
 		runner.setInitMethod(method);
+	}
+	
+	/**
+	 * 데이터 처리 메소드 설정
+	 * 
+	 * @param runner 액티비티 런너
+	 * @param method 설정할 메소드
+	 */
+	private void setProcessMethod(ActivityRunner runner, Method method) throws Exception {
+
+		// 어노테이션 획득
+		Proc processAnnotation = method.getAnnotation(Proc.class);
+		if(processAnnotation == null) {
+			return;
+		}
+		
+		// 이미 설정되어 있는 경우 예외 발생
+		if(runner.getProcessMethod() != null) {
+			throw new IllegalArgumentException("duplicated process method at " + runner.getActivity().getClass());
+		}
+
+		// 메소드 public 여부 검사
+		if(isPublic(method) == false) {
+			throw new IllegalArgumentException("process method must be public: " + method);
+		}
+		
+		// 리턴 타입 검사
+		Type returnType = method.getGenericReturnType();
+		if(
+			returnType != void.class
+			&& isMessageListType(returnType) == false
+			&& isMessageType(returnType) == false
+		) {
+			throw new IllegalArgumentException("process method return type must be 'void' or 'List<Message<?>>': " + method);
+		}
+		
+		// 파라미터 검사
+		if(method.getParameterCount() != 0) {
+			if(
+				method.getParameterCount() == 1
+				&& isMessageType(method.getGenericParameterTypes()[0]) == true
+			) {
+				// process 메소드에 입력 파라미터(Message<?>)가 있는 경우 fromQueue 를 생성함
+				runner.setFromQueue(new LinkedBlockingQueue<>());
+			} else {
+				throw new IllegalArgumentException("process method parameter must be 'none' or 'Message<?>': " + method);
+			}
+		}
+		
+		// process method 설정
+		runner.setProcessMethod(method);
 	}
 	
 	/**
@@ -321,57 +376,6 @@ public class RunnerFactory {
 		
 		// 크론 method 추가
 		runner.getCronJobMap().put(method.getName(), cronJob);
-	}
-	
-	/**
-	 * 데이터 처리 메소드 설정
-	 * 
-	 * @param runner 액티비티 런너
-	 * @param method 설정할 메소드
-	 */
-	private void setProcessMethod(ActivityRunner runner, Method method) throws Exception {
-
-		// 어노테이션 획득
-		Proc processAnnotation = method.getAnnotation(Proc.class);
-		if(processAnnotation == null) {
-			return;
-		}
-		
-		// 이미 설정되어 있는 경우 예외 발생
-		if(runner.getProcessMethod() != null) {
-			throw new IllegalArgumentException("duplicated process method at " + runner.getActivity().getClass());
-		}
-
-		// 메소드 public 여부 검사
-		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("process method must be public: " + method);
-		}
-		
-		// 리턴 타입 검사
-		Type returnType = method.getGenericReturnType();
-		if(
-			returnType != void.class
-			&& isMessageListType(returnType) == false
-			&& isMessageType(returnType) == false
-		) {
-			throw new IllegalArgumentException("process method return type must be 'void' or 'List<Message<?>>': " + method);
-		}
-		
-		// 파라미터 검사
-		if(method.getParameterCount() != 0) {
-			if(
-				method.getParameterCount() == 1
-				&& isMessageType(method.getGenericParameterTypes()[0]) == true
-			) {
-				// process 메소드에 입력 파라미터(Message<?>)가 있는 경우 fromQueue 를 생성함
-				runner.setFromQueue(new LinkedBlockingQueue<>());
-			} else {
-				throw new IllegalArgumentException("process method parameter must be 'none' or 'Message<?>': " + method);
-			}
-		}
-		
-		// process method 설정
-		runner.setProcessMethod(method);
 	}
 	
 	/**
