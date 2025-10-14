@@ -145,7 +145,7 @@ public class CronJob {
 	public void setJob(Runnable job) throws Exception {
 		
 		if(job == null) {
-			throw new NullPointerException("job is null");
+			throw new NullPointerException("'job' is null.");
 		}
 		
 		this.job = job;
