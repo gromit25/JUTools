@@ -48,6 +48,15 @@ public class CronJob {
 		this.setCronExp(cronExp);
 		this.setJob(job);
 	}
+
+	/**
+	 * 생성자
+	 * 
+	 * @param cronExp 크론 시간 표현식
+	 */
+	public CronJob(String cronExp) throws Exception {
+		this.setCronExp(cronExp);
+	}
 	
 	/**
 	 * cron job 수행
