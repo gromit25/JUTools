@@ -90,7 +90,11 @@ public class ActivityRunner {
 	
 	/** 현재 액티비티의 알림 메시지(예외, 상태 변경 등) 구독 컴포넌트 */
 	private List<ActivityRunner> noticeSubscriberList;
-	
+
+	/** 크론 잡 초기화 맵 */
+	@Getter(AccessLevel.PACKAGE)
+	private Map<String, Method> cronInitMap = new ConcurrentHashMap<>();
+
 	/** 크론 잡 맵 */
 	@Getter(AccessLevel.PACKAGE)
 	private Map<String, CronJob> cronJobMap = new ConcurrentHashMap<>();
