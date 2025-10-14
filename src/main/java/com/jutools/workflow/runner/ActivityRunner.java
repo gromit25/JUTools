@@ -182,6 +182,9 @@ public class ActivityRunner {
 		
 		// -------- 크론 작업 시작 
 		for(String key: this.cronJobMap.keySet()) {
+
+			//TODO 
+			
 			CronJob job = this.cronJobMap.get(key);
 			job.run();
 		}
