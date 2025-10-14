@@ -28,7 +28,7 @@ public class CronJob {
 	
 	/** 현재 기준 실행 시간 */
 	@Getter
-	private long currentBaseTime = -1;
+	private long baseTime = -1;
 	/** 다음 작업 시간: 중지되어 있을 경우 -1 */
 	@Getter
 	private long nextTime;
@@ -68,7 +68,7 @@ public class CronJob {
 						Thread.sleep(nextTime - System.currentTimeMillis());
 						
 						// 최근 시간을 설정
-						currentBaseTime = nextTime;
+						baseTime = nextTime;
 						
 						// 잡 수행
 						jobThread = new Thread(job);
