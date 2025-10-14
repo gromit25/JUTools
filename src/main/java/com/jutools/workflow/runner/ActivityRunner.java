@@ -226,7 +226,7 @@ public class ActivityRunner {
 		// 리스트 형태가 아니면 리스트에 만들어 넣음
 		List<Message<?>> messageList = null;
 		if(result instanceof List == false) {
-			messageList = new ArrayList<Message<?>>();
+			messageList = new ArrayList<>();
 			messageList.add((Message<?>)result);
 		} else {
 			messageList = (List<Message<?>>)result;
