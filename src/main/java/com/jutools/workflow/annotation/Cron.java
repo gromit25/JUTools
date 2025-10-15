@@ -7,7 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * 액티비티 크론 메소드
+ * 액티비티 크론 메소드<br>
+ * 크론 호출 메소드 형식<br>
+ * public void method(long baseTime, long nextTime)
  * 
  * @author jmsohn
  */
