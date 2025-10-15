@@ -17,6 +17,6 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface CronInit {
 	
-	/** 메소드 명 */
+	/** 메소드 명 - SpEL 사용 불가 */
 	String method();
 }
