@@ -1,7 +1,7 @@
 package com.jutools;
 
 @Component
-public class StringBootUtil {
+public class StringBeanUtil {
   
 	@Autowired
 	private GenericApplicationContext context;
