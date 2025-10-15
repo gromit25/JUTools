@@ -1,7 +1,7 @@
 package com.jutools;
 
 @Component
-public class StringBeanUtil {
+public class SpringBeanUtil {
   
 	@Autowired
 	private GenericApplicationContext context;
