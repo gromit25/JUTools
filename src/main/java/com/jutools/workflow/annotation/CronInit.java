@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * 크론 잡 초기화 메소드 어노테이션
+ * 크론 초기화 호출 메소드 형식<br>
+ * public void method(long nextTime)
  * 
  * @author jmsohn
  */
