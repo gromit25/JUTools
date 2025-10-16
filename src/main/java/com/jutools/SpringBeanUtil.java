@@ -7,9 +7,15 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * 스프링부트의 빈 관련 유틸리티 클래스
+ *
+ * @author jmsohn
+ */
 @Component
 public class SpringBeanUtil {
-  
+
+	/** 스프링부트 어플리케이션 컨텍스트 */
 	@Autowired
 	private GenericApplicationContext context;
 
