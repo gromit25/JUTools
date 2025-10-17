@@ -1,9 +1,9 @@
-package com.jutools.workflow;
+package com.jutools.spring.workflow;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.jutools.workflow.runner.ActivityRunner;
+import com.jutools.spring.workflow.runner.ActivityRunner;
 
 import lombok.extern.slf4j.Slf4j;
 

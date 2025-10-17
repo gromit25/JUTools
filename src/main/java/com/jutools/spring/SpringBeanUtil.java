@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.spring;
 
 import java.lang.reflect.Constructor;
 
@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.stereotype.Component;
+
+import com.jutools.StringUtil;
 
 /**
  * 스프링부트의 빈 관련 유틸리티 클래스

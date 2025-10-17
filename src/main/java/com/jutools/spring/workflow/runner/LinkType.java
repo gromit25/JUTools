@@ -1,4 +1,4 @@
-package com.jutools.workflow.runner;
+package com.jutools.spring.workflow.runner;
 
 /**
  * 워크플로우 컴포넌트 종류

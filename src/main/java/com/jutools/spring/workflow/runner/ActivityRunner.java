@@ -1,4 +1,4 @@
-package com.jutools.workflow.runner;
+package com.jutools.spring.workflow.runner;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.jutools.CronJob;
 import com.jutools.StringUtil;
+import com.jutools.spring.workflow.Message;
 import com.jutools.thread.AbstractDaemon;
-import com.jutools.workflow.Message;
 
 import lombok.AccessLevel;
 import lombok.Getter;

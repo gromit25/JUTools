@@ -1,9 +1,9 @@
-package com.jutools.workflow;
+package com.jutools.spring.workflow;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.jutools.workflow.runner.ActivityRunner;
+import com.jutools.spring.workflow.runner.ActivityRunner;
 
 import lombok.Getter;
 

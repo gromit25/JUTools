@@ -1,4 +1,4 @@
-package com.jutools.workflow;
+package com.jutools.spring.workflow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.jutools.StringUtil;
-import com.jutools.workflow.annotation.Activity;
-import com.jutools.workflow.runner.ActivityRunner;
-import com.jutools.workflow.runner.LinkType;
-import com.jutools.workflow.runner.RunnerFactory;
+import com.jutools.spring.workflow.annotation.Activity;
+import com.jutools.spring.workflow.runner.ActivityRunner;
+import com.jutools.spring.workflow.runner.LinkType;
+import com.jutools.spring.workflow.runner.RunnerFactory;
 
 /**
  * Workflow 생성 클래스

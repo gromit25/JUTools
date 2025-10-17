@@ -1,4 +1,4 @@
-package com.jutools.workflow;
+package com.jutools.spring.workflow;
 
 import lombok.Builder;
 import lombok.Data;

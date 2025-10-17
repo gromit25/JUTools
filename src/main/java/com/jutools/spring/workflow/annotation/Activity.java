@@ -1,4 +1,4 @@
-package com.jutools.workflow.annotation;
+package com.jutools.spring.workflow.annotation;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
-import com.jutools.workflow.runner.LinkType;
+import com.jutools.spring.workflow.runner.LinkType;
 
 /**
  * 워크플로우 액티비티 어노테이션<br>

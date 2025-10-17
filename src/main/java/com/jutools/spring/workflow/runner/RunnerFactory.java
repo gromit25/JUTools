@@ -1,4 +1,4 @@
-package com.jutools.workflow.runner;
+package com.jutools.spring.workflow.runner;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 
 import com.jutools.CronJob;
 import com.jutools.StringUtil;
-import com.jutools.workflow.Message;
-import com.jutools.workflow.WorkflowContext;
-import com.jutools.workflow.annotation.Activity;
-import com.jutools.workflow.annotation.Init;
-import com.jutools.workflow.annotation.Proc;
-import com.jutools.workflow.annotation.Exit;
-import com.jutools.workflow.annotation.Cron;
-import com.jutools.workflow.annotation.CronInit;
+import com.jutools.spring.workflow.Message;
+import com.jutools.spring.workflow.WorkflowContext;
+import com.jutools.spring.workflow.annotation.Activity;
+import com.jutools.spring.workflow.annotation.Cron;
+import com.jutools.spring.workflow.annotation.CronInit;
+import com.jutools.spring.workflow.annotation.Exit;
+import com.jutools.spring.workflow.annotation.Init;
+import com.jutools.spring.workflow.annotation.Proc;
 
 import lombok.extern.slf4j.Slf4j;
 
