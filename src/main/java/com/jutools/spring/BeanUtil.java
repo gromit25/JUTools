@@ -15,7 +15,7 @@ import com.jutools.StringUtil;
  * @author jmsohn
  */
 @Component
-public class SpringBeanUtil {
+public class BeanUtil {
 
 	/** 스프링부트 어플리케이션 컨텍스트 */
 	@Autowired
@@ -29,7 +29,7 @@ public class SpringBeanUtil {
 	 * @param obj 등록할 빈 오브젝트
 	 * @return 현재 객체
 	 */
-	public SpringBeanUtil registerBean(String beanName, Object obj) throws Exception {
+	public BeanUtil registerBean(String beanName, Object obj) throws Exception {
     
 		// 입력값 검증
 		if(StringUtil.isBlank(beanName) == true) {
@@ -59,7 +59,7 @@ public class SpringBeanUtil {
 	 * @param clazz 등록할 빈 클래스
 	 * @return 현재 객체
 	 */
-	public SpringBeanUtil registerBean(String beanName, Class<?> clazz) throws Exception {
+	public BeanUtil registerBean(String beanName, Class<?> clazz) throws Exception {
 
 		// 입력값 검증
 		if(clazz == null) {
@@ -83,7 +83,7 @@ public class SpringBeanUtil {
 	 * @param className 등록할 빈 클래스 문자열
 	 * @return 현재 객체
 	 */
-	public SpringBeanUtil registerBean(String beanName, String className) throws Exception {
+	public BeanUtil registerBean(String beanName, String className) throws Exception {
 
 		// 입력값 검증
 		if(StringUtil.isBlank(className) == true) {
