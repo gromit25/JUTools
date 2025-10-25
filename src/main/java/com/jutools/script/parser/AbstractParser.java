@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.jutools.NIOBufferUtil;
 import com.jutools.script.parser.exception.ParseException;
@@ -37,16 +39,16 @@ public abstract class AbstractParser<T> {
 	 * 상태 변환 정보 목록<br>
 	 * -> ex) "A" 상태에서 문자 "B"가 들어오면 "C" 상태로 변한다는 정보
 	 */
-	private Hashtable<String, ArrayList<Transfer>> transferMap = new Hashtable<String, ArrayList<Transfer>>();
+	private Map<String, List<Transfer>> transferMap = new ConcurrentHashMap<String, List<Transfer>>();
 	
 	/** 상태 변환시, 수행되는 전이함수(transfer function) 목록 */
-	private Hashtable<String, Hashtable<String, ArrayList<Method>>> transferHandlers = new Hashtable<String, Hashtable<String, ArrayList<Method>>>();
+	private Map<String, Map<String, List<Method>>> transferHandlers = new ConcurrentHashMap<String, Map<String, List<Method>>>();
 	
 	/**
 	 * 종료 상태 목록 - Key: 종료 상태명, Value: 종료 상태 종류<br>
 	 * 종료 상태 종류 : 0 - 일반 종료 상태, 1 - 종료 상태에 들어올 경우 Parsing도 종료
 	 */
-	private Hashtable<String, EndStatusType> endStatus = new Hashtable<String, EndStatusType>();
+	private Map<String, EndStatusType> endStatus = new ConcurrentHashMap<String, EndStatusType>();
 
 	/**
 	 * 생성자
@@ -79,10 +81,10 @@ public abstract class AbstractParser<T> {
 			
 				// 시작 상태가 등록되어 있지 않으면, 등록 수행
 				if(this.transferHandlers.containsKey(source) == false) {
-					this.transferHandlers.put(source, new Hashtable<String, ArrayList<Method>>());
+					this.transferHandlers.put(source, new ConcurrentHashMap<String, List<Method>>());
 				}
 				
-				Hashtable<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
+				Map<String, List<Method>> sourceMap = this.transferHandlers.get(source);
 				
 				// 종료 상태와 TransferEventHandler 메소드를 등록함
 				for(String target: targets) {
@@ -91,7 +93,7 @@ public abstract class AbstractParser<T> {
 						sourceMap.put(target, new ArrayList<Method>());
 					}
 					
-					ArrayList<Method> handlers = sourceMap.get(target);
+					List<Method> handlers = sourceMap.get(target);
 					
 					// TransferEventHandler의 파라미터 개수는 1개여야 함
 					if(method.getParameterCount() != 1) {
@@ -177,14 +179,14 @@ public abstract class AbstractParser<T> {
 	 * @param target 종료 상태
 	 * @return TransferEventHandler 메소드 목록
 	 */
-	private ArrayList<Method> getHandlers(String source, String target) throws Exception {
+	private List<Method> getHandlers(String source, String target) throws Exception {
 		
 		// 핸들러 목록에 소스가 없는 경우, 빈 array 반환
 		if(this.transferHandlers.containsKey(source) == false) {
 			return new ArrayList<Method>();
 		}
 		
-		Hashtable<String, ArrayList<Method>> sourceMap = this.transferHandlers.get(source);
+		Map<String, List<Method>> sourceMap = this.transferHandlers.get(source);
 		
 		// 소스 핸들러 목록에 타깃이 없는 경우, 빈 array 반환
 		if(sourceMap.containsKey(target) == false) {
@@ -244,7 +246,7 @@ public abstract class AbstractParser<T> {
 			
 			// 전이 함수 목록에서 유효한 전이 함수가 있는지 확인함
 			// 유효한 전이 함수에 따라 상태 변화 후 상태 변화에 따른 TransferEventHandler 메소드를 수행함
-			ArrayList<Transfer> transferFunctions = this.transferMap.get(this.status);
+			List<Transfer> transferFunctions = this.transferMap.get(this.status);
 			if(transferFunctions == null) {
 				throw new Exception("Transfer Function is not found: " + this.status + "-> ???");
 			}
@@ -298,7 +300,7 @@ public abstract class AbstractParser<T> {
 					Event event = new Event(ch, in, this.status, nextStatus);
 
 					// 이벤트 처리함수 호출
-					ArrayList<Method> handlers = this.getHandlers(this.status, nextStatus);
+					List<Method> handlers = this.getHandlers(this.status, nextStatus);
 					for(Method handler: handlers) {
 						handler.invoke(this, event);
 					}
