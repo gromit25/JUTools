@@ -11,7 +11,7 @@ import com.jutools.BytesUtil;
  * 
  * @author jmsohn
  */
-public class LineSplitReader implements SplitReader {
+public class LineSplitReader implements SplitReader<String> {
 	
 	/** \n 의 byte array */
 	private static byte[] LINE_FEED = "\n".getBytes();
