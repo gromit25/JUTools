@@ -21,6 +21,7 @@ public class LogReader implements SplitReader<String> {
 	/** 끝나지 않은 데이터 임시 저장 변수 */
 	private byte[] temp = null;
 	
+	
 	/**
 	 * 생성자
 	 * 
