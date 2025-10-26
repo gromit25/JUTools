@@ -16,7 +16,7 @@ import com.jutools.BytesUtil;
 public class LogReader implements SplitReader<String> {
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
-	private Charset charset = Charset.defaultCharset();
+	private Charset charset;
 	
 	/** 끝나지 않은 데이터 임시 저장 변수 */
 	private byte[] temp = null;
@@ -31,6 +31,8 @@ public class LogReader implements SplitReader<String> {
 		
 		if(charset != null) {
 			this.charset = charset;
+		} else {
+			this.charset = Charset.defaultCharset();
 		}
 	}
 	
@@ -38,7 +40,7 @@ public class LogReader implements SplitReader<String> {
 	 * 생성자
 	 */
 	public LogReader() throws Exception {
-		this(null);
+		this(Charset.defaultCharset());
 	}
 
 	@Override
