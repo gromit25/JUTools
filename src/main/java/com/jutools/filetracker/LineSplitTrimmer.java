@@ -11,7 +11,7 @@ import com.jutools.BytesUtil;
  * 
  * @author jmsohn
  */
-public class LineSplitReader implements SplitReader<String> {
+public class LineSplitTrimmer implements Trimmer<String> {
 	
 	/** \n 의 byte array */
 	private static byte[] LINE_FEED = "\n".getBytes();
@@ -31,7 +31,7 @@ public class LineSplitReader implements SplitReader<String> {
 	 * 
 	 * @param charset character set
 	 */
-	public LineSplitReader(Charset charset) throws Exception {
+	public LineSplitTrimmer(Charset charset) throws Exception {
 		
 		if(charset != null) {
 			this.charset = charset;
@@ -43,12 +43,12 @@ public class LineSplitReader implements SplitReader<String> {
 	/**
 	 * 생성자
 	 */
-	public LineSplitReader() throws Exception {
+	public LineSplitTrimmer() throws Exception {
 		this(null);
 	}
 
 	@Override
-	public synchronized void read(byte[] buffer, Consumer<String> action) throws Exception {
+	public synchronized void trim(byte[] buffer, Consumer<String> action) throws Exception {
 		
 		// 데이터 끝에 lineSeparator가 있는지 확인
 		boolean isEndsWithLineFeed = BytesUtil.endsWith(buffer, LINE_FEED);

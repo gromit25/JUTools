@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import com.jutools.filetracker.LineSplitReader;
-import com.jutools.filetracker.SplitReader;
+import com.jutools.filetracker.LineSplitTrimmer;
+import com.jutools.filetracker.Trimmer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,12 +25,12 @@ import lombok.Setter;
  * 
  * @author jmsohn
  */
-public class FileTracker {
+public class FileTracker<T> {
 	
 	// config 값
 	
 	/** 끊어읽기 reader */
-	private SplitReader reader;
+	private Trimmer<T> reader;
 	
 	/** buffer의 크기 */
 	private int bufferSize = 1024 * 1024;
@@ -59,15 +59,15 @@ public class FileTracker {
 	 * 
 	 * @param file 트레킹할 파일
 	 */
-	protected FileTracker(File file, SplitReader reader) throws Exception {
+	protected FileTracker(File file, Trimmer<T> reader) throws Exception {
 
 		// 입력값 검증
 		if(file == null) {
-			throw new NullPointerException("file is null");
+			throw new NullPointerException("'file' is null.");
 		}
 		
 		if(reader == null) {
-			this.reader = new LineSplitReader();
+			throw new IllegalArgumentException("'reader' is null.");
 		}
 		
 		// 타겟 파일 Path 객체 생성
@@ -101,8 +101,8 @@ public class FileTracker {
 	 * @param file 트레킹할 파일
 	 * @return 생성된 FileTracker 
 	 */
-	public static FileTracker create(File file) throws Exception {
-		return new FileTracker(file, null);
+	public static FileTracker<String> create(File file) throws Exception {
+		return new FileTracker<String>(file, new LineSplitTrimmer());
 	}
 	
 	/**
@@ -112,8 +112,8 @@ public class FileTracker {
 	 * @param reader 끊어읽기 reader
 	 * @return 생성된 FileTracker
 	 */
-	public static FileTracker create(File file, SplitReader reader) throws Exception {
-		return new FileTracker(file, reader);
+	public static <T> FileTracker<T> create(File file, Trimmer<T> reader) throws Exception {
+		return new FileTracker<T>(file, reader);
 	}
 	
 	/**
@@ -122,7 +122,7 @@ public class FileTracker {
 	 * @param fileName 트레킹할 파일명
 	 * @return 생성된 FileTracker 
 	 */
-	public static FileTracker create(String fileName) throws Exception {
+	public static FileTracker<String> create(String fileName) throws Exception {
 		return create(new File(fileName));
 	}
 	
@@ -131,7 +131,7 @@ public class FileTracker {
 	 * 
 	 * @param action 변경사항을 처리할 Consumer 객체
 	 */
-	public void tracking(Consumer<String> action) throws Exception {
+	public void tracking(Consumer<T> action) throws Exception {
 		
 		// 모니터링할 파일을 읽기 위한 파일 채널 변수
 		FileChannel readChannel = null;
@@ -212,7 +212,7 @@ public class FileTracker {
 							readBuffer.get(buffer);
 		
 							// reader 끊어 읽기 수행
-							this.reader.read(buffer, action);
+							this.reader.trim(buffer, action);
 		                    
 							NIOBufferUtil.clear(readBuffer);
 							
@@ -242,7 +242,7 @@ public class FileTracker {
 	 * @param bufferSize 설정할 버퍼 크기
 	 * @return 현재 객체
 	 */
-	public FileTracker setBufferSize(int bufferSize) throws Exception {
+	public FileTracker<T> setBufferSize(int bufferSize) throws Exception {
 		
 		if(bufferSize <= 0) {
 			throw new Exception("buffer size is invalid:" + bufferSize);

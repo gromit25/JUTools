@@ -13,7 +13,7 @@ import com.jutools.BytesUtil;
  * 
  * @author jmsohn
  */
-public class LogReader implements SplitReader<String> {
+public class LogTrimmer implements Trimmer<String> {
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset;
@@ -27,7 +27,7 @@ public class LogReader implements SplitReader<String> {
 	 * 
 	 * @param charset character set
 	 */
-	public LogReader(Charset charset) throws Exception {
+	public LogTrimmer(Charset charset) throws Exception {
 		
 		if(charset != null) {
 			this.charset = charset;
@@ -39,12 +39,12 @@ public class LogReader implements SplitReader<String> {
 	/**
 	 * 생성자
 	 */
-	public LogReader() throws Exception {
+	public LogTrimmer() throws Exception {
 		this(Charset.defaultCharset());
 	}
 
 	@Override
-	public synchronized void read(byte[] buffer, Consumer<String> action) throws Exception {
+	public synchronized void trim(byte[] buffer, Consumer<String> action) throws Exception {
 		
 		// 데이터 끝에 개행이 있는지 확인
 		boolean isEndsWithNewLine = BytesUtil.endsWith(buffer, "\n".getBytes());
