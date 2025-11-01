@@ -30,7 +30,7 @@ public class FileTracker<T> {
 	// config 값
 	
 	/** 끊어읽기 reader */
-	private Trimmer<T> reader;
+	private Trimmer<T> trimmer;
 	
 	/** buffer의 크기 */
 	private int bufferSize = 1024 * 1024;
@@ -54,20 +54,22 @@ public class FileTracker<T> {
 	/** 파일 변경 사항을 확인하기 위한 watchService */
 	private WatchService watchSvc;
 
+	
 	/**
 	 * 생성자
 	 * 
 	 * @param file 트레킹할 파일
+	 * @param trimmer
 	 */
-	protected FileTracker(File file, Trimmer<T> reader) throws Exception {
+	protected FileTracker(File file, Trimmer<T> trimmer) throws Exception {
 
 		// 입력값 검증
 		if(file == null) {
 			throw new NullPointerException("'file' is null.");
 		}
 		
-		if(reader == null) {
-			throw new IllegalArgumentException("'reader' is null.");
+		if(trimmer == null) {
+			throw new IllegalArgumentException("'trimmer' is null.");
 		}
 		
 		// 타겟 파일 Path 객체 생성
@@ -80,7 +82,7 @@ public class FileTracker<T> {
 		}
 
 		// 리더 설정
-		this.reader = reader;
+		this.trimmer = trimmer;
 
 		// watchService 생성
 		this.watchSvc =  parentPath.getFileSystem().newWatchService();
@@ -212,7 +214,7 @@ public class FileTracker<T> {
 							readBuffer.get(buffer);
 		
 							// reader 끊어 읽기 수행
-							this.reader.trim(buffer, action);
+							this.trimmer.trim(buffer, action);
 		                    
 							NIOBufferUtil.clear(readBuffer);
 							
