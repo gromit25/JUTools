@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.jutools.filetracker.FileTracker;
+
 /**
  * FileTracker 클래스의 테스트 케이스
  * 

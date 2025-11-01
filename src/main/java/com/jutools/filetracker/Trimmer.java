@@ -7,6 +7,7 @@ import java.util.function.Consumer;
  * 
  * @author jmsohn
  */
+@FunctionalInterface
 public interface Trimmer<T> {
 
 	/**

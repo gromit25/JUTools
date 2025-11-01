@@ -1,4 +1,4 @@
-package com.jutools;
+package com.jutools.filetracker;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import com.jutools.filetracker.LineSplitTrimmer;
-import com.jutools.filetracker.Trimmer;
+import com.jutools.NIOBufferUtil;
+import com.jutools.filetracker.trimmer.LineSplitTrimmer;
 
 import lombok.Getter;
 import lombok.Setter;

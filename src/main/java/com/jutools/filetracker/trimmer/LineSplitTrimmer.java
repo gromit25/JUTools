@@ -1,10 +1,11 @@
-package com.jutools.filetracker;
+package com.jutools.filetracker.trimmer;
 
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Consumer;
 
 import com.jutools.BytesUtil;
+import com.jutools.filetracker.Trimmer;
 
 /**
  * line 구분자로 끊어 읽기 Reader
