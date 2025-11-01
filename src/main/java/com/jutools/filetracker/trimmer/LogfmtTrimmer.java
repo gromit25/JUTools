@@ -11,7 +11,7 @@ import com.jutools.filetracker.Trimmer;
  * 
  * @author jmsohn
  */
-public class LogfmtReader implements Trimmer<Map<String, Object>>{
+public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset;
@@ -25,7 +25,7 @@ public class LogfmtReader implements Trimmer<Map<String, Object>>{
 	 * 
 	 * @param charset character set
 	 */
-	public LogfmtReader(Charset charset) throws Exception {
+	public LogfmtTrimmer(Charset charset) throws Exception {
 		
 		if(charset != null) {
 			this.charset = charset;
@@ -37,7 +37,7 @@ public class LogfmtReader implements Trimmer<Map<String, Object>>{
 	/**
 	 * 생성자
 	 */
-	public LogfmtReader() throws Exception {
+	public LogfmtTrimmer() throws Exception {
 		this(Charset.defaultCharset());
 	}
 
