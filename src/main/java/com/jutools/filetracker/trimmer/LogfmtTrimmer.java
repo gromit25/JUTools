@@ -1,4 +1,4 @@
-package com.jutools.logfmt;
+package com.jutools.filetracker.trimmer;
 
 import java.io.IOException;
 import java.io.InputStream;

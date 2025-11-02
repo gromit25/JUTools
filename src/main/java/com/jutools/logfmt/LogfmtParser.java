@@ -1,4 +1,4 @@
-package com.jutools.filetracker.trimmer;
+package com.jutools.logfmt;
 
 import com.jutools.script.parser.AbstractParser;
 import com.jutools.script.parser.EndStatusType;
