@@ -83,7 +83,7 @@ public class LogfmtParser {
 		String key = null;
 		
 		// 리더에서 한문자씩 일어와서 파싱 수행
-		int read = reader.read(); 
+		int read = reader.read();
 		while(read != -1) {
 			
 			// 즉시 종료 상태이면 중지
@@ -114,7 +114,9 @@ public class LogfmtParser {
 
 				if(ch == '=') {
 					
+					key = buffer.toString();
 					buffer.delete(0, buffer.length());
+					
 					status = Status.SET;
 					
 				} else if(ch == '\n') {
@@ -261,6 +263,22 @@ public class LogfmtParser {
 			default:
 				throw new Exception("invalid status: " + status);
 			}
+			
+			// 새로운 문자를 읽음
+			read = reader.read();
+		}
+		
+		// buffer 에 데이터가 있다면(갑자기 종료된 경우)
+		// map 에 추가함
+		if(buffer.length() != 0) {
+			
+			if(status == Status.STRING || status == Status.VALUE) {
+				map.put(key, buffer.toString());
+			} else if(status == Status.INTEGER) {
+				map.put(key, Integer.parseInt(buffer.toString()));
+			} else if(status == Status.DOUBLE) {
+				map.put(key, Double.parseDouble(buffer.toString()));
+			} 
 		}
 		
 		// 종료 상태인지 확인
