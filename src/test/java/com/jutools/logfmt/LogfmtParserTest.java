@@ -1,6 +1,8 @@
 package com.jutools.logfmt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Map;
 
@@ -35,5 +37,23 @@ public class LogfmtParserTest {
 		Map<String, Object> map = parser.parse(log);
 		
 		assertEquals("test\r\n hello world!", map.get("item1"));
+	}
+	
+	@Test
+	public void testParse3() throws Exception {
+		
+		String log = "item1=\"test\r\n hello world!";
+		
+		try {
+			
+			LogfmtParser parser = new LogfmtParser();
+			parser.parse(log);
+			
+			fail();
+			
+		} catch(Exception ex) {
+			
+			assertTrue(true);
+		}
 	}
 }
