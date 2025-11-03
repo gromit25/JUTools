@@ -2,6 +2,8 @@ package com.jutools.filetracker.trimmer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -10,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import com.jutools.filetracker.Trimmer;
+import com.jutools.logfmt.LogfmtParser;
 
 /**
  * 
@@ -23,7 +26,7 @@ public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 	
 	/** 끝나지 않은 데이터 임시 저장 변수 */
 	private byte[] buffer = null;
-	
+
 	
 	/**
 	 * 생성자
@@ -48,6 +51,10 @@ public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 
 	@Override
 	public void trim(byte[] buffer, Consumer<Map<String, Object>> action) throws Exception {
+		
+		TrackingLogInputStream is = new TrackingLogInputStream();
+		Reader reader = new InputStreamReader(is, this.charset);
+		
 	}
 }
 
