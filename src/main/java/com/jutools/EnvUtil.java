@@ -35,7 +35,5 @@ public class EnvUtil {
 		} else {
 			return value;
 		}
-		
 	}
-
 }
