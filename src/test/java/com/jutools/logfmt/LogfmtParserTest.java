@@ -38,9 +38,20 @@ public class LogfmtParserTest {
 		
 		assertEquals("test\r\n hello world!", map.get("item1"));
 	}
-	
+
 	@Test
 	public void testParse3() throws Exception {
+		
+		String log = "item1=test item2= item3=123.45";
+		
+		LogfmtParser parser = new LogfmtParser();
+		Map<String, Object> map = parser.parse(log);
+		
+		assertEquals("", map.get("item2"));
+	}
+	
+	@Test
+	public void testParseException1() throws Exception {
 		
 		String log = "item1=\"test\r\n hello world!";
 		
