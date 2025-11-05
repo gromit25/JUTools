@@ -1694,4 +1694,24 @@ public class StringUtil {
 	private static boolean isBlankChar(char ch) {
 		return ch == ' ' || ch == '\t' || ch == '\0' || ch == '\r';
 	}
+
+		/**
+	 * 문자열에서 접두사를 삭제하여 반환
+	 * 
+	 * @param target 문자열
+	 * @param prefix 접두사
+	 * @return 접두사를 삭제한 문자열
+	 */
+	public static String removePrefix(String target, String prefix) throws Exception {
+		
+		if(isBlank(target) == true || isBlank(prefix) == true) {
+			return target;
+		}
+		
+		if(target.startsWith(prefix) == false) {
+			return target;
+		}
+		
+		return target.substring(prefix.length());
+	}
 }
