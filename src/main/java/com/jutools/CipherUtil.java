@@ -194,5 +194,4 @@ public class CipherUtil {
 	public static String decryptAES(String key, String str) throws Exception {
 		return decryptAES(key, Charset.defaultCharset(), str);
 	}
-
 }
