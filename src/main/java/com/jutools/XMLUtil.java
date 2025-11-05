@@ -209,9 +209,10 @@ public class XMLUtil {
 	}
 	
 	/**
+	 * 타입 변환자를 타입 변환 관리자에 등록
 	 * 
-	 * @param name
-	 * @param typeShift
+	 * @param name 타입 변환자 구분 이름
+	 * @param typeShift 타입 변환자
 	 */
 	public static void registTypeShift(String name, TypeShift typeShift) throws Exception {
 		TypeShiftManager.registTypeShift(name, typeShift);
