@@ -35,7 +35,6 @@ public class TextGen {
 		public String getText(Map<String, ?> values) throws Exception;
 	}
 	
-	
 	/**
 	 * 일반 문자열 처리를 위한 텍스트 요소 클래스
 	 * 
@@ -109,11 +108,13 @@ public class TextGen {
 		}
 	}
 	
+	
 	/** 변환 시작 문자 */
 	private char replaceStartChar;
 	
 	/** 텍스트 요소 목록 변수 - parse 메소드에 의해 생성됨 */
 	private List<TextElement> elements;
+	
 	
 	/**
 	 * 생성자
