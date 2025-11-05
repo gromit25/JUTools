@@ -1695,7 +1695,7 @@ public class StringUtil {
 		return ch == ' ' || ch == '\t' || ch == '\0' || ch == '\r';
 	}
 
-		/**
+	/**
 	 * 문자열에서 접두사를 삭제하여 반환
 	 * 
 	 * @param target 문자열
