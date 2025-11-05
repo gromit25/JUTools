@@ -46,5 +46,4 @@ public class CacheService {
 	public static <T> Cache<T> create(Loader<T> loader) throws Exception {
 		return create(loader, 10 * 60 * 1000);
 	}
-
 }
