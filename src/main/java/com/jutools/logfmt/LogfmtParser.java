@@ -146,7 +146,10 @@ public class LogfmtParser {
 					status = Status.END;
 					
 				} else if(ch == '\r' || ch == ' ' || ch == '\t'){
-					// Do nothing
+
+					map.put(key, buffer.toString());
+					status = Status.START;
+					
 				} else {
 					
 					buffer.append(ch);
