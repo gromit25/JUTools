@@ -1,9 +1,10 @@
 package com.jutools.logfmt;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import com.jutools.StringUtil;
 
 import lombok.Getter;
 
@@ -19,7 +20,7 @@ public class LogfmtParser {
 	 * 
 	 * @author jmsohn
 	 */
-	static enum Status {
+	private static enum Status {
 		
 		START(true),
 		KEY(false),
@@ -46,66 +47,68 @@ public class LogfmtParser {
 			this.endStatus = endStatus;
 		}
 	}
-
 	
+	/** 파싱 결과 저장 맵 */
+	private Map<String, Object> map = new HashMap<>();
+	
+	/** 파싱 상태 변수 */
+	private Status status = Status.START;
+	
+	/**  임시 저장 변수 */
+	private StringBuilder buffer = new StringBuilder("");
+	
+	/** 파싱 결과 처리를 위한 콜백 메소드 */
+	private Consumer<Map<String, Object>> consumer;
+	
+	/** 맵에 저장할 키 변수 */
+	String key = null;
+	
+
 	/**
 	 * 생성자
 	 * 
-	 * @param reader
+	 * @param consumer 파싱 결과 처리를 위한 콜백 메소드
 	 */
-	public LogfmtParser() throws Exception {
+	public LogfmtParser(Consumer<Map<String, Object>> consumer) throws Exception {
 		
-	}
-	
-	/**
-	 * Logfmt 메시지 파싱 수행
-	 * 
-	 * @param reader 메시지 Reader 객체
-	 * @return 파싱 맵 객체
-	 */
-	public Map<String, Object> parse(Reader reader) throws Exception {
-		
-		// 입력값 검증
-		if(reader == null) {
-			throw new IllegalArgumentException("'reader' is null.");
+		if(consumer == null) {
+			throw new IllegalArgumentException("'consumer' is null.");
 		}
 		
-		// 파싱 결과 저장 맵
-		Map<String, Object> map = new HashMap<>();
+		this.consumer = consumer;
+	}
+
+	/**
+	 * Logfmt 메시지 피드 수행
+	 * 
+	 * @param log 읽은 문자열
+	 */
+	public void feed(String log) throws Exception {
 		
-		// 파싱 상태 변수
-		Status status = Status.START;
-		
-		// 임시 저장 변수
-		StringBuilder buffer = new StringBuilder("");
-		
-		// 맵에 저장할 키 변수
-		String key = null;
+		// 입력값 검증
+		if(StringUtil.isEmpty(log) == true) {
+			return;
+		}
 		
 		// 리더에서 한문자씩 일어와서 파싱 수행
-		int read = reader.read();
-		while(read != -1) {
+		for(int index = 0; index < log.length(); index++) {
 			
-			// 즉시 종료 상태이면 중지
-			if(status == Status.END || status == Status.ERROR) {
-				break;
-			}
-			
-			char ch = (char)read;
+			// 현재 문자를 읽음
+			char ch = log.charAt(index);
 			
 			// 각 상태별 읽은 데이터 처리
-			switch(status) {
+			switch(this.status) {
 			
 			case START:
 				
 				if(ch == '\n') {
 					
-					status = Status.END;
+					this.status = Status.END;
 					
 				} else if(ch != ' ' && ch != '\t' && ch != '\r') {
 					
-					buffer.append(ch);
-					status = Status.KEY;
+					this.buffer.append(ch);
+					this.status = Status.KEY;
 				}
 				
 				break;
@@ -114,18 +117,18 @@ public class LogfmtParser {
 
 				if(ch == '=') {
 					
-					key = buffer.toString();
-					buffer.delete(0, buffer.length());
+					key = this.buffer.toString();
+					this.buffer.delete(0, buffer.length());
 					
-					status = Status.SET;
+					this.status = Status.SET;
 					
 				} else if(ch == '\n') {
 					
-					status = Status.ERROR;
+					this.status = Status.ERROR;
 					
 				} else {
 					
-					buffer.append(ch);
+					this.buffer.append(ch);
 				}
 				
 				break;
@@ -134,26 +137,26 @@ public class LogfmtParser {
 				
 				if(ch == '"') {
 					
-					status = Status.STRING;
+					this.status = Status.STRING;
 					
 				} else if(ch >= '0' && ch <= '9') {
 					
-					buffer.append(ch);
-					status = Status.INTEGER;
+					this.buffer.append(ch);
+					this.status = Status.INTEGER;
 					
 				} else if(ch == '\n') {
 					
-					status = Status.END;
+					this.status = Status.END;
 					
 				} else if(ch == '\r' || ch == ' ' || ch == '\t'){
 
-					map.put(key, buffer.toString());
-					status = Status.START;
+					this.map.put(key, buffer.toString());
+					this.status = Status.START;
 					
 				} else {
 					
-					buffer.append(ch);
-					status = Status.VALUE;
+					this.buffer.append(ch);
+					this.status = Status.VALUE;
 				}
 				
 				break;
@@ -163,14 +166,14 @@ public class LogfmtParser {
 				if(ch == '"') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, buffer.toString());
-					buffer.delete(0, buffer.length());
+					this.map.put(key, this.buffer.toString());
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.START;
+					this.status = Status.START;
 					
 				} else {
 					
-					buffer.append(ch);
+					this.buffer.append(ch);
 				}
 				
 				break;
@@ -179,32 +182,32 @@ public class LogfmtParser {
 				
 				if(ch >= '0' && ch <= '9') {
 					
-					buffer.append(ch);
+					this.buffer.append(ch);
 					
 				} else if(ch == '.') {
 					
-					buffer.append(ch);
-					status = Status.DOUBLE;
+					this.buffer.append(ch);
+					this.status = Status.DOUBLE;
 					
 				} else if(ch == ' ' || ch == '\t' || ch == '\r') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, Integer.parseInt(buffer.toString()));
-					buffer.delete(0, buffer.length());
+					this.map.put(key, Integer.parseInt(this.buffer.toString()));
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.START;
+					this.status = Status.START;
 					
 				} else if(ch == '\n') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, Integer.parseInt(buffer.toString()));
-					buffer.delete(0, buffer.length());
+					this.map.put(key, Integer.parseInt(this.buffer.toString()));
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.END;
+					this.status = Status.END;
 					
 				} else {
 					
-					status = Status.VALUE;
+					this.status = Status.VALUE;
 				}
 				
 				break;
@@ -218,22 +221,22 @@ public class LogfmtParser {
 				} else if(ch == ' ' || ch == '\t' || ch == '\r') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, Double.parseDouble(buffer.toString()));
-					buffer.delete(0, buffer.length());
+					this.map.put(key, Double.parseDouble(this.buffer.toString()));
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.START;
+					this.status = Status.START;
 					
 				} else if(ch == '\n') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, Double.parseDouble(buffer.toString()));
-					buffer.delete(0, buffer.length());
+					this.map.put(key, Double.parseDouble(this.buffer.toString()));
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.END;
+					this.status = Status.END;
 					
 				} else {
 					
-					status = Status.VALUE;
+					this.status = Status.VALUE;
 				}
 				
 				break;
@@ -243,67 +246,77 @@ public class LogfmtParser {
 				if(ch == ' ' || ch == '\t' || ch == '\r') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, buffer.toString());
-					buffer.delete(0, buffer.length());
+					this.map.put(key, this.buffer.toString());
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.START;
+					this.status = Status.START;
 					
 				} else if(ch == '\n') {
 					
 					// 맵 추가 및 버퍼 클리어
-					map.put(key, buffer.toString());
-					buffer.delete(0, buffer.length());
+					this.map.put(key, this.buffer.toString());
+					this.buffer.delete(0, this.buffer.length());
 					
-					status = Status.END;
+					this.status = Status.END;
 					
 				} else {
 					
-					buffer.append(ch);
+					this.buffer.append(ch);
 				}
 				
 				break;
 				
 			default:
-				throw new Exception("invalid status: " + status);
+				throw new Exception("invalid status: " + this.status);
 			}
 			
-			// 새로운 문자를 읽음
-			read = reader.read();
-		}
+			// 종료 상태이면 컨슈머 호출
+			if(this.status == Status.END) {
+				this.consumer.accept(this.map);
+				this.status = Status.START;
+			}
+			
+			// 오류 상태이면 중지
+			if(this.status == Status.ERROR) {
+				throw new IllegalStateException();
+			}
+		} // End of for
+	}
+	
+	/**
+	 * 최종 정리 작업 수행
+	 */
+	public void finalize() throws Exception {
 		
 		// buffer 에 데이터가 있다면(갑자기 종료된 경우)
 		// map 에 추가함
-		if(buffer.length() != 0) {
+		if(this.buffer.length() != 0) {
 			
-			if(status == Status.STRING || status == Status.VALUE) {
-				map.put(key, buffer.toString());
-			} else if(status == Status.INTEGER) {
-				map.put(key, Integer.parseInt(buffer.toString()));
-			} else if(status == Status.DOUBLE) {
-				map.put(key, Double.parseDouble(buffer.toString()));
+			if(this.status == Status.STRING || this.status == Status.VALUE) {
+				
+				this.map.put(this.key, this.buffer.toString());
+				this.consumer.accept(map);
+				
+			} else if(this.status == Status.INTEGER) {
+				
+				this.map.put(this.key, Integer.parseInt(this.buffer.toString()));
+				this.consumer.accept(map);
+				
+			} else if(this.status == Status.DOUBLE) {
+				
+				this.map.put(this.key, Double.parseDouble(this.buffer.toString()));
+				this.consumer.accept(map);
 			} 
 		}
 		
 		// 종료 상태인지 확인
-		if(status.isEndStatus() == false) {
-			throw new Exception("invalid end status: " + status);
+		if(this.status.isEndStatus() == false) {
+			throw new IllegalStateException("invalid end status: " + this.status);
 		}
 		
-		return map;
-	}
-	
-	/**
-	 * Logfmt 문자열 파싱
-	 * 
-	 * @param log 로그 메시지 문자열
-	 * @return 파싱 맵 객체
-	 */
-	public Map<String, Object> parse(String log) throws Exception {
-		
-		if(log == null) {
-			throw new IllegalArgumentException("'log' is null.");
-		}
-		
-		return this.parse(new StringReader(log));
+		// 초기화 수행
+		this.map = new HashMap<>();
+		this.status = Status.START;
+		this.buffer = new StringBuilder("");
 	}
 }
