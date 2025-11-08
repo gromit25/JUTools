@@ -8,7 +8,7 @@ import com.jutools.BytesUtil;
 import com.jutools.filetracker.Trimmer;
 
 /**
- * line 구분자로 끊어 읽기 Reader
+ * line 구분자로 끊어 읽기 Trimmer
  * 
  * @author jmsohn
  */

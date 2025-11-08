@@ -8,7 +8,7 @@ import com.jutools.filetracker.Trimmer;
 import com.jutools.logfmt.LogfmtParser;
 
 /**
- * 
+ * Logfmt 형식의 로그 Trimmer
  * 
  * @author jmsohn
  */
@@ -18,7 +18,7 @@ public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset;
 
-	/** */
+	/** Logfmt 파서 캑체 */
 	private LogfmtParser parser;
 
 	

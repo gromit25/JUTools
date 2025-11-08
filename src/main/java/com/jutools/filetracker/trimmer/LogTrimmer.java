@@ -8,7 +8,7 @@ import com.jutools.BytesUtil;
 import com.jutools.filetracker.Trimmer;
 
 /**
- * 로그 파일 끊어 읽기 Reader<br>
+ * 로그 파일 끊어 읽기 Trimmer<br>
  * ex)<br>
  * 2025-05-05T17:44:50.276+09:00  INFO 84760 --- [app] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
  * 
