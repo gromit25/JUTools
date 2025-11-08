@@ -26,8 +26,7 @@ import lombok.Setter;
  * @author jmsohn
  */
 public class FileTracker<T> {
-	
-	// config 값
+
 	
 	/** 끊어읽기 reader */
 	private Trimmer<T> trimmer;
@@ -129,16 +128,19 @@ public class FileTracker<T> {
 	}
 	
 	/**
-	 * 파일의 변경사항에 대해 추적
+	 * 파일 추가 로그에 대해 추적
 	 * 
-	 * @param action 변경사항을 처리할 Consumer 객체
+	 * @param consumer 추가 로그를 처리할 Consumer 객체
 	 */
-	public void tracking(Consumer<T> action) throws Exception {
+	public void tracking(Consumer<T> consumer) throws Exception {
 		
 		// 모니터링할 파일을 읽기 위한 파일 채널 변수
 		FileChannel readChannel = null;
 	    
 		try {
+			
+			// 컨슈머 설정
+			this.trimmer.setConsumer(consumer);
 			
 			// 파일이 이미 존재하면 채널을 생성함
 			// 주의) InputStream이나 Reader로 읽으면 안됨 -> 파일에 Write Lock이 걸림
@@ -214,7 +216,7 @@ public class FileTracker<T> {
 							readBuffer.get(buffer);
 		
 							// reader 끊어 읽기 수행
-							this.trimmer.trim(buffer, action);
+							this.trimmer.trim(buffer);
 		                    
 							NIOBufferUtil.clear(readBuffer);
 							

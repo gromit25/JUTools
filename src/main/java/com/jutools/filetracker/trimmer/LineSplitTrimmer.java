@@ -24,7 +24,10 @@ public class LineSplitTrimmer implements Trimmer<String> {
 	private Charset charset;
 	
 	/** 끝나지 않은 데이터 임시 저장 변수 */
-	byte[] temp = null;
+	private byte[] temp = null;
+	
+	/** 추가 로그를 처리할 Consumer 객체 */
+	private Consumer<String> consumer;
 	
 	
 	/**
@@ -49,7 +52,7 @@ public class LineSplitTrimmer implements Trimmer<String> {
 	}
 
 	@Override
-	public synchronized void trim(byte[] buffer, Consumer<String> action) throws Exception {
+	public synchronized void trim(byte[] buffer) throws Exception {
 		
 		// 데이터 끝에 lineSeparator가 있는지 확인
 		boolean isEndsWithLineFeed = BytesUtil.endsWith(buffer, LINE_FEED);
@@ -78,7 +81,7 @@ public class LineSplitTrimmer implements Trimmer<String> {
 				}
 				
 				// 사용자 처리 메소드에서 데이터를 처리함
-				action.accept(new String(message, this.charset));
+				this.consumer.accept(new String(message, this.charset));
 				
 			} else {
 				
@@ -86,5 +89,10 @@ public class LineSplitTrimmer implements Trimmer<String> {
 				this.temp = message;
 			}
 		}
+	}
+
+	@Override
+	public void setConsumer(Consumer<String> consumer) throws Exception {
+		
 	}
 }

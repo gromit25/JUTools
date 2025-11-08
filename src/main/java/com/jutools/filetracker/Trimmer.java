@@ -7,14 +7,19 @@ import java.util.function.Consumer;
  * 
  * @author jmsohn
  */
-@FunctionalInterface
 public interface Trimmer<T> {
+	
+	/**
+	 * 컨슈머 설정
+	 * 
+	 * @param consumer 재단된 데이터를 처리하기 위한 Consumer
+	 */
+	public void setConsumer(Consumer<T> consumer) throws Exception;
 
 	/**
 	 * 읽은 데이터 처리(재단)함
 	 * 
 	 * @param buffer 읽은 데이터 
-	 * @param action 재단된 데이터를 처리하기 위한 Consumer
 	 */
-	public void trim(byte[] buffer, Consumer<T> action) throws Exception;
+	public void trim(byte[] buffer) throws Exception;
 }

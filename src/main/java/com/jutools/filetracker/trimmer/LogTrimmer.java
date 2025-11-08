@@ -15,12 +15,16 @@ import com.jutools.filetracker.Trimmer;
  * @author jmsohn
  */
 public class LogTrimmer implements Trimmer<String> {
+
 	
 	/** 파일을 읽을 때, 문자 인코딩 방식 */
 	private Charset charset;
 	
 	/** 끝나지 않은 데이터 임시 저장 변수 */
 	private byte[] temp = null;
+	
+	/** 추가 로그를 처리할 Consumer 객체 */
+	private Consumer<String> consumer;
 	
 	
 	/**
@@ -45,7 +49,7 @@ public class LogTrimmer implements Trimmer<String> {
 	}
 
 	@Override
-	public synchronized void trim(byte[] buffer, Consumer<String> action) throws Exception {
+	public synchronized void trim(byte[] buffer) throws Exception {
 		
 		// 데이터 끝에 개행이 있는지 확인
 		boolean isEndsWithNewLine = BytesUtil.endsWith(buffer, "\n".getBytes());
@@ -66,7 +70,7 @@ public class LogTrimmer implements Trimmer<String> {
 				// 새로운 메시지 시작
 				// 이전 저장된 메시지를 action에서 처리함
 				if(this.temp != null) {
-					action.accept(new String(this.temp, this.charset));
+					this.consumer.accept(new String(this.temp, this.charset));
 				}
 				
 				// 현재 메시지는 저장
@@ -182,5 +186,10 @@ public class LogTrimmer implements Trimmer<String> {
 			
 			return true;
 		} // end of if
+	}
+
+	@Override
+	public void setConsumer(Consumer<String> consumer) throws Exception {
+		this.consumer = consumer;
 	}
 }
