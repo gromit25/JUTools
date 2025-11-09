@@ -14,6 +14,7 @@ import com.jutools.filetracker.Trimmer;
  */
 public class LineSplitTrimmer implements Trimmer<String> {
 	
+	
 	/** \n 의 byte array */
 	private static byte[] LINE_FEED = "\n".getBytes();
 	
@@ -93,6 +94,6 @@ public class LineSplitTrimmer implements Trimmer<String> {
 
 	@Override
 	public void setConsumer(Consumer<String> consumer) throws Exception {
-		
+		this.consumer = consumer;
 	}
 }
