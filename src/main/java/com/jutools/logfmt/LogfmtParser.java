@@ -347,6 +347,8 @@ public class LogfmtParser {
 			return '\r';
 		case 'n':
 			return '\n';
+		case '0':
+			return '\0';
 		default:
 			return ch;
 		}
