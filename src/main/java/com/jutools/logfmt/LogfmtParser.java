@@ -26,6 +26,8 @@ public class LogfmtParser {
 		KEY(false),
 		SET(true),
 		STRING(false),
+		ESCAPE(false),
+		MINUS(true),
 		INTEGER(true),
 		DOUBLE(true),
 		VALUE(true),
@@ -139,6 +141,11 @@ public class LogfmtParser {
 					
 					this.status = Status.STRING;
 					
+				} else if(ch == '-') {
+					
+					this.buffer.append(ch);
+					this.status = Status.MINUS;
+					
 				} else if(ch >= '0' && ch <= '9') {
 					
 					this.buffer.append(ch);
@@ -171,9 +178,51 @@ public class LogfmtParser {
 					
 					this.status = Status.START;
 					
+				} else if(ch == '\\'){
+					
+					this.status = Status.ESCAPE;
+					
 				} else {
 					
 					this.buffer.append(ch);
+				}
+				
+				break;
+			
+			case ESCAPE:
+				
+				this.buffer.append(getEscapeChar(ch));
+				this.status = Status.STRING;
+				
+				break;
+				
+			case MINUS:
+				
+				if(ch >= '0' && ch <= '9') {
+					
+					this.buffer.append(ch);
+					this.status = Status.INTEGER;
+					
+				} else if(ch == ' ' || ch == '\t' || ch == '\r') {
+					
+					// 맵 추가 및 버퍼 클리어
+					this.map.put(key, this.buffer.toString());
+					this.buffer.delete(0, this.buffer.length());
+					
+					this.status = Status.START;
+					
+				} else if(ch == '\n') {
+					
+					// 맵 추가 및 버퍼 클리어
+					this.map.put(key, this.buffer.toString());
+					this.buffer.delete(0, this.buffer.length());
+					
+					this.status = Status.END;
+					
+				} else {
+					
+					this.buffer.append(ch);
+					this.status = Status.VALUE;
 				}
 				
 				break;
@@ -267,7 +316,7 @@ public class LogfmtParser {
 				break;
 				
 			default:
-				throw new Exception("invalid status: " + this.status);
+				throw new IllegalStateException("invalid status: " + this.status);
 			}
 			
 			// 종료 상태이면 컨슈머 호출
@@ -278,9 +327,29 @@ public class LogfmtParser {
 			
 			// 오류 상태이면 중지
 			if(this.status == Status.ERROR) {
-				throw new IllegalStateException();
+				throw new IllegalStateException("invalid status: " + this.status);
 			}
 		} // End of for
+	}
+	
+	/**
+	 * 이스케이프 문자에 해당하는 문자 반환
+	 * 
+	 * @param ch 이스케이프 문자
+	 * @return 치환 문자
+	 */
+	private char getEscapeChar(char ch) {
+		
+		switch(ch) {
+		case 't':
+			return '\t';
+		case 'r':
+			return '\r';
+		case 'n':
+			return '\n';
+		default:
+			return ch;
+		}
 	}
 	
 	/**
@@ -292,7 +361,7 @@ public class LogfmtParser {
 		// map 에 추가함
 		if(this.buffer.length() != 0) {
 			
-			if(this.status == Status.STRING || this.status == Status.VALUE) {
+			if(this.status == Status.VALUE || this.status == Status.MINUS) {
 				
 				this.map.put(this.key, this.buffer.toString());
 				this.consumer.accept(map);
