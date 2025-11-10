@@ -338,7 +338,7 @@ public class LogfmtParser {
 	 * @param ch 이스케이프 문자
 	 * @return 치환 문자
 	 */
-	private char getEscapeChar(char ch) {
+	private static char getEscapeChar(char ch) {
 		
 		switch(ch) {
 		case 't':
