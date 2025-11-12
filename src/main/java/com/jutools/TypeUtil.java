@@ -346,7 +346,6 @@ public class TypeUtil {
 			
 			return false;
 		}
-		
 	}
 	
 	/**
