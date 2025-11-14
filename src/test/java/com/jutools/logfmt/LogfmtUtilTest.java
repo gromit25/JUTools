@@ -14,14 +14,14 @@ import org.junit.Test;
  * 
  * @author jmsohn
  */
-public class LogfmtTest {
+public class LogfmtUtilTest {
 	
 	@Test
 	public void testToMap1() throws Exception {
 		
 		String log = "item1=test item2=123 item3=-123 item4=123.45 item5=-123.45 item6=-";
 		
-		Map<String, Object> map = Logfmt.toMap(log);
+		Map<String, Object> map = LogfmtUtil.toMap(log);
 		
 		assertEquals("test", map.get("item1"));
 		assertEquals(123, map.get("item2"));
@@ -36,7 +36,7 @@ public class LogfmtTest {
 		
 		String log = "item1=\"test\r\n \\\"hello\\\" world!\"";
 		
-		Map<String, Object> map = Logfmt.toMap(log);
+		Map<String, Object> map = LogfmtUtil.toMap(log);
 		
 		assertEquals("test\r\n \"hello\" world!", map.get("item1"));
 	}
@@ -46,7 +46,7 @@ public class LogfmtTest {
 		
 		String log = "item1=test item2= item3=123.45";
 		
-		Map<String, Object> map = Logfmt.toMap(log);
+		Map<String, Object> map = LogfmtUtil.toMap(log);
 		
 		assertEquals("", map.get("item2"));
 	}
@@ -58,7 +58,7 @@ public class LogfmtTest {
 		
 		try {
 			
-			Logfmt.toMap(log);
+			LogfmtUtil.toMap(log);
 			fail();
 			
 		} catch(Exception ex) {
@@ -77,7 +77,7 @@ public class LogfmtTest {
 		map.put("item4", 1234);
 		map.put("item5", 1234.5678);
 		
-		String log = Logfmt.toString(map);
+		String log = LogfmtUtil.toString(map);
 		assertEquals("item2=\"hello world!\" item1=hello item4=1234 item3=\"\\\"hello world!\\\"\" item5=1234.5678", log);
 	}
 }

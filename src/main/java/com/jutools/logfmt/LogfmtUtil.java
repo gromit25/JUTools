@@ -10,7 +10,7 @@ import com.jutools.StringUtil;
  * 
  * @author jmsohn
  */
-public class Logfmt {
+public class LogfmtUtil {
 	
 	/**
 	 * Logfmt 포맷의 로그를 맵 형태로 반환
