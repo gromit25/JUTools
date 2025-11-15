@@ -28,7 +28,7 @@ import lombok.Setter;
 public class FileTracker<T> {
 
 	
-	/** 끊어읽기 reader */
+	/** 끊어읽기 trimmer */
 	private Trimmer<T> trimmer;
 	
 	/** buffer의 크기 */
@@ -110,11 +110,11 @@ public class FileTracker<T> {
 	 * FileTracker 생성 메소드
 	 * 
 	 * @param file 트레킹할 파일
-	 * @param reader 끊어읽기 reader
+	 * @param trimmer 끊어읽기 trimmer
 	 * @return 생성된 FileTracker
 	 */
-	public static <T> FileTracker<T> create(File file, Trimmer<T> reader) throws Exception {
-		return new FileTracker<T>(file, reader);
+	public static <T> FileTracker<T> create(File file, Trimmer<T> trimmer) throws Exception {
+		return new FileTracker<T>(file, trimmer);
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class FileTracker<T> {
 							byte[] buffer = new byte[readBuffer.remaining()];
 							readBuffer.get(buffer);
 		
-							// reader 끊어 읽기 수행
+							// trimmer 끊어 읽기 수행
 							this.trimmer.trim(buffer);
 		                    
 							NIOBufferUtil.clear(readBuffer);
