@@ -22,4 +22,21 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface Proc {
 
+	/**
+	 * 초기화 메소드<br>
+	 * Proc 어노테이션 메소드가 있는 클래스의 메소드이여야 함<br>
+	 * 메소드 명이 공백 문자열(blank)일 경우 초기화 메소드가 없는 것으로 간주함<br>
+	 * 메소드 형식<br>
+	 * public void method()
+	 */
+	String init() default "";
+	
+	/**
+	 * 후처리 메소드<br>
+	 * Proc 어노테이션 메소드가 있는 클래스의 메소드이여야 함<br>
+	 * 메소드 명이 공백 문자열(blank)일 경우 후처리 메소드가 없는 것으로 간주함<br>
+	 * 메소드 형식<br>
+	 * public void method()
+	 */
+	String exit() default "";
 }

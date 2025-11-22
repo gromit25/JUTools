@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +16,9 @@ import com.jutools.spring.workflow.Message;
 import com.jutools.spring.workflow.WorkflowContext;
 import com.jutools.spring.workflow.annotation.Activity;
 import com.jutools.spring.workflow.annotation.Cron;
-import com.jutools.spring.workflow.annotation.CronInit;
-import com.jutools.spring.workflow.annotation.Exit;
-import com.jutools.spring.workflow.annotation.Init;
 import com.jutools.spring.workflow.annotation.Proc;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,25 +27,17 @@ import lombok.extern.slf4j.Slf4j;
  * @author jmsohn
  */
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class RunnerFactory {
 	
+	
 	/** 워크플로우 컨텍스트(설정) */
-	@Autowired
-	private WorkflowContext context;
+	private final WorkflowContext context;
 	
 	/** 스프링부트 환경 객체 */
 	private final Environment env;
-
 	
-	/**
-	 * 생성자
-	 * 
-	 * @param env 스프링부트 환경 객체
-	 */
-	public RunnerFactory(Environment env) {
-		this.env = env;
-	}
 	
 	/**
 	 * 컴포넌트의 런너 객체 생성 후 반환
@@ -58,11 +47,6 @@ public class RunnerFactory {
 	 * @return 컴포넌트의 런너 객체
 	 */
 	public ActivityRunner create(String name, Object activity) throws Exception {
-		
-		// 스프링부트 환경 객체 존재 여부 확인
-		if(this.env == null) {
-			throw new NullPointerException("'env' is null.");
-		}
 		
 		// 입력 값 검증
 		if(StringUtil.isBlank(name) == true) {
@@ -82,23 +66,14 @@ public class RunnerFactory {
 		// 액티비티 객체 설정
 		this.setActivity(runner, activity);
 		
-		// 실행할 메소드 추출 및 설정
+		// 액티비티 클래스에서 실행할 메소드 추출 및 설정
 		for(Method method: activity.getClass().getMethods()) {
-			
-			// 초기화 메소드 설정
-			this.setInitMethod(runner, method);
 			
 			// 데이터 처리 메소드 설정
 			this.setProcessMethod(runner, method);
-
-			// 종료 메소드 설정
-			this.setExitMethod(runner, method);
-			
-			// 크론 초기화 메소드 추가
-			this.addCronInitMethod(runner, method);
 			
 			// 크론 메소드 추가
-			this.addCronMethod(runner, method);
+			this.putCronMethod(runner, method);
 		}
 		
 		// process 메소드 설정되어 있는지 확인
@@ -109,8 +84,11 @@ public class RunnerFactory {
 		// 런너 객체 설정 - 컨텍스트 반영
 		this.context.setupRunner(runner);
 		
+		// 생성된 런너 반환
 		return runner;
 	}
+	
+	// ---------------------------------------------
 	
 	/**
 	 * 액티비티 어노테이션 관련 설정<br>
@@ -141,46 +119,10 @@ public class RunnerFactory {
 		runner.setThreadCount(Integer.parseInt(threadCount));
 	}
 	
-	/**
-	 * 초기화 메소드 설정
-	 * 
-	 * @param runner 액티비티 런너
-	 * @param method 설정할 메소드
-	 */
-	private void setInitMethod(ActivityRunner runner, Method method) throws Exception {
-
-		// 어노테이션 획득
-		Init initAnnotation = method.getAnnotation(Init.class);
-		if(initAnnotation == null) {
-			return;
-		}
-		
-		// 이미 설정되어 있는 경우 예외 발생
-		if(runner.getInitMethod() != null) {
-			throw new IllegalArgumentException("duplicated init method at " + runner.getActivity().getClass());
-		}
-		
-		// 메소드 public 여부 검사
-		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("init method must be public: " + method);
-		}
-		
-		// 리턴 타입 검사
-		if(method.getReturnType() != void.class) {
-			throw new IllegalArgumentException("init method return type must be void: " + method);
-		}
-		
-		// 파라미터 검사
-		if(method.getParameterCount() != 0) {
-			throw new IllegalArgumentException("init method must have 0 parameter: " + method);
-		}
-		
-		// init method 설정
-		runner.setInitMethod(method);
-	}
+	// ---------------------------------------------
 	
 	/**
-	 * 데이터 처리 메소드 설정
+	 * 데이터 처리(Proc) 메소드 설정
 	 * 
 	 * @param runner 액티비티 런너
 	 * @param method 설정할 메소드
@@ -228,30 +170,63 @@ public class RunnerFactory {
 		
 		// process method 설정
 		runner.setProcessMethod(method);
+		
+		// -----------
+		// process 초기화 메소드 설정
+		String initMethodName = processAnnotation.init();
+		
+		if(StringUtil.isBlank(initMethodName) == false) {
+			this.setInitMethod(runner, initMethodName);
+		}
+		
+		// -----------
+		// process 후처리 메소드 설정
+		String exitMethodName = processAnnotation.exit();
+		
+		if(StringUtil.isBlank(exitMethodName) == false) {
+			this.setExitMethod(runner, exitMethodName);
+		}
+	}
+	
+	/**
+	 * 초기화 메소드 설정
+	 * 
+	 * @param runner 액티비티 런너
+	 * @param methodName 설정할 초기화 메소드 명
+	 */
+	private void setInitMethod(ActivityRunner runner, String methodName) throws Exception {
+
+		// 초기화 메소드 명에 해당하는 메소드 객체 획득
+		Method method = runner.getActivity().getClass().getMethod(methodName);
+		
+		// 이미 설정되어 있는 경우 예외 발생
+		if(runner.getInitMethod() != null) {
+			throw new IllegalArgumentException("duplicated init method at " + runner.getActivity().getClass());
+		}
+		
+		// 리턴 타입 검사
+		if(method.getReturnType() != void.class) {
+			throw new IllegalArgumentException("init method return type must be void: " + method);
+		}
+		
+		// 런너에 초기화 메소드 설정
+		runner.setInitMethod(method);
 	}
 	
 	/**
 	 * 종료시 호출 메소드 설정
 	 * 
 	 * @param runner 액티비티 런너
-	 * @param method 설정할 메소드
+	 * @param methodName 설정할 후처리 메소드 명
 	 */
-	private void setExitMethod(ActivityRunner runner, Method method) throws Exception {
+	private void setExitMethod(ActivityRunner runner, String methodName) throws Exception {
 
-		// 어노테이션 획득
-		Exit exitAnnotation = method.getAnnotation(Exit.class);
-		if(exitAnnotation == null) {
-			return;
-		}
+		// 초기화 메소드 명에 해당하는 메소드 객체 획득
+		Method method = runner.getActivity().getClass().getMethod(methodName);
 		
 		// 이미 설정되어 있는 경우 예외 발생
 		if(runner.getExitMethod() != null) {
 			throw new IllegalArgumentException("duplicated exit method at " + runner.getActivity().getClass());
-		}
-		
-		// 메소드 public 여부 검사
-		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("exit method must be public: " + method);
 		}
 		
 		// 리턴 타입 검사
@@ -259,52 +234,11 @@ public class RunnerFactory {
 			throw new IllegalArgumentException("exit method return type must be void: " + method);
 		}
 		
-		// 파라미터 검사
-		if(method.getParameterCount() != 0) {
-			throw new IllegalArgumentException("exit method must have 0 parameter: " + method);
-		}
-		
-		// exit method 설정
+		// 런너에 후처리 메소드 설정
 		runner.setExitMethod(method);
 	}
 
-	/**
-	 * 크론 초기화 메소드 추가
-	 * 
-	 * @param runner 액티비티 런너
-	 * @param method 설정할 메소드
-	 */
-	private void addCronInitMethod(ActivityRunner runner, Method method) throws Exception {
-		
-		// 어노테이션 획득
-		CronInit cronInitAnnotation = method.getAnnotation(CronInit.class);
-		if(cronInitAnnotation == null) {
-			return;
-		}
-
-		// 메소드 public 여부 검사
-		if(isPublic(method) == false) {
-			throw new IllegalArgumentException("cron init method must be public: " + method);
-		}
-
-		// 파라미터 검사
-		Class<?>[] paramTypes = method.getParameterTypes();
-
-		// 파라미터 개수가 1개인지 확인
-		if (paramTypes.length != 1) {
-			throw new IllegalArgumentException("cron init method must have 1 long or Long type parameter: " + method);
-		}
-
-		// 각 파라미터가 long 또는 Long인지 확인
-		for (Class<?> type : paramTypes) {
-			if ((type == long.class || type == Long.class) == false) {
-				throw new IllegalArgumentException("cron method must have 1 long or Long type parameter: " + method);
-			}
-		}
-
-		// 크론 method 추가
-		runner.getCronInitMap().put(cronInitAnnotation.method(), method);
-	}
+	// ---------------------------------------------
 	
 	/**
 	 * 크론 메소드 추가
@@ -312,7 +246,7 @@ public class RunnerFactory {
 	 * @param runner 액티비티 런너
 	 * @param method 설정할 메소드
 	 */
-	private void addCronMethod(ActivityRunner runner, Method method) throws Exception {
+	private void putCronMethod(ActivityRunner runner, Method method) throws Exception {
 
 		// 어노테이션 획득
 		Cron cronAnnotation = method.getAnnotation(Cron.class);
@@ -374,9 +308,40 @@ public class RunnerFactory {
 			}
 		});
 		
-		// 크론 method 추가
+		// 크론 메소드 추가
 		runner.getCronJobMap().put(method.getName(), cronJob);
+		
+		// -----------
+		// 크론 초기화 메소드 추가
+		String initMethodName = cronAnnotation.init();
+		
+		if(StringUtil.isBlank(initMethodName) == false) {
+			this.putCronInitMethod(runner, method.getName(), initMethodName);
+		}
 	}
+	
+	/**
+	 * 크론 초기화 메소드 추가
+	 * 
+	 * @param runner 액티비티 런너
+	 * @param cronMethodName 크론 메소드 명
+	 * @param methodName 설정할 초기화 메소드 명
+	 */
+	private void putCronInitMethod(ActivityRunner runner, String cronMethodName, String methodName) throws Exception {
+		
+		// 초기화 메소드 명에 해당하는 메소드 객체 획득
+		Method method = runner.getActivity().getClass().getMethod(methodName, long.class);
+
+		// 메소드 public 여부 검사
+		if(isPublic(method) == false) {
+			throw new IllegalArgumentException("cron init method must be public: " + method);
+		}
+
+		// 크론 method 추가
+		runner.getCronInitMap().put(cronMethodName, method);
+	}
+	
+	// ---------------------------------------------
 	
 	/**
 	 * 스프링부트의 SpEL 수행 결과 반환
