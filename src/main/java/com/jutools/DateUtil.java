@@ -374,6 +374,28 @@ public class DateUtil {
 		
 		return cal.getTimeInMillis();
 	}
+
+	/**
+	 * LocalDateTime -> long(millis)
+	 * 
+	 * @param dateTime LocalDateTime 객체
+	 * @param zoneId 지역 아이디
+	 * @return 날짜의 long 값
+	 */
+	public static long toMillis(LocalDateTime dateTime, ZoneId zoneId) throws Exception {
+		
+		// 입력값 검증
+		if(dateTime == null) {
+			throw new IllegalArgumentException("'dateTime' is null");
+		}
+
+		if(zoneId == null) {
+			throw new IllegalArgumentException("'zoneId' is null");
+		}
+		
+		// long 값으로 변환 및 반환
+		return dateTime.atZone(zoneId).toInstant().toEpochMilli();
+	}
 	
 	/**
 	 * long(mills) -> Date
