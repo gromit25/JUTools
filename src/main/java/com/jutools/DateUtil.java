@@ -1,5 +1,7 @@
 package com.jutools;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -395,6 +397,18 @@ public class DateUtil {
 		
 		// long 값으로 변환 및 반환
 		return dateTime.atZone(zoneId).toInstant().toEpochMilli();
+	}
+	
+	/**
+	 * LocalDateTime -> long(millis)<br>
+	 * 시스템 디폴트 ZoneId 사용
+	 * 
+	 * @param dateTime LocalDateTime 객체
+	 * @return 날짜의 long 값
+	 */
+	public static long toMillis(LocalDateTime dateTime) throws Exception {
+		
+		return toMillis(dateTime, ZoneId.systemDefault());
 	}
 	
 	/**
