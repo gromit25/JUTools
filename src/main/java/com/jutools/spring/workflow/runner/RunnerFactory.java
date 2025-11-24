@@ -281,10 +281,10 @@ public class RunnerFactory {
 		}
 		
 		// 크론 주기 설정
-		String period = this.resolveValue(cronAnnotation.period());
+		String schedule = this.resolveValue(cronAnnotation.schedule());
 
 		// 크론 잡 생성
-		CronJob cronJob = new CronJob(period);
+		CronJob cronJob = new CronJob(schedule);
 		cronJob.setJob(() -> {
 			
 			final CronJob curCronJob = cronJob;
