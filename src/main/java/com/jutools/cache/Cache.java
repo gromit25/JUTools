@@ -93,7 +93,7 @@ public class Cache<T> {
 			} // End of run
 		});
 		
-		this.cleanUpJob.run();
+		this.cleanUpJob.start();
 		
 	}
 	

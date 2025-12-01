@@ -37,7 +37,7 @@ public class CronJobTest {
 			})
 			.build();
 		
-		job.run();
+		job.start();
 		
 		Thread.sleep(1500);	// 1.5초 뒤 중단
 		job.stop();

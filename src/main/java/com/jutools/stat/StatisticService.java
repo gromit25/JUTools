@@ -111,7 +111,7 @@ public class StatisticService {
 	 * 데이터 수집 및 통계량 계산 시작
 	 */
 	public void start() throws Exception {
-		this.resetCron.run();
+		this.resetCron.start();
 		this.startNewCronBlock();	// 주의! 실행 순서 중요. 꼭, resetCron 이 시작된 이후에 실행되어야 함
 	}
 	
@@ -205,7 +205,7 @@ class CronBlock {
 	 * 
 	 */
 	void start() {
-		this.acquisitorCron.run();
+		this.acquisitorCron.start();
 	}
 	
 	/**

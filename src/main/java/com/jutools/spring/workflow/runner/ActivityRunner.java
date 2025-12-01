@@ -189,11 +189,11 @@ public class ActivityRunner {
 			// 크론잡 초기화 메소드 실행
 			Method cronInitMethod = this.cronInitMap.get(key);
 			if(cronInitMethod != null) {
-				cronInitMethod.invoke(this.activity, job.getCronExp().getNextTimeInMillis());
+				cronInitMethod.invoke(this.activity, job.getNextTime());
 			}
 			
 			// 크론 잡 실행
-			job.run();
+			job.start();
 		}
 		
 		// 상태 수정
