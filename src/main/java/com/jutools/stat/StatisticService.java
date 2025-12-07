@@ -76,41 +76,48 @@ public class StatisticService {
 		this.loader = loader;
 		
 		// 리셋 주기 객체 설정
-		this.resetCron = new CronJob(resetCronExp, () -> {
-			
-			// ----- 새로운 cron block 생성 및 시작
-			try {
-				this.startNewCronBlock();
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-			
-			// ----- 종료된 cron block 삭제
-			
-			// 종료된 cron block 목록 생성
-			List<CronBlock> removeList = new ArrayList<>();
-			for(CronBlock cronBlock: this.cronBlocks) {
-				if(cronBlock.isTerminate() == true) {
-					removeList.add(cronBlock);
+		this.resetCron = new CronJob(
+			resetCronExp,
+			(baseTime, nextTime) -> {
+				
+				// ----- 새로운 cron block 생성 및 시작
+				try {
+					this.startNewCronBlock(nextTime);
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
+				
+				// ----- 종료된 cron block 삭제
+				
+				// 종료된 cron block 목록 생성
+				List<CronBlock> removeList = new ArrayList<>();
+				for(CronBlock cronBlock: this.cronBlocks) {
+					if(cronBlock.isTerminate() == true) {
+						removeList.add(cronBlock);
+					}
+				}
+				
+				// 종료된 cron block 목록에 있는 cron block을 삭제
+				for(CronBlock cronBlock: removeList) {
+					this.cronBlocks.remove(cronBlock);
 				}
 			}
-			
-			// 종료된 cron block 목록에 있는 cron block을 삭제
-			for(CronBlock cronBlock: removeList) {
-				this.cronBlocks.remove(cronBlock);
-			}
-		}); 
+		); 
 	}
 	
 	/**
 	 * 
 	 */
-	private void startNewCronBlock() throws Exception {
+	private void startNewCronBlock(long nextTime) throws Exception {
 		
 		//
 		CronBlock block = new CronBlock(
-							this.acquisitorCronExp, this.resetCron.getNextTime()
-							, this.acquisitor, this.loader);
+			this.acquisitorCronExp,
+			nextTime,
+			this.acquisitor,
+			this.loader
+		);
+		
 		block.start();
 		
 		//
@@ -145,17 +152,20 @@ public class StatisticService {
  */
 class CronBlock {
 	
+	
 	/** 통계량 계산 객체 */
 	@Getter(AccessLevel.PACKAGE)
 	private Statistic stat;
 	
 	/** 데이터 수집 객체 */
 	private DataAcquistor acquisitor;
+	
 	/** 데이터 저장 객체 */
 	private DataLoader loader;
 	
 	/** 수집 주기 객체 */
 	private CronJob acquisitorCron;
+	
 	/** 현재 크론 블럭의 리셋 시간 - 종료시간 */
 	private long resetTime;
 	
@@ -163,20 +173,34 @@ class CronBlock {
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isTerminate = false;
 	
+
 	/**
 	 * 생성자
+	 * 
+	 * @param acquisitorCronExp
+	 * @param resetTime
+	 * @param acquisitor
+	 * @param loader
 	 */
-	CronBlock(String acquisitorCronExp, long resetTime
-			, DataAcquistor acquisitor, DataLoader loader) throws Exception {
+	CronBlock(
+		String acquisitorCronExp,
+		long resetTime,
+		DataAcquistor acquisitor,
+		DataLoader loader
+	) throws Exception {
 
 		// 통계량 계산 객체 생성
 		this.stat = new Statistic();
 		
 		// 수집 주기 객체 생성
-		this.acquisitorCron = new CronJob(acquisitorCronExp, () -> {
-			// 수집 및 저장 실행
-			this.acquireAndLoad();
-		});
+		this.acquisitorCron = new CronJob(
+			acquisitorCronExp,
+			(baseTime, nextTime) -> {
+				
+				// 수집 및 저장 실행
+				this.acquireAndLoad(baseTime, nextTime);
+			}
+		);
 
 		//
 		this.resetTime = resetTime;
@@ -191,18 +215,18 @@ class CronBlock {
 	/**
 	 * 데이터 수집 저장 메소드 콜백
 	 */
-	private void acquireAndLoad() {
+	private void acquireAndLoad(long baseTime, long nextTime) {
 		
 		// 데이터 수집 메소드 콜백
 		double data = this.acquisitor.acquire();
 		this.stat.add(data);
 		
 		// 최종 실행 여부
-		boolean isLast = (this.acquisitorCron.getNextTime() > this.resetTime);
+		boolean isLast = (nextTime > this.resetTime);
 		
 		// 데이터 로드 메소드 콜백
 		if(this.loader != null) {
-			this.loader.load(this.acquisitorCron.getBaseTime(), data, this.stat, isLast);
+			this.loader.load(baseTime, data, this.stat, isLast);
 		}
 		
 		//
