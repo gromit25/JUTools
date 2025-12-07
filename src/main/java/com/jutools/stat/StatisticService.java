@@ -21,16 +21,22 @@ import lombok.Getter;
  */
 public class StatisticService {
 	
+	
 	/** 데이터 수집 객체 */
 	private DataAcquistor acquisitor;
+	
 	/** 데이터 저장 객체 */
 	private DataLoader loader;
 	
+	/** */
 	private String acquisitorCronExp;
+	
 	/** */
 	private CronJob resetCron;
+	
 	/** */
 	private List<CronBlock> cronBlocks = new Vector<>(); 
+	
 	
 	/**
 	 * 통계량 서비스 객체 생성자
@@ -40,8 +46,12 @@ public class StatisticService {
 	 * @param acquisitor 데이터 수집 객체
 	 * @param loader 데이터 저장 객체 - optional, null일 경우 수행하지 않음
 	 */
-	public StatisticService(String acquisitorCronExp, String resetCronExp
-			, DataAcquistor acquisitor, DataLoader loader) throws Exception {
+	public StatisticService(
+		String acquisitorCronExp,
+		String resetCronExp,
+		DataAcquistor acquisitor,
+		DataLoader loader
+	) throws Exception {
 		
 		// 입력값 검증
 		if(StringUtil.isBlank(acquisitorCronExp) == true) {

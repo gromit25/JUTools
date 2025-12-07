@@ -284,10 +284,8 @@ public class RunnerFactory {
 		String schedule = this.resolveValue(cronAnnotation.schedule());
 
 		// 크론 잡 생성
-		CronJob cronJob = new CronJob(schedule);
-		cronJob.setJob(() -> {
+		CronJob cronJob = new CronJob(schedule, (baseTime, nextTime) -> {
 			
-			final CronJob curCronJob = cronJob;
 			final ActivityRunner curRunner = runner;
 			final Method cronMethod = method;
 				
@@ -296,8 +294,8 @@ public class RunnerFactory {
 				// 크론 메소드 호출
 				Object result = cronMethod.invoke(
 					curRunner.getActivity(),
-					curCronJob.getBaseTime(),
-					curCronJob.getNextTime()
+					baseTime,
+					nextTime
 				);
 
 				// 호출 결과를 다음 액티비티로 전달

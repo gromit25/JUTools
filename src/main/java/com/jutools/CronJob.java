@@ -3,8 +3,11 @@ package com.jutools;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CronJob {
 	
+	
 	/** 다음 기간동안 대기를 위한 객체 */
 	private Object waitObj = new Object();
 	
@@ -28,7 +32,7 @@ public class CronJob {
 	private CronExp cronExp;
 	
 	/** 수행할 잡 */
-	private Runnable job;
+	private Object job;
 	
 	/** 크론 쓰레드 객체 */
 	private Thread cronThread;
@@ -42,24 +46,47 @@ public class CronJob {
 	/** 타임아웃(ms) */
 	private long timeout = -1;
 	
-	/** 현재 기준 실행 시간 */
-	@Getter
-	private long baseTime = -1;
-
-	/** 다음 작업 시간: 중지되어 있을 경우 -1 */
-	@Getter
-	private long nextTime = -1;
+	/** 타임아웃 검사 큐 */
+	private BlockingQueue<Timer> timerQueue = new LinkedBlockingQueue<>();
+	
+	/** 타임아웃 처리 스레드 객체 */
+	private Thread timerThread;
+	
 	
 	/**
 	 * 생성자
 	 * 
 	 * @param cronExp 크론 시간 표현식
 	 * @param job 수행할 잡
-	 * @param threadCount 잡 스레드 수, 만일 0 보다 같거나 작을 경우 cachedThreadPool 을 사용 
 	 * @param timeout 잡 타임아웃, 만일 1000ms(1초) 보다 작을 경우 타임아웃은 동작하지 않음, 타임아웃 발생시 잡 종료
+	 * @param threadCount 잡 스레드 수, 만일 0 보다 같거나 작을 경우 cachedThreadPool 을 사용 
 	 */
 	@Builder
-	public CronJob(String cronExp, Runnable job, int threadCount, long timeout) throws Exception {
+	public CronJob(String cronExp, Runnable job, long timeout, int threadCount) throws Exception {
+		
+		// 크론 스케줄 설정
+		this.setCronExp(cronExp);
+		
+		// 실행할 크론 잡 설정
+		this.setJob(job);
+		
+		// 스레드 수 설정
+		this.threadCount = threadCount;
+		
+		// 타임아웃 설정
+		this.timeout = timeout;
+	}
+	
+	/**
+	 * 생성자
+	 * 
+	 * @param cronExp 크론 시간 표현식
+	 * @param job 수행할 잡
+	 * @param timeout 잡 타임아웃, 만일 1000ms(1초) 보다 작을 경우 타임아웃은 동작하지 않음, 타임아웃 발생시 잡 종료
+	 * @param threadCount 잡 스레드 수, 만일 0 보다 같거나 작을 경우 cachedThreadPool 을 사용 
+	 */
+	@Builder
+	public CronJob(String cronExp, Job job, long timeout, int threadCount) throws Exception {
 		
 		// 크론 스케줄 설정
 		this.setCronExp(cronExp);
@@ -85,6 +112,16 @@ public class CronJob {
 	}
 	
 	/**
+	 * 생성자
+	 * 
+	 * @param cronExp 크론 시간 표현식
+	 * @param job 수행할 잡
+	 */
+	public CronJob(String cronExp, Job job) throws Exception {
+		this(cronExp, job, -1, -1);
+	}
+	
+	/**
 	 * cron job 수행
 	 */
 	public void start() {
@@ -96,33 +133,66 @@ public class CronJob {
 			this.jobService = Executors.newFixedThreadPool(this.threadCount);
 		}
 		
-		// 잡 스케줄 스레드 수행
+		// 잡 스케줄 스레드 수행 -----------------------
 		this.cronThread = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				
-				// 다음 수행 시간 초기화
-				nextTime = cronExp.getNextTimeInMillis();
+				// 시작 기준 시간
+				long baseTime = System.currentTimeMillis(); 
+				
+				// 다음 수행 시간 획득 - 초기 시간
+				long nextTime = cronExp.getNextTimeInMillis();
 				
 				// 인터럽트 미발생시 다음 잡 수행
 				while(Thread.currentThread().isInterrupted() == false) {
 
 					try {
 						
-						// 이전 수행 시간에 다음 수행 시간 설정
+						// 다음 수행 시간까지 대기
+						synchronized(waitObj) {
+							
+							long delay = nextTime - System.currentTimeMillis();
+							
+							if(delay > 0) {
+								waitObj.wait(delay);
+							}
+						}
+						
+						// 현재 수행 시간에 다음 수행 시간 설정
 						baseTime = nextTime;
 
 						// 다음 수행 시간 획득
 						nextTime = cronExp.getNextTimeInMillis();
 						
-						// 다음 수행 시간까지 대기
-						synchronized(waitObj) {
-							waitObj.wait(nextTime - System.currentTimeMillis());
+						// 잡 수행
+						Future<?> jobResult = null;
+						
+						if(job instanceof Runnable) {
+							
+							jobResult = jobService.submit((Runnable)job);
+							
+						} else if(job instanceof Job) {
+							
+							final long baseTimeParam = baseTime;
+							final long nextTimeParam = nextTime;
+							
+							jobResult = jobService.submit(() -> {
+								((Job)job).run(baseTimeParam, nextTimeParam);
+							});
 						}
 						
-						// 잡 수행
-						jobService.submit(job);
+						// 타임아웃 시간을 계산하여 추가
+						if(timeout > 0 && jobResult != null) {
+							
+							Timer timer = new Timer();
+							
+							timer.deadline = baseTime + timeout;
+							timer.job = jobResult;
+							
+							timerQueue.add(timer);
+						}
 
 					} catch(InterruptedException iex) {
 
@@ -136,6 +206,48 @@ public class CronJob {
 		// 크론잡 수행
 		this.cronThread.setDaemon(true);
 		this.cronThread.start();
+		
+		// -------------------------------
+		
+		// 타임아웃 크론잡 생성 및 수행 ------------
+		
+		// 타임아웃 시간이 음수일 경우 타임아웃 없는 것으로 간주함
+		if(this.timeout <= 0) {
+			return;
+		}
+		
+		// 타임아웃 스레드 생성
+		this.timerThread = new Thread(() -> {
+			
+			while(Thread.currentThread().isInterrupted() == false) {
+			
+				try {
+					
+					// 타임아웃 객체 반환
+					Timer timer = timerQueue.poll();
+					
+					// 대기 시간 계산 및 대기
+					long delay = timer.deadline - System.currentTimeMillis();
+					if(delay > 0) {
+						Thread.sleep(delay);
+					}
+					
+					// 정상 종료가 되지 않았으면 종료 시도
+					if(timer.job.isDone() == false) {
+						timer.job.cancel(true);
+					}
+					
+				} catch(InterruptedException iex) {
+					Thread.currentThread().interrupt();
+				}
+			} // End of while
+		});
+		
+		// 타임아웃 스레드 수행
+		this.timerThread.setDaemon(true);
+		this.timerThread.start();
+		
+		// -------------------------------
 	}
 
 	/**
@@ -147,8 +259,6 @@ public class CronJob {
 		if(this.cronThread != null) {
 			this.cronThread.interrupt();
 		}
-		
-		this.nextTime = -1;
 		
 		// 실행 중 인 잡 중단
 		if(this.jobService != null) {
@@ -173,6 +283,11 @@ public class CronJob {
 				this.jobService.shutdownNow();
 				Thread.currentThread().interrupt();
 			}
+		}
+		
+		// 타임아웃 스케줄 스레드 중단
+		if(this.timerThread != null) {
+			this.timerThread.interrupt();
 		}
 	}
 	
@@ -199,10 +314,17 @@ public class CronJob {
 	 * 
 	 * @param job 수행할 잡
 	 */
-	public void setJob(Runnable job) throws Exception {
+	public void setJob(Object job) {
 		
 		if(job == null) {
-			throw new NullPointerException("job is null");
+			throw new IllegalArgumentException("job is null");
+		}
+		
+		if(
+			job instanceof Runnable == false
+			&& job instanceof Job == false 
+		) {
+			throw new IllegalArgumentException("job type must be Runnable or CronJob.Job.");
 		}
 		
 		this.job = job;
@@ -798,6 +920,36 @@ public class CronJob {
 			
 			return builder.toString();
 		}
-		
 	} // End of CronExp Class
+	
+	/**
+	 * 크론잡 인터페이스
+	 * 
+	 * @author jmsohn
+	 */
+	@FunctionalInterface
+	public static interface Job {
+		
+		/**
+		 * 크론잡 수행 메소드
+		 * 
+		 * @param startTime 시작 시간
+		 * @param nextTime 다음 시작 시간 
+		 */
+		void run(long startTime, long nextTime);
+	}
+	
+	/**
+	 * 타임아웃 처리를 위한 데드라인과 잡 관련 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	static class Timer {
+		
+		/** 데드라인 */
+		long deadline;
+		
+		/** 실행 중인 잡 */
+		Future<?> job;
+	}
 }
