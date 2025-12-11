@@ -32,6 +32,7 @@ public enum DBDriverType {
 			return "jdbc:oracle:thin:@//" + host + ":" + port + "/" + database;
 		}
 	},
+	
 	MYSQL {
 		
 		@Override
@@ -57,6 +58,7 @@ public enum DBDriverType {
 			return "jdbc:mysql://" + host + ":" + port + "/" + database;
 		}
 	},
+	
 	POSTGRESQL {
 		
 		@Override
@@ -82,6 +84,7 @@ public enum DBDriverType {
 			return "jdbc:postgresql://" + host + ":" + port + "/" + database;
 		}
 	},
+	
 	SQLSERVER {
 		
 		@Override
@@ -107,6 +110,7 @@ public enum DBDriverType {
 			return "jdbc:sqlserver://" + host + ":" + port + ";databaseName=" + database;
 		}
 	},
+	
 	MARIADB {
 		
 		@Override
