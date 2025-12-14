@@ -1,7 +1,10 @@
 package com.jutools;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -58,6 +61,8 @@ public class CipherUtil {
 	public static String encryptSHA512(String str) throws Exception {
 		return encryptSHA("SHA-512", str);
 	}
+	
+	// -----------------------------------
 
 	/**
 	 * AES-128 키 생성 반환 메소드
@@ -193,5 +198,119 @@ public class CipherUtil {
 	 */
 	public static String decryptAES(String key, String str) throws Exception {
 		return decryptAES(key, Charset.defaultCharset(), str);
+	}
+	
+	// -----------------------------------
+	
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static PublicKey loadPublicKey(byte[] key) throws Exception {
+		
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param keyFile
+	 * @return
+	 */
+	public static PublicKey loadPublicKey(File keyFile) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param keyFileName
+	 * @return
+	 */
+	public static PublicKey loadPublicKey(String keyFileName) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @param str
+	 * @return
+	 */
+	public static String encryptPublicKey(PublicKey key, String str) throws Exception {
+		
+		// Cipher 객체 초기화 (알고리즘: RSA, 패딩: PKCS1Padding)
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+
+        // 평문 바이트를 암호화
+        return cipher.doFinal(str.getBytes("UTF-8"));
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @param str
+	 * @return
+	 */
+	public static String decryptPublicKey(PublicKey key, String str) throws Exception {
+		
+	}
+	
+	// -----------------------------------
+
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static PrivateKey loadPrivateKey(byte[] key) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param keyFile
+	 * @return
+	 */
+	public static PrivateKey loadPrivateKey(File keyFile) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param keyFileName
+	 * @return
+	 */
+	public static PrivateKey loadPrivateKey(String keyFileName) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @param str
+	 * @return
+	 */
+	public static String encryptPrivateKey(PrivateKey key, String str) throws Exception {
+		
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param key
+	 * @param str
+	 * @return
+	 */
+	public static String decryptPrivateKey(PrivateKey key, String str) throws Exception {
+		
 	}
 }
