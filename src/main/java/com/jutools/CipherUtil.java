@@ -47,7 +47,7 @@ public class CipherUtil {
 			byte[] hash = digest.digest(str.getBytes());
 	
 			// 문자열 변환 후 반환
-			return BytesUtil.bytesToStr(hash, OrderType.ASCEND);
+			return Base64.getEncoder().encodeToString(hash);
 		}
 		
 		/**
