@@ -35,7 +35,7 @@ public class CipherUtil {
 		 * @param algorithm SHA 암호화 알고리즘 명
 		 * @return 암호화된 문자열
 		 */
-		public static String encryptSHA(String str, String algorithm) throws Exception {
+		public static String encrypt(String str, String algorithm) throws Exception {
 			
 			// 입력값 검증
 			if(str == null) {
@@ -56,8 +56,8 @@ public class CipherUtil {
 		 * @param str 암호화할 문자열
 		 * @return
 		 */
-		public static String encryptSHA256(String str) throws Exception {
-			return encryptSHA(str, "SHA-256");
+		public static String encrypt256(String str) throws Exception {
+			return encrypt(str, "SHA-256");
 		}
 	
 		/**
@@ -66,8 +66,8 @@ public class CipherUtil {
 		 * @param str 암호화할 문자열
 		 * @return 암호화된 문자열
 		 */
-		public static String encryptSHA512(String str) throws Exception {
-			return encryptSHA(str, "SHA-512");
+		public static String encrypt512(String str) throws Exception {
+			return encrypt(str, "SHA-512");
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class CipherUtil {
 		 * 
 		 * @return 생성된 AES 키
 		 */
-		public static String genAES128Key() throws Exception {
+		public static String gen128Key() throws Exception {
 			
 			// 키 생성
 			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -104,7 +104,7 @@ public class CipherUtil {
 		 * 
 		 * @return 생성된 AES 키
 		 */
-		public static String genAES256Key() throws Exception {
+		public static String gen256Key() throws Exception {
 			
 			// 키 생성
 			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -210,7 +210,7 @@ public class CipherUtil {
 		 * @param key 복호화 키(base64 인코딩)
 		 * @return 복호화된 문자열
 		 */
-		public static String decryptAES(String str, String key) throws Exception {
+		public static String decrypt(String str, String key) throws Exception {
 			return decrypt(str, key, Charset.defaultCharset());
 		}
 	} // End of AESUtil
