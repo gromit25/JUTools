@@ -284,7 +284,7 @@ public class CipherUtil {
 		public static PublicKey load(String publicKey) throws Exception {
 			
 			if(StringUtil.isBlank(base64Key) == true) {
-				throw new IllegalArgumentException("'base64Key' is null or blank.");
+				throw new IllegalArgumentException("'publicKey' is null or blank.");
 			}
 			
 			return load(Base64.getDecoder().decode(publicKey));
