@@ -267,7 +267,7 @@ public class CipherUtil {
 			// 헤더, 푸터, 줄바꿈 제거
 			String publicKey = read
 				.replace("-----BEGIN PUBLIC KEY-----", "")
-				.replaceAll(System.lineSeparator(), "")
+				.replaceAll("(\r)?\n", "")
 				.replace("-----END PUBLIC KEY-----", "")
 				.replaceAll(" ", ""); // 혹시 모를 공백 제거
 
