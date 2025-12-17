@@ -232,6 +232,10 @@ public class CipherUtil {
 		 */
 		public static PublicKey load(byte[] key) throws Exception {
 			
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+			return keyFactory.generatePublic(keySpec);
 		}
 		
 		/**
