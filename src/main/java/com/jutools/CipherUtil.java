@@ -239,13 +239,14 @@ public class CipherUtil {
 		}
 		
 		/**
+		 * 파일에서 공개키를 읽어 객체로 만들어 반환
 		 * 
-		 * 
-		 * @param keyFile
-		 * @return
+		 * @param keyFile 공개키 파일명
+		 * @return 공개키 객체 
 		 */
 		public static PublicKey load(File keyFile) throws Exception {
-			
+
+			// 입력값 검증
 			if(keyFile == null) {
 				throw new IllegalArgumentException("'keyFile' is null.");
 			}
@@ -253,8 +254,25 @@ public class CipherUtil {
 			if(keyFile.canRead() == false) {
 				throw new IllegalArgumentException("can't read key file: " + keyFile.getAbsolutePath());
 			}
-			
-			return load(FileUtil.readAllBytes(keyFile));
+
+			// 확장자 검증
+			String ext = FileUtil.getExt(keyFile);
+			if(ext.equals(".pem") == false) {
+				throw new IllegalArgumentException("invalid file extension(.pem): " + keyFile.getAbsolutePath());
+			}
+
+			// 파일 읽기
+			String read = new String(Files.readAllBytes(Paths.get(filePath)));
+
+			// 헤더, 푸터, 줄바꿈 제거
+			String publicKeyPEM = read
+				.replace("-----BEGIN PUBLIC KEY-----", "")
+				.replaceAll(System.lineSeparator(), "")
+				.replace("-----END PUBLIC KEY-----", "")
+				.replaceAll(" ", ""); // 혹시 모를 공백 제거
+
+			// pem 파일을 읽어 byte를 가져옴
+			return load(Base64.getDecoder().decode(publicKeyPEM));
 		}
 	
 		/**
