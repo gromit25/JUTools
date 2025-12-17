@@ -265,14 +265,14 @@ public class CipherUtil {
 			String read = new String(Files.readAllBytes(Paths.get(filePath)));
 
 			// 헤더, 푸터, 줄바꿈 제거
-			String publicKeyPEM = read
+			String publicKey = read
 				.replace("-----BEGIN PUBLIC KEY-----", "")
 				.replaceAll(System.lineSeparator(), "")
 				.replace("-----END PUBLIC KEY-----", "")
 				.replaceAll(" ", ""); // 혹시 모를 공백 제거
 
 			// pem 파일을 읽어 byte를 가져옴
-			return load(Base64.getDecoder().decode(publicKeyPEM));
+			return load(publicKey);
 		}
 	
 		/**
@@ -281,13 +281,13 @@ public class CipherUtil {
 		 * @param base64Key
 		 * @return
 		 */
-		public static PublicKey load(String base64Key) throws Exception {
+		public static PublicKey load(String publicKey) throws Exception {
 			
 			if(StringUtil.isBlank(base64Key) == true) {
 				throw new IllegalArgumentException("'base64Key' is null or blank.");
 			}
 			
-			return load(Base64.getDecoder().decode(base64Key));
+			return load(Base64.getDecoder().decode(publicKey));
 		}
 	
 		/**
