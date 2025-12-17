@@ -366,22 +366,22 @@ public class CipherUtil {
 		/**
 		 * 
 		 * 
-		 * @param key
 		 * @param str
+		 * @param key
 		 * @return
 		 */
-		public static String encrypt(PrivateKey key, String str) throws Exception {
+		public static String encrypt(String str, PrivateKey key) throws Exception {
 			
 		}
 	
 		/**
 		 * 
 		 * 
-		 * @param key
 		 * @param str
+		 * @param key
 		 * @return
 		 */
-		public static String decrypt(PrivateKey key, String str) throws Exception {
+		public static String decrypt(String str, PrivateKey key) throws Exception {
 			
 		}
 		
