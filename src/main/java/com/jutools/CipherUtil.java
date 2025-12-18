@@ -44,20 +44,20 @@ public class CipherUtil {
 		/**
 		 * 문자열을 SHA 단방향 암호화 수행
 		 * 
-		 * @param str 암호화할 문자열
+		 * @param text 암호화할 문자열
 		 * @param algorithm SHA 암호화 알고리즘
 		 * @return 암호화된 문자열
 		 */
-		public static String encrypt(String str, Algorithm algorithm) throws Exception {
+		public static String encrypt(String text, Algorithm algorithm) throws Exception {
 			
 			// 입력값 검증
-			if(str == null) {
-				throw new Exception("'str' is null.");
+			if(text == null) {
+				throw new Exception("'text' is null.");
 			}
 	
 			// hash 생성 
 			MessageDigest digest = MessageDigest.getInstance(algorithm.getName());
-			byte[] hash = digest.digest(str.getBytes());
+			byte[] hash = digest.digest(text.getBytes());
 	
 			// 문자열 변환 후 반환
 			return Base64.getEncoder().encodeToString(hash);
@@ -66,21 +66,21 @@ public class CipherUtil {
 		/**
 		 * 문자열을 SHA-256 단방향 암호화 수행
 		 * 
-		 * @param str 암호화할 문자열
+		 * @param text 암호화할 문자열
 		 * @return
 		 */
-		public static String encrypt256(String str) throws Exception {
-			return encrypt(str, Algorithm.SHA_256);
+		public static String encrypt256(String text) throws Exception {
+			return encrypt(text, Algorithm.SHA_256);
 		}
 	
 		/**
 		 * 문자열을 SHA-512 단방향 암호화 수행
 		 * 
-		 * @param str 암호화할 문자열
+		 * @param text 암호화할 문자열
 		 * @return 암호화된 문자열
 		 */
-		public static String encrypt512(String str) throws Exception {
-			return encrypt(str, Algorithm.SHA_512);
+		public static String encrypt512(String text) throws Exception {
+			return encrypt(text, Algorithm.SHA_512);
 		}
 	}
 	
@@ -158,12 +158,12 @@ public class CipherUtil {
 		/**
 		 * AES 암호화된 문자열 반환
 		 * 
-		 * @param str 암호화할 문자열
+		 * @param text 암호화할 문자열
 		 * @param key 암호화 키(base64 인코딩)
 		 * @param cs charset
 		 * @return 암호화된 문자열(base64 인코딩)
 		 */
-		public static String encrypt(String str, String key, Charset cs) throws Exception {
+		public static String encrypt(String text, String key, Charset cs) throws Exception {
 			
 			// 입력값 검증
 			if(cs == null) {
@@ -174,7 +174,7 @@ public class CipherUtil {
 			Cipher cipher = makeCipher(Cipher.ENCRYPT_MODE, key);
 			
 			// 암호화 수행
-			byte[] encryptedData = cipher.doFinal(str.getBytes(cs));
+			byte[] encryptedData = cipher.doFinal(text.getBytes(cs));
 			
 			// 인코딩하여 문자열로 만들어 반환
 			return Base64.getEncoder().encodeToString(encryptedData);
@@ -183,25 +183,29 @@ public class CipherUtil {
 		/**
 		 * AES 암호화된 문자열 반환
 		 * 
-		 * @param str 암호화할 문자열
+		 * @param text 암호화할 문자열
 		 * @param key 암호화 키(base64 인코딩)
 		 * @return 암호화된 문자열(base64 인코딩)
 		 */
-		public static String encrypt(String str, String key) throws Exception {
-			return encrypt(str, key, Charset.defaultCharset());
+		public static String encrypt(String text, String key) throws Exception {
+			return encrypt(text, key, Charset.defaultCharset());
 		}
 		
 		/**
 		 * AES 복호화된 문자열 반환
 		 * 
-		 * @param str 복호화할 문자열(base64 인코딩)
+		 * @param text 복호화할 문자열(base64 인코딩)
 		 * @param key 복호화 키(base64 인코딩)
 		 * @param cs charset
 		 * @return 복호화된 문자열
 		 */
-		public static String decrypt(String str, String key, Charset cs) throws Exception {
+		public static String decrypt(String text, String key, Charset cs) throws Exception {
 			
 			// 입력값 검증
+			if(StringUtil.isBlank(text) == true) {
+				return text;
+			}
+			
 			if(cs == null) {
 				throw new Exception("charset is null");
 			}
@@ -210,21 +214,21 @@ public class CipherUtil {
 			Cipher cipher = makeCipher(Cipher.DECRYPT_MODE, key);
 			
 			// 복호화 수행
-			byte[] decryptedData = cipher.doFinal(Base64.getDecoder().decode(str));
+			byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(text));
 			
 			// 문자열로 만들어 반환
-			return new String(decryptedData, cs);
+			return new String(decryptedText, cs);
 		}
 		
 		/**
 		 * AES 복호화된 문자열 반환
 		 * 
-		 * @param str 복호화할 문자열(base64 인코딩)
+		 * @param text 복호화할 문자열(base64 인코딩)
 		 * @param key 복호화 키(base64 인코딩)
 		 * @return 복호화된 문자열
 		 */
-		public static String decrypt(String str, String key) throws Exception {
-			return decrypt(str, key, Charset.defaultCharset());
+		public static String decrypt(String text, String key) throws Exception {
+			return decrypt(text, key, Charset.defaultCharset());
 		}
 	} // End of AESUtil
 	
