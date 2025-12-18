@@ -298,23 +298,23 @@ public class CipherUtil {
 		 * @param base64Key
 		 * @return
 		 */
-		public static PublicKey load(String publicKey) throws Exception {
+		public static PublicKey load(String keyText) throws Exception {
 			
-			if(StringUtil.isBlank(base64Key) == true) {
-				throw new IllegalArgumentException("'publicKey' is null or blank.");
+			if(StringUtil.isBlank(keyText) == true) {
+				throw new IllegalArgumentException("'keyText' is null or blank.");
 			}
 			
-			return load(Base64.getDecoder().decode(publicKey));
+			return load(Base64.getDecoder().decode(keyText));
 		}
 	
 		/**
 		 * 
 		 * 
-		 * @param str 
+		 * @param text 
 		 * @param key
 		 * @return
 		 */
-		public static String encrypt(String str, PublicKey key) throws Exception {
+		public static String encrypt(String text, PublicKey key) throws Exception {
 			
 			// 입력값 검증
 			if(key == null) {
@@ -322,8 +322,8 @@ public class CipherUtil {
 			}
 			
 			// 입력 문자열이 null 이거나 blank 이면 빈 문자열 반환
-			if(StringUtil.isBlank(str) == true) {
-				return "";
+			if(StringUtil.isBlank(text) == true) {
+				return text;
 			}
 			
 			// Cipher 객체 초기화 (알고리즘: RSA, 패딩: PKCS1Padding)
@@ -343,8 +343,18 @@ public class CipherUtil {
 		 * @param key
 		 * @return
 		 */
-		public static String decrypt(String str, PublicKey key) throws Exception {
+		public static String decrypt(String text, PublicKey key, Charset cs) throws Exception {
+
+			byte[] textBytes = Base64.getDecoder().decode(text);
 			
+			// 1. Cipher 인스턴스 생성 (RSA 알고리즘 사용)
+			Cipher cipher = Cipher.getInstance("RSA");
+
+			// 2. 복호화 모드(DECRYPT_MODE)로 초기화, 공개키 전달
+			cipher.init(Cipher.DECRYPT_MODE, key);
+
+			// 3. 복호화 수행
+			return cipher.doFinal(encryptedData);
 		}
 		
 	} // End of PublicKeyUtil
