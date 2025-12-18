@@ -28,14 +28,26 @@ public class CipherUtil {
 	 */
 	public static class SHAUtil {
 
+		public static enum Algorithm {
+			 
+			SHA_256("SHA-256"),
+			SHA_512("SHA-512");
+
+			private String name;
+
+			public Algorithm(String name) {
+				this.name = name;
+			}
+		}
+
 		/**
 		 * 문자열을 SHA 단방향 암호화 수행
 		 * 
 		 * @param str 암호화할 문자열
-		 * @param algorithm SHA 암호화 알고리즘 명
+		 * @param algorithm SHA 암호화 알고리즘
 		 * @return 암호화된 문자열
 		 */
-		public static String encrypt(String str, String algorithm) throws Exception {
+		public static String encrypt(String str, Algorithm algorithm) throws Exception {
 			
 			// 입력값 검증
 			if(str == null) {
@@ -43,7 +55,7 @@ public class CipherUtil {
 			}
 	
 			// hash 생성 
-			MessageDigest digest = MessageDigest.getInstance(algorithm);
+			MessageDigest digest = MessageDigest.getInstance(algorithm.getName());
 			byte[] hash = digest.digest(str.getBytes());
 	
 			// 문자열 변환 후 반환
@@ -57,7 +69,7 @@ public class CipherUtil {
 		 * @return
 		 */
 		public static String encrypt256(String str) throws Exception {
-			return encrypt(str, "SHA-256");
+			return encrypt(str, Algorithm.SHA_256);
 		}
 	
 		/**
@@ -67,7 +79,7 @@ public class CipherUtil {
 		 * @return 암호화된 문자열
 		 */
 		public static String encrypt512(String str) throws Exception {
-			return encrypt(str, "SHA-512");
+			return encrypt(str, Algorithm.SHA_512);
 		}
 	}
 	
