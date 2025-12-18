@@ -281,12 +281,11 @@ public class CipherUtil {
 			// 파일 읽기
 			String read = new String(Files.readAllBytes(Paths.get(filePath)));
 
-			// 헤더, 푸터, 줄바꿈 제거
+			// 헤더, 푸터, 줄바꿈, 공백 제거
 			String publicKey = read
 				.replace("-----BEGIN PUBLIC KEY-----", "")
-				.replaceAll("(\r)?\n", "")
-				.replace("-----END PUBLIC KEY-----", "")
-				.replaceAll(" ", ""); // 혹시 모를 공백 제거
+				.replaceAll("\\s", "")
+				.replace("-----END PUBLIC KEY-----", "");
 
 			// pem 파일을 읽어 byte를 가져옴
 			return load(publicKey);
