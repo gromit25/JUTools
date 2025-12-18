@@ -14,8 +14,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.jutools.common.OrderType;
-
 import lombok.Getter;
 
 /**
