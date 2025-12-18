@@ -57,10 +57,10 @@ public class CipherUtil {
 	
 			// hash 생성 
 			MessageDigest digest = MessageDigest.getInstance(algorithm.getName());
-			byte[] hash = digest.digest(text.getBytes());
+			byte[] hashedText = digest.digest(text.getBytes());
 	
 			// 문자열 변환 후 반환
-			return Base64.getEncoder().encodeToString(hash);
+			return Base64.getEncoder().encodeToString(hashedText);
 		}
 		
 		/**
