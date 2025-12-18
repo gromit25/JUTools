@@ -2,9 +2,11 @@ package com.jutools;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -13,6 +15,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.jutools.common.OrderType;
+
+import lombok.Getter;
 
 /**
  * 암복호화 Utility 클래스
@@ -28,7 +32,12 @@ public class CipherUtil {
 	 */
 	public static class SHAUtil {
 
-		public static enum Algorithm {
+		/**
+		 * 해시 알고리즘 종류
+		 * 
+		 * @author jmsohn
+		 */
+		public static enum HashType {
 			 
 			SHA_256("SHA-256"),
 			SHA_512("SHA-512");
@@ -36,7 +45,7 @@ public class CipherUtil {
 			@Getter
 			private String name;
 
-			public Algorithm(String name) {
+			HashType(String name) {
 				this.name = name;
 			}
 		}
@@ -48,7 +57,7 @@ public class CipherUtil {
 		 * @param algorithm SHA 암호화 알고리즘
 		 * @return 암호화된 문자열
 		 */
-		public static String encrypt(String text, Algorithm algorithm) throws Exception {
+		public static String encrypt(String text, HashType algorithm) throws Exception {
 			
 			// 입력값 검증
 			if(text == null) {
@@ -70,7 +79,7 @@ public class CipherUtil {
 		 * @return
 		 */
 		public static String encrypt256(String text) throws Exception {
-			return encrypt(text, Algorithm.SHA_256);
+			return encrypt(text, HashType.SHA_256);
 		}
 	
 		/**
@@ -80,7 +89,7 @@ public class CipherUtil {
 		 * @return 암호화된 문자열
 		 */
 		public static String encrypt512(String text) throws Exception {
-			return encrypt(text, Algorithm.SHA_512);
+			return encrypt(text, HashType.SHA_512);
 		}
 	}
 	
@@ -160,21 +169,21 @@ public class CipherUtil {
 		 * 
 		 * @param text 암호화할 문자열
 		 * @param key 암호화 키(base64 인코딩)
-		 * @param cs charset
+		 * @param charset charset
 		 * @return 암호화된 문자열(base64 인코딩)
 		 */
-		public static String encrypt(String text, String key, Charset cs) throws Exception {
+		public static String encrypt(String text, String key, Charset charset) throws Exception {
 			
 			// 입력값 검증
-			if(cs == null) {
-				throw new Exception("charset is null");
+			if(charset == null) {
+				throw new Exception("'charset' is null.");
 			}
 			
 			// 암호화 모듈 생성
 			Cipher cipher = makeCipher(Cipher.ENCRYPT_MODE, key);
 			
 			// 암호화 수행
-			byte[] encryptedData = cipher.doFinal(text.getBytes(cs));
+			byte[] encryptedData = cipher.doFinal(text.getBytes(charset));
 			
 			// 인코딩하여 문자열로 만들어 반환
 			return Base64.getEncoder().encodeToString(encryptedData);
@@ -196,18 +205,18 @@ public class CipherUtil {
 		 * 
 		 * @param text 복호화할 문자열(base64 인코딩)
 		 * @param key 복호화 키(base64 인코딩)
-		 * @param cs charset
+		 * @param charset charset
 		 * @return 복호화된 문자열
 		 */
-		public static String decrypt(String text, String key, Charset cs) throws Exception {
+		public static String decrypt(String text, String key, Charset charset) throws Exception {
 			
 			// 입력값 검증
 			if(StringUtil.isBlank(text) == true) {
 				return text;
 			}
 			
-			if(cs == null) {
-				throw new Exception("charset is null");
+			if(charset == null) {
+				throw new Exception("'charset' is null.");
 			}
 			
 			// 암호화 모듈 생성
@@ -217,7 +226,7 @@ public class CipherUtil {
 			byte[] decryptedText = cipher.doFinal(Base64.getDecoder().decode(text));
 			
 			// 문자열로 만들어 반환
-			return new String(decryptedText, cs);
+			return new String(decryptedText, charset);
 		}
 		
 		/**
@@ -249,7 +258,7 @@ public class CipherUtil {
 		 */
 		public static PublicKey load(byte[] key) throws Exception {
 			
-			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
 			return keyFactory.generatePublic(keySpec);
@@ -279,7 +288,7 @@ public class CipherUtil {
 			}
 
 			// 파일 읽기
-			String read = new String(Files.readAllBytes(Paths.get(filePath)));
+			String read = new String(FileUtil.readAllBytes(keyFile));
 
 			// 헤더, 푸터, 줄바꿈, 공백 제거
 			String publicKey = read
@@ -336,7 +345,7 @@ public class CipherUtil {
 	
 	        // 평문 바이트를 암호화
 	        return Base64.getEncoder().encodeToString(
-	        	cipher.doFinal(str.getBytes(charset))
+	        	cipher.doFinal(text.getBytes(charset))
 	        );
 		}
 
@@ -385,7 +394,7 @@ public class CipherUtil {
 			cipher.init(Cipher.DECRYPT_MODE, key);
 
 			// 복호화 수행
-			return new String(cipher.doFinal(encryptedData), charset);
+			return new String(cipher.doFinal(textBytes), charset);
 		}
 
 		/**
@@ -456,22 +465,22 @@ public class CipherUtil {
 		/**
 		 * 
 		 * 
-		 * @param str
+		 * @param text
 		 * @param key
 		 * @return
 		 */
-		public static String encrypt(String str, PrivateKey key) throws Exception {
+		public static String encrypt(String text, PrivateKey key) throws Exception {
 			
 		}
 	
 		/**
 		 * 
 		 * 
-		 * @param str
+		 * @param text
 		 * @param key
 		 * @return
 		 */
-		public static String decrypt(String str, PrivateKey key) throws Exception {
+		public static String decrypt(String text, PrivateKey key) throws Exception {
 			
 		}
 		
