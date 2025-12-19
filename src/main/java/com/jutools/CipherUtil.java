@@ -268,7 +268,7 @@ public class CipherUtil {
 		 * @param keyFile 공개키 파일명
 		 * @return 공개키 객체 
 		 */
-		public static PublicKey load(File keyFile) throws Exception {
+		public static PublicKey loadPEM(File keyFile) throws Exception {
 
 			// 입력값 검증
 			if(keyFile == null) {
@@ -441,7 +441,7 @@ public class CipherUtil {
 		 * @param keyFile
 		 * @return
 		 */
-		public static PrivateKey load(File keyFile) throws Exception {
+		public static PrivateKey loadPEM(File keyFile) throws Exception {
 			
 			// 입력값 검증
 			if(keyFile == null) {
