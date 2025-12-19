@@ -491,12 +491,46 @@ public class CipherUtil {
 		 * 
 		 * @param text
 		 * @param key
+		 * @param charset
+		 * @return
+		 */
+		public static String encrypt(String text, PrivateKey key, Charset charset) throws Exception {
+			
+			// Cipher 객체 생성 (RSA 알고리즘 사용)
+			Cipher cipher = Cipher.getInstance("RSA");
+
+			// ENCRYPT_MODE로 초기화
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+
+			// 암호화 후 Base64 문자열로 변환하여 반환
+			return Base64.getEncoder().encodeToString(
+				cipher.doFinal(plainText.getBytes(charset))
+			);
+		}
+
+		/**
+		 * 
+		 * 
+		 * @param text
+		 * @param key
 		 * @return
 		 */
 		public static String encrypt(String text, PrivateKey key) throws Exception {
-			
+			return encrypt(text, key, Charset.defaultCharset());
 		}
 	
+		/**
+		 * 
+		 * 
+		 * @param text
+		 * @param key
+		 * @param charset
+		 * @return
+		 */
+		public static String decrypt(String text, PrivateKey key, Charset charset) throws Exception {
+			
+		}
+
 		/**
 		 * 
 		 * 
@@ -505,7 +539,7 @@ public class CipherUtil {
 		 * @return
 		 */
 		public static String decrypt(String text, PrivateKey key) throws Exception {
-			
+			return decrypt(text, key, Charset.defaultCharset());
 		}
 		
 	} // End of PrivateKeyUtil 
