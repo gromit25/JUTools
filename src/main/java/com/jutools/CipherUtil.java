@@ -528,7 +528,32 @@ public class CipherUtil {
 		 * @return
 		 */
 		public static String decrypt(String text, PrivateKey key, Charset charset) throws Exception {
+
+			// 입력값 검증
+			if(key == null) {
+				throw new IllegalArgumentException("'key' is null.");
+			}
+
+			if(charset == null) {
+				throw new IllegalArgumentException("'charset' is null.");
+			}
 			
+			// 입력 문자열이 null 이거나 blank 이면 text 반환
+			if(StringUtil.isBlank(text) == true) {
+				return text;
+			}
+
+			// base64 디코딩
+			byte[] textBytes = Base64.getDecoder().decode(text);
+			
+			// Cipher 인스턴스 생성 (RSA 알고리즘 사용)
+			Cipher cipher = Cipher.getInstance("RSA");
+
+			// 복호화 모드(DECRYPT_MODE)로 초기화, 공개키 전달
+			cipher.init(Cipher.DECRYPT_MODE, key);
+
+			// 복호화 수행
+			return new String(cipher.doFinal(textBytes), charset);
 		}
 
 		/**
