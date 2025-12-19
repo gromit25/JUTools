@@ -423,6 +423,11 @@ public class CipherUtil {
 		 * @return
 		 */
 		public static PrivateKey load(byte[] key) throws Exception {
+
+			// 입력값 검증
+			if(key == null) {
+				throw new IllegalArgumentException("'key' is null.");
+			}
 			
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -472,28 +477,13 @@ public class CipherUtil {
 		 * @param keyText
 		 * @return
 		 */
-		public static PublicKey load(String keyText) throws Exception {
+		public static PrivateKey load(String keyText) throws Exception {
 			
 			if(StringUtil.isBlank(keyText) == true) {
 				throw new IllegalArgumentException("'keyText' is null or blank.");
 			}
 			
 			return load(Base64.getDecoder().decode(keyText));
-		}
-	
-		/**
-		 * 
-		 * 
-		 * @param base64Key
-		 * @return
-		 */
-		public static PrivateKey load(String base64Key) throws Exception {
-			
-			if(StringUtil.isBlank(base64Key) == true) {
-				throw new IllegalArgumentException("'base64Key' is null or blank.");
-			}
-			
-			return load(Base64.getDecoder().decode(base64Key));
 		}
 	
 		/**
