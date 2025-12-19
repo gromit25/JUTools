@@ -424,6 +424,10 @@ public class CipherUtil {
 		 */
 		public static PrivateKey load(byte[] key) throws Exception {
 			
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+			return keyFactory.generatePrivate(keySpec);
 		}
 	
 		/**
@@ -434,6 +438,7 @@ public class CipherUtil {
 		 */
 		public static PrivateKey load(File keyFile) throws Exception {
 			
+			// 입력값 검증
 			if(keyFile == null) {
 				throw new IllegalArgumentException("'keyFile' is null.");
 			}
@@ -441,8 +446,39 @@ public class CipherUtil {
 			if(keyFile.canRead() == false) {
 				throw new IllegalArgumentException("can't read key file: " + keyFile.getAbsolutePath());
 			}
+
+			// 확장자 검증
+			String ext = FileUtil.getExt(keyFile);
+			if(ext.equals(".pem") == false) {
+				throw new IllegalArgumentException("invalid file extension(.pem): " + keyFile.getAbsolutePath());
+			}
+
+			// 파일 읽기
+			String read = new String(FileUtil.readAllBytes(keyFile));
+
+			// 헤더, 푸터, 줄바꿈, 공백 제거
+			String privateKey = read
+				.replace("-----BEGIN PRIVATE KEY-----", "")
+				.replaceAll("\\s", "")
+				.replace("-----END PRIVATE KEY-----", "");
+
+			// pem 파일을 읽어 byte를 가져옴
+			return load(privateKey);
+		}
+
+		/**
+		 * 
+		 * 
+		 * @param keyText
+		 * @return
+		 */
+		public static PublicKey load(String keyText) throws Exception {
 			
-			return load(FileUtil.readAllBytes(keyFile));
+			if(StringUtil.isBlank(keyText) == true) {
+				throw new IllegalArgumentException("'keyText' is null or blank.");
+			}
+			
+			return load(Base64.getDecoder().decode(keyText));
 		}
 	
 		/**
