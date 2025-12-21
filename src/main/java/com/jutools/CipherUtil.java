@@ -504,7 +504,7 @@ public class CipherUtil {
 
 			// 암호화 후 Base64 문자열로 변환하여 반환
 			return Base64.getEncoder().encodeToString(
-				cipher.doFinal(plainText.getBytes(charset))
+				cipher.doFinal(text.getBytes(charset))
 			);
 		}
 
