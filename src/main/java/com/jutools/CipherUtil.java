@@ -151,7 +151,7 @@ public class CipherUtil {
 			}
 			
 			// 암호화 키 생성
-			byte[] keyBytes = new byte[key.length()/2];
+			byte[] keyBytes = Base64.getDecoder().decode(key.getBytes());
 			
 			SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 			

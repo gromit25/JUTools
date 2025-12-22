@@ -1,5 +1,6 @@
 package com.jutools;
 
+import static com.jutools.CipherUtil.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -10,15 +11,38 @@ import org.junit.Test;
  * @author jmsohn
  */
 public class CipherUtilTest {
-
+	
 	@Test
-	public void testEncryptSHA512_1() {
+	public void testEncryptSHA256_1() {
+		
 		try {
 			
 			String msg = "Hello World";
-			String encryptedMsg = CipherUtil.encryptSHA512(msg);
+			String encryptedMsg = SHAUtil.encrypt256(msg);
 			
-			System.out.println(encryptedMsg);
+			assertEquals(
+				"pZGm1Av0IEBKARczz7exkNYsZb8LzaMrV7J32a2fFG4=",
+				encryptedMsg
+			);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+
+	@Test
+	public void testEncryptSHA512_1() {
+		
+		try {
+			
+			String msg = "Hello World";
+			String encryptedMsg = SHAUtil.encrypt512(msg);
+			
+			assertEquals(
+				"LHT9F+2v2A6ER7DUZ0HuJDt+t03SFJoKsbkkb7MDgvJ+hT2FhXGeDmfL2g2qj1FnEGRhXWRa4nrLFb+xRH9Fmw==",
+				encryptedMsg
+			);
 			
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -28,13 +52,14 @@ public class CipherUtilTest {
 	
 	@Test
 	public void testEncryptDecryptAES1() {
+		
 		try {
 			
-			String key = CipherUtil.genAES128Key();
+			String key = AESUtil.gen128Key();
 			String msg = "Hello World";
 			
-			String encryptedMsg = CipherUtil.encryptAES(key, msg);
-			String decryptedMsg = CipherUtil.decryptAES(key, encryptedMsg);
+			String encryptedMsg = AESUtil.encrypt(msg, key);
+			String decryptedMsg = AESUtil.decrypt(encryptedMsg, key);
 			
 			assertEquals(msg, decryptedMsg);
 			
@@ -46,14 +71,15 @@ public class CipherUtilTest {
 	
 	@Test
 	public void testEncryptDecryptAES2() {
+		
 		try {
 			
 			// key는 16 byte 이어야 함
-			String key = CipherUtil.genAES128Key();
+			String key = AESUtil.gen128Key();
 			String msg = "테스트 입니다.";
 			
-			String encryptedMsg = CipherUtil.encryptAES(key, msg);
-			String decryptedMsg = CipherUtil.decryptAES(key, encryptedMsg);
+			String encryptedMsg = AESUtil.encrypt(msg, key);
+			String decryptedMsg = AESUtil.decrypt(encryptedMsg, key);
 			
 			assertEquals(msg, decryptedMsg);
 			
@@ -62,35 +88,4 @@ public class CipherUtilTest {
 			fail("exception is occured");
 		}
 	}
-	
-	@Test
-	public void testGenAES128Key() {
-		try {
-			
-			String key = CipherUtil.genAES128Key();
-			System.out.println(key);
-			
-			assertEquals(32, key.length());
-			
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			fail("exception is occured");
-		}
-	}
-	
-	@Test
-	public void testGenAES256Key() {
-		try {
-			
-			String key = CipherUtil.genAES256Key();
-			System.out.println(key);
-			
-			assertEquals(64, key.length());
-			
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			fail("exception is occured");
-		}
-	}
-
 }
