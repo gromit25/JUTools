@@ -94,7 +94,7 @@ public class CipherUtil {
 	// -----------------------------------
 
 	/**
-	 * 
+	 * AES 암복호화 Utility 클래스
 	 * 
 	 * @author jmsohn
 	 */
@@ -242,17 +242,17 @@ public class CipherUtil {
 	// -----------------------------------
 	
 	/**
-	 * Public Key 유틸리티 클래스
+	 * 공개키 유틸리티 클래스
 	 * 
 	 * @author jmsohn
 	 */
 	public static class PublicKeyUtil { 
 	
 		/**
+		 * 바이트열에서 공개키 객체 생성 
 		 * 
-		 * 
-		 * @param key
-		 * @return
+		 * @param key 공개키 바이트열
+		 * @return 생성된 공개키 객체 
 		 */
 		public static PublicKey load(byte[] key) throws Exception {
 			
@@ -299,10 +299,10 @@ public class CipherUtil {
 		}
 	
 		/**
+		 * base64로 인코딩된 문자열에서 공개키 객체 생성
 		 * 
-		 * 
-		 * @param base64Key
-		 * @return
+		 * @param keyText 공개키 문자열(base64 인코딩)
+		 * @return 생성된 공개키 객체
 		 */
 		public static PublicKey load(String keyText) throws Exception {
 			
@@ -314,14 +314,14 @@ public class CipherUtil {
 		}
 	
 		/**
+		 * 공개키로 암호화 수행
 		 * 
-		 * 
-		 * @param text 
-		 * @param key
-		 * @param charset
-		 * @return
+		 * @param text 암호화할 문자열
+		 * @param charset 암호화할 문자열의 캐릭터셋
+		 * @param key 공개키 객체
+		 * @return 암호화된 문자열
 		 */
-		public static String encrypt(String text, PublicKey key, Charset charset) throws Exception {
+		public static String encrypt(String text, Charset charset, PublicKey key) throws Exception {
 			
 			// 입력값 검증
 			if(key == null) {
@@ -348,25 +348,25 @@ public class CipherUtil {
 		}
 
 		/**
+		 * 공개키로 암호화 수행
 		 * 
-		 * 
-		 * @param text 
-		 * @param key
-		 * @return
+		 * @param text 암호화할 문자열
+		 * @param key 공개키 객체
+		 * @return 암호화된 문자열
 		 */
 		public static String encrypt(String text, PublicKey key) throws Exception {
-			return encrypt(text, key, Charset.defaultCharset());
+			return encrypt(text, Charset.defaultCharset(), key);
 		}
 	
 		/**
+		 * 공개키로 복호화 수행
 		 * 
-		 * 
-		 * @param str
-		 * @param key
-		 * @param charset
-		 * @return
+		 * @param text 복호화할 문자열
+		 * @param charset 문자열의 캐릭터셋
+		 * @param key 공개키 객체
+		 * @return 복호화된 문자열
 		 */
-		public static String decrypt(String text, PublicKey key, Charset charset) throws Exception {
+		public static String decrypt(String text, Charset charset, PublicKey key) throws Exception {
 
 			// 입력값 검증
 			if(key == null) {
@@ -396,14 +396,14 @@ public class CipherUtil {
 		}
 
 		/**
+		 * 공개키로 복호화 수행
 		 * 
-		 * 
-		 * @param str
-		 * @param key
-		 * @return
+		 * @param text 복호화할 문자열
+		 * @param key 공개키 객체
+		 * @return 복호화된 문자열
 		 */
 		public static String decrypt(String text, PublicKey key) throws Exception {
-			return decrypt(text, key, Charset.defaultCharset());
+			return decrypt(text, Charset.defaultCharset(), key);
 		}
 	} // End of PublicKeyUtil
 	
@@ -417,10 +417,10 @@ public class CipherUtil {
 	public static class PrivateKeyUtil {
 
 		/**
+		 * 바이트열에서 개인키 객체 생성 
 		 * 
-		 * 
-		 * @param key
-		 * @return
+		 * @param key 개인키 바이트열
+		 * @return 생성된 개인키 객체 
 		 */
 		public static PrivateKey load(byte[] key) throws Exception {
 
@@ -436,10 +436,10 @@ public class CipherUtil {
 		}
 	
 		/**
+		 * 파일에서 개인키를 읽어 객체로 만들어 반환
 		 * 
-		 * 
-		 * @param keyFile
-		 * @return
+		 * @param keyFile 개인키 파일명
+		 * @return 개인키 객체 
 		 */
 		public static PrivateKey loadPEM(File keyFile) throws Exception {
 			
@@ -471,11 +471,12 @@ public class CipherUtil {
 			return load(privateKey);
 		}
 
+
 		/**
+		 * base64로 인코딩된 문자열에서 개인키 객체 생성
 		 * 
-		 * 
-		 * @param keyText
-		 * @return
+		 * @param keyText 개인키 문자열(base64 인코딩)
+		 * @return 생성된 개인키 객체
 		 */
 		public static PrivateKey load(String keyText) throws Exception {
 			
@@ -486,15 +487,16 @@ public class CipherUtil {
 			return load(Base64.getDecoder().decode(keyText));
 		}
 	
+
 		/**
+		 * 개인키로 암호화 수행
 		 * 
-		 * 
-		 * @param text
-		 * @param key
-		 * @param charset
-		 * @return
+		 * @param text 암호화할 문자열
+		 * @param charset 암호화할 문자열의 캐릭터셋
+		 * @param key 개인키 객체
+		 * @return 암호화된 문자열
 		 */
-		public static String encrypt(String text, PrivateKey key, Charset charset) throws Exception {
+		public static String encrypt(String text, Charset charset, PrivateKey key) throws Exception {
 			
 			// Cipher 객체 생성 (RSA 알고리즘 사용)
 			Cipher cipher = Cipher.getInstance("RSA");
@@ -508,24 +510,25 @@ public class CipherUtil {
 			);
 		}
 
+
 		/**
+		 * 개인키로 암호화 수행
 		 * 
-		 * 
-		 * @param text
-		 * @param key
-		 * @return
+		 * @param text 암호화할 문자열
+		 * @param key 개인키 객체
+		 * @return 암호화된 문자열
 		 */
 		public static String encrypt(String text, PrivateKey key) throws Exception {
-			return encrypt(text, key, Charset.defaultCharset());
+			return encrypt(text, Charset.defaultCharset(), key);
 		}
 	
 		/**
+		 * 개인키로 복호화 수행
 		 * 
-		 * 
-		 * @param text
-		 * @param key
-		 * @param charset
-		 * @return
+		 * @param text 복호화할 문자열
+		 * @param charset 문자열의 캐릭터셋
+		 * @param key 개인키 객체
+		 * @return 복호화된 문자열
 		 */
 		public static String decrypt(String text, PrivateKey key, Charset charset) throws Exception {
 
@@ -557,15 +560,14 @@ public class CipherUtil {
 		}
 
 		/**
+		 * 개인키로 복호화 수행
 		 * 
-		 * 
-		 * @param text
-		 * @param key
-		 * @return
+		 * @param text 복호화할 문자열
+		 * @param key 개인키 객체
+		 * @return 복호화된 문자열
 		 */
 		public static String decrypt(String text, PrivateKey key) throws Exception {
 			return decrypt(text, key, Charset.defaultCharset());
 		}
-		
 	} // End of PrivateKeyUtil 
 }
