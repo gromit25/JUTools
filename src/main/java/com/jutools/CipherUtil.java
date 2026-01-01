@@ -3,6 +3,8 @@ package com.jutools;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -240,6 +242,55 @@ public class CipherUtil {
 	} // End of AESUtil
 	
 	// -----------------------------------
+	
+	/**
+	 * 공개키/개인키 생성하여 반환
+	 * 
+	 * @return 생성된 공개키/개인키
+	 */
+	public static PKIKey genPKIKey() throws Exception {
+		
+		// 1. KeyPairGenerator 인스턴스 생성 (RSA 알고리즘 사용)
+		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+
+		// 2. 키 크기 설정 (보안을 위해 최소 2048비트 권장)
+		keyPairGen.initialize(2048);
+
+		// 3. 키 쌍 생성
+		KeyPair keyPair = keyPairGen.generateKeyPair();
+
+		// 4. 공개키와 개인키 추출 및 반환
+		return new PKIKey(
+			keyPair.getPublic(),
+			keyPair.getPrivate()
+		);
+	}
+
+	/**
+	 * 공개키/개인키 클래스
+	 * 
+	 * @author jmsohn
+	 */
+	@Getter
+	public static class PKIKey {
+		
+		/** 공개키 */
+		private final PublicKey publicKey;
+		
+		/** 개인키 */
+		private final PrivateKey privateKey;
+		
+		/**
+		 * 생성자
+		 * 
+		 * @param publicKey 
+		 * @param privateKey
+		 */
+		private PKIKey(PublicKey publicKey, PrivateKey privateKey) {
+			this.publicKey = publicKey;
+			this.privateKey = privateKey;
+		}
+	}
 	
 	/**
 	 * 공개키 유틸리티 클래스
