@@ -17,14 +17,14 @@ import javax.crypto.spec.SecretKeySpec;
 import lombok.Getter;
 
 /**
- * 암복호화 Utility 클래스
+ * 암복호화 유틸리티 클래스
  * 
  * @author jmsohn
  */
 public class CipherUtil {
 	
 	/**
-	 * SHA Utility 클래스
+	 * SHA 유틸리티 클래스
 	 * 
 	 * @author jmsohn
 	 */
@@ -94,7 +94,7 @@ public class CipherUtil {
 	// -----------------------------------
 
 	/**
-	 * AES 암복호화 Utility 클래스
+	 * AES 암복호화 유틸리티 클래스
 	 * 
 	 * @author jmsohn
 	 */
@@ -410,7 +410,7 @@ public class CipherUtil {
 	// -----------------------------------
 	
 	/**
-	 * 
+	 * 개인키 유틸리티 클래스
 	 * 
 	 * @author jmsohn
 	 */
@@ -471,7 +471,6 @@ public class CipherUtil {
 			return load(privateKey);
 		}
 
-
 		/**
 		 * base64로 인코딩된 문자열에서 개인키 객체 생성
 		 * 
@@ -487,7 +486,6 @@ public class CipherUtil {
 			return load(Base64.getDecoder().decode(keyText));
 		}
 	
-
 		/**
 		 * 개인키로 암호화 수행
 		 * 
@@ -509,7 +507,6 @@ public class CipherUtil {
 				cipher.doFinal(text.getBytes(charset))
 			);
 		}
-
 
 		/**
 		 * 개인키로 암호화 수행
