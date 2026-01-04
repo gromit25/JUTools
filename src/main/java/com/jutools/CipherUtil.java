@@ -8,6 +8,7 @@ import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -290,6 +291,24 @@ public class CipherUtil {
 			this.publicKey = publicKey;
 			this.privateKey = privateKey;
 		}
+		
+		/**
+		 * 
+		 * 
+		 * @return
+		 */
+		public String getPublicKeyStr() {
+			return Base64.getEncoder().encodeToString(this.publicKey.getEncoded());
+		}
+		
+		/**
+		 * 
+		 * 
+		 * @return
+		 */
+		public String getPrivateKeyStr() {
+			return Base64.getEncoder().encodeToString(this.privateKey.getEncoded());
+		}
 	}
 	
 	/**
@@ -480,9 +499,9 @@ public class CipherUtil {
 				throw new IllegalArgumentException("'key' is null.");
 			}
 			
-			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
+			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-
+			
 			return keyFactory.generatePrivate(keySpec);
 		}
 	
