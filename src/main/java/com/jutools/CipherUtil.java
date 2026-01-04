@@ -288,23 +288,33 @@ public class CipherUtil {
 		 * @param privateKey
 		 */
 		private PKIKey(PublicKey publicKey, PrivateKey privateKey) {
+			
+			// 입력값 검증
+			if(publicKey == null) {
+				throw new IllegalArgumentException("'publicKey' is null.");
+			}
+			
+			if(privateKey == null) {
+				throw new IllegalArgumentException("'privateKey' is null.");
+			}
+			
 			this.publicKey = publicKey;
 			this.privateKey = privateKey;
 		}
 		
 		/**
+		 * 공개키 문자열(Base64) 반환
 		 * 
-		 * 
-		 * @return
+		 * @return 공개키 문자열(Base64)
 		 */
 		public String getPublicKeyStr() {
 			return Base64.getEncoder().encodeToString(this.publicKey.getEncoded());
 		}
 		
 		/**
+		 * 개인키 문자열(Base64) 반환
 		 * 
-		 * 
-		 * @return
+		 * @return 개인키 문자열(Base64)
 		 */
 		public String getPrivateKeyStr() {
 			return Base64.getEncoder().encodeToString(this.privateKey.getEncoded());
