@@ -7,10 +7,11 @@ package com.jutools.thread;
  */
 public abstract class AbstractDaemon {
 	
+	
 	/** 데몬 스레드 */
 	private volatile Thread daemonThread;
 	
-
+	
 	/**
 	 * 업무 처리
 	 * 
@@ -19,7 +20,15 @@ public abstract class AbstractDaemon {
 	protected abstract void process() throws InterruptedException;
 	
 	/**
-	 * 종료시 호출<br>
+	 * 시작시 호출됨(콜백)<br>
+	 * 필요시 Override 하여 사용
+	 */
+	protected void prepare() {
+		// Do nothing
+	}
+	
+	/**
+	 * 종료시 호출됨(콜백)<br>
 	 * 필요시 Override 하여 사용
 	 */
 	protected void exit() {
@@ -43,6 +52,9 @@ public abstract class AbstractDaemon {
 					
 					final Thread currentThread = Thread.currentThread();
 					
+					// 시작시 호출
+					prepare();
+					
 					try {
 						
 						// 인터럽트 발생시까지 무한 루프
@@ -56,6 +68,7 @@ public abstract class AbstractDaemon {
 								ex.printStackTrace();
 							}
 						}
+						
 					} finally {
 					
 						// 종료시 호출
