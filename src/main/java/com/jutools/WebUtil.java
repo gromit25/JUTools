@@ -82,7 +82,7 @@ public class WebUtil {
 		}
 		
 		String hostName = hostMatcher.group("hostname");
-		String port = hostMatcher.group("hostname");
+		String port = hostMatcher.group("port");
 		
 		return new String[] {hostName, port};
 	}
