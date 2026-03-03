@@ -62,7 +62,7 @@ public class CipherUtil {
 			
 			// 입력값 검증
 			if(text == null) {
-				throw new Exception("'text' is null.");
+				throw new IllegalArgumentException("'text' is null.");
 			}
 	
 			// hash 생성 
