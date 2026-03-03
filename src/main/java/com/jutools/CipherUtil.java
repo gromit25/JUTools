@@ -77,7 +77,7 @@ public class CipherUtil {
 		 * 문자열을 SHA-256 단방향 암호화 수행
 		 * 
 		 * @param text 암호화할 문자열
-		 * @return
+		 * @return 암호화된 문자열
 		 */
 		public static String encrypt256(String text) throws Exception {
 			return encrypt(text, HashType.SHA_256);
