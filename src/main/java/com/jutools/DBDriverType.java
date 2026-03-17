@@ -18,15 +18,15 @@ public enum DBDriverType {
 		public String getUrl(String host, int port, String database) throws Exception {
 			
 			if(StringUtil.isBlank(host) == true) {
-				throw new IllegalArgumentException("host is null or blank.");
+				throw new IllegalArgumentException("'host' is null or blank.");
 			}
 			
 			if(port <= 0) {
-				throw new IllegalArgumentException("port is negative.");
+				throw new IllegalArgumentException("'port' is negative.");
 			}
 			
 			if(StringUtil.isBlank(database) == true) {
-				throw new IllegalArgumentException("database is null or blank.");
+				throw new IllegalArgumentException("'database' is null or blank.");
 			}
 			
 			return "jdbc:oracle:thin:@//" + host + ":" + port + "/" + database;
