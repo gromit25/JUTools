@@ -54,7 +54,7 @@ public class SysUtil {
 	 */
 	public static String[] getIps() throws Exception {
 		
-		ArrayList<String> ips = new ArrayList<>();
+		List<String> ips = new ArrayList<>();
 		
 		// Network Interface별 IP를 가져옴
 		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -194,9 +194,9 @@ public class SysUtil {
 		
 		// 실행 결과 객체 생성
 		return SysCmdResult.builder()
-				.result(result)
-				.output(output)
-				.build();
+			.result(result)
+			.output(output)
+			.build();
 	}
 	
 	/**
@@ -210,6 +210,7 @@ public class SysUtil {
 		/** 실행 결과 값 */
 		@Getter
 		private int result;
+		
 		/** 실행 출력 문자열 */
 		@Getter
 		private String output;
@@ -244,7 +245,7 @@ public class SysUtil {
 		}
 		
 		// 분할된 cmd 목록
-		ArrayList<String> cmds = new ArrayList<>(); 
+		List<String> cmds = new ArrayList<>(); 
 		
 		// cmd를 임시 저장할 변수
 		StringBuilder cmd = new StringBuilder("");
@@ -304,5 +305,4 @@ public class SysUtil {
 		// 명령어 목록 반환
 		return cmds.stream().toArray(String[]::new);
 	}
-
 }
