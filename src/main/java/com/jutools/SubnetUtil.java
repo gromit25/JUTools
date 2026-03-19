@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Subnet 유틸리티 클래스
  *
  * @author jmsohn
  */
