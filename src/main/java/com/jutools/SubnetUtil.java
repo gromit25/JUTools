@@ -11,24 +11,24 @@ import java.util.regex.Pattern;
 public class SubnetUtil {
 
 
-	/** */
+	/** CIDR 패턴 문자열 */
 	private static String CIDR_PATTERN = "(?<ip>[0-9]{1,3}(\\.[0-9]{1,3}){3})\\/(?<prefixLength>[0-9]{1,2})";
 
-	/** */
+	/** CIDR 패턴 객체 */
 	private static Pattern cidrP = Pattern.compile(CIDR_PATTERN);
 	
 
-	/** */
+	/** IP 값 */
 	private long cidr;
 
-	/** */
+	/** 마스크 값 */
 	private long mask;
 	
 	
 	/**
 	 * 생성자
 	 * 
-	 * @param cidrStr
+	 * @param cidrStr CIDR 문자열
 	 */
 	private SubnetUtil(String cidrStr) throws Exception {
 		
@@ -49,18 +49,18 @@ public class SubnetUtil {
 	}
 
 	/**
+	 * SubnetUtil 생성 메소드
 	 *
-	 *
-	 * @param cidrStr
+	 * @param cidrStr CIDR 문자열
 	 */
 	public static SubnetUtil create(cidrStr) throws Exception {
 		return new SubnetUtil(cidrStr);
 	}
 	
 	/**
-	 * IP 문자열을 32비트 정수(int)로 변환
+	 * IP 문자열을 Long 변환
 	 * 
-	 * @param ipStr
+	 * @param ipStr IP 문자열
 	 */
 	private static long ipToLong(String ipStr) throws Exception {
 
@@ -80,15 +80,15 @@ public class SubnetUtil {
 	}
 	
 	/**
-	 * 주어진 ip가 범위에 포함되는지 확인
+	 * 주어진 IP가 범위에 포함 여부 반환
 	 * 
-	 * @param ipStr
+	 * @param ipStr IP 문자열
 	 */
 	public boolean isInRange(String ipStr) {
 
 		try {
 
-			// 
+			// IP 문자열을 Long 값으로 변환
 			long ip = ipToLong(ipStr);
 
 			// IP의 네트워크 파트(앞부분)가 일치하는지 비트 AND 연산으로 비교
