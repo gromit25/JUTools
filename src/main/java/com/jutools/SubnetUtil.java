@@ -56,7 +56,7 @@ public class SubnetUtil {
 	 *
 	 * @param cidrStr CIDR 문자열
 	 */
-	public static SubnetUtil create(cidrStr) throws Exception {
+	public static SubnetUtil create(String cidrStr) throws Exception {
 		return new SubnetUtil(cidrStr);
 	}
 	
@@ -70,13 +70,13 @@ public class SubnetUtil {
 		String[] octets = ipStr.split("\\.");
         
 		long ip = 0;
-		for (int index = 0; i < 4; i++) {
+		for (int index = 0; index < 4; index++) {
 
 			//
-			int octet = Integer.parseInt(octets[i]);
+			int octet = Integer.parseInt(octets[index]);
 
 			// 각 마디를 8비트씩 왼쪽으로 밀어서 합침
-			ip |= (octet << (24 - (i * 8)));
+			ip |= (octet << (24 - (index * 8)));
 		}
 
 		return ip;
