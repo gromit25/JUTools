@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class SubnetUtil {
 
 
-	/** CIDR 패턴 문자열 */
+	/** CIDR(Classless Inter-Domain Routing) 패턴 문자열 */
 	private static String CIDR_PATTERN = "(?<ip>[0-9]{1,3}(\\.[0-9]{1,3}){3})\\/(?<prefixLength>[0-9]{1,2})";
 
 	/** CIDR 패턴 객체 */
