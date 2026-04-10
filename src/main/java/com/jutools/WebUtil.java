@@ -93,7 +93,7 @@ public class WebUtil {
 	 * @param contents 문자열
 	 * @return 변경된 문자열
 	 */
-	public static String replaceHtmlEntity(String contents) throws Exception {
+	public static String replaceHtmlEntity(String contents) {
 		
 		if(contents == null || contents.isEmpty() == true) {
 			return contents;
