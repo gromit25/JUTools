@@ -331,21 +331,15 @@ public class TypeUtil {
 		}
 		
 		// 기본 데이터 타입 여부를 검사하여 반환
-		if(type == boolean.class || type == Boolean.class
+		return
+			type == boolean.class || type == Boolean.class
 			|| type == byte.class || type == Byte.class
 			|| type == char.class || type == Character.class
 			|| type == short.class || type == Short.class
 			|| type == int.class || type == Integer.class
 			|| type == long.class || type == Long.class
 			|| type == float.class || type == Float.class
-			|| type == double.class || type == Double.class) {
-			
-			return true;
-			
-		} else {
-			
-			return false;
-		}
+			|| type == double.class || type == Double.class;
 	}
 	
 	/**
