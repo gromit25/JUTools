@@ -358,8 +358,6 @@ public class TypeUtil {
 		// 각 타입별 크기 반환
 		if(type == byte.class || type == Byte.class) {
 			return 1;
-		} else if(type == byte.class || type == Byte.class) {
-			return 1;
 		} else if(type == char.class || type == Character.class) {
 			return 2;
 		} else if(type == short.class || type == Short.class) {
