@@ -10,6 +10,45 @@ import org.junit.Test;
 public class JSONUtilTest {
 	
 	@Test
+	public void testMapToJSON1() throws Exception {
+		
+		Map<String, Object> map = Map.of(
+			"item1", "apple",
+			"item2", 12.3
+		);
+		
+		String jsonStr = JSONUtil.toJSON(map);
+		System.out.println(jsonStr);
+	}
+	
+	@Test
+	public void testMapToJSON2() throws Exception {
+		
+		Map<String, Object> map = Map.of(
+			"item1", "apple",
+			"item2", 12.3,
+			"item3", List.of("banna", "A", 34.5, 12)
+		);
+		
+		String jsonStr = JSONUtil.toJSON(map);
+		System.out.println(jsonStr);
+	}
+	
+	@Test
+	public void testMapToJSON3() throws Exception {
+		
+		Map<String, Object> map = Map.of(
+			"item1", "apple",
+			"item2", 12.3,
+			"item3", List.of("banna", "A", 34.5, 12),
+			"item4", Map.of("name", "test", "addr", "test2")
+		);
+		
+		String jsonStr = JSONUtil.toJSON(map, "");
+		System.out.println(jsonStr);
+	}
+	
+	@Test
 	public void testJSONMapParse1() throws Exception {
 		
 		String jsonMsg = "{}";
