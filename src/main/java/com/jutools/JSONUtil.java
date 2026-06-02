@@ -131,7 +131,7 @@ public class JSONUtil {
 	 * @return JSON 문자열
 	 */
 	public static String beautifyJSON(List<?> list) {
-		return toJSON(list, "");
+		return toJSON(list, "\r\n");
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class JSONUtil {
 	 * @return JSON 문자열
 	 */
 	public static String beautifyJSON(Set<?> set) {
-		return toJSON(set, "");
+		return toJSON(set, "\r\n");
 	}
 	
 	/**
