@@ -55,12 +55,12 @@ public class JSONUtil {
 	 * @return JSON 문자열
 	 */
 	public static String beautifyJSON(Map<?, ?> map) {
-		return toJSON(map, "");
+		return toJSON(map, "\r\n");
 	}
 
 	/**
 	 * Map 객체를 JSON 문자열로 변환하여 반환<br>
-	 * 만일 indent가 null 이면 들여쓰기 하지 않고 붙혀쓰기 방식으로 출력
+	 * 만일 indent가 null 이거나 empty 이면 들여쓰기 하지 않고 붙혀쓰기 방식으로 출력
 	 * 
 	 * @param map 대상 Map 객체
 	 * @param indent 들여쓰기
@@ -92,9 +92,7 @@ public class JSONUtil {
 			}
 
 			// 들여쓰기 추가
-			if(increasedIndent != null) {
-				json.append("\r\n").append(increasedIndent);
-			}
+			json.append(increasedIndent);
 			
 			// Map 항목에 대해 JSON 문자열로 변환하여 추가
 			json
@@ -110,12 +108,8 @@ public class JSONUtil {
 			
 			isFirst = false;
 		}
-
-		if(indent != null) {
-			json.append("\r\n").append(indent);
-		}
 		
-		json.append("}");
+		json.append(indent).append("}");
 		
 		return json.toString();
 	}
@@ -174,9 +168,7 @@ public class JSONUtil {
 			}
 
 			// 들여쓰기 추가
-			if(increasedIndent != null) {
-				json.append("\r\n").append(increasedIndent);
-			}
+			json.append(increasedIndent);
 			
 			// List 항목에 대해 JSON 문자열로 변환하여 추가
 			json.append(
@@ -188,12 +180,8 @@ public class JSONUtil {
 			
 			isFirst = false;
 		}
-
-		if(indent != null) {
-			json.append("\r\n").append(indent);
-		}
 		
-		json.append("]");
+		json.append(indent).append("]");
 		
 		return json.toString();
 	}
@@ -330,8 +318,14 @@ public class JSONUtil {
 		return buffer.toString();
 	}
 
+	/**
+	 * 들여쓰기 추가
+	 * 
+	 * @param indent 기존 들여쓰기
+	 * @return 추가된 들여쓰기
+	 */
 	private static String increaseIndent(String indent) {
-		return (indent == null)?null:indent + "\t";
+		return (StringUtil.isEmpty(indent) == true)?"":indent + "\t";
 	}
 	
 	// ----------------------------------
@@ -912,6 +906,7 @@ public class JSONUtil {
 	 * @param jsonStr 대상 JSON 문자열
 	 * @return 변환된 JSON 문자열
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String beautifyJSON(String jsonStr) throws Exception {
 
 		// null 이거나 공백일 경우 공백 반환
