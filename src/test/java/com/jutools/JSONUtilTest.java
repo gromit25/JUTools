@@ -44,7 +44,7 @@ public class JSONUtilTest {
 			"item4", Map.of("name", "test", "addr", "test2")
 		);
 		
-		String jsonStr = JSONUtil.toJSON(map, "");
+		String jsonStr = JSONUtil.beautifyJSON(map);
 		System.out.println(jsonStr);
 	}
 	

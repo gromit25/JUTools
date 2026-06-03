@@ -255,7 +255,7 @@ public class JSONUtil {
 			
 		} else if(JSONEntity.class.isAssignableFrom(type) == true) {
 
-			return ((JSONEntity)obj).toJSON();
+			return ((JSONEntity)obj).toJSON(indent);
 			
 		} else {
 			
@@ -369,7 +369,7 @@ public class JSONUtil {
 				
 				if((char)read == '\n') {
 					
-					this.columnCountPerRowStack.push(this.column);
+					this.columnCountPerRowStack.push(this.columnCount);
 					this.columnCount = new AtomicInteger(0);
 					
 				} else {
