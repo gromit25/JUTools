@@ -14,12 +14,16 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class WebUtil {
 	
+	
 	/** html entity 변환 맵(replaceHtmlEntity) */ 
 	private static Map<Character, String> htmlEntityMap;
+	
 	/** 유효한 확장자 모음 */
 	private static String[] defaultValidExts;
+	
 	/** email 패턴 */
 	private static Pattern emailP = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+	
 	
 	static {
 		
