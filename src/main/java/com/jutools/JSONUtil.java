@@ -72,6 +72,9 @@ public class JSONUtil {
 		if(map == null || map.size() == 0) {
 			return "{}";
 		}
+
+		// 들여쓰기 값 변환
+		indent = (indent == null)?"":indent;
 		
 		// 생성할 json 객체
 		StringBuffer json = new StringBuffer("{");
@@ -148,6 +151,9 @@ public class JSONUtil {
 		if(list == null || list.size() == 0) {
 			return "[]";
 		}
+
+		// 들여쓰기 값 변환
+		indent = (indent == null)?"":indent;
 		
 		// 생성할 json 객체
 		StringBuffer json = new StringBuffer("[");
@@ -298,16 +304,16 @@ public class JSONUtil {
 
 			switch(ch) {
 				case '\n':
-					buffer.append("\\\\n");
+					buffer.append("\\n");
 					break;
 				case '\r':
-					buffer.append("\\\\r");
+					buffer.append("\\r");
 					break;
 				case '\t':
-					buffer.append("\\\\t");
+					buffer.append("\\t");
 					break;
 				case '"':
-					buffer.append("\\\\\"");
+					buffer.append("\\\"");
 					break;
 				default:
 					buffer.append(ch);
