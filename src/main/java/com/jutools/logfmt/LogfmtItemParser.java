@@ -13,7 +13,7 @@ import lombok.Getter;
  * 
  * @author jmsohn
  */
-public class LogfmtParser {
+public class LogfmtItemParser {
 	
 	/**
 	 * 파싱 상태
@@ -71,7 +71,7 @@ public class LogfmtParser {
 	 * 
 	 * @param consumer 파싱 결과 처리를 위한 콜백 메소드
 	 */
-	public LogfmtParser(Consumer<Map<String, Object>> consumer) throws Exception {
+	public LogfmtItemParser(Consumer<Map<String, Object>> consumer) throws Exception {
 		
 		if(consumer == null) {
 			throw new IllegalArgumentException("'consumer' is null.");

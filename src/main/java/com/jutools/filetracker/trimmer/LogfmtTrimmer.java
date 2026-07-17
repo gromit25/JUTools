@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.jutools.filetracker.Trimmer;
-import com.jutools.logfmt.LogfmtParser;
+import com.jutools.logfmt.LogfmtItemParser;
 
 /**
  * Logfmt 형식의 로그 Trimmer
@@ -19,7 +19,7 @@ public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 	private Charset charset;
 
 	/** Logfmt 파서 캑체 */
-	private LogfmtParser parser;
+	private LogfmtItemParser parser;
 
 	
 	/**
@@ -50,6 +50,6 @@ public class LogfmtTrimmer implements Trimmer<Map<String, Object>>{
 
 	@Override
 	public void setConsumer(Consumer<Map<String, Object>> consumer) throws Exception {
-		this.parser = new LogfmtParser(consumer);
+		this.parser = new LogfmtItemParser(consumer);
 	}
 }

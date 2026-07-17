@@ -28,7 +28,7 @@ public class LogfmtUtil {
 		}
 		
 		// 파서 생성
-		LogfmtParser parser = new LogfmtParser((rowMap) -> {
+		LogfmtItemParser parser = new LogfmtItemParser((rowMap) -> {
 			// 한 줄이 파싱 되고 나면 해당 로우의 정보를 추가함
 			map.putAll(rowMap);
 		});
