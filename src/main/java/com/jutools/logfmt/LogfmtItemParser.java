@@ -9,7 +9,8 @@ import com.jutools.StringUtil;
 import lombok.Getter;
 
 /**
- * Logfmt 파서 클래스
+ * Logfmt 아이템 파서 클래스
+ * public 인 이유는 파일트래커 등에서 실시간 파싱시 사용하기 위함
  * 
  * @author jmsohn
  */
