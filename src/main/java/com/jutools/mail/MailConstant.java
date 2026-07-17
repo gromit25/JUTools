@@ -20,8 +20,8 @@ public class MailConstant {
 	public static final String DEBUG = "mail.debug";
 
 	/** TLS 사용 여부 설정 */
-	public static final String TLS = "mail.smtp.starttls.enable";
+	public static final String TLS_ENABLE = "mail.smtp.starttls.enable";
 
 	/** SSL 사용 여부 설정 */
-	public static final String SSL = "mail.smtp.ssl.enable";
+	public static final String SSL_ENABLE = "mail.smtp.ssl.enable";
 }

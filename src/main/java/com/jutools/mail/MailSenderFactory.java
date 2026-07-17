@@ -96,7 +96,7 @@ public class MailSenderFactory {
 	 * @return 현재 객체
 	 */
 	public MailSenderFactory ssl(boolean ssl) {
-		this.props.put(MailConstant.SSL, Boolean.toString(ssl));
+		this.props.put(MailConstant.SSL_ENABLE, Boolean.toString(ssl));
 		return this;
 	}
 	
@@ -107,7 +107,7 @@ public class MailSenderFactory {
 	 * @return 현재 객체
 	 */
 	public MailSenderFactory tls(boolean tls) {
-		this.props.put(MailConstant.TLS, Boolean.toString(tls));
+		this.props.put(MailConstant.TLS_ENABLE, Boolean.toString(tls));
 		return this;
 	}
 
