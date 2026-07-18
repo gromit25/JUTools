@@ -1,6 +1,7 @@
 package com.jutools.cache;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +35,7 @@ public class Cache<T> {
 	
 	/** 캐시 보유 기간이 지난 데이터 정리 job */
 	private CronJob cleanUpJob;
+	
 	
 	/**
 	 * 생성자
@@ -73,7 +75,8 @@ public class Cache<T> {
 			public void run() {
 				
 				// 캐시 보유 기간이 초과되어 삭제된 key 목록 변수
-				ArrayList<String> removedKeys = new ArrayList<>();
+				List<String> removedKeys = new ArrayList<>();
+				
 				// 현재 시간
 				long curTime = System.currentTimeMillis();
 				
@@ -134,10 +137,6 @@ public class Cache<T> {
 		// 입력값 검증
 		if(key == null) {
 			throw new NullPointerException("key is null.");
-		}
-		
-		if(value == null) {
-			throw new NullPointerException("value is null.(key:" + key + ")");
 		}
 		
 		// 데이터 저장
