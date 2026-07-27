@@ -16,7 +16,6 @@ public @interface Env {
 	
 	/** 환경변수 명 */
 	String name();
-	/** 필수 여부 */
-	boolean mandatory() default false;
 	
-}
+	/** 필수 여부 */
+	boolean mandatory() default false;}
