@@ -11,7 +11,7 @@ public @interface ArrayType {
 
 	/** 목록의 분리되는 문자열 */
 	String separator();
+	
 	/** 목록의 분리된 문자열에 trim 적용 여부 */
 	boolean trim() default true;
-	
 }
