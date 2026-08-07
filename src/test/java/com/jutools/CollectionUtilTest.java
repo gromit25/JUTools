@@ -1,8 +1,11 @@
 package com.jutools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -44,5 +47,47 @@ public class CollectionUtilTest {
 		List<String> result = CollectionUtil.minus(p1, p2);
 		
 		assertEquals("[]", result.toString());
+	}
+	
+	@Test
+	public void testContainsAll1() {
+		
+		Map<String, String> map = Map.of(
+			"A", "test1",
+			"B", "test2",
+			"C", "test3"
+		);
+		
+		boolean result = CollectionUtil.containsAll(map, "B", "C");
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testContainsAll2() {
+		
+		Map<String, String> map = Map.of(
+			"A", "test1",
+			"B", "test2",
+			"C", "test3"
+		);
+		
+		boolean result = CollectionUtil.containsAll(map, "B", "D");
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testContainsAll3() {
+		
+		Map<String, String> map = Map.of(
+			"A", "test1",
+			"B", "test2",
+			"C", "test3"
+		);
+		
+		boolean result = CollectionUtil.containsAll(map);
+		
+		assertTrue(result);
 	}
 }

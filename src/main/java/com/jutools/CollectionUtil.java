@@ -2,6 +2,7 @@ package com.jutools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -98,5 +99,23 @@ public class CollectionUtil {
 	 */
 	public static <T> List<T> minus(List<T> p1, List<T> p2) {
 		return minus(p1, p2, ArrayList::new);
+	}
+	
+	/**
+	 * 주어진 키들 목록이 맵에 모두 존재하는지 여부 반환
+	 * 
+	 * @param map 맵
+	 * @param keys 키 목록
+	 * @return 키가 모두 맵에 존재하는지 연부
+	 */
+	public static boolean containsAll(Map<?, ?> map, Object... keys) {
+		
+		for(Object key: keys) {
+			if(map.containsKey(key) == false) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
