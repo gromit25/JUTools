@@ -16,6 +16,7 @@ import com.jutools.script.parser.TreeNode;
  */
 public class ArithmaticParser extends AbstractParser<Instruction> {
 	
+	
 	/** +,- 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
 	
@@ -24,6 +25,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	
 	/** +,- 연산 tree node */
 	private TreeNode<Instruction> op;
+	
 
 	/**
 	 * 생성자
@@ -54,29 +56,29 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t\r\n", "START")
-				.add("^ \t\r\n", "TERM_1", -1)
+				.add("^ \t\r\n", "P_1", -1)
 				.build());
 		
-		this.putTransferMap("TERM_1", new TransferBuilder()
-				.add(" \t\r\n", "TERM_1")
+		this.putTransferMap("P_1", new TransferBuilder()
+				.add(" \t\r\n", "P_1")
 				.add("\\+\\-", "OPERATION")
 				.add("^ \t\r\n\\+\\-", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
 				.add(" \t\r\n", "OPERATION")
-				.add("^ \t\r\n", "TERM_2", -1)
+				.add("^ \t\r\n", "P_2", -1)
 				.build());
 		
-		this.putTransferMap("TERM_2", new TransferBuilder()
-				.add(" \t\r\n", "TERM_2")
+		this.putTransferMap("P_2", new TransferBuilder()
+				.add(" \t\r\n", "P_2")
 				.add("\\+\\-", "OPERATION")
 				.add("^ \t\r\n\\+\\-", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("TERM_1");
-		this.putEndStatus("TERM_2");
+		this.putEndStatus("P_1");
+		this.putEndStatus("P_2");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END);
 	}
 
@@ -87,7 +89,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"TERM_1"}
+			target={"P_1"}
 	)
 	public void handleP1(Event event) throws Exception {
 		
@@ -101,7 +103,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"TERM_1", "TERM_2"},
+			source={"P_1", "P_2"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
@@ -128,7 +130,7 @@ public class ArithmaticParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"OPERATION"},
-			target={"TERM_2"}
+			target={"P_2"}
 	)
 	public void handleP2(Event event) throws Exception {
 		

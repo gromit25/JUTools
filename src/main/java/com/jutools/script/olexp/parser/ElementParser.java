@@ -16,10 +16,13 @@ import com.jutools.script.parser.TreeNode;
  */
 public class ElementParser extends AbstractParser<Instruction> {
 	
+	
 	/** 변수명 혹은 메소드명 */
 	private TreeNode<Instruction> indexNode;
+	
 	/** 배열 및 속성 노드 */
 	private TreeNode<Instruction> tailNode;
+	
 
 	/**
 	 * 생성자

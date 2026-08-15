@@ -20,6 +20,7 @@ import com.jutools.script.parser.TreeNode;
  */
 public class ComparisonParser extends AbstractParser<Instruction> {
 	
+	
 	/** 비교 연산의 첫번째 파라미터의 tree node */
 	private TreeNode<Instruction> p1;
 	
@@ -31,6 +32,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	
 	/** 비교 연산 버퍼 */
 	private StringBuffer opBuffer;
+	
 
 	/**
 	 * 생성자
@@ -57,28 +59,28 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 		// 상태 전이 맵 설정
 		this.putTransferMap("START", new TransferBuilder()
 				.add(" \t\r\n", "START")
-				.add("^ \t\r\n", "ARITHMATIC_1", -1)
+				.add("^ \t\r\n", "P_1", -1)
 				.build());
 		
-		this.putTransferMap("ARITHMATIC_1", new TransferBuilder()
-				.add(" \t\r\n", "ARITHMATIC_1")
+		this.putTransferMap("P_1", new TransferBuilder()
+				.add(" \t\r\n", "P_1")
 				.add("\\<\\>", "OPERATION")
 				.add("^ \t\r\n\\<\\>", "END", -1)
 				.build());
 		
 		this.putTransferMap("OPERATION", new TransferBuilder()
-				.add("\\=", "ARITHMATIC_2")
-				.add("^\\=", "ARITHMATIC_2", -1)
+				.add("\\=", "P_2")
+				.add("^\\=", "P_2", -1)
 				.build());
 		
-		this.putTransferMap("ARITHMATIC_2", new TransferBuilder()
-				.add(" \t\r\n", "ARITHMATIC_2")
+		this.putTransferMap("P_2", new TransferBuilder()
+				.add(" \t\r\n", "P_2")
 				.add("^ \t\r\n", "END", -1)
 				.build());
 		
 		// 종료 상태 추가
-		this.putEndStatus("ARITHMATIC_1");
-		this.putEndStatus("ARITHMATIC_2");
+		this.putEndStatus("P_1");
+		this.putEndStatus("P_2");
 		this.putEndStatus("END", EndStatusType.IMMEDIATELY_END); // END 상태로 들어오면 Parsing을 중지
 		
 	}
@@ -90,7 +92,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"START"},
-			target={"ARITHMATIC_1"}
+			target={"P_1"}
 	)
 	public void handleP1(Event event) throws Exception {
 		
@@ -104,7 +106,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 * @param event 상태 전이 이벤트 정보
 	 */
 	@TransferEventHandler(
-			source={"ARITHMATIC_1"},
+			source={"P_1"},
 			target={"OPERATION"}
 	)
 	public void handleOp(Event event) throws Exception {
@@ -118,7 +120,7 @@ public class ComparisonParser extends AbstractParser<Instruction> {
 	 */
 	@TransferEventHandler(
 			source={"OPERATION"},
-			target={"ARITHMATIC_2"}
+			target={"P_2"}
 	)
 	public void handleP2(Event event) throws Exception {
 		

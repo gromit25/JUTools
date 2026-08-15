@@ -14,8 +14,10 @@ import com.jutools.script.parser.TransferEventHandler;
  */
 public class NumberParser extends AbstractParser<Instruction> {
 	
+	
 	/** 숫자 저장 버퍼 변수 */
 	private StringBuffer buffer;
+	
 
 	/**
 	 * 생성자

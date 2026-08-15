@@ -15,8 +15,10 @@ import com.jutools.script.parser.TransferEventHandler;
  */
 public class StringParser extends AbstractParser<Instruction> {
 	
+	
 	/** 문자열 저장 버퍼 */
 	private StringBuffer strBuffer;
+	
 
 	/**
 	 * 생성자

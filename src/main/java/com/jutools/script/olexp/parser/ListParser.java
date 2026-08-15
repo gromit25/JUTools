@@ -17,7 +17,7 @@ import com.jutools.script.parser.TreeNode;
 public class ListParser extends AbstractParser<Instruction> {
 	
 	
-	/** */
+	/** 목록 생성 명령어 */
 	private NEW_LIST newList;
 	
 
