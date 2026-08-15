@@ -201,6 +201,19 @@ public abstract class AbstractEngine {
 		
 		return this.methods.get(alias);
 	}
+
+	/**
+	 * 설정된 스크립트 명령어를 콘솔에 출력
+	 */
+	public void showInstList() {
+		
+		// 각 명령어 별로 실행
+		for(int index = 0; index < this.insts.size(); index++) {
+			
+			Instruction inst = this.insts.get(index);
+			System.out.println((index + 1) + ":" + inst.toString());
+		}
+	}
 	
 	/**
 	 * 스크립트 명령어 수행
