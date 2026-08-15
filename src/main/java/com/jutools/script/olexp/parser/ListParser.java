@@ -16,8 +16,10 @@ import com.jutools.script.parser.TreeNode;
  */
 public class ListParser extends AbstractParser<Instruction> {
 	
+	
 	/** */
 	private NEW_LIST newList;
+	
 
 	/**
 	 * 생성자
@@ -78,7 +80,7 @@ public class ListParser extends AbstractParser<Instruction> {
 	public void handleElement(Event event) throws Exception {
 		
 		// element 노드 생성
-		BooleanParser elementParser = new BooleanParser();
+		BoolOrParser elementParser = new BoolOrParser();
 		TreeNode<Instruction> element = elementParser.parse(event.getReader());
 		
 		// 현재 노드에 추가

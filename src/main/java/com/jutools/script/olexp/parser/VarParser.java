@@ -23,14 +23,19 @@ import com.jutools.script.parser.TreeNode;
  */
 public class VarParser extends AbstractParser<Instruction> {
 	
+	
 	/** 변수명 혹은 메소드명 */
 	private StringBuffer varName;
+	
 	/** 메소드 여부 */
 	private boolean isMethod;
+	
 	/** 메소드의 파라미터 목록 */
 	private List<TreeNode<Instruction>> params;
+	
 	/** 컬렉션(List, Map) 또는 객체 속성 노드 */
 	private TreeNode<Instruction> tailNode;
+	
 
 	/**
 	 * 생성자
@@ -143,7 +148,7 @@ public class VarParser extends AbstractParser<Instruction> {
 			target={"PARAM"}
 	)
 	public void handleParam(Event event) throws Exception {
-		BooleanParser parser = new BooleanParser();
+		BoolOrParser parser = new BoolOrParser();
 		this.params.add(parser.parse(event.getReader()));
 	}
 	

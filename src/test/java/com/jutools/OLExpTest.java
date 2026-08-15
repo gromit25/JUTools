@@ -935,6 +935,9 @@ public class OLExpTest {
 		
 		OLExp exp = OLExp.compile("true or false");
 		
+		exp.showInstList();
+		System.out.println("==============");
+		
 		Boolean result = exp.execute().pop(Boolean.class);
 		assertTrue(result);
 	}
@@ -944,7 +947,10 @@ public class OLExpTest {
 		
 		OLExp exp = OLExp.compile("false and true");
 		
-		Boolean result = exp.execute().pop(Boolean.class);
+		exp.showInstList();
+		System.out.println("==============");
+		
+		Boolean result = exp.executeForDebug().pop(Boolean.class);
 		assertFalse(result);
 	}
 	
@@ -953,7 +959,10 @@ public class OLExpTest {
 		
 		OLExp exp = OLExp.compile("2 < 3 + 1 or 1 != 1");
 		
-		Boolean result = exp.execute().pop(Boolean.class);
+		exp.showInstList();
+		System.out.println("==============");
+		
+		Boolean result = exp.executeForDebug().pop(Boolean.class);
 		assertTrue(result);
 	}
 	
@@ -962,8 +971,23 @@ public class OLExpTest {
 		
 		OLExp exp = OLExp.compile("false and 1 == 1 or true");
 		
+		exp.showInstList();
+		System.out.println("==============");
+		
 		Boolean result = exp.executeForDebug().pop(Boolean.class);
 		assertTrue(result);
+	}
+	
+	@Test
+	public void testShortCircuit5() throws Exception {
+		
+		OLExp exp = OLExp.compile("if(true or 1 != 1, 1, 0) + 3");
+		
+		exp.showInstList();
+		System.out.println("==============");
+		
+		Double result = exp.executeForDebug().pop(Double.class);
+		assertEquals((Double)4.0, result);
 	}
 	
 	@Test

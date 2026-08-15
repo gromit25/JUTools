@@ -128,7 +128,7 @@ public class FactorParser extends AbstractParser<Instruction> {
 			target={"BOOLEAN"}
 	)
 	public void handleExp(Event event) throws Exception {
-		BooleanParser parser = new BooleanParser();
+		BoolOrParser parser = new BoolOrParser();
 		this.setNode(parser.parse(event.getReader()));
 	}
 }

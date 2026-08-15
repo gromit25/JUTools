@@ -13,8 +13,10 @@ import com.jutools.script.parser.TransferEventHandler;
  */
 public class StoreParser extends AbstractParser<Instruction> {
 	
+	
 	/** L-value 변수명 저장 변수 */
 	private StringBuffer lValueBuffer;
+	
 
 	/**
 	 * 생성자
@@ -94,7 +96,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 		);
 		
 		this.addChild(
-			new BooleanParser().parse(event.getReader())
+			new BoolOrParser().parse(event.getReader())
 		);
 	}
 	
@@ -108,8 +110,9 @@ public class StoreParser extends AbstractParser<Instruction> {
 			target={"NOT_STORE_OP"}
 	)
 	public void handleNotStoreOp(Event event) throws Exception {
+		
 		this.setNode(
-			new BooleanParser().parse(event.getReader())
+			new BoolOrParser().parse(event.getReader())
 		);
 	}
 	
@@ -119,7 +122,7 @@ public class StoreParser extends AbstractParser<Instruction> {
 		// L_VAR 상태에서 끝날 경우, 즉 변수만 있는 경우
 		if(this.getStatus().equals("L_VAR") == true) {
 			this.setNode(
-				new BooleanParser().parse(this.lValueBuffer.toString())
+				new BoolOrParser().parse(this.lValueBuffer.toString())
 			);
 		}
 	}
