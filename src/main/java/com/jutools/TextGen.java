@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.jutools.script.engine.AbstractEngine;
 import com.jutools.script.engine.instructions.Instruction;
-import com.jutools.script.olexp.parser.BooleanParser;
+import com.jutools.script.olexp.parser.BoolOrParser;
 import com.jutools.script.parser.AbstractParser;
 
 /**
@@ -83,7 +83,7 @@ public class TextGen {
 
 		@Override
 		protected AbstractParser<Instruction> getRootParser() throws Exception {
-			return new BooleanParser();
+			return new BoolOrParser();
 		}
 		
 		/**
