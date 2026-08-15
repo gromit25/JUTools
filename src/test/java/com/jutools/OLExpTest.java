@@ -72,9 +72,10 @@ public class OLExpTest {
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			values.put("test", 10);
 			
-			Double result = OLExp.compile("test")
-								.execute(values)
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("test")
+				.execute(values)
+				.pop(Double.class);
 			
 			assertEquals(10.0, result, 0.1);
 			
@@ -88,9 +89,10 @@ public class OLExpTest {
 	public void testCalculate1_2() {
 		try {
 
-			Double result = OLExp.compile("10")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("10")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(10.0, result, 0.1);
 			
@@ -104,9 +106,10 @@ public class OLExpTest {
 	public void testCalculate1_3() {
 		try {
 
-			Double result = OLExp.compile("10 + 3 - 1")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("10 + 3 - 1")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(12.0, result, 0.1);
 			
@@ -120,9 +123,10 @@ public class OLExpTest {
 	public void testCalculate1_4() {
 		try {
 
-			Double result = OLExp.compile("10 + (3 - 1.2)+2*2")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("10 + (3 - 1.2)+2*2")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(15.8, result, 0.01);
 			
@@ -136,9 +140,10 @@ public class OLExpTest {
 	public void testCalculate1_5() {
 		try {
 
-			Double result = OLExp.compile("2*4*3 / (2*2) + 1")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("2*4*3 / (2*2) + 1")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(7.0, result, 0.01);
 			
@@ -152,9 +157,10 @@ public class OLExpTest {
 	public void testString1_1() {
 		try {
 
-			String result = OLExp.compile("'a'")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("'a'")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("a", result);
 			
@@ -168,9 +174,10 @@ public class OLExpTest {
 	public void testString1_2() {
 		try {
 
-			String result = OLExp.compile("'a' + 1")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("'a' + 1")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("a1", result);
 			
@@ -184,9 +191,10 @@ public class OLExpTest {
 	public void testString1_3() {
 		try {
 
-			String result = OLExp.compile("1 + 'abc'")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("1 + 'abc'")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("1abc", result);
 			
@@ -200,9 +208,10 @@ public class OLExpTest {
 	public void testString1_4() {
 		try {
 
-			String result = OLExp.compile("(12 + 1/2) + 'a'")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("(12 + 1/2) + 'a'")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("12.5a", result);
 			
@@ -216,9 +225,10 @@ public class OLExpTest {
 	public void testString1_5() {
 		try {
 
-			String result = OLExp.compile("'abc' + 'def'")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("'abc' + 'def'")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("abcdef", result);
 			
@@ -232,9 +242,10 @@ public class OLExpTest {
 	public void testString1_6() {
 		try {
 
-			String result = OLExp.compile("'홍' + '길동'")
-								.execute()
-								.pop(String.class);
+			String result = OLExp
+				.compile("'홍' + '길동'")
+				.execute()
+				.pop(String.class);
 			
 			assertEquals("홍길동", result);
 			
@@ -248,9 +259,10 @@ public class OLExpTest {
 	public void testComparison1_1() {
 		try {
 
-			Boolean result = OLExp.compile("1 > 2")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 > 2")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(false, result);
 			
@@ -264,9 +276,10 @@ public class OLExpTest {
 	public void testComparison1_2() {
 		try {
 
-			Boolean result = OLExp.compile("2 >= 2")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("2 >= 2")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -280,9 +293,10 @@ public class OLExpTest {
 	public void testComparison1_3() {
 		try {
 
-			Boolean result = OLExp.compile("2 <3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("2 <3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -296,9 +310,10 @@ public class OLExpTest {
 	public void testComparison1_4() {
 		try {
 
-			Boolean result = OLExp.compile("3<=3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("3<=3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -312,9 +327,10 @@ public class OLExpTest {
 	public void testComparison2_1() {
 		try {
 
-			Boolean result = OLExp.compile("1 + 3 > 2")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 + 3 > 2")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -328,9 +344,10 @@ public class OLExpTest {
 	public void testComparison2_2() {
 		try {
 
-			Boolean result = OLExp.compile("1 >= 2 - 3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 >= 2 - 3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -344,9 +361,10 @@ public class OLExpTest {
 	public void testComparison2_3() {
 		try {
 
-			Boolean result = OLExp.compile("1 + 2 <= 2*3 - 3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 + 2 <= 2*3 - 3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -360,9 +378,10 @@ public class OLExpTest {
 	public void testComparison2_4() {
 		try {
 
-			Boolean result = OLExp.compile("6 + 2 > 2*(3 - 1)")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("6 + 2 > 2*(3 - 1)")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -374,11 +393,13 @@ public class OLExpTest {
 	
 	@Test
 	public void testEquality1_1() {
+		
 		try {
 
-			Boolean result = OLExp.compile("1 == 3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 == 3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(false, result);
 			
@@ -390,11 +411,13 @@ public class OLExpTest {
 	
 	@Test
 	public void testEquality1_2() {
+		
 		try {
 
-			Boolean result = OLExp.compile("1 != 3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 != 3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(true, result);
 			
@@ -406,11 +429,13 @@ public class OLExpTest {
 	
 	@Test
 	public void testEquality2_1() {
+		
 		try {
 
-			Boolean result = OLExp.compile("1 + 2 != 3")
-								.execute()
-								.pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 + 2 != 3")
+				.execute()
+				.pop(Boolean.class);
 			
 			assertEquals(false, result);
 			
@@ -421,13 +446,13 @@ public class OLExpTest {
 	}
 	
 	@Test
-	public void testBoolean1_1() {
+	public void testBoolean1() {
+		
 		try {
 
-			HashMap<String, Object> values = new HashMap<String, Object>();
-			
-			Boolean result = OLExp.compile("1 == 1 and 1 != 1")
-					.execute(values).pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 == 1 and 1 != 1")
+				.execute().pop(Boolean.class);
 			
 			assertFalse(result);
 			
@@ -438,13 +463,13 @@ public class OLExpTest {
 	}
 	
 	@Test
-	public void testBoolean1_2() {
+	public void testBoolean2() {
+		
 		try {
 
-			HashMap<String, Object> values = new HashMap<String, Object>();
-			
-			Boolean result = OLExp.compile("1 == 1 and 2 == 2")
-					.execute(values).pop(Boolean.class);
+			Boolean result = OLExp
+				.compile("1 == 1 and 2 == 2")
+				.execute().pop(Boolean.class);
 			
 			assertTrue(result);
 			
@@ -455,7 +480,45 @@ public class OLExpTest {
 	}
 	
 	@Test
-	public void testStore1_1() {
+	public void testBoolean3() {
+		
+		try {
+
+			Boolean result = OLExp
+				// 연산자 우선 순위 확인
+				// and 가 먼저이면 true, or 가 먼저이면 false
+				.compile("true or false and false")
+				.execute().pop(Boolean.class);
+			
+			assertTrue(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("an exception is occured");
+		}
+	}
+	
+	@Test
+	public void testBoolean4() {
+		
+		try {
+
+			Boolean result = OLExp
+				// 연산자 우선 순위 확인
+				// and 가 먼저이면 true, or 가 먼저이면 false
+				.compile("(true or false) and false")
+				.execute().pop(Boolean.class);
+			
+			assertFalse(result);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("an exception is occured");
+		}
+	}
+	
+	@Test
+	public void testStore1() {
 		
 		try {
 			
@@ -473,7 +536,7 @@ public class OLExpTest {
 	}
 	
 	@Test
-	public void testStore1_2() {
+	public void testStore2() {
 		
 		try {
 			
@@ -491,7 +554,7 @@ public class OLExpTest {
 	}
 	
 	@Test
-	public void testStore1_3() {
+	public void testStore3() {
 		
 		try {
 			
@@ -514,9 +577,10 @@ public class OLExpTest {
 		
 		try {
 			
-			Double result = OLExp.compile("pow(10, 2)")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("pow(10, 2)")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(100.0, result, 0.1);
 			
@@ -531,9 +595,10 @@ public class OLExpTest {
 		
 		try {
 			
-			Double result = OLExp.compile("(pow(10, 2) + 10)/2")
-								.execute()
-								.pop(Double.class);
+			Double result = OLExp
+				.compile("(pow(10, 2) + 10)/2")
+				.execute()
+				.pop(Double.class);
 			
 			assertEquals(55.0, result, 0.1);
 			
@@ -549,7 +614,8 @@ public class OLExpTest {
 			
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			
-			OLExp.compile("a123=(pow(10, 2) + 10)/2 - 5")
+			OLExp
+				.compile("a123=(pow(10, 2) + 10)/2 - 5")
 				.execute(values);
 			
 			assertEquals(50.0, (double)(values.get("a123")), 0.1);
@@ -566,7 +632,8 @@ public class OLExpTest {
 			
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			
-			boolean result = OLExp.compile("matchW('test?1', 'test11')")
+			boolean result = OLExp
+				.compile("matchW('test?1', 'test11')")
 				.execute(values).pop(Boolean.class);
 			
 			assertTrue(result);
@@ -583,7 +650,8 @@ public class OLExpTest {
 			
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			
-			boolean result = OLExp.compile("matchR('test.1', 'test11')")
+			boolean result = OLExp
+				.compile("matchR('test.1', 'test11')")
 				.execute(values).pop(Boolean.class);
 			
 			assertTrue(result);
@@ -600,7 +668,8 @@ public class OLExpTest {
 			
 			HashMap<String, Object> values = new HashMap<String, Object>();
 			
-			String result = OLExp.compile("now('yyyy-MM-dd')")
+			String result = OLExp
+				.compile("now('yyyy-MM-dd')")
 				.execute(values).pop(String.class);
 			
 			String compare = LocalDateTime.now().format(
@@ -616,6 +685,7 @@ public class OLExpTest {
 	
 	@Test
 	public void testUngrammar1() {
+		
 		try {
 			OLExp.compile("* 12");
 		} catch(ParseException pex) {
@@ -627,6 +697,7 @@ public class OLExpTest {
 	
 	@Test
 	public void testUngrammar2() {
+		
 		try {
 			OLExp.compile("2 * 10 + +");
 		} catch(ParseException pex) {
@@ -638,6 +709,7 @@ public class OLExpTest {
 	
 	@Test
 	public void testUngrammar3() {
+		
 		try {
 			OLExp.compile("2 * (10 +) +");
 		} catch(ParseException pex) {
@@ -649,6 +721,7 @@ public class OLExpTest {
 	
 	@Test
 	public void testUngrammar4() {
+		
 		try {
 			OLExp.compile("2 * (10 + var1) *");
 			fail();
@@ -661,6 +734,7 @@ public class OLExpTest {
 	
 	@Test
 	public void testUngrammar5() {
+		
 		try {
 			OLExp.compile("2 * (10 + 1var1) *");
 			fail();
@@ -790,9 +864,9 @@ public class OLExpTest {
 
 		// 테스트
 		String result = OLExp
-				.compile("if(message.receivers[index] == null, '', message.receivers[index])")
-				.execute(values)
-				.pop(String.class);
+			.compile("if(message.receivers[index] == null, '', message.receivers[index])")
+			.execute(values)
+			.pop(String.class);
 		
 		// 결과 확인
 		assertEquals("abc@abc.com", result);
@@ -803,9 +877,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("true")
-				.execute()
-				.pop(Boolean.class);
+			.compile("true")
+			.execute()
+			.pop(Boolean.class);
 		
 		assertTrue(result);
 	}
@@ -819,9 +893,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value == true")
-				.execute(values)
-				.pop(Boolean.class);
+			.compile("value == true")
+			.execute(values)
+			.pop(Boolean.class);
 		
 		assertTrue(result);
 	}
@@ -835,10 +909,10 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value != true")
-				.execute(values)
-				.pop(Boolean.class);
-		
+			.compile("value != true")
+			.execute(values)
+			.pop(Boolean.class);
+	
 		assertFalse(result);
 	}
 	
@@ -847,9 +921,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("false")
-				.execute()
-				.pop(Boolean.class);
+			.compile("false")
+			.execute()
+			.pop(Boolean.class);
 		
 		assertFalse(result);
 	}
@@ -863,9 +937,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value == false")
-				.execute(values)
-				.pop(Boolean.class);
+			.compile("value == false")
+			.execute(values)
+			.pop(Boolean.class);
 		
 		assertTrue(result);
 	}
@@ -879,9 +953,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value != false")
-				.execute(values)
-				.pop(Boolean.class);
+			.compile("value != false")
+			.execute(values)
+			.pop(Boolean.class);
 		
 		assertFalse(result);
 	}
@@ -891,9 +965,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Object result = OLExp
-				.compile("null")
-				.execute()
-				.pop(Object.class);
+			.compile("null")
+			.execute()
+			.pop(Object.class);
 		
 		assertNull(result);
 	}
@@ -907,9 +981,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value == null")
-				.execute(values)
-				.pop(Boolean.class);
+			.compile("value == null")
+			.execute(values)
+			.pop(Boolean.class);
 		
 		assertTrue(result);
 	}
@@ -923,9 +997,9 @@ public class OLExpTest {
 		
 		// 테스트
 		Boolean result = OLExp
-				.compile("value != null")
-				.execute(values)
-				.pop(Boolean.class);
+			.compile("value != null")
+			.execute(values)
+			.pop(Boolean.class);
 		
 		assertFalse(result);
 	}
