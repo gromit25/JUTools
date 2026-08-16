@@ -15,7 +15,7 @@ public class ThreadUtil {
 	 *
 	 * @param execSvc shutdown 할 ExecutorService 객체
 	 */
-	public static void shutdown(ExecutorService execSvc) throws Exception {
+	public static void shutdown(ExecutorService execSvc) {
 
 		// 입력값 검증
 		if(execSvc == null || execSvc.isShutdown() == true) {

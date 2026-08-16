@@ -8,20 +8,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 크론잡 수행 클래스
  * 
  * @author jmsohn
  */
-@Slf4j
 public class CronJob {
 	
 	
@@ -261,29 +258,7 @@ public class CronJob {
 		}
 		
 		// 실행 중 인 잡 중단
-		if(this.jobService != null) {
-			
-			// 신규 작업 제출 거부
-			this.jobService.shutdown();
-
-			try {
-
-				// 기존 작업들이 모두 끝날 때까지 최대 5초 기다림
-				if(this.jobService.awaitTermination(5, TimeUnit.SECONDS) == false) {
-
-					// 실행 중 작업 인터럽트
-					this.jobService.shutdownNow(); 
-					if(this.jobService.awaitTermination(5, TimeUnit.SECONDS) == true) {
-						log.error("fail to shutdown cron job: " + this.toString());
-					}
-				}
-
-			} catch(InterruptedException ie) {
-				
-				this.jobService.shutdownNow();
-				Thread.currentThread().interrupt();
-			}
-		}
+		ThreadUtil.shutdown(this.jobService);
 		
 		// 타임아웃 스케줄 스레드 중단
 		if(this.timerThread != null) {
