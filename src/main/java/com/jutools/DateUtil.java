@@ -15,10 +15,13 @@ import lombok.Data;
  */
 public class DateUtil {
 	
+	
 	/** 기본 날짜 구분자 */
 	private static String DEFAULT_DATE_DELIMITER = "-";
+	
 	/** 기본 시간 구분자 */
 	private static String DEFAULT_TIME_DELIMITER = ":";
+	
 	
 	/**
 	 * 날짜 문자열 반환<br>
