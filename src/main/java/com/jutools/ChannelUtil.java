@@ -21,57 +21,57 @@ public class ChannelUtil {
 	/**
 	 * file channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param channel 입출력을 위한 file channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 * @return file channel 처리 wrapper 객체
 	 */
-	public static FileChannelWrapper create(FileChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
-		return new FileChannelWrapper(chnl, buffer, charset);
+	public static FileChannelWrapper create(FileChannel channel, ByteBuffer buffer, Charset charset) throws Exception {
+		return new FileChannelWrapper(channel, buffer, charset);
 	}
 	
 	/**
 	 * file channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param channel 입출력을 위한 file channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param charset 입출력에 사용할 character set
 	 * @return file channel 처리 wrapper 객체
 	 */
-	public static FileChannelWrapper create(FileChannel chnl, int capacity, Charset charset) throws Exception {
-		return create(chnl, ByteBuffer.allocateDirect(capacity), charset);
+	public static FileChannelWrapper create(FileChannel channel, int capacity, Charset charset) throws Exception {
+		return create(channel, ByteBuffer.allocateDirect(capacity), charset);
 	}
 	
 	/**
 	 * file channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param channel 입출력을 위한 file channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @return file channel 처리 wrapper 객체
 	 */
-	public static FileChannelWrapper create(FileChannel chnl, ByteBuffer buffer) throws Exception {
-		return create(chnl, buffer, Charset.defaultCharset());
+	public static FileChannelWrapper create(FileChannel channel, ByteBuffer buffer) throws Exception {
+		return create(channel, buffer, Charset.defaultCharset());
 	}
 	
 	/**
 	 * file channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param channel 입출력을 위한 file channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @return file channel 처리 wrapper 객체
 	 */
-	public static FileChannelWrapper create(FileChannel chnl, int capacity) throws Exception {
-		return create(chnl, capacity, Charset.defaultCharset());
+	public static FileChannelWrapper create(FileChannel channel, int capacity) throws Exception {
+		return create(channel, capacity, Charset.defaultCharset());
 	}
 	
 	/**
 	 * file channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 file channel
+	 * @param channel 입출력을 위한 file channel
 	 * @return file channel 처리 wrapper 객체
 	 */
-	public static FileChannelWrapper create(FileChannel chnl) throws Exception {
-		return create(chnl, 1024 * 1024);
+	public static FileChannelWrapper create(FileChannel channel) throws Exception {
+		return create(channel, 1024 * 1024);
 	}
 	
 	/**
@@ -138,57 +138,57 @@ public class ChannelUtil {
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 socket channel
+	 * @param channel 입출력을 위한 socket channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @param charset 입출력에 사용할 character set
 	 * @return socket channel 처리 wrapper 객체
 	 */
-	public static SocketChannelWrapper create(SocketChannel chnl, ByteBuffer buffer, Charset charset) throws Exception {
-		return new SocketChannelWrapper(chnl, buffer, charset);
+	public static SocketChannelWrapper create(SocketChannel channel, ByteBuffer buffer, Charset charset) throws Exception {
+		return new SocketChannelWrapper(channel, buffer, charset);
 	}
 	
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 socket channel
+	 * @param channel 입출력을 위한 socket channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @param charset 입출력에 사용할 character set
 	 * @return socket channel 처리 wrapper 객체
 	 */
-	public static SocketChannelWrapper create(SocketChannel chnl, int capacity, Charset charset) throws Exception {
-		return create(chnl, ByteBuffer.allocateDirect(capacity), charset);
+	public static SocketChannelWrapper create(SocketChannel channel, int capacity, Charset charset) throws Exception {
+		return create(channel, ByteBuffer.allocateDirect(capacity), charset);
 	}
 	
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 socket channel
+	 * @param channel 입출력을 위한 socket channel
 	 * @param buffer 입출력에 사용할 byte buffer
 	 * @return socket channel 처리 wrapper 객체
 	 */
-	public static SocketChannelWrapper create(SocketChannel chnl, ByteBuffer buffer) throws Exception {
-		return create(chnl, buffer, Charset.defaultCharset());
+	public static SocketChannelWrapper create(SocketChannel channel, ByteBuffer buffer) throws Exception {
+		return create(channel, buffer, Charset.defaultCharset());
 	}
 	
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 socket channel
+	 * @param channel 입출력을 위한 socket channel
 	 * @param capacity 입출력에 사용할 byte buffer의 크기
 	 * @return socket channel 처리 wrapper 객체
 	 */
-	public static SocketChannelWrapper create(SocketChannel chnl, int capacity) throws Exception {
-		return create(chnl, capacity, Charset.defaultCharset());
+	public static SocketChannelWrapper create(SocketChannel channel, int capacity) throws Exception {
+		return create(channel, capacity, Charset.defaultCharset());
 	}
 	
 	/**
 	 * socket channel 처리 wrapper 객체 생성
 	 * 
-	 * @param chnl 입출력을 위한 socket channel
+	 * @param channel 입출력을 위한 socket channel
 	 * @return socket channel 처리 wrapper 객체
 	 */
-	public static SocketChannelWrapper create(SocketChannel chnl) throws Exception {
-		return create(chnl, 1024 * 1024);
+	public static SocketChannelWrapper create(SocketChannel channel) throws Exception {
+		return create(channel, 1024 * 1024);
 	}
 	
 	/**
@@ -202,10 +202,10 @@ public class ChannelUtil {
 	 */
 	public static SocketChannelWrapper create(String hostname, int port, ByteBuffer buffer, Charset charset) throws Exception {
 		
-        SocketChannel chnl = SocketChannel.open();
-        chnl.connect(new InetSocketAddress(hostname, port));
+        SocketChannel channel = SocketChannel.open();
+        channel.connect(new InetSocketAddress(hostname, port));
         
-        return create(chnl, buffer, charset);
+        return create(channel, buffer, charset);
 	}
 	
 	/**
