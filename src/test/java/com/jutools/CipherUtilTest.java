@@ -59,6 +59,28 @@ public class CipherUtilTest {
 	}
 	
 	@Test
+	public void testEncryptSHA512_3() {
+		
+		try {
+			
+			String msg = "123456";
+			String encryptedMsg = SHAUtil.encrypt512(msg);
+			
+			System.out.println("HASH MSG: " + encryptedMsg);
+			System.out.println("LENGTH: " + encryptedMsg.length());
+			
+			assertEquals(
+				"ujJTh2rta8ItSm/1PYQGxq2GQZXtFEq1yHYhtsIztUi66uaVbfNG7IwX9eoQ817jy8UUeX7X3dMUVGTioLq0Ew==",
+				encryptedMsg
+			);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
 	public void testEncryptDecryptAES1() {
 		
 		try {
@@ -87,6 +109,28 @@ public class CipherUtilTest {
 			String msg = "테스트 입니다.";
 			
 			String encryptedMsg = AESUtil.encrypt(msg, key);
+			String decryptedMsg = AESUtil.decrypt(encryptedMsg, key);
+			
+			assertEquals(msg, decryptedMsg);
+			
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			fail("exception is occured");
+		}
+	}
+	
+	@Test
+	public void testEncryptDecryptAES3() {
+		
+		try {
+			
+			String key = AESUtil.gen128Key();
+			String msg = "010-1234-1234";
+			
+			String encryptedMsg = AESUtil.encrypt(msg, key);
+			System.out.println("ENCRYPTED MSG: " + encryptedMsg);
+			System.out.println("LENGTH: " + encryptedMsg.length());
+			
 			String decryptedMsg = AESUtil.decrypt(encryptedMsg, key);
 			
 			assertEquals(msg, decryptedMsg);
